@@ -56,3 +56,4 @@ exports.deleteById = async (req, res) => {
     res.status(500).json({ msg: "Error al eliminar el área." });
   }
 };
+
