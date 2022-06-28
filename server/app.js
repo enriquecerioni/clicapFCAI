@@ -4,7 +4,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const db = require("./database/database");
-const UserModel = require("./models/UserModel")
+require("./models/UserModel");
+require("./models/DocumentModel");
+require("./models/PayModel");
+require("./models/AreaModel");
 
 dotenv.config({ path: "./.env" });
 

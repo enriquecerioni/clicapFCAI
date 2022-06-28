@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require('../database/database');
+const RoleModel = require("./RoleModel");
 
 const UserModel = db.define("user", {
   id: {
@@ -21,15 +22,15 @@ const UserModel = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  role: {
+  roleId: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  identify_type: {
+  identifyType: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  identify_number: {
+  identifyNumber: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
@@ -49,6 +50,12 @@ const UserModel = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false
   }
+});
+
+// DOCUMENT - AUTHOR
+UserModel.belongsTo(RoleModel, {foreignKey: 'roleId'});
+RoleModel.hasMany(UserModel, {
+  foreignKey: "roleId",
 });
 
 module.exports = UserModel;
