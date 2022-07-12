@@ -5,8 +5,11 @@ import "./login.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {reqAxios} from '../../helpers/helpers';
+/* import { useNavigate } from "react-router-dom"; */
+
 
 const Login = () => {
+/*   const navigate=useNavigate(); */
   const initialStateLogin = {
     identifyNumber: "",
     password: "",
@@ -44,7 +47,7 @@ const Login = () => {
           </div>
           <div className="card-body">
             <h5 className="card-title text-center">Inicio de sesión</h5>
-            <div className="box-loginform">
+            <div className="">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label
@@ -107,6 +110,12 @@ const Login = () => {
                   className="btn btn-login"
                 >
                   Iniciar sesión
+                </button>
+                <button
+                  className="mt-2 w-100 btn btn-outline-success"
+                  /* onClick={()=>navigate('/register')} */
+                >
+                  Registrarme
                 </button>
               </form>
             </div>

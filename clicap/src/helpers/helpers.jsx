@@ -27,9 +27,26 @@ export const reqAxios = async (method, shortUrl, param, data) => {
 /*     if (method != "get") {
       alertSuccess(res.data.msg);
     } */
-    return console.log(res.data);
+    return res;
   } catch (error) {
     console.log(error);
 /*     alertError("Error"); */
+  }
+};
+export const deleteAxios = async (shortUrl) => {
+  /* const load = toast.loading("Espere unos segundos..."); */
+  try {
+    const res = await axios({
+      method: "DELETE",
+      url: API_URL + shortUrl,
+      headers: {
+        Accept: "application/JSON",
+        "Content-Type": "application/json",
+      },
+    });
+    /* return toast.update(load, loadSuccess(res.data)); */
+  } catch (error) {
+    console.log(error.response.data);
+   /*  return toast.update(load, loadError(error.response.data)); */
   }
 };

@@ -11,10 +11,14 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import "../node_modules/animate.css/animate.css";
 //Fontawesome
 import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+import Register from './components/Register/Register';
+//react-toastify
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 /*   <React.StrictMode> */
-    <Login />
+    <Register />
 /*   </React.StrictMode> */
 );
 
