@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { reqAxios } from "../../helpers/helpers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import './register.css';
 import Tooltip from "react-bootstrap/Tooltip";
+import { alertError } from "../../helpers/alerts";
 
 const Register = () => {
   const initialStateRegister = {
@@ -30,13 +32,13 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formOk = onlyNumbers();
     formOk
       ? await reqAxios("POST", "/user/register", "", dataRegister)
-      : console.log("error");
+      : alertError("Error");
   };
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
@@ -63,6 +65,7 @@ const Register = () => {
     const allGets = async () => {
       const getRole = await reqAxios("GET", "/role/getall", "", "");
       setRoles(getRole.data.response);
+      alertError("Error");
     };
     allGets();
   }, []);
