@@ -34,10 +34,8 @@ const Login = () => {
     return pattern.test(formLogin.identifyNumber);
   };
 
-  const disabled = () =>
-    formLogin.identifyNumber.trim() == "" || formLogin.password.trim() == ""
-      ? true
-      : false;
+  const disabled = () =>!!!formLogin.identifyNumber.trim() || !!!formLogin.password.trim();
+
   return (
     <>
       <div className="login-view animate__animated animate__fadeInDown">

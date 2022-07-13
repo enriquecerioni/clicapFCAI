@@ -21,6 +21,7 @@ const Register = () => {
   };
   const [dataRegister, setDataRegister] = useState(initialStateRegister);
   const [roles, setRoles] = useState([]);
+  const [putDisabled, setPutDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const handleChangeRegister = (e) => {
@@ -42,11 +43,21 @@ const Register = () => {
     return pattern.test(dataRegister.identifyNumber);
   };
 
-  const disabled = () =>
-      dataRegister.identifyNumber.trim() == "" 
-    || dataRegister.password.trim() == ""
-      ? true
-      : false;
+  const disabled = () => {
+    return (
+      !!!dataRegister.roleId.trim() ||
+      !!!dataRegister.identifyType.trim() ||
+      !!!dataRegister.identifyNumber.trim() ||
+      !!!dataRegister.name.trim() ||
+      !!!dataRegister.surname.trim() ||
+      !!!dataRegister.email.trim() ||
+      !!!dataRegister.address.trim() ||
+      !!!dataRegister.institution.trim() ||
+      !!!dataRegister.phone.trim() ||
+      !!!dataRegister.password.trim() ||
+      !!!dataRegister.passwordConfirm.trim()
+    );
+  };
 
   useEffect(() => {
     const allGets = async () => {
@@ -342,7 +353,7 @@ const Register = () => {
                 </div>
                 <button
                   type="submit"
-                  /* disabled={putDisabled ? putDisabled : disabled()} */
+                  disabled={putDisabled ? putDisabled : disabled()}
                   className="btn btn-login"
                 >
                   Enviar
