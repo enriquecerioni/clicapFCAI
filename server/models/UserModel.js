@@ -10,6 +10,18 @@ const UserModel = db.define("user", {
     autoIncrement: true,
     allowNull: false,
   },
+  roleId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  identifyType: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  identifyNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -22,16 +34,8 @@ const UserModel = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  roleId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  identifyType: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: false
-  },
-  identifyNumber: {
-    type: DataTypes.INTEGER,
     allowNull: false
   },
   address: {
@@ -46,10 +50,6 @@ const UserModel = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
 });
 
 // DOCUMENT - AUTHOR
