@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import CustomRoute from "./routes/CustomRoute";
 import "./index.css";
-import App from "./App.js";
 import reportWebVitals from "./reportWebVitals";
 //bootstrap
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
@@ -11,12 +11,18 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import "../node_modules/animate.css/animate.css";
 //Fontawesome
 import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+//react-toastify
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   /*   <React.StrictMode> */
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <>
+    <BrowserRouter>
+      <CustomRoute/>
+      <ToastContainer />
+    </BrowserRouter>    
+  </>
   /*   </React.StrictMode> */
 );
 

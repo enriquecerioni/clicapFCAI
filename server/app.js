@@ -10,12 +10,15 @@ const AreaRouter = require("./routes/AreaRouter");
 const DocumentRouter = require("./routes/DocumentRouter");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
+const RoleRouter = require("./routes/RoleRouter");
 
 // Models
 require("./models/UserModel");
 require("./models/DocumentModel");
 require("./models/PayModel");
 require("./models/AreaModel");
+require("./models/RoleModel");
+
 
 dotenv.config({ path: "./.env" });
 
@@ -35,10 +38,11 @@ app.listen(PORT, () => {
 });
 
 // URL Routes
-app.use("/api/area/", AreaRouter);
-app.use("/api/document/", DocumentRouter);
-app.use("/api/pay/", PayRouter);
-app.use("/api/user/", UserRouter);
+app.use("/api/clicap/area/", AreaRouter);
+app.use("/api/clicap/document/", DocumentRouter);
+app.use("/api/clicap/pay/", PayRouter);
+app.use("/api/clicap/user/", UserRouter);
+app.use("/api/clicap/role/", RoleRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
 db.sync()
