@@ -5,11 +5,12 @@ import "./login.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {reqAxios} from '../../helpers/helpers';
-/* import { useNavigate } from "react-router-dom"; */
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
-/*   const navigate=useNavigate(); */
+  const navigate=useNavigate();
+
   const initialStateLogin = {
     identifyNumber: "",
     password: "",
@@ -111,7 +112,7 @@ const Login = () => {
                 </button>
                 <button
                   className="mt-2 w-100 btn btn-outline-success"
-                  /* onClick={()=>navigate('/register')} */
+                  onClick={()=>navigate('/register')}
                 >
                   Registrarme
                 </button>
