@@ -1,51 +1,54 @@
 import "./navbar.scss";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ArticleIcon from "@mui/icons-material/Article";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import PeopleIcon from "@mui/icons-material/People";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import AppsIcon from "@mui/icons-material/Apps";
+import InputIcon from "@mui/icons-material/Input";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/clicap.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="navbar">
       <div className="wrapper">
-        <div className="search">
-          <input type="text" placeholder="Search..." />
-          <SearchOutlinedIcon />
+        <div className="logo" onClick={() => navigate('/')}>
+          <img
+            src={logo}
+            alt="image not found"
+          />
         </div>
         <div className="items">
-          <div className="item">
-            <LanguageOutlinedIcon className="icon" />
-            English
+          <div className="item" onClick={() => navigate('/inscriptions')}>
+            <HowToRegIcon className="icon" />
+            Inscripciones
           </div>
-          <div className="item">
-            <DarkModeOutlinedIcon
-              className="icon"
-              // onClick={() => dispatch({ type: "TOGGLE" })}
-            />
+          <div className="item" onClick={() => navigate('/job_submission')}>
+            <ArticleIcon className="icon" />
+            Presentación de Trabajos
           </div>
-          <div className="item">
-            <FullscreenExitOutlinedIcon className="icon" />
+          <div className="item" onClick={() => navigate('/gallery')}>
+            <PhotoLibraryIcon className="icon" />
+            Galería
           </div>
-          <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">1</div>
+          <div className="item" onClick={() => navigate('/endorsements')}>
+            <AppsIcon className="icon" />
+            Avales Institucionales
           </div>
-          <div className="item">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            <div className="counter">2</div>
+          <div className="item" onClick={() => navigate('/scientific_comitte')}>
+            <PeopleIcon className="icon" />
+            Comité Científico
           </div>
-          <div className="item">
-            <ListOutlinedIcon className="icon" />
+          <div className="item" onClick={() => navigate('/contact')}>
+            <ContactMailIcon className="icon" />
+            Contáctanos
           </div>
-          <div className="item">
-            <img
-              src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-              className="avatar"
-            />
+          <div className="item" onClick={() => navigate('/login')}>
+            <InputIcon className="icon" />
+            Ingresar
           </div>
         </div>
       </div>
