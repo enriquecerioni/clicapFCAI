@@ -6,28 +6,34 @@
   font-size: 18px;
   color: #555;
 
+  img {
+    width: 250px;
+    margin-left: 2rem;
+  }
+
   .wrapper {
     width: 100%;
-    padding: 20px;
+    // padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .search {
+    .logo {
       display: flex;
       align-items: center;
-      border: 0.5px solid lightgray;
-      padding: 3px;
+      cursor: pointer;
+      // border: 0.5px solid lightgray;
+      // padding: 3px;
 
-      input {
-        border: none;
-        outline: none;
-        background: transparent;
+      // input {
+      //   border: none;
+      //   outline: none;
+      //   background: transparent;
 
-        &::placeholder {
-          font-size: 12px;
-        }
-      }
+      //   &::placeholder {
+      //     font-size: 12px;
+      //   }
+      // }
     }
 
     .items {
@@ -39,6 +45,7 @@
         align-items: center;
         margin-right: 20px;
         position: relative;
+        cursor: pointer;
 
         .icon {
           font-size: 20px;

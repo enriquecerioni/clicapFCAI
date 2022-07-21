@@ -1,11 +1,12 @@
 import Navbar from "../Navbar/Navbar";
 import "./home.scss";
 
-const Home = () => {
+const Home = ({children}) => {
   return (
     <div className="home">
       <div className="homeContainer">
         <Navbar />
+        {children}
         <div className="widgets">
           {/* <Widget type="user" />
           <Widget type="order" />
@@ -16,10 +17,10 @@ const Home = () => {
           {/* <Featured />
           <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} /> */}
         </div>
-        <div className="listContainer">
+        {/* <div className="listContainer">
           <div className="listTitle">Latest Transactions</div>
-          {/* <Table /> */}
-        </div>
+          <Table />
+        </div> */}
       </div>
     </div>
   );
