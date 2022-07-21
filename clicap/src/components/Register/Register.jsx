@@ -49,12 +49,11 @@ const Register = () => {
         return setShowErrorPassEquals(true);
       }else{
         await reqAxios('POST','/user/register','',dataRegister);
-     /*    return navigate('/login'); */
       }
     }else{
       return alertError('ID Incorrecto');
     }
-    formOk? !passwordsEquals ? setShowErrorPassEquals(true):console.log("enviado") : alertError('ID Incorrecto');
+    /* formOk? !passwordsEquals ? setShowErrorPassEquals(true):console.log("enviado") : alertError('ID Incorrecto'); */
   };
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;

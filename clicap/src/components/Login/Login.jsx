@@ -28,7 +28,12 @@ const Login = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const formOk = onlyNumbers();
-    formOk ? await reqAxios('POST','/user/login','',formLogin): console.log("error");
+    if (formOk) {
+      await reqAxios('POST','/user/login','',formLogin);
+    }else{
+      return alertError('ID Incorrecto');
+    }
+    /* formOk ? await reqAxios('POST','/user/login','',formLogin): alertError('ID Incorrecto'); */
   };
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
