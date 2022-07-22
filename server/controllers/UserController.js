@@ -176,7 +176,7 @@ exports.acountActivate = async (req, res) => {
                     <h1>Usted fue registrado en el sistema Clicap de manera exitosa!</h1>
                     <h1>Sus credenciales son: </h1>
                     <br>
-                    <h2>Usuario: ${identifyNumber}</h2>
+                    <h2>ID: ${identifyNumber}</h2>
                     <h2>Constraseña: ${password}</h2>
                 </body>
             </html>`,
@@ -213,10 +213,10 @@ exports.login = async (req, res) => {
   });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    user.password = password;
+    delete user.password;
     return res.status(200).json({ msg: "Usuario logado!", user: user });
   } else {
-    return res.status(401).json({ msg: "Datos incorrectos" });
+    return res.status(401).json({ msg: "Id o contraseña incorrecta" });
   }
 };
 
