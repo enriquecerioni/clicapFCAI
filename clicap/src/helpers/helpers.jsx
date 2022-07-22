@@ -5,9 +5,9 @@ export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
   switch (key) {
     case "id":
-      return dataUser ? dataUser.userId : null;
+      return dataUser ? dataUser.id : null;
     case "name":
-      return dataUser ? dataUser.first_name : null;
+      return dataUser ? dataUser.name : null;
     default:
       return null;
   }
@@ -27,10 +27,10 @@ export const reqAxios = async (method, shortUrl, param, data) => {
 /*     if (method != "get") {
       alertSuccess(res.data.msg);
     } */
+    console.log(res);
     return res;
   } catch (error) {
-    console.log(error);
-/*     alertError("Error"); */
+    return error;
   }
 };
 export const deleteAxios = async (shortUrl) => {
@@ -49,4 +49,9 @@ export const deleteAxios = async (shortUrl) => {
     console.log(error.response.data);
    /*  return toast.update(load, loadError(error.response.data)); */
   }
+};
+export const waitAndRefresh = (path, time) => {
+  setTimeout(() => {
+    window.location.pathname = path;
+  }, time);
 };

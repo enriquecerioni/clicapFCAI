@@ -5,11 +5,11 @@ import { reqAxios } from "../../helpers/helpers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "./register.css";
 import Tooltip from "react-bootstrap/Tooltip";
-import { alertError } from "../../helpers/alerts";
+import { alertError, alertSuccess } from "../../helpers/alerts";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  /* const navigate=useNavigate(); */
+  const navigate=useNavigate();
   const initialStateRegister = {
     roleId: "",
     identifyType: "",
@@ -37,28 +37,29 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const onlyNumbers = () => {
+    const pattern = /^[0-9]+$/;
+    return pattern.test(dataRegister.identifyNumber);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     //valido que sean solo numeros
     const formOk = onlyNumbers();
-    const passwordsEquals = dataRegister.password == dataRegister.passwordConfirm?true:false;
+    const passwordsEquals = dataRegister.password === dataRegister.passwordConfirm?true:false;
     if (formOk) {
       //verifico que las contraseñas sean iguales
       if (!passwordsEquals) {
         return setShowErrorPassEquals(true);
       }else{
-        await reqAxios('POST','/user/register','',dataRegister);
+        const data = await reqAxios('POST','/user/register','',dataRegister);
+        alertSuccess(data.data.response);
+        navigate('/login');
       }
     }else{
       return alertError('ID Incorrecto');
     }
-    /* formOk? !passwordsEquals ? setShowErrorPassEquals(true):console.log("enviado") : alertError('ID Incorrecto'); */
   };
-  const onlyNumbers = () => {
-    const pattern = /^[0-9]+$/;
-    return pattern.test(dataRegister.identifyNumber);
-  };
+
 
   const disabled = () => {
     return (
@@ -80,14 +81,13 @@ const Register = () => {
     const allGets = async () => {
       const getRole = await reqAxios("GET", "/role/getall", "", "");
       setRoles(getRole.data.response);
-      /* alertError("Error"); */
     };
     allGets();
   }, []);
 
   return (
     <>
-      <div className="login-view animate__animated animate__fadeInUp h-100 mt-3">
+      <div className="login-view animate__animated animate__fadeInUp h-100">
         <div className="card card-login shadow w-50">
           <div className="logo-login">
             <h1>Registro</h1>
@@ -112,7 +112,7 @@ const Register = () => {
                     >
                       <option value={""}>Seleccione</option>
                       {roles.map((rol) =>
-                        rol.id != 1 ? (
+                        rol.id !== 1 ? (
                           <option key={rol.id} value={rol.id}>
                             {rol.name}
                           </option>
@@ -149,12 +149,12 @@ const Register = () => {
                       htmlFor="exampleInputEmail1"
                       className="form-label fw-bold"
                     >
-                      ID
+                      Número de {dataRegister.identifyType===""?'identificación':dataRegister.identifyType}
                     </label>
                     <div className="d-flex">
                       <input
                         type="number"
-                        placeholder="Número de identificación"
+                        placeholder="Ej: 30554458"
                         className="form-control"
                         name="identifyNumber"
                         value={dataRegister.identifyNumber}
@@ -164,7 +164,7 @@ const Register = () => {
                         placement="right"
                         overlay={
                           <Tooltip id="tooltip-right">
-                            Sólo numeros, no se permiten símbolos.
+                            Sólo números, no se permiten símbolos.
                           </Tooltip>
                         }
                       >
