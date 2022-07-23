@@ -87,7 +87,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="login-view animate__animated animate__fadeInUp h-100">
+      <div className="login-view animate__animated animate__fadeInUp h-100 card-top">
         <div className="card card-login shadow w-50">
           <div className="logo-login">
             <h1>Registro</h1>
