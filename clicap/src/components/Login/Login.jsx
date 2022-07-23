@@ -6,6 +6,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {reqAxios} from '../../helpers/helpers';
 import { useNavigate } from "react-router-dom";
+import { alertError } from "../../helpers/alerts";
 
 
 const Login = () => {
@@ -28,7 +29,17 @@ const Login = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const formOk = onlyNumbers();
-    formOk ? await reqAxios('POST','/user/login','',formLogin): console.log("error");
+    if (formOk) {
+      const data = await reqAxios('POST','/user/login','',formLogin);
+      if (data.status && data.status===200) {
+        //Guardo la informacion del usuario en el sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(data.data.user));
+        navigate('/home');
+      }else{
+        return alertError(data.response.data.msg);
+      }
+    }
+    /* formOk ? await reqAxios('POST','/user/login','',formLogin): alertError('ID Incorrecto'); */
   };
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;

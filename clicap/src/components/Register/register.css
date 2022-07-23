@@ -11,3 +11,15 @@
   border-bottom-color: red !important;
   color: teal !important;
 }
+
+@media screen and (max-width: 480px) {
+  .form-regis-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}
+
+.card-top{
+  margin-top:2rem;
+}

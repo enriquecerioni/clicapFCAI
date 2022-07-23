@@ -1,58 +1,255 @@
 import "./navbar.scss";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import ArticleIcon from "@mui/icons-material/Article";
-import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
-import PeopleIcon from "@mui/icons-material/People";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
-import AppsIcon from "@mui/icons-material/Apps";
-import InputIcon from "@mui/icons-material/Input";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/clicap.png";
+import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+
+const drawerWidth = 240;
+const navItems = [
+  "Inicio",
+  "Inscripciones",
+  "Presentación de Trabajos",
+  "Galería",
+  "Comité Científico",
+  "Ingresar",
+];
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const loggout = () => {
+    sessionStorage.removeItem("user");
+    navigate("/");
+  };
 
+  // const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        CLICAP
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) =>
+          item === "Ingresar" ? (
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : item === "Inscripciones" ? (
+            <Link to="/inscriptions" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : item === "Presentación de Trabajos" ? (
+            <Link to="/job_submissions" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : item === "Galería" ? (
+            <Link to="/gallery" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : item === "Comité Científico" ? (
+            <Link to="/scientific_comittee" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : item === "Inicio" ? (
+            <Link to="/welcome" style={{ textDecoration: "none" }}>
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ) : (
+            <ListItem key={item} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary={item} />
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
+      </List>
+    </Box>
+  );
   return (
-    <div className="navbar">
-      <div className="wrapper">
-        <div className="logo" onClick={() => navigate('/')}>
-          <img
-            src={logo}
-            alt="image not found"
-          />
-        </div>
-        <div className="items">
-          <div className="item" onClick={() => navigate('/inscriptions')}>
-            <HowToRegIcon className="icon" />
-            Inscripciones
-          </div>
-          <div className="item" onClick={() => navigate('/job_submission')}>
-            <ArticleIcon className="icon" />
-            Presentación de Trabajos
-          </div>
-          <div className="item" onClick={() => navigate('/gallery')}>
-            <PhotoLibraryIcon className="icon" />
-            Galería
-          </div>
-          <div className="item" onClick={() => navigate('/endorsements')}>
-            <AppsIcon className="icon" />
-            Avales Institucionales
-          </div>
-          <div className="item" onClick={() => navigate('/scientific_comitte')}>
-            <PeopleIcon className="icon" />
-            Comité Científico
-          </div>
-          <div className="item" onClick={() => navigate('/contact')}>
-            <ContactMailIcon className="icon" />
-            Contáctanos
-          </div>
-          <div className="item" onClick={() => navigate('/login')}>
-            <InputIcon className="icon" />
-            Ingresar
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <AppBar component="nav">
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
+            CLICAP
+          </Typography>
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            {navItems.map((item) =>
+              isAuthenticated() && item === "Ingresar" ? (
+                <Button key={getDataUserByKey("name")} sx={{ color: "#fff" }}>
+                  <DropdownButton
+                    variant="primary"
+                    title={getDataUserByKey("name")}
+                  >
+                    <Dropdown.Item eventKey="1">Editar Usuario</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item eventKey="4" onClick={loggout}>
+                      Cerrar sesión
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </Button>
+              ) : !isAuthenticated() && item === "Ingresar" ? (
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : item === "Inicio" ? (
+                <Link to="/welcome" style={{ textDecoration: "none" }}>
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : item === "Inscripciones" ? (
+                <Link to="/inscriptions" style={{ textDecoration: "none" }}>
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : item === "Presentación de Trabajos" ? (
+                <Link to="/job_submissions" style={{ textDecoration: "none" }}>
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : item === "Galería" ? (
+                <Link to="/gallery" style={{ textDecoration: "none" }}>
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : item === "Comité Científico" ? (
+                <Link
+                  to="/scientific_comittee"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button key={item} sx={{ color: "#fff" }}>
+                    {item}
+                  </Button>
+                </Link>
+              ) : (
+                <Button key={item} sx={{ color: "#fff" }}>
+                  {item}
+                </Button>
+              )
+            )}
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box component="nav">
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      {/* <Box component="main" sx={{ p: 3 }}>
+        <Toolbar />
+        <Typography>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+          fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+          aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+          cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+          at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+          Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et. Sed
+          numquam quibusdam at officia sapiente porro maxime corrupti perspiciatis
+          asperiores, exercitationem eius nostrum consequuntur iure aliquam itaque,
+          assumenda et! Quibusdam temporibus beatae doloremque voluptatum doloribus
+          soluta accusamus porro reprehenderit eos inventore facere, fugit, molestiae
+          ab officiis illo voluptates recusandae. Vel dolor nobis eius, ratione atque
+          soluta, aliquam fugit qui iste architecto perspiciatis. Nobis, voluptatem!
+          Cumque, eligendi unde aliquid minus quis sit debitis obcaecati error,
+          delectus quo eius exercitationem tempore. Delectus sapiente, provident
+          corporis dolorum quibusdam aut beatae repellendus est labore quisquam
+          praesentium repudiandae non vel laboriosam quo ab perferendis velit ipsa
+          deleniti modi! Ipsam, illo quod. Nesciunt commodi nihil corrupti cum non
+          fugiat praesentium doloremque architecto laborum aliquid. Quae, maxime
+          recusandae? Eveniet dolore molestiae dicta blanditiis est expedita eius
+          debitis cupiditate porro sed aspernatur quidem, repellat nihil quasi
+          praesentium quia eos, quibusdam provident. Incidunt tempore vel placeat
+          voluptate iure labore, repellendus beatae quia unde est aliquid dolor
+          molestias libero. Reiciendis similique exercitationem consequatur, nobis
+          placeat illo laudantium! Enim perferendis nulla soluta magni error,
+          provident repellat similique cupiditate ipsam, et tempore cumque quod! Qui,
+          iure suscipit tempora unde rerum autem saepe nisi vel cupiditate iusto.
+          Illum, corrupti? Fugiat quidem accusantium nulla. Aliquid inventore commodi
+          reprehenderit rerum reiciendis! Quidem alias repudiandae eaque eveniet
+          cumque nihil aliquam in expedita, impedit quas ipsum nesciunt ipsa ullam
+          consequuntur dignissimos numquam at nisi porro a, quaerat rem repellendus.
+          Voluptates perspiciatis, in pariatur impedit, nam facilis libero dolorem
+          dolores sunt inventore perferendis, aut sapiente modi nesciunt.
+        </Typography>
+      </Box> */}
+    </Box>
   );
 };
 
