@@ -53,7 +53,7 @@ const Register = () => {
       }else{
         const data = await reqAxios('POST','/user/register','',dataRegister);
         alertSuccess(data.data.response);
-        navigate('/login');
+        /* navigate('/login'); */
       }
     }else{
       return alertError('ID Incorrecto');
