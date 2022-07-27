@@ -19,6 +19,7 @@ const Navbar = () => {
     sessionStorage.removeItem('user');
     navigate('/');
   } 
+  const idUser = getDataUserByKey('id');
   return (
     <div className="navbar">
       <div className="wrapper">
@@ -55,7 +56,7 @@ const Navbar = () => {
               variant='primary'
               title={getDataUserByKey('name')}
             >
-              <Dropdown.Item eventKey="1">Editar Usuario</Dropdown.Item>
+              <Dropdown.Item eventKey="1" onClick={() => navigate(`/user/edit/${idUser}`)}>Editar Usuario</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item eventKey="4" onClick={loggout}>Cerrar sesión</Dropdown.Item>
             </DropdownButton>

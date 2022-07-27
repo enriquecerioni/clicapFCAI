@@ -16,6 +16,7 @@ const CustomRoute = () => (
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
 
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
+        <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
         {/* <Route path="users">
           <Route index element={<ListUser />} />
           <Route path=":userId" element={<SingleUser />} />
