@@ -6,12 +6,14 @@ import Register from "../components/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import Welcome from "../components/Welcome/Welcome";
 import AccountActivate from "../components/AccountActivate/AccountActivate";
+import DeliveryTask from "../components/DeliveryTask/DeliveryTask";
 const CustomRoute = () => (
   <>
     <Routes>
       <Route path="/">
         <Route index element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
+        <Route path="deliverytask" element={<Home><DeliveryTask/></Home>} />
         <Route path="register" element={<Home><Register/></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
 
