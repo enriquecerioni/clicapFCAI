@@ -19,3 +19,7 @@
     flex-direction: column;
   }
 }
+
+.card-top{
+  margin-top:2rem;
+}

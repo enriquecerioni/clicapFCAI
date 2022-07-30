@@ -9,7 +9,7 @@ import AccountActivate from "../components/AccountActivate/AccountActivate";
 const CustomRoute = () => (
   <>
     <Routes>
-      <Route path="/">
+      <Route path="/"/>
         <Route index element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="register" element={<Home><Register/></Home>} />
@@ -22,7 +22,6 @@ const CustomRoute = () => (
           <Route path=":userId" element={<SingleUser />} />
           <Route path="new" element={<NewUser />} />
         </Route> */}
-      </Route>
     </Routes>
   </>
 );

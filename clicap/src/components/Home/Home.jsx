@@ -1,7 +1,7 @@
 import Navbar from "../Navbar/Navbar";
 import "./home.scss";
 
-const Home = ({children}) => {
+const Home = ({ children }) => {
   return (
     <div className="home">
       <div className="homeContainer">
