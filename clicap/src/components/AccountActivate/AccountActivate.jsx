@@ -8,18 +8,21 @@ import './AccountActivate.css';
 const AccountActivate=()=>{
     const {token} = useParams();
     const [activate,setActivate]=useState(false);
+    const [errorMsg,setErrorMsg]=useState('El tiempo para activar su cuenta expiró o el token es incorrecto.');
     useEffect(()=>{
         const validate =async()=>{
            const data = await reqAxios('GET',`/user/acount-activate/${token}`,'','');
            if (data.status && data.status===200) {
             setActivate(true);
+          }else{
+            setErrorMsg(data.response.data.msg);
           }
         } 
         validate();
     },[])
     const icon = activate?'fa-circle-check icon-success':'fa-circle-xmark danger icon-error';
     const title = activate?'!Su cuenta se registró exitosamente!':'Error al crear la cuenta.';
-    const subTitle = activate?'Usted en unos minutos recibirá un correo con sus credenciales.':'El tiempo para activar su cuenta expiró o el token es incorrecto.';
+    const subTitle = activate?'Usted en unos minutos recibirá un correo con su credencial.':errorMsg;
     return(<>
     <div className="center-center account-activate">
         <div className="activated center-center">
@@ -27,7 +30,7 @@ const AccountActivate=()=>{
             <h2 className="mt-3">{title}</h2>
             <br />
             <p>{subTitle}</p>
-            <p>Usted en breve será redireccionado a Clicap...</p>
+            <p>En breve será redireccionado a Clicap...</p>
             {waitAndRefresh('/login',14000)}
         </div>
     </div>

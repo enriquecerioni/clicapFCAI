@@ -1,10 +1,12 @@
 const UserModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const path = require("path");
 //NODEMAILER
 const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
+
 var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -14,6 +16,20 @@ var transporter = nodemailer.createTransport({
     pass: "ifctzypbifginnzc",
   },
 });
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
+
 exports.register = async (req, res) => {
   const {
     name,
@@ -75,29 +91,22 @@ exports.register = async (req, res) => {
       from: process.env.EMAIL_APP,
       to: email,
       subject: "Active su cuenta",
-      html: `
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            </head>
-            <body>
-                <b>Por favor presione el boton "Activar cuenta" o ingrese a este link para activar su cuenta: </b>
-                <br>
-                <form method="get" action="${process.env.CLIENT_LOCALHOST}/acount-activate/${token}">
-                    <button class="btn login_btn" type="submit">Activar cuenta
-                </form>
-                <br>
-                <b>LINK:</b>
-                <br>
-                <a href="${process.env.CLIENT_LOCALHOST}/acount-activate/${token}">${process.env.CLIENT_LOCALHOST}/acount-activate/${token}</a>
-            </body>
-        </html>`,
+      template: "mailRegister",
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo", //my mistake was putting "cid:logo@cid" here!
+        },
+      ],
+      context: {
+        url: process.env.CLIENT_LOCALHOST + "/acount-activate/" + token,
+      },
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.status(500).json({msg:error.message});
+        return res.status(500).json({ msg: error.message });
       } else {
         console.log("Email enviado!");
         res.end();
@@ -105,7 +114,7 @@ exports.register = async (req, res) => {
     });
 
     return res.status(200).json({
-      response: "Se le ha enviado un email para que active su cuenta",
+      response: "Enviando email para que active su cuenta...",
     });
   } catch (error) {
     return res.status(500).send({
@@ -117,7 +126,7 @@ exports.acountActivate = async (req, res) => {
   const token = req.params.token;
   if (token) {
     //verifica el token
-    jwt.verify(token, process.env.JWT_ACOUNT_ACTIVE, async(err, decoded) => {
+    jwt.verify(token, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
       if (err) {
         return res
           .status(401)
@@ -144,7 +153,7 @@ exports.acountActivate = async (req, res) => {
       const oldUser = await UserModel.findOne({
         where: { identifyNumber: identifyNumber },
       });
-    
+
       if (oldUser) {
         return res.status(409).json({ msg: "El usuario ya existe." });
       }
@@ -166,25 +175,20 @@ exports.acountActivate = async (req, res) => {
           from: process.env.EMAIL_APP,
           to: email,
           subject: "Cuenta activada - credenciales",
-          html: `
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                </head>
-                <body>
-                    <h1>Usted fue registrado en el sistema Clicap de manera exitosa!</h1>
-                    <h1>Sus credenciales son: </h1>
-                    <br>
-                    <h2>ID: ${identifyNumber}</h2>
-                    <h2>Constraseña: ${password}</h2>
-                </body>
-            </html>`,
+          template: "mailCredentials",
+          attachments: [
+            {
+              filename: "clicap.png",
+              path: "./assets/clicap.png",
+              cid: "logo",
+            },
+          ],
+          context: { id: identifyNumber, password: password },
         };
-    
+
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            return res.status(500).json({msg:error.message});
+            return res.status(500).json({ msg: error.message });
           } else {
             console.log("Email enviado!");
             res.end();
@@ -192,11 +196,10 @@ exports.acountActivate = async (req, res) => {
         });
         return res.status(200).json({ response: "Usuario registrado!" });
       } else {
-        return res.status(500).json({msg:"Error al registrar el usuario"});
+        return res.status(500).json({ msg: "Error al registrar el usuario" });
       }
     });
   }
-
 };
 exports.login = async (req, res) => {
   const { identifyNumber, password } = req.body;
@@ -234,6 +237,38 @@ exports.updateById = async (req, res) => {
     phone,
     password,
   } = req.body;
+  const userDB = await UserModel.findByPk(id);
+  if (
+    userDB.identifyNumber != identifyNumber ||
+    !(await bcrypt.compare(password, userDB.password)) ||
+    userDB.email != email
+  ) {
+    var mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: email,
+      subject: "Usuario editado - credenciales",
+      template: "mailCredentials",
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo",
+        },
+      ],
+      context: { id: identifyNumber, password: password },
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+  }
+  //encripta la contraseña
+  let encryptedPassword = bcrypt.hashSync(password, 10);
 
   const user = await UserModel.update(
     {
@@ -246,12 +281,12 @@ exports.updateById = async (req, res) => {
       address: address,
       institution: institution,
       phone: phone,
-      password: password,
+      password: encryptedPassword,
     },
     { where: { id: id } }
   );
   if (user) {
-    res.status(200).json({response:"Usuario editado correctamente!"});
+    return res.status(200).json({ response: "Usuario editado correctamente!" });
   } else {
     res.status(500).json({ msg: "El usuario no existe!" });
   }

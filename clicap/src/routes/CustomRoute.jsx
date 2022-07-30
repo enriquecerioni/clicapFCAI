@@ -11,7 +11,7 @@ import Works from "../components/Works/Works";
 const CustomRoute = () => (
   <>
     <Routes>
-      <Route path="/">
+      <Route path="/"/>
         <Route index element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="deliverytask" element={<Home><DeliveryTask/></Home>} />
@@ -20,12 +20,12 @@ const CustomRoute = () => (
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
 
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
+        <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
         {/* <Route path="users">
           <Route index element={<ListUser />} />
           <Route path=":userId" element={<SingleUser />} />
           <Route path="new" element={<NewUser />} />
         </Route> */}
-      </Route>
     </Routes>
   </>
 );

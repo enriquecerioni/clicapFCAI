@@ -14,14 +14,17 @@ import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
 //react-toastify
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import EntitiesContext from "./context/EntitiesContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   /*   <React.StrictMode> */
   <>
-    <BrowserRouter>
-      <CustomRoute/>
+    <EntitiesContext>
+      <BrowserRouter>
+        <CustomRoute />
+      </BrowserRouter>
       <ToastContainer />
-    </BrowserRouter>    
+    </EntitiesContext>
   </>
   /*   </React.StrictMode> */
 );
