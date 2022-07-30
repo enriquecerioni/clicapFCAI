@@ -28,7 +28,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [showErrorPassEquals, setShowErrorPassEquals] = useState(false);
-  const isAdmin = getDataUserByKey("id");
+  const isAdmin = getDataUserByKey("roleId");
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
     return pattern.test(userRegister.identifyNumber);

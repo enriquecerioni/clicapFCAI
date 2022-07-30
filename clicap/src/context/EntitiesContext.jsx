@@ -1,10 +1,12 @@
 import React, { createContext } from "react";
 import { useState } from "react";
-import { reqAxios } from "../helpers/helpers";
+import { formDataAxios, getDataUserByKey, reqAxios } from "../helpers/helpers";
 export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
-  //Initial States
+  const userId = getDataUserByKey("id");
+  //Estados iniciales
+  //ESTADO INICIAL REGISTRO
   const initialStateRegister = {
     roleId: "",
     identifyType: "",
@@ -18,8 +20,29 @@ const EntitiesProvider = ({ children }) => {
     password: "",
     passwordConfirm: "",
   };
-  //Registro - Editar Usuario
+  //ESTADO INICIAL PARA SUBIR TRABAJO
+  const initialStateUpJob = {
+    name: "",
+    areaId: 0,
+    authorId: userId,
+    members: "",
+    urlFile: "",
+  };
+//--------------------------------------------------------------
+  //ESTADOS
+  //REGISTRO
   const [userRegister, setUserRegister] = useState(initialStateRegister);
+  //ROLES
+  const [roles, setRoles] = useState([]);
+  //TRABAJO
+  const [job, setJob] = useState(initialStateUpJob);
+  //TODOS LOS TRABAJOS
+  const [allJobs, setAllJobs] = useState([]);
+  //TODOS LOS USUARIOS
+  const [users, setUsers] = useState([]);
+
+ // -----------------------------------------------------------------
+  //Registro - Editar Usuario
   const handleChangeRegister = (e) => {
     setUserRegister({
       ...userRegister,
@@ -32,13 +55,52 @@ const EntitiesProvider = ({ children }) => {
     dataUser.data.response.passwordConfirm = "";
     setUserRegister(dataUser.data.response);
   };
-  
+
   //Roles
-  const [roles, setRoles] = useState([]);
   const getAllRoles = async () => {
     const getRole = await reqAxios("GET", "/role/getall", "", "");
     setRoles(getRole.data.response);
   };
+
+  //Subida de un trabajo
+  const handleChangeUpJob = (e) => {
+    let value = e.target.type === "file" ? e.target.value === "" ? "" : e.target.files[0] : e.target.value;
+    if (e.target.name==='areaId') {
+      value=Number(value);
+    }
+      setJob({
+      ...job,
+      [e.target.name]: value,
+    });
+  };
+  const createNewJob = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in job) {
+        bodyFormData.append(key, job[key]);
+      }
+      await formDataAxios("POST", `/document/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  //Trabajos
+  const getAllJobs = async () => {
+    const getAllJob = await reqAxios("GET", "/document/getall", "", "");
+    setAllJobs(getAllJob.data.response);
+  };
+  //Areas
+  const [areas, setAreas] = useState([]);
+  const getAllAreas = async () => {
+    const getAllArea = await reqAxios("GET", "/area/getall", "", "");
+    setAreas(getAllArea.data.response);
+  };
+  //Usuarios
+  const getAllUsers = async () => {
+    const getAllUser = await reqAxios("GET", "/user/getall", "", "");
+    setUsers(getAllUser.data.response);
+  };
+  
   return (
     <EntitiesContext.Provider
       value={{
@@ -48,6 +110,15 @@ const EntitiesProvider = ({ children }) => {
         getAllRoles,
         roles,
         getDataUser,
+        job,
+        handleChangeUpJob,
+        createNewJob,
+        areas,
+        getAllAreas,
+        allJobs,
+        getAllJobs,
+        users,
+        getAllUsers
       }}
     >
       {children}

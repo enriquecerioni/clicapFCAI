@@ -1,43 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
 import { getDataUserByKey } from "../../helpers/helpers";
+import { EntitiesContext } from "../../context/EntitiesContext";
 
 const DeliveryTask = () => {
-  const areasDemo = [
-    { id: 1, name: "Ing. quimica" },
-    { id: 2, name: "Contabilidad" },
-    { id: 3, name: "Administracion" },
-  ];
-  const userId = getDataUserByKey('id');
-  const initialDataTask = {
-    name: "",
-    areaId: "",
-    authorId: userId,
-    members: "",
-    urlFile: "",
-    evaluatorId1: "",
-    evaluatorId2: "",
+  const { job, handleChangeUpJob, createNewJob } = useContext(EntitiesContext);
+  const { areas, getAllAreas } = useContext(EntitiesContext);
+
+  console.log(job);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createNewJob();
   };
 
-  const [dataTask, setDataTask] = useState(initialDataTask);
-  const handleSubmit = () => {
-    console.log(dataTask);
-  };
-  const handleDataTask = (e) => {
-    /*  e.preventDefault(); */
-    let value =
-      e.target.type === "file"
-        ? e.target.value === ""
-          ? ""
-          : e.target.files[0]
-        : e.target.value;
-    setDataTask({
-      ...dataTask,
-      [e.target.name]: value,
-    });
-  };
+  useEffect(() => {
+    getAllAreas();
+  }, []);
   return (
     <>
       <div className="poderver center-center flex-column">
@@ -59,8 +39,8 @@ const DeliveryTask = () => {
                     placeholder="Nombre"
                     className="form-control"
                     name="name"
-                    value={dataTask.name}
-                    onChange={handleDataTask}
+                    value={job.name}
+                    onChange={handleChangeUpJob}
                   />
                 </div>
               </div>
@@ -77,13 +57,13 @@ const DeliveryTask = () => {
                   <select
                     className="form-select"
                     name="areaId"
-                    value={dataTask.areaId}
-                    onChange={handleDataTask}
+                    value={job.areaId}
+                    onChange={handleChangeUpJob}
                   >
                     <option value={""}>Seleccione</option>
-                    {areasDemo.map((areasDemo) => (
-                      <option key={areasDemo.id} value={areasDemo.id}>
-                        {areasDemo.name}
+                    {areas.map((area) => (
+                      <option key={area.id} value={area.id}>
+                        {area.name}
                       </option>
                     ))}
                   </select>
@@ -104,8 +84,8 @@ const DeliveryTask = () => {
                   placeholder="Ivan castro;Enrique Cerioni;"
                   className="form-control"
                   name="members"
-                  value={dataTask.members}
-                  onChange={handleDataTask}
+                  value={job.members}
+                  onChange={handleChangeUpJob}
                 />
               </div>
             </div>
@@ -123,7 +103,7 @@ const DeliveryTask = () => {
                   placeholder="Seleccione..."
                   className="form-control"
                   name="urlFile"
-                  onChange={handleDataTask}
+                  onChange={handleChangeUpJob}
                 />
               </div>
             </div>
@@ -133,9 +113,9 @@ const DeliveryTask = () => {
               </Button>
             </div>
           </form>
-          <Button onClick={() => console.log(dataTask)} variant="primary">
+          {/*           <Button onClick={() => console.log(job)} variant="primary">
             console
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

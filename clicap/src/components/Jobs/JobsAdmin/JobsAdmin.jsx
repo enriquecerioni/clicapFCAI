@@ -1,42 +1,42 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkList } from "./WorkList";
-import {Button} from 'react-bootstrap';
+import { Button } from "react-bootstrap";
+import { JobsAdminList } from "./JobsAdminList";
+import ModalDelete from "../../Modals/ModalDelete";
+import { EntitiesContext } from "../../../context/EntitiesContext";
 
-const Works = () => {
+const JobsAdmin = () => {
   const navigate = useNavigate();
+  const { allJobs, getAllJobs, users, getAllUser } =
+    useContext(EntitiesContext);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const worksPaginated = [
-    {
-      autor: "Ivan Castro",
-      name: "Tp1",
-      evaluatorId1: "Lionel Messi",
-      evaluatorId2: "Martin Palermo",
-      areaName: "Contabilidad",
-    },
-  ];
+  useEffect(() => {
+    getAllUser();
+    getAllJobs();
+  }, []);
   return (
     <>
-        {/*     CAMBIAR */}
-        {/* style={{ margin: "0 5rem 0 5rem" }} */}
+      {/*     CAMBIAR */}
+      {/* style={{ margin: "0 5rem 0 5rem" }} */}
       <div style={{ margin: "5rem 5rem 0 5rem" }}>
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
-          <Button
+          {/*           <Button
             className="btn btn-success"
             onClick={() => navigate("/customers/create")}
           >
             <i className="fa-solid fa-plus"></i> Subir trabajo
-          </Button>
+          </Button> */}
         </div>
-        {/*         {deleteAlert ? (
-          <AlertDelete
-            entity={customerToDelete}
-            showAlert={setDeleteAlert}
-            getCallback={() => getworksPaginated(page)}
+        {showDeleteModal ? (
+          <ModalDelete
+            /* entity={customerToDelete} */
+            showAlert={setShowDeleteModal}
+            /* getCallback={() => getallJobs(page)} */
           />
-        ) : null} */}
-        {worksPaginated.length > 0 ? (
+        ) : null}
+        {allJobs.length > 0 ? (
           <>
             <div style={{ overflowX: "auto" }}>
               <table className="table">
@@ -53,9 +53,10 @@ const Works = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {worksPaginated.map((work) => (
-                    <WorkList
+                  {allJobs.map((work) => (
+                    <JobsAdminList
                       work={work}
+                      users={users}
                       /*     setCustomerToDelete={handleDelete} */
                       key={work.id}
                     />
@@ -76,4 +77,4 @@ const Works = () => {
     </>
   );
 };
-export default Works;
+export default JobsAdmin;
