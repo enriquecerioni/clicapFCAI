@@ -6,6 +6,7 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
+const RoleModel = require("../models/RoleModel");
 
 var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -302,7 +303,9 @@ exports.getById = async (req, res) => {
   }
 };
 exports.getAll = async (req, res) => {
-  const user = await UserModel.findAll();
+  const user = await UserModel.findAll({
+    include: [{ model: RoleModel }],
+  });
   if (user) {
     res.status(200).json({ response: user });
   } else {

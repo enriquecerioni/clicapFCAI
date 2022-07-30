@@ -1,22 +1,53 @@
 const AreaModel = require("../models/AreaModel");
 const DocumentModel = require("../models/DocumentModel");
 const { PAGE_LIMIT } = process.env;
+const multer = require("multer");
+const path = require("path");
+const UserModel = require("../models/UserModel");
+
+// Multer Config
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../public/documents"),
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+const uploadDocument = multer({
+  storage,
+  limits: { fileSize: 1000000 },
+}).single("urlFile");
+
+exports.upload = async (req, res) => {
+  uploadDocument(req, res, async (err) => {
+    if (err) {
+      err.message = "The file is so heavy for my service";
+      return res.send(err);
+    }
+    const { name, areaId, authorId, members } = req.body;
+    const doc = await DocumentModel.create({
+      name: name,
+      areaId: areaId,
+      members: members,
+      authorId: authorId,
+      urlFile: req.file.filename,
+    });
+    if (doc) {
+      return res.status(200).send("Documento creado!");
+    } else {
+      return res.status(500).json({ msg: "Error al crear el documento." });
+    }
+  });
+};
+
 exports.create = async (req, res) => {
-  const {
-    name,
-    areaId,
-    authorId,
-    members,
-    urlFile,
-    evaluatorId1,
-    evaluatorId2,
-  } = req.body;
+  const { name, areaId, authorId, members, evaluatorId1, evaluatorId2 } =
+    req.body;
   const doc = await DocumentModel.create({
     name: name,
     areaId: areaId,
     members: members,
     authorId: authorId,
-    urlFile: urlFile,
+    urlFile: req.file.filename,
     evaluatorId1: evaluatorId1,
     evaluatorId2: evaluatorId2,
   });
@@ -67,7 +98,9 @@ exports.getById = async (req, res) => {
   }
 };
 exports.getAll = async (req, res) => {
-  const doc = await DocumentModel.findAll();
+  const doc = await DocumentModel.findAll({
+    include: [{ model: UserModel, model: AreaModel }],
+  });
   if (doc) {
     res.status(200).json({ response: doc });
   } else {
@@ -107,12 +140,12 @@ exports.getDocumentPaginated = async (req, res) => {
     });
     const cantPages = calcTotalPages(count);
     if (rows) {
-      res.status(200).json({ pages: cantPages, response: rows});
+      res.status(200).json({ pages: cantPages, response: rows });
     } else {
       res.status(500).json({ msg: "Los documentos no existen." });
     }
   } catch (e) {
-    console.log(e)
-    return res.status(503).json({ msg: 'Fallo en el servidor' });
+    console.log(e);
+    return res.status(503).json({ msg: "Fallo en el servidor" });
   }
 };
