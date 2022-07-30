@@ -92,12 +92,16 @@ exports.register = async (req, res) => {
       to: email,
       subject: "Active su cuenta",
       template: "mailRegister",
-      attachments: [{
-        filename: 'clicap.png',
-        path: './assets/clicap.png',
-        cid: 'logo' //my mistake was putting "cid:logo@cid" here! 
-      }],
-      context: {url: process.env.CLIENT_LOCALHOST+'/acount-activate/'+token},
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo", //my mistake was putting "cid:logo@cid" here!
+        },
+      ],
+      context: {
+        url: process.env.CLIENT_LOCALHOST + "/acount-activate/" + token,
+      },
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -172,12 +176,14 @@ exports.acountActivate = async (req, res) => {
           to: email,
           subject: "Cuenta activada - credenciales",
           template: "mailCredentials",
-          attachments: [{
-            filename: 'clicap.png',
-            path: './assets/clicap.png',
-            cid: 'logo'
-          }],
-          context: {id:identifyNumber,password:password},
+          attachments: [
+            {
+              filename: "clicap.png",
+              path: "./assets/clicap.png",
+              cid: "logo",
+            },
+          ],
+          context: { id: identifyNumber, password: password },
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -231,6 +237,38 @@ exports.updateById = async (req, res) => {
     phone,
     password,
   } = req.body;
+  const userDB = await UserModel.findByPk(id);
+  if (
+    userDB.identifyNumber != identifyNumber ||
+    !(await bcrypt.compare(password, userDB.password)) ||
+    userDB.email != email
+  ) {
+    var mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: email,
+      subject: "Usuario editado - credenciales",
+      template: "mailCredentials",
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo",
+        },
+      ],
+      context: { id: identifyNumber, password: password },
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+  }
+  //encripta la contraseña
+  let encryptedPassword = bcrypt.hashSync(password, 10);
 
   const user = await UserModel.update(
     {
@@ -243,12 +281,12 @@ exports.updateById = async (req, res) => {
       address: address,
       institution: institution,
       phone: phone,
-      password: password,
+      password: encryptedPassword,
     },
     { where: { id: id } }
   );
   if (user) {
-    res.status(200).json({ response: "Usuario editado correctamente!" });
+    return res.status(200).json({ response: "Usuario editado correctamente!" });
   } else {
     res.status(500).json({ msg: "El usuario no existe!" });
   }
