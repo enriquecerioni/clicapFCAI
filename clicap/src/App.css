@@ -8,14 +8,27 @@ html {
   padding: 0;
 }
 :root {
-  --color-exactian: #2c4580;
-  --color-exactian-grey: #BDBDBD;
-  --color-exactian-greylight: #bdbdbd21;
-  --color-exactian-hover: #a45701;
-  --color-exactian-focus: rgb(200 106 2 / 50%);
+  --color-clicap: #2c4580;
+  --color-clicap-grey: #BDBDBD;
+  --color-clicap-greylight: #bdbdbd21;
+  --color-clicap-hover: #a45701;
+  --color-clicap-focus: rgb(200 106 2 / 50%);
 }
 .center-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.table thead th {
+  border-bottom: 2px solid var(--color-clicap);
+}
+.icon-size-table{
+  font-size: 1.2rem;
+}
+.btn-edit-table:hover {
+  color: blue;
+}
+
+.btn-delete-table:hover {
+  color: red;
 }
