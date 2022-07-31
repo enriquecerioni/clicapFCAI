@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import logo from "../../assets/clicap.png";
-import "./login.scss";
+import "./login.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {reqAxios} from '../../helpers/helpers';

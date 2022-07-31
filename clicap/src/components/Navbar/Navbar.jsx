@@ -8,6 +8,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const idUser = getDataUserByKey('id');
   const loggout = () => {
     sessionStorage.removeItem("user");
     navigate("/");
@@ -47,7 +48,7 @@ const Navbar = () => {
         <li>
           {isAuthenticated() ? (
             <DropdownButton variant="primary" title={getDataUserByKey("name")} className={s.navLink}>
-              <Dropdown.Item eventKey="1">Editar Usuario</Dropdown.Item>
+              <Dropdown.Item eventKey="1" onClick={()=>navigate(`/user/edit/${idUser}`)}>Editar Usuario</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item eventKey="4" onClick={loggout}>
                 Cerrar sesión

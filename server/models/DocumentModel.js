@@ -31,9 +31,11 @@ const DocumentModel = db.define("document", {
     allowNull: false
   },
   evaluatorId1: {
+    allowNull: true,
     type: DataTypes.INTEGER,
   },
   evaluatorId2: {
+    allowNull: true,
     type: DataTypes.INTEGER,
   },
 });
