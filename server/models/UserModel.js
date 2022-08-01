@@ -52,7 +52,7 @@ const UserModel = db.define("user", {
   },
 });
 
-// DOCUMENT - AUTHOR
+// JOB - AUTHOR
 UserModel.belongsTo(RoleModel, {foreignKey: 'roleId'});
 RoleModel.hasMany(UserModel, {
   foreignKey: "roleId",

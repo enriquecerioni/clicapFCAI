@@ -1,9 +1,10 @@
 const AreaModel = require("../models/AreaModel");
-const DocumentModel = require("../models/DocumentModel");
+const JobModel = require("../models/JobModel");
 const { PAGE_LIMIT } = process.env;
 const multer = require("multer");
 const path = require("path");
 const UserModel = require("../models/UserModel");
+const Sequelize = require("sequelize");
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -12,19 +13,19 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const uploadDocument = multer({
+const uploadJob = multer({
   storage,
   limits: { fileSize: 1000000 },
 }).single("urlFile");
 
 exports.upload = async (req, res) => {
-  uploadDocument(req, res, async (err) => {
+  uploadJob(req, res, async (err) => {
     if (err) {
       err.message = "The file is so heavy for my service";
       return res.send(err);
     }
     const { name, areaId, authorId, members } = req.body;
-    const doc = await DocumentModel.create({
+    const doc = await JobModel.create({
       name: name,
       areaId: areaId,
       members: members,
@@ -32,9 +33,9 @@ exports.upload = async (req, res) => {
       urlFile: req.file.filename,
     });
     if (doc) {
-      return res.status(200).send("Documento creado!");
+      return res.status(200).send("Trabajo creado!");
     } else {
-      return res.status(500).json({ msg: "Error al crear el documento." });
+      return res.status(500).json({ msg: "Error al crear el Trabajo." });
     }
   });
 };
@@ -42,7 +43,7 @@ exports.upload = async (req, res) => {
 exports.create = async (req, res) => {
   const { name, areaId, authorId, members, evaluatorId1, evaluatorId2 } =
     req.body;
-  const doc = await DocumentModel.create({
+  const doc = await JobModel.create({
     name: name,
     areaId: areaId,
     members: members,
@@ -52,9 +53,9 @@ exports.create = async (req, res) => {
     evaluatorId2: evaluatorId2,
   });
   if (doc) {
-    res.status(200).send("Documento creado!");
+    res.status(200).send("Trabajo creado!");
   } else {
-    res.status(500).json({ msg: "Error al crear el documento." });
+    res.status(500).json({ msg: "Error al crear el Trabajo." });
   }
 };
 exports.updateById = async (req, res) => {
@@ -69,7 +70,7 @@ exports.updateById = async (req, res) => {
     evaluatorId2,
   } = req.body;
 
-  const doc = await DocumentModel.update(
+  const doc = await JobModel.update(
     {
       name: name,
       areaId: areaId,
@@ -82,41 +83,41 @@ exports.updateById = async (req, res) => {
     { where: { id: id } }
   );
   if (doc) {
-    res.status(200).json("Documento editado!");
+    res.status(200).json("Trabajo editado!");
   } else {
-    res.status(500).json({ msg: "El documento no existe!" });
+    res.status(500).json({ msg: "El Trabajo no existe!" });
   }
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
-  const doc = await DocumentModel.findByPk(id);
+  const doc = await JobModel.findByPk(id);
 
   if (doc) {
     res.status(200).json({ response: doc });
   } else {
-    res.status(500).json({ msg: "Error al obtener el documento." });
+    res.status(500).json({ msg: "Error al obtener el Trabajo." });
   }
 };
 exports.getAll = async (req, res) => {
-  const doc = await DocumentModel.findAll({
+  const doc = await JobModel.findAll({
     include: [{ model: UserModel, model: AreaModel }],
   });
   if (doc) {
     res.status(200).json({ response: doc });
   } else {
-    res.status(500).json({ msg: "Error al obtener los documentos." });
+    res.status(500).json({ msg: "Error al obtener los Trabajos." });
   }
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
-  const doc = await DocumentModel.destroy({
+  const doc = await JobModel.destroy({
     where: { id: id },
   });
 
   if (doc) {
-    res.status(200).send("Documento eliminado!");
+    res.status(200).send("Trabajo eliminado!");
   } else {
-    res.status(500).json({ msg: "Error al eliminar el documento." });
+    res.status(500).json({ msg: "Error al eliminar el Trabajo." });
   }
 };
 const calcNumOffset = (page) => {
@@ -129,11 +130,11 @@ const calcTotalPages = (totalItems) => {
   const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
   return cantPages;
 };
-exports.getDocumentPaginated = async (req, res) => {
+/* exports.getDocumentPaginated = async (req, res) => {
   try {
     const { page } = req.params;
     const offsetIns = calcNumOffset(page);
-    let { count, rows } = await DocumentModel.findAndCountAll({
+    let { count, rows } = await JobModel.findAndCountAll({
       include: [{ model: AreaModel }],
       offset: offsetIns,
       limit: Number(PAGE_LIMIT),
@@ -142,10 +143,64 @@ exports.getDocumentPaginated = async (req, res) => {
     if (rows) {
       res.status(200).json({ pages: cantPages, response: rows });
     } else {
-      res.status(500).json({ msg: "Los documentos no existen." });
+      res.status(500).json({ msg: "Los Trabajos no existen." });
     }
   } catch (e) {
     console.log(e);
     return res.status(503).json({ msg: "Fallo en el servidor" });
+  }
+}; */
+exports.getAllPaginated = async (req, res) => {
+  const { authorId,name, surname, areaId } = req.query;
+  console.log(req.query);
+  const { page } = req.params;
+
+  const Op = Sequelize.Op;
+  const offsetIns = calcNumOffset(page);
+  let options = {
+    where: {},
+    include: [{ model: UserModel, model: AreaModel }],
+    offset: offsetIns,
+    limit: Number(PAGE_LIMIT),
+  };
+
+  if (name) {
+    options.where.name = {
+      [Op.like]: `%${name}%`,
+    };
+  }
+  if (surname) {
+    options.where.surname = {
+      [Op.like]: `%${surname}%`,
+    };
+  }
+  if (authorId) {
+    options.where.authorId = authorId;
+  }
+  if (areaId) {
+    options.where.areaId = areaId;
+  }
+  /* options.where = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${name}%` } },
+        { "$partner.name$": { [Op.like]: `%${name}%` } },
+      ],
+    }; */
+  /*   if (sinceDateStart && untilDateStart) {
+    options.where.startDate = {
+      [Op.between]: [sinceDateStart, untilDateStart],
+    };
+  }
+  if (sinceDateEnd && untilDateEnd) {
+    options.where.endDate = { [Op.between]: [sinceDateEnd, untilDateEnd] };
+  } */
+
+  const { count, rows } = await JobModel.findAndCountAll(options);
+  const cantPages = calcTotalPages(count);
+
+  if (rows) {
+    res.status(200).json({ pages: cantPages, response: rows });
+  } else {
+    res.status(500).json({ msg: "La instancia no existe." });
   }
 };

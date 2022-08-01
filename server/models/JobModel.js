@@ -3,7 +3,7 @@ const db = require('../database/database');
 const AreaModel = require("./AreaModel");
 const UserModel = require("./UserModel");
 
-const DocumentModel = db.define("document", {
+const JobModel = db.define("Job", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -40,28 +40,28 @@ const DocumentModel = db.define("document", {
   },
 });
 
-// DOCUMENT - AREA
-DocumentModel.belongsTo(AreaModel, {foreignKey: 'areaId'});
-AreaModel.hasMany(DocumentModel, {
+// JOB - AREA
+JobModel.belongsTo(AreaModel, {foreignKey: 'areaId'});
+AreaModel.hasMany(JobModel, {
   foreignKey: "areaId",
 });
 
-// DOCUMENT - AUTHOR
-DocumentModel.belongsTo(UserModel, {foreignKey: 'authorId'});
-UserModel.hasMany(DocumentModel, {
+// JOB - AUTHOR
+JobModel.belongsTo(UserModel, {foreignKey: 'authorId'});
+UserModel.hasMany(JobModel, {
   foreignKey: "authorId",
 });
 
-// DOCUMENT - EVALUADOR 1
-DocumentModel.belongsTo(UserModel, {foreignKey: 'evaluatorId1'});
-UserModel.hasMany(DocumentModel, {
+// JOB - EVALUADOR 1
+JobModel.belongsTo(UserModel, {foreignKey: 'evaluatorId1'});
+UserModel.hasMany(JobModel, {
   foreignKey: "evaluatorId1",
 });
 
-// DOCUMENT - EVALUADOR 2
-DocumentModel.belongsTo(UserModel, {foreignKey: 'evaluatorId2'});
-UserModel.hasMany(DocumentModel, {
+// JOB - EVALUADOR 2
+JobModel.belongsTo(UserModel, {foreignKey: 'evaluatorId2'});
+UserModel.hasMany(JobModel, {
   foreignKey: "evaluatorId2",
 });
 
-module.exports = DocumentModel;
+module.exports = JobModel;
