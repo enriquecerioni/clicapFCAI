@@ -20,9 +20,9 @@ const DeliveryTask = () => {
   }, []);
   return (
     <>
-      <div className="poderver center-center flex-column">
+      <div className="poderver  flex-column">
         <h2>Entregar trabajo</h2>
-        <div className="mt-4">
+        <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
@@ -61,11 +61,13 @@ const DeliveryTask = () => {
                     onChange={handleChangeUpJob}
                   >
                     <option value={""}>Seleccione</option>
-                    {areas.map((area) => (
-                      <option key={area.id} value={area.id}>
-                        {area.name}
-                      </option>
-                    ))}
+                    {areas.length > 0
+                      ? areas.map((area) => (
+                          <option key={area.id} value={area.id}>
+                            {area.name}
+                          </option>
+                        ))
+                      : null}
                   </select>
                 </div>
               </div>

@@ -12,9 +12,10 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import { getDataUserByKey } from "../../helpers/helpers";
+import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
 
 const Sidebar = () => {
+  const roleId = getDataUserByKey('roleId');
   const idUser = getDataUserByKey('id');
   const loggout = () => {
     sessionStorage.removeItem("user");
@@ -23,7 +24,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sidebar">
+    <div className="sidebar col-lg-2 col-md-6">
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
@@ -32,18 +33,16 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </li>
           <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          { roleId === 1 ? <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Usuarios</span>
             </li>
-          </Link>
-          <Link to="/deliverytask" style={{ textDecoration: "none" }}>
-            <li>
+          </Link> : null}
+            <li onClick={ roleId === 1 ? ()=>navigate('/jobs') : ()=>navigate('/myjobs') }>
               <StoreIcon className="icon" />
               <span>Subir Trabajos</span>
             </li>
-          </Link>
           {/* <Link to="/works" style={{ textDecoration: "none" }}>
             <li>
               <CreditCardIcon className="icon" />
