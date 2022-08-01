@@ -1,3 +1,4 @@
+import { isAuthenticated } from "../../helpers/helpers";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/SideBar";
 import "./home.scss";
@@ -7,8 +8,13 @@ const Home = ({ children }) => {
     <div className="home">
       <div className="homeContainer">
         <Navbar />
-        {/* <Sidebar/> */}
-        {children}
+        { isAuthenticated() ? 
+        <div className="row">
+          <Sidebar />
+          <div className="col-lg-10 col-md-6">{children}</div>
+        </div>
+        : <div>{children}</div>
+        }
         <div className="widgets">
           {/* <Widget type="user" />
           <Widget type="order" />
