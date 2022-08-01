@@ -12,6 +12,7 @@ import JobsAdmin from "../components/Jobs/JobsAdmin/JobsAdmin";
 import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
 import Sidebar from "../components/Sidebar/SideBar";
+import PrivateAdminRoute from "./PrivateAdminRoute";
 const CustomRoute = () => (
   <>
     <Routes>
@@ -19,9 +20,9 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
-        <Route path="jobs" element={<Home><JobsAdmin/></Home>} />
+        <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
-        <Route path="users" element={<Home><Users/></Home>} />
+        <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
         <Route path="register" element={<Home><Register/></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />

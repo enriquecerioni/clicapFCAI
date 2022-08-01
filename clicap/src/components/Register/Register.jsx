@@ -15,7 +15,7 @@ import { EntitiesContext } from "../../context/EntitiesContext";
 
 const Register = () => {
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const {
     userRegister,
     handleChangeRegister,
@@ -29,6 +29,8 @@ const Register = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [showErrorPassEquals, setShowErrorPassEquals] = useState(false);
   const isAdmin = getDataUserByKey("roleId");
+  const idUser = userRegister.id ? userRegister.id : null;
+  const isEditForm = window.location.pathname === `/user/edit/${id}`;
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
     return pattern.test(userRegister.identifyNumber);
@@ -44,9 +46,25 @@ const Register = () => {
       if (!passwordsEquals) {
         return setShowErrorPassEquals(true);
       } else {
-        const data = await reqAxios("POST", "/user/register", "", userRegister);
-        alertSuccess(data.data.response);
-        navigate("/login");
+        if (isEditForm) {
+          const data = await reqAxios(
+            "PUT",
+            `/user/edit/${idUser}`,
+            "",
+            userRegister
+          );
+          alertSuccess(data.data.response);
+          navigate("/home");
+        } else {
+          const data = await reqAxios(
+            "POST",
+            "/user/register",
+            "",
+            userRegister
+          );
+          alertSuccess(data.data.response);
+          navigate("/login");
+        }
       }
     } else {
       return alertError("ID Incorrecto");
@@ -81,7 +99,7 @@ const Register = () => {
       <div className="login-view animate__animated animate__fadeInUp h-100 card-top">
         <div className="card card-login shadow w-50">
           <div className="logo-login">
-          {console.log(isAuthenticated)}
+            {console.log(isAuthenticated)}
             <h1>{isAdmin ? "Editar usuario" : "Registro"}</h1>
           </div>
           <div className="card-body">
