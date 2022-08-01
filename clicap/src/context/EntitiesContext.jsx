@@ -38,6 +38,8 @@ const EntitiesProvider = ({ children }) => {
   const [job, setJob] = useState(initialStateUpJob);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
+  //MIS TRABAJOS
+  const [myJobs, setMyJobs] = useState([]);
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
 
@@ -79,15 +81,29 @@ const EntitiesProvider = ({ children }) => {
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      await formDataAxios("POST", `/document/create`, "", bodyFormData);
+      await formDataAxios("POST", `/job/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
     }
   };
   //Trabajos
   const getAllJobs = async () => {
-    const getAllJob = await reqAxios("GET", "/document/getall", "", "");
+    const getAllJob = await reqAxios("GET", "/job/getall", "", "");
     setAllJobs(getAllJob.data.response);
+  };
+  //Mis Trabajos
+  const getMyJobs = async (numPage,dataFilter) => {
+    try {
+      const dataMyJobs = await reqAxios(
+        "GET",
+        `/job/get/job/${numPage}`,
+        dataFilter,
+        ""
+      );
+      setMyJobs(dataMyJobs.data.response);
+    } catch (e) {
+      console.log(e);
+    }
   };
   //Areas
   const [areas, setAreas] = useState([]);
@@ -118,7 +134,9 @@ const EntitiesProvider = ({ children }) => {
         allJobs,
         getAllJobs,
         users,
-        getAllUsers
+        getAllUsers,
+        myJobs,
+        getMyJobs
       }}
     >
       {children}

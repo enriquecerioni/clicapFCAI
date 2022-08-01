@@ -2,9 +2,17 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 
-export const JobsAdminList = ({ work, users, setworkToDelete }) => {
+export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
   /*  const startDate = work.startDate.split('-') */
+  const deleteJob = () => {
+    showAlert(true);
+    setJobToDelete({
+      id: work.id,
+      entityName: work.name,
+      entityType: "jobs",
+    });
+  };
   return (
     <>
       <tr>
@@ -26,13 +34,7 @@ export const JobsAdminList = ({ work, users, setworkToDelete }) => {
           <i
             type="button"
             className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-            onClick={() =>
-              setworkToDelete({
-                id: work.id,
-                entityName: work.name,
-                entityType: "work",
-              })
-            }
+            onClick={deleteJob}
           ></i>
         </td>
         <td>

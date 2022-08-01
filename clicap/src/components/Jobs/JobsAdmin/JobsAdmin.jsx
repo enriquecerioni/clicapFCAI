@@ -7,12 +7,13 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
-  const { allJobs, getAllJobs, users, getAllUser } =
+  const { allJobs, getAllJobs, users, getAllUsers } =
     useContext(EntitiesContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [JobToDelete, setJobToDelete] = useState(false);
 
   useEffect(() => {
-    getAllUser();
+    getAllUsers();
     getAllJobs();
   }, []);
   return (
@@ -31,9 +32,8 @@ const JobsAdmin = () => {
         </div>
         {showDeleteModal ? (
           <ModalDelete
-            /* entity={customerToDelete} */
+            entity={JobToDelete}
             showAlert={setShowDeleteModal}
-            /* getCallback={() => getallJobs(page)} */
           />
         ) : null}
         {allJobs.length > 0 ? (
@@ -57,7 +57,8 @@ const JobsAdmin = () => {
                     <JobsAdminList
                       work={work}
                       users={users}
-                      /*     setCustomerToDelete={handleDelete} */
+                      showAlert={setShowDeleteModal}
+                      setJobToDelete={setJobToDelete}
                       key={work.id}
                     />
                   ))}
@@ -71,7 +72,7 @@ const JobsAdmin = () => {
             /> */}
           </>
         ) : (
-          <p className="text-center">No hay registros</p>
+          <p className="text-center">No hay Trabajos</p>
         )}
       </div>
     </>
