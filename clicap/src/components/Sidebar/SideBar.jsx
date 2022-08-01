@@ -12,16 +12,22 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link, useNavigate } from "react-router-dom";
+import { getDataUserByKey } from "../../helpers/helpers";
 
 const Sidebar = () => {
-
+  const idUser = getDataUserByKey('id');
+  const loggout = () => {
+    sessionStorage.removeItem("user");
+    navigate("/");
+  };
   const navigate = useNavigate();
+
   return (
     <div className="sidebar">
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <li onClick={() => navigate('/home')}>
+          <li onClick={() => navigate("/home")}>
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
           </li>
@@ -35,14 +41,14 @@ const Sidebar = () => {
           <Link to="/deliverytask" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Mis Trabajos</span>
+              <span>Subir Trabajos</span>
             </li>
           </Link>
-          <Link to="/works" style={{ textDecoration: "none" }}>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Trabajos (Admin)</span>
-          </li>
+          {/* <Link to="/works" style={{ textDecoration: "none" }}>
+            <li>
+              <CreditCardIcon className="icon" />
+              <span>Trabajos (Admin)</span>
+            </li>
           </Link>
           <li>
             <LocalShippingIcon className="icon" />
@@ -69,27 +75,17 @@ const Sidebar = () => {
           <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
-          </li>
-          <p className="title">USER</p>
-          <li>
+          </li> */}
+          <p className="title">USUARIO</p>
+          <li onClick={()=>navigate(`/user/edit/${idUser}`)}>
             <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+            <span>Editar Perfil</span>
           </li>
-          <li>
+          <li onClick={loggout}>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span>Cerrar Sesión</span>
           </li>
         </ul>
-      </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          // onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          // onClick={() => dispatch({ type: "DARK" })}
-        ></div>
       </div>
     </div>
   );

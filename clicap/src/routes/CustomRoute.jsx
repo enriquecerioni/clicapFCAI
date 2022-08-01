@@ -22,7 +22,7 @@ const CustomRoute = () => (
         <Route path="users" element={<Home><Sidebar/><Users/></Home>} />
         <Route path="register" element={<Home><Register/></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
-        <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
+        <Route path="home" element={<PrivateRoute><Sidebar/><Welcome/></PrivateRoute>} />
         <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
         {/* <Route path="users">
           <Route index element={<ListUser />} />

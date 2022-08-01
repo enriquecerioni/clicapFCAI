@@ -63,15 +63,15 @@ const Start = () => {
               </p>
             </div>
             <div className="col-lg-3">
-              <h3>Where</h3>
-              <p>Downtown Conference Center, New York</p>
+              <h3>Donde</h3>
+              <p>Facultad de Ciencias Aplicadas a la Industria, San Rafael, Mendoza, Argentina.</p>
             </div>
             <div className="col-lg-3">
-              <h3>When</h3>
+              <h3>Cuando</h3>
               <p>
-                Monday to Wednesday
+                Lunes, Martes y Miercoles
                 <br />
-                10-12 December
+                10-12 Abril
               </p>
             </div>
           </div>
