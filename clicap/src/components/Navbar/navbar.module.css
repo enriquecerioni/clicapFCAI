@@ -44,6 +44,7 @@ img {
   width: 100px;
   color: white;
   margin-left: 30px;
+  cursor: pointer;
 }
 
 .navLink:hover {
@@ -99,4 +100,8 @@ img {
 
 .navLink_logout:hover {
   color: #dea01e;
+}
+
+.navImg{
+  width: 20rem;
 }

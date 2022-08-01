@@ -53,7 +53,7 @@ const Login = () => {
       <div className="login-view animate__animated animate__fadeInDown">
         <div className="card card-login shadow">
           <div className="logo-login">
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="Logo" className="imgLogin"/>
           </div>
           <div className="card-body">
             <h5 className="card-title text-center">Inicio de sesión</h5>
