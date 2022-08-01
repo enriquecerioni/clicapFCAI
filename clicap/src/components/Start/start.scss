@@ -11,7 +11,8 @@
 #intro {
   width: 100%;
   height: 100vh;
-  background: url(../../assets/slide-1.jpg) top center;
+  // background: url(../../assets/slide-1.jpg) top center;
+  background-color: #60b5ff;
   background-size: cover;
   overflow: hidden;
   position: relative;
@@ -25,7 +26,7 @@
 
 #intro:before {
   content: "";
-  background: rgba(6, 12, 34, 0.5);
+  // background: rgba(6, 12, 34, 0.8);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -215,7 +216,7 @@
 
 #about:before {
   content: "";
-  background: rgba(13, 20, 41, 0.8);
+  background: rgba(13, 20, 41, 0.2);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -591,4 +592,9 @@
   text-align: center;
   font-size: 13px;
   color: #ddd;
+}
+
+.clicapLogo{
+  width: 60rem;
+  height: 15rem;
 }

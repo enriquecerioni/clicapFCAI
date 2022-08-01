@@ -1,4 +1,5 @@
 import Navbar from "../Navbar/Navbar";
+import Sidebar from "../Sidebar/SideBar";
 import "./home.scss";
 
 const Home = ({ children }) => {
@@ -6,6 +7,7 @@ const Home = ({ children }) => {
     <div className="home">
       <div className="homeContainer">
         <Navbar />
+        {/* <Sidebar/> */}
         {children}
         <div className="widgets">
           {/* <Widget type="user" />

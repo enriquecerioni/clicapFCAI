@@ -18,6 +18,7 @@ import logo5 from "../../assets/endorsements/logo-5.png";
 import logo6 from "../../assets/endorsements/logo-6.png";
 import logo7 from "../../assets/endorsements/logo-7.jpg";
 import logo8 from "../../assets/endorsements/logo-8.jpg";
+import clicap from "../../assets/clicap.png"
 
 import "./start.scss";
 
@@ -28,7 +29,7 @@ const Start = () => {
         <div className="intro-container wow fadeIn">
           <h1 className="mb-4 pb-0">
             {/* <br /> */}
-            <span>CLICAP</span> 2022
+            <img src={clicap} alt="Image not found" className="clicapLogo"/>
           </h1>
           <p className="mb-4 pb-0">
             10-12 Abril, Facultad de Ciencias Aplicadas a la Industria, San
