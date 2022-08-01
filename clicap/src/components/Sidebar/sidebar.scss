@@ -3,6 +3,7 @@
   border-right: 0.5px solid rgb(230, 227, 227);
   min-height: 100vh;
   background-color: white;
+  max-width: 15vw;
 
   .top {
     height: 50px;
@@ -13,7 +14,7 @@
     .logo {
       font-size: 25px;
       font-weight: bold;
-      color: #6439ff;
+      color: #3985cb;
     }
   }
 
@@ -45,12 +46,12 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #ece8ff;
+          background-color: #94c8f8;
         }
 
         .icon {
           font-size: 20px;
-          color: #7451f8;
+          color: #3985cb;
         }
 
         span {
@@ -72,7 +73,7 @@
       width: 20px;
       height: 20px;
       border-radius: 5px;
-      border: 1px solid #7451f8;
+      border: 1px solid #3985cb;
       cursor: pointer;
       margin: 5px;
 

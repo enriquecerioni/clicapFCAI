@@ -1,4 +1,5 @@
 import axios from "axios";
+import { alertSuccess } from "./alerts";
 import {API_URL} from './constants'
 export const isAuthenticated = () => sessionStorage.getItem("user");
 export const getDataUserByKey = (key) => {
@@ -6,6 +7,8 @@ export const getDataUserByKey = (key) => {
   switch (key) {
     case "id":
       return dataUser ? dataUser.id : null;
+    case "roleId":
+      return dataUser ? dataUser.roleId : null;
     case "name":
       return dataUser ? dataUser.name : null;
     default:
@@ -31,6 +34,26 @@ export const reqAxios = async (method, shortUrl, param, data) => {
     return res;
   } catch (error) {
     return error;
+  }
+};
+export const formDataAxios = async (method, shortUrl, param, data) => {
+  try {
+    const res = await axios({
+      method: method,
+      url: API_URL + shortUrl,
+      params: param,
+      data: data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (method !== "get") {
+      alertSuccess(res.data.msg);
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    /* alertError("Error"); */
   }
 };
 export const deleteAxios = async (shortUrl) => {

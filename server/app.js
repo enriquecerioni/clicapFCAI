@@ -7,14 +7,14 @@ const db = require("./database/database");
 
 // Routes
 const AreaRouter = require("./routes/AreaRouter");
-const DocumentRouter = require("./routes/DocumentRouter");
+const JobRouter = require("./routes/JobRouter");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
 
 // Models
 require("./models/UserModel");
-require("./models/DocumentModel");
+require("./models/JobModel");
 require("./models/PayModel");
 require("./models/AreaModel");
 require("./models/RoleModel");
@@ -39,7 +39,7 @@ app.listen(PORT, () => {
 
 // URL Routes
 app.use("/api/clicap/area/", AreaRouter);
-app.use("/api/clicap/document/", DocumentRouter);
+app.use("/api/clicap/job/", JobRouter);
 app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
