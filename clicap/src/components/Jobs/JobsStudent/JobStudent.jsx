@@ -26,7 +26,7 @@ const JobStudent = () => {
     <>
       <h2 className="text-center">Mis trabajos</h2>
       <div className="box-add-instance">
-        <div>
+        <div className="">
           <button
             type="button"
             onClick={() => navigate("/newjob")}

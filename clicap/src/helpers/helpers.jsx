@@ -1,6 +1,7 @@
 import axios from "axios";
-import { alertSuccess } from "./alerts";
-import {API_URL} from './constants'
+import { toast } from "react-toastify";
+import { alertError, alertSuccess, loadError, loadSuccess } from "./alerts";
+import { API_URL } from "./constants";
 export const isAuthenticated = () => sessionStorage.getItem("user");
 export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
@@ -27,7 +28,7 @@ export const reqAxios = async (method, shortUrl, param, data) => {
         "Content-Type": "application/json",
       },
     });
-/*     if (method != "get") {
+    /*     if (method != "get") {
       alertSuccess(res.data.msg);
     } */
     console.log(res);
@@ -53,11 +54,11 @@ export const formDataAxios = async (method, shortUrl, param, data) => {
     return res;
   } catch (error) {
     console.log(error);
-    /* alertError("Error"); */
+    alertError("Error");
   }
 };
 export const deleteAxios = async (shortUrl) => {
-  /* const load = toast.loading("Espere unos segundos..."); */
+  const load = toast.loading("Espere unos segundos...");
   try {
     const res = await axios({
       method: "DELETE",
@@ -67,10 +68,11 @@ export const deleteAxios = async (shortUrl) => {
         "Content-Type": "application/json",
       },
     });
-    /* return toast.update(load, loadSuccess(res.data)); */
+    toast.update(load, loadSuccess(res.data));
+    return res;
   } catch (error) {
     console.log(error.response.data);
-   /*  return toast.update(load, loadError(error.response.data)); */
+    return toast.update(load, loadError(error.response.data));
   }
 };
 export const waitAndRefresh = (path, time) => {

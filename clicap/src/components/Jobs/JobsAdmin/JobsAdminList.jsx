@@ -10,7 +10,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
     setJobToDelete({
       id: work.id,
       entityName: work.name,
-      entityType: "jobs",
+      entityType: "job",
     });
   };
   return (

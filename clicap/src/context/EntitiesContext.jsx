@@ -54,7 +54,7 @@ const EntitiesProvider = ({ children }) => {
   const getDataUser = async (id) => {
     const dataUser = await reqAxios("GET", `/user/get/${id}`, "", "");
     //agrego passwordConfirm al objeto porque sino despues al no existir no puede hacer la validacion en el .strim()
-    dataUser.data.response.passwordConfirm = "";
+    dataUser.data.response.passwordConfirm = dataUser.data.response.password;
     setUserRegister(dataUser.data.response);
   };
 

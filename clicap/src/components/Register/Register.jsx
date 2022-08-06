@@ -123,7 +123,7 @@ const Register = () => {
                       >
                         <option value={""}>Seleccione</option>
                         {roles.map((rol) =>
-                          rol.id !== 1 ? (
+                          rol.id !== 1 && rol.id !== 2 ? (
                             <option key={rol.id} value={rol.id}>
                               {rol.name}
                             </option>
@@ -313,19 +313,34 @@ const Register = () => {
                 <div className="row form-regis-responsive">
                   {/* CONSTRASEÑA */}
                   <div className="mb-2 col">
-                    <label
-                      htmlFor="exampleInputEmail1"
-                      className="form-label fw-bold"
-                    >
-                      Contraseña
-                    </label>
+                    <div className="d-flex">
+                      <OverlayTrigger
+                        placement="left"
+                        overlay={
+                          <Tooltip id="tooltip-right">
+                            La contraseña se encuentra encriptada.Si desea
+                            cambiarla puede hacerlo.
+                          </Tooltip>
+                        }
+                      >
+                        <div className=" ms-1 me-2">
+                          <i className="fa-solid fa-circle-info"></i>
+                        </div>
+                      </OverlayTrigger>
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label fw-bold"
+                      >
+                        Contraseña
+                      </label>
+                    </div>
                     <div className="d-flex">
                       <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Contraseña"
                         className="form-control"
                         name="password"
-                        /*  value={formLogin.password} */
+                        value={userRegister.password}
                         onChange={handleChangeRegister}
                       />
                       <div className="center-center ms-1">

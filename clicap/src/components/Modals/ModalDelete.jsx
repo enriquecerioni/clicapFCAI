@@ -4,14 +4,15 @@ import { deleteAxios, waitAndRefresh } from "../../helpers/helpers";
 
 const ModalDelete = ({ entity, showAlert }) => {
   //entity.entityType -> instance/partner/customer
-
+  console.log(entity);
   const deleteEntity = async () => {
     const entityDeleted = await deleteAxios(
       `/${entity.entityType}/delete/${entity.id}`
     );
+    console.log("----"+entityDeleted);
     showAlert(false);
-
     if (entityDeleted.status === 200) {
+      console.log("entro");
       waitAndRefresh(`/${entity.entityType}`, 1000);
     }
   };
