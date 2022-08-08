@@ -1,0 +1,9 @@
+.logoImg{
+    height: 3rem;
+    width: 12rem;
+    cursor: pointer;
+}
+
+.accessButton{
+    margin-top: -5px;
+}
