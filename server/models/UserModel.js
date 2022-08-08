@@ -50,6 +50,11 @@ const UserModel = db.define("user", {
     type: DataTypes.STRING,
     allowNull: false
   },
+  attendance: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: true
+  },
 });
 
 // JOB - AUTHOR
