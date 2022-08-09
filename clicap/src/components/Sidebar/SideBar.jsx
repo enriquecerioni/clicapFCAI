@@ -24,7 +24,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sidebar col-lg-2 col-md-6">
+    <div className="sidebar sidebarshow col-lg-2 col-md-6 animate__animated animate__fadeInLeftBig">
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
