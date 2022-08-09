@@ -1,9 +1,10 @@
 const { DataTypes } = require("sequelize");
 const db = require('../database/database');
 const AreaModel = require("./AreaModel");
+const JobModalityModel = require("./JobModalityModel");
 const UserModel = require("./UserModel");
 
-const JobModel = db.define("Job", {
+const JobModel = db.define("job", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -25,6 +26,10 @@ const JobModel = db.define("Job", {
   },
   members: {
     type: DataTypes.STRING,
+  },
+  jobModalityId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   },
   urlFile: {
     type: DataTypes.STRING,
@@ -50,6 +55,12 @@ AreaModel.hasMany(JobModel, {
 JobModel.belongsTo(UserModel, {foreignKey: 'authorId'});
 UserModel.hasMany(JobModel, {
   foreignKey: "authorId",
+});
+
+// JOB - JOB MODALITY
+JobModel.belongsTo(JobModalityModel, {foreignKey: 'jobModalityId'});
+JobModalityModel.hasOne(JobModel, {
+  foreignKey: "jobModalityId",
 });
 
 // JOB - EVALUADOR 1

@@ -20,6 +20,7 @@ const Sidebar = () => {
   const loggout = () => {
     sessionStorage.removeItem("user");
     navigate("/");
+    // window.location.reload();
   };
   const navigate = useNavigate();
 
@@ -41,7 +42,7 @@ const Sidebar = () => {
           </Link> : null}
             <li onClick={ roleId === 1 ? ()=>navigate('/jobs') : ()=>navigate('/myjobs') }>
               <StoreIcon className="icon" />
-              <span>Subir Trabajos</span>
+              { roleId === 1 ? <span>Listado de Trabajos</span> : <span>Mis Trabajos</span>}
             </li>
           {/* <Link to="/works" style={{ textDecoration: "none" }}>
             <li>

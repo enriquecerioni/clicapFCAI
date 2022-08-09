@@ -17,7 +17,9 @@ require("./models/UserModel");
 require("./models/JobModel");
 require("./models/PayModel");
 require("./models/AreaModel");
-require("./models/RoleModel");
+require("./models/JobModalityModel");
+require("./models/JobDetailModel");
+require("./models/CorrectionModel");
 
 
 dotenv.config({ path: "./.env" });
@@ -45,7 +47,7 @@ app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
-db.sync()
+db.sync({force:true})
   .then(() => {
     console.log("Database connected...");
   })

@@ -20,7 +20,7 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
-        <Route path="job" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
+        <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
         <Route path="register" element={<Home><Register/></Home>} />
