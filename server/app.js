@@ -47,7 +47,7 @@ app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
-db.sync({force:true})
+db.sync({force:false})
   .then(() => {
     console.log("Database connected...");
   })
