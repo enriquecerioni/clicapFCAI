@@ -24,16 +24,17 @@ exports.upload = async (req, res) => {
       err.message = "The file is so heavy for my service";
       return res.send(err);
     }
-    const { name, areaId, authorId, members } = req.body;
+    const { name, areaId, authorId, members, jobModalityId } = req.body;
     const doc = await JobModel.create({
       name: name,
+      jobModalityId,
       areaId: areaId,
       members: members,
       authorId: authorId,
       urlFile: req.file.filename,
     });
     if (doc) {
-      return res.status(200).send("Trabajo creado!");
+      return res.status(200).json({ msg: "Trabajo creado!" });
     } else {
       return res.status(500).json({ msg: "Error al crear el Trabajo." });
     }
@@ -151,7 +152,7 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const { authorId,name, surname, areaId } = req.query;
+  const { authorId, name, surname, areaId } = req.query;
   console.log(req.query);
   const { page } = req.params;
 

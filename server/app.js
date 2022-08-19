@@ -8,6 +8,7 @@ const db = require("./database/database");
 // Routes
 const AreaRouter = require("./routes/AreaRouter");
 const JobRouter = require("./routes/JobRouter");
+const JobModalityRouter = require("./routes/JobModality");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
@@ -42,6 +43,7 @@ app.listen(PORT, () => {
 // URL Routes
 app.use("/api/clicap/area/", AreaRouter);
 app.use("/api/clicap/job/", JobRouter);
+app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
