@@ -23,12 +23,13 @@ const EntitiesProvider = ({ children }) => {
   //ESTADO INICIAL PARA SUBIR TRABAJO
   const initialStateUpJob = {
     name: "",
-    areaId: 0,
+    jobModalityId: "",
+    areaId: "",
     authorId: userId,
     members: "",
     urlFile: "",
   };
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
   //ESTADOS
   //REGISTRO
   const [userRegister, setUserRegister] = useState(initialStateRegister);
@@ -43,7 +44,7 @@ const EntitiesProvider = ({ children }) => {
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
 
- // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
   //Registro - Editar Usuario
   const handleChangeRegister = (e) => {
     setUserRegister({
@@ -66,11 +67,16 @@ const EntitiesProvider = ({ children }) => {
 
   //Subida de un trabajo
   const handleChangeUpJob = (e) => {
-    let value = e.target.type === "file" ? e.target.value === "" ? "" : e.target.files[0] : e.target.value;
-    if (e.target.name==='areaId') {
-      value=Number(value);
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    if (e.target.name === "areaId") {
+      value = Number(value);
     }
-      setJob({
+    setJob({
       ...job,
       [e.target.name]: value,
     });
@@ -92,7 +98,7 @@ const EntitiesProvider = ({ children }) => {
     setAllJobs(getAllJob.data.response);
   };
   //Mis Trabajos
-  const getMyJobs = async (numPage,dataFilter) => {
+  const getMyJobs = async (numPage, dataFilter) => {
     try {
       const dataMyJobs = await reqAxios(
         "GET",
@@ -111,12 +117,18 @@ const EntitiesProvider = ({ children }) => {
     const getAllArea = await reqAxios("GET", "/area/getall", "", "");
     setAreas(getAllArea.data.response);
   };
+  //Modalidades
+  const [modalities, setModalities] = useState([]);
+  const getAllmodalities = async () => {
+    const getAllmodalities = await reqAxios("GET", "/jobmodality/getall", "", "");
+    setModalities(getAllmodalities.data.response);
+  };
   //Usuarios
   const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
     setUsers(getAllUser.data.response);
   };
-  
+
   return (
     <EntitiesContext.Provider
       value={{
@@ -136,7 +148,9 @@ const EntitiesProvider = ({ children }) => {
         users,
         getAllUsers,
         myJobs,
-        getMyJobs
+        getMyJobs,
+        modalities,
+        getAllmodalities,
       }}
     >
       {children}

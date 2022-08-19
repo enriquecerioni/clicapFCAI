@@ -4,19 +4,22 @@ import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
 import { getDataUserByKey } from "../../helpers/helpers";
 import { EntitiesContext } from "../../context/EntitiesContext";
+import { useNavigate } from "react-router-dom";
 
 const DeliveryTask = () => {
+  const navigate=useNavigate();
   const { job, handleChangeUpJob, createNewJob } = useContext(EntitiesContext);
-  const { areas, getAllAreas } = useContext(EntitiesContext);
+  const { areas, getAllAreas,modalities,getAllmodalities } = useContext(EntitiesContext);
 
-  console.log(job);
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewJob();
+    navigate('/myjobs');
   };
 
   useEffect(() => {
     getAllAreas();
+    getAllmodalities();
   }, []);
   return (
     <>
@@ -65,6 +68,33 @@ const DeliveryTask = () => {
                       ? areas.map((area) => (
                           <option key={area.id} value={area.id}>
                             {area.name}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+                </div>
+              </div>
+
+              {/* MODALIDAD */}
+              <div className="ms-2">
+                <label
+                  htmlFor="exampleInputEmail1"
+                  className="form-label fw-bold"
+                >
+                  Modalidad
+                </label>
+                <div className="">
+                  <select
+                    className="form-select"
+                    name="jobModalityId"
+                    value={job.modality}
+                    onChange={handleChangeUpJob}
+                  >
+                    <option value={""}>Seleccione</option>
+                    {modalities.length > 0
+                      ? modalities.map((modality) => (
+                          <option key={modality.id} value={modality.id}>
+                            {modality.name}
                           </option>
                         ))
                       : null}

@@ -27,7 +27,7 @@ const Home = ({ children }) => {
           <div className="row">
             <div className="showGearSide">
               <i
-                class="fa-solid fa-gear fa-2x rotate"
+                className="fa-solid fa-gear fa-2x rotate"
                 type="button"
                 onClick={() => setShowSidebar(!showSidebar)}
               ></i>
