@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
+const JobModalityModel = require("../models/JobModalityModel");
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -160,7 +161,7 @@ exports.getAllPaginated = async (req, res) => {
   const offsetIns = calcNumOffset(page);
   let options = {
     where: {},
-    include: [{ model: UserModel, model: AreaModel }],
+    include: [{ model: AreaModel }, { model: JobModalityModel }],
     offset: offsetIns,
     limit: Number(PAGE_LIMIT),
   };
