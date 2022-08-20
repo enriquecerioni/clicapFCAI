@@ -32,3 +32,6 @@ html {
 .btn-delete-table:hover {
   color: red;
 }
+.modal-50w{
+  min-width: 50%;
+}

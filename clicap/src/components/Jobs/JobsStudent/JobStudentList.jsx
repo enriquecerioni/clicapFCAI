@@ -13,7 +13,7 @@ const JobStudentList = ({ job, setjobToDelete}) => {
         type="button"
         style={{ width: "18rem" }}
         className={job.active === 0 ? classInactive : classActive}
-        onClick={() => navigate(`/job/get/${job.id}`)}
+        onClick={() => navigate(`/job/${job.id}`)}
       >
         <Card.Body>
           <Card.Title className="text-center mb-2">{job.name}</Card.Title>

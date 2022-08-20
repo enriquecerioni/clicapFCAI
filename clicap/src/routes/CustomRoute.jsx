@@ -13,6 +13,8 @@ import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
 import Sidebar from "../components/Sidebar/SideBar";
 import PrivateAdminRoute from "./PrivateAdminRoute";
+import { JobInformation } from "../components/Jobs/JobInformation/JobInformation";
+import { Corrections } from "../components/Jobs/Corrections/Corrections";
 const CustomRoute = () => (
   <>
     <Routes>
@@ -21,6 +23,8 @@ const CustomRoute = () => (
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
+        <Route path="job/:id" element={<PrivateRoute><JobInformation/></PrivateRoute>} />
+        <Route path="job/corrections/:id" element={<PrivateRoute><Corrections/></PrivateRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
         <Route path="register" element={<Home><Register/></Home>} />
