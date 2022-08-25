@@ -41,6 +41,8 @@ const EntitiesProvider = ({ children }) => {
   const [allJobs, setAllJobs] = useState([]);
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
+  //UN TRABAJO
+  const [jobId, setJobId] = useState([]);
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
 
@@ -111,6 +113,18 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+  //Buscar un trabajo en particular
+  const getJobId = async (id) => {
+    try {
+      const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
+      const partners = dataJobId.data.response[0].members.split(";");
+      dataJobId.data.response[0].members=partners;
+      console.log(dataJobId);
+      setJobId(dataJobId.data.response[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   //Areas
   const [areas, setAreas] = useState([]);
   const getAllAreas = async () => {
@@ -120,7 +134,12 @@ const EntitiesProvider = ({ children }) => {
   //Modalidades
   const [modalities, setModalities] = useState([]);
   const getAllmodalities = async () => {
-    const getAllmodalities = await reqAxios("GET", "/jobmodality/getall", "", "");
+    const getAllmodalities = await reqAxios(
+      "GET",
+      "/jobmodality/getall",
+      "",
+      ""
+    );
     setModalities(getAllmodalities.data.response);
   };
   //Usuarios
@@ -151,6 +170,8 @@ const EntitiesProvider = ({ children }) => {
         getMyJobs,
         modalities,
         getAllmodalities,
+        getJobId,
+        jobId,
       }}
     >
       {children}

@@ -19,7 +19,7 @@ export const CorrectionModal = ({ showModal }) => {
             Corrección
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="">Descripcionn</Modal.Body>
+        <Modal.Body className="">Descripcion</Modal.Body>
       </Modal>
     </>
   );

@@ -15,7 +15,9 @@ export const CorrectionList = ({ correction, setuserToDelete }) => {
         <td>{correction.date}</td>
         <td>{correction.state}</td>
         <td>
-          <i type="button" className="fa-solid fa-list-check" onClick={()=>setCorrecModal(true)}></i>
+          <Button variant="primary" onClick={() => setCorrecModal(true)}>
+            Ver
+          </Button>
         </td>
       </tr>
     </>

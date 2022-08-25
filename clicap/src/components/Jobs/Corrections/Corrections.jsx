@@ -1,6 +1,7 @@
 import React from "react";
 import { CorrectionList } from "./CorrectionList";
 import { Button } from "react-bootstrap";
+
 export const Corrections = ({ job }) => {
   const corrections = [
     { detail: "dgafdgfdg", state: "Aceptado", date: "20-08-2022" },
@@ -23,11 +24,11 @@ export const Corrections = ({ job }) => {
                 </tr>
               </thead>
               <tbody>
-                {corrections.map((correction) => (
+                {corrections.map((correction, i) => (
                   <CorrectionList
+                    key={i}
                     correction={correction}
                     /*     setCustomerToDelete={handleDelete} */
-                    key={correction.id}
                   />
                 ))}
               </tbody>

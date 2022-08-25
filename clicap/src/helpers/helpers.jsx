@@ -31,7 +31,6 @@ export const reqAxios = async (method, shortUrl, param, data) => {
     /*     if (method != "get") {
       alertSuccess(res.data.msg);
     } */
-    console.log(res);
     return res;
   } catch (error) {
     return error;
