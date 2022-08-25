@@ -92,7 +92,16 @@ exports.updateById = async (req, res) => {
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
-  const doc = await JobModel.findByPk(id);
+  const doc = await JobModel.findAll({
+    where: { id },
+    include: [
+      { model: AreaModel },
+      { model: JobModalityModel },
+      { model: UserModel, as: "author" },
+      { model: UserModel, as: "evaluator1" },
+      { model: UserModel, as: "evaluator2" },
+    ],
+  });
 
   if (doc) {
     res.status(200).json({ response: doc });
