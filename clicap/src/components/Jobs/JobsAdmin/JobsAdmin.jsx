@@ -20,7 +20,7 @@ const JobsAdmin = () => {
     <>
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "5rem 5rem 0 5rem" }}>
+      <div style={{ margin: "0 5rem 0 5rem" }}>
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -38,7 +38,7 @@ const JobsAdmin = () => {
         ) : null}
         {allJobs.length > 0 ? (
           <>
-            <div style={{ overflowX: "auto" }}>
+            <div >
               <table className="table">
                 <thead>
                   <tr>
@@ -47,6 +47,7 @@ const JobsAdmin = () => {
                     <th>Evaludor 1</th>
                     <th>Evaludor 2</th>
                     <th>Area</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

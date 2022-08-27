@@ -28,6 +28,8 @@ const EntitiesProvider = ({ children }) => {
     authorId: userId,
     members: "",
     urlFile: "",
+    evaluatorId1: "",
+    evaluatorId2: "",
   };
   //--------------------------------------------------------------
   //ESTADOS
@@ -99,12 +101,12 @@ const EntitiesProvider = ({ children }) => {
     const getAllJob = await reqAxios("GET", "/job/getall", "", "");
     setAllJobs(getAllJob.data.response);
   };
-  //Mis Trabajos
+  //Mis Trabajos / LOS TRABAJOS
   const getMyJobs = async (numPage, dataFilter) => {
     try {
       const dataMyJobs = await reqAxios(
         "GET",
-        `/job/get/job/${numPage}`,
+        `/job/get/jobs/${numPage}`,
         dataFilter,
         ""
       );
@@ -118,8 +120,7 @@ const EntitiesProvider = ({ children }) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
       const partners = dataJobId.data.response[0].members.split(";");
-      dataJobId.data.response[0].members=partners;
-      console.log(dataJobId);
+      dataJobId.data.response[0].members = partners;
       setJobId(dataJobId.data.response[0]);
     } catch (e) {
       console.log(e);
