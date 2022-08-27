@@ -26,6 +26,15 @@ exports.upload = async (req, res) => {
       return res.send(err);
     }
     const { name, areaId, authorId, members, jobModalityId } = req.body;
+    let { evaluatorId1, evaluatorId2 } = req.body;
+
+    if (evaluatorId1 === "") {
+      evaluatorId1 = null;
+    }
+    if (evaluatorId2 === "") {
+      evaluatorId2 = null;
+    }
+    
     const doc = await JobModel.create({
       name: name,
       jobModalityId,
@@ -33,6 +42,8 @@ exports.upload = async (req, res) => {
       members: members,
       authorId: authorId,
       urlFile: req.file.filename,
+      evaluatorId1,
+      evaluatorId2,
     });
     if (doc) {
       return res.status(200).json({ msg: "Trabajo creado!" });
