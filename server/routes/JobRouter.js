@@ -9,6 +9,4 @@ router.get('/get/job/:page',JobController.getAllPaginated);
 router.get('/getall',JobController.getAll);
 router.delete('/delete/:id',JobController.deleteById);
 
-
-
 module.exports = router;
