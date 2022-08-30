@@ -11,6 +11,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import PaidIcon from '@mui/icons-material/Paid';
 import { Link, useNavigate } from "react-router-dom";
 import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
 
@@ -43,6 +44,10 @@ const Sidebar = () => {
             <li onClick={ roleId === 1 ? ()=>navigate('/jobs') : ()=>navigate('/myjobs') }>
               <StoreIcon className="icon" />
               { roleId === 1 ? <span>Listado de Trabajos</span> : <span>Mis Trabajos</span>}
+            </li>
+            <li onClick={ roleId === 1 ? ()=>navigate('/pays') : ()=>navigate('/mypays') }>
+              <PaidIcon className="icon" />
+              { roleId === 1 ? <span>Listado de Pagos</span> : <span>Mis Pagos</span>}
             </li>
           {/* <Link to="/works" style={{ textDecoration: "none" }}>
             <li>

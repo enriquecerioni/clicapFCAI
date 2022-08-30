@@ -29,6 +29,18 @@ const EntitiesProvider = ({ children }) => {
     members: "",
     urlFile: "",
   };
+
+  //ESTADO INICIAL PARA SUBIR TRABAJO
+  const initialStatePay = {
+    amount: "",
+    moneyType: "",
+    payType: "",
+    cuitCuil: "",
+    iva: "",
+    detail: "",
+    urlFile: "",
+    authorId: userId
+  };
   //--------------------------------------------------------------
   //ESTADOS
   //REGISTRO
@@ -37,10 +49,16 @@ const EntitiesProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   //TRABAJO
   const [job, setJob] = useState(initialStateUpJob);
+  //TRABAJO
+  const [pay, setPay] = useState(initialStatePay);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
+  //MIS PAGOS
+  const [myPays, setMyPays] = useState([]);
+  //TODOS LOS PAGOS
+  const [allPays, setAllPays] = useState([]);
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
 
@@ -111,6 +129,50 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+
+  //Subida de un pago
+  const handleChangePay = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setPay({
+      ...pay,
+      [e.target.name]: value,
+    });
+  };
+  const createNewPay = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in pay) {
+        bodyFormData.append(key, pay[key]);
+      }
+      await formDataAxios("POST", `/pay/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  //Pagos
+  const getAllPays = async () => {
+    const getAllPay = await reqAxios("GET", "/pay/getall", "", "");
+    setAllPays(getAllPay.data.response);
+  };
+  //Mis Pagos
+  const getMyPays = async (numPage, dataFilter) => {
+    try {
+      const dataMyPays = await reqAxios(
+        "GET",
+        `/pay/get/pay/${numPage}`,
+        dataFilter,
+        ""
+      );
+      setMyPays(dataMyPays.data.response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   //Areas
   const [areas, setAreas] = useState([]);
   const getAllAreas = async () => {
@@ -119,9 +181,9 @@ const EntitiesProvider = ({ children }) => {
   };
   //Modalidades
   const [modalities, setModalities] = useState([]);
-  const getAllmodalities = async () => {
-    const getAllmodalities = await reqAxios("GET", "/jobmodality/getall", "", "");
-    setModalities(getAllmodalities.data.response);
+  const getAllModalities = async () => {
+    const getAllModalities = await reqAxios("GET", "/jobmodality/getall", "", "");
+    setModalities(getAllModalities.data.response);
   };
   //Usuarios
   const getAllUsers = async () => {
@@ -149,8 +211,15 @@ const EntitiesProvider = ({ children }) => {
         getAllUsers,
         myJobs,
         getMyJobs,
+        myPays,
+        pay,
+        createNewPay,
+        allPays,
+        getAllPays,
+        handleChangePay,
+        getMyPays,
         modalities,
-        getAllmodalities,
+        getAllModalities,
       }}
     >
       {children}

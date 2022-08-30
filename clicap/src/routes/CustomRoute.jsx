@@ -13,6 +13,9 @@ import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
 import Sidebar from "../components/Sidebar/SideBar";
 import PrivateAdminRoute from "./PrivateAdminRoute";
+import PayStudent from "../components/Payment/PaysStudent/PayStudent";
+import PayReceipt from "../components/UploadReceipt/PayReceipt/PayReceipt";
+import PaysAdmin from "../components/Payment/PaysAdmin/PaysAdmin";
 const CustomRoute = () => (
   <>
     <Routes>
@@ -20,8 +23,11 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
+        <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
+        <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
+        <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
         <Route path="register" element={<Home><Register/></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
