@@ -122,7 +122,7 @@ exports.getById = async (req, res) => {
 };
 exports.getAll = async (req, res) => {
   const doc = await JobModel.findAll({
-    include: [{ model: UserModel, model: AreaModel }],
+    include: [{ model: UserModel, model: AreaModel },{ model: UserModel, as: "evaluator1" },{ model: UserModel, as: "evaluator2" }],
   });
   if (doc) {
     res.status(200).json({ response: doc });

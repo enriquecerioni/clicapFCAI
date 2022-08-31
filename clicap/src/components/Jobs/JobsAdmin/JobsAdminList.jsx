@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
+import { useEffect } from "react";
+import { reqAxios } from "../../../helpers/helpers";
+import { EntitiesContext } from "../../../context/EntitiesContext";
 
 export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
+  const { job, setJob, getAllJobs, allJobs } = useContext(EntitiesContext);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
+
   /*  const startDate = work.startDate.split('-') */
   const deleteJob = () => {
     showAlert(true);
@@ -16,25 +21,12 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
     });
   };
 
-  const initialStateEvaluators = {
-    evaluator1: "",
-    evaluator2: "",
-  };
-  const [evaluators, setEvaluators] = useState(initialStateEvaluators);
+  const [saveEvaluators, setsaveEvaluators] = useState([]);
+  const [evaluatorsOptions1, setEvaluatorOptions1] = useState([]);
+  const [evaluatorsOptions2, setEvaluatorOptions2] = useState([]);
+  const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
+  const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
 
-  const handleChangeEvaluators = (e, name) => {
-    if (e) {
-      setEvaluators({
-        ...evaluators,
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      setEvaluators({
-        ...evaluators,
-        [name]: "",
-      });
-    }
-  };
   const evaluatorsOptions = [
     {
       value: 1,
@@ -70,9 +62,54 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
     },
   ];
 
-  const handleSubmit=()=>{
+  const handleSubmit = () => {};
+  const getAllEvaluators = async () => {
+    const allEvaluators = await reqAxios(
+      "GET",
+      "/user/getallevaluators",
+      "",
+      ""
+    );
+    let arrayMod = allEvaluators.data.response;
+    arrayMod.map((item, i) => {
+      arrayMod[i].target = { value: item.value };
+    });
 
-  }
+    setEvaluatorOptions1(arrayMod);
+    setEvaluatorOptions2(arrayMod);
+  };
+
+  const handleChangeEvaluator = (e, name) => {
+    if (name === "evaluator1") {
+      setEvaluatorSelected1(e.target.value);
+    } else {
+      setEvaluatorSelected2(e.target.value);
+    }
+  };
+
+  const addEvaluators = async (id) => {
+    const jobSelected = allJobs.find((item) => item.id === id);
+    const jobEdited = {
+      name: jobSelected.name,
+      jobModalityId: jobSelected.jobModalityId,
+      areaId: jobSelected.areaId,
+      authorId: jobSelected.authorId,
+      members: jobSelected.members,
+      urlFile: jobSelected.urlFile,
+      evaluatorId1: evaluatorSelected1,
+      evaluatorId2: evaluatorSelected2,
+    };
+    const editJob = await reqAxios(
+      "PUT",
+      `/job//edit/${jobSelected.id}`,
+      "",
+      jobEdited
+    );
+  };
+  useEffect(() => {
+    getAllEvaluators();
+    console.log(job);
+  }, []);
   return (
     <>
       <tr>
@@ -83,7 +120,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
           {assignEvaluator ? (
             <div style={{ width: "175px" }} className="">
               <Select
-                options={evaluatorsOptions}
+                options={evaluatorsOptions1}
                 placeholder={"seleccione.."}
                 name="evaluator1"
                 isClearable={true}
@@ -94,7 +131,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
                     primary: "#3D84A8",
                   },
                 })}
-                onChange={(e) => handleChangeEvaluators(e, "evaluator1")}
+                onChange={(e) => handleChangeEvaluator(e, "evaluator1")}
               />
             </div>
           ) : null}
@@ -104,7 +141,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
           {assignEvaluator ? (
             <div style={{ width: "175px" }} className="">
               <Select
-                options={evaluators2Options}
+                options={evaluatorsOptions2}
                 placeholder={"seleccione.."}
                 name="evaluator2"
                 isClearable={true}
@@ -115,7 +152,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
                     primary: "#3D84A8",
                   },
                 })}
-                onChange={(e) => handleChangeEvaluators(e, "evaluator2")}
+                onChange={(e) => handleChangeEvaluator(e, "evaluator2")}
               />
             </div>
           ) : null}
@@ -141,7 +178,7 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
           {assignEvaluator ? (
             <Button
               className="btn btn-success"
-              onClick={handleSubmit}
+              onClick={() => addEvaluators(work.id)}
             >
               <i className="fa-solid fa-check"></i>
             </Button>
@@ -153,13 +190,14 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
             ></i>
           )}
         </td>
-
         <td>
-          <i
-            type="button"
-            className="icon-size-table fa-solid fa-user-tie"
-            onClick={() => setAssignEvaluator(!assignEvaluator)}
-          ></i>
+          {!assignEvaluator ? (
+            <i
+              type="button"
+              className="icon-size-table fa-solid fa-user-tie"
+              onClick={() => setAssignEvaluator(!assignEvaluator)}
+            ></i>
+          ) : null}
         </td>
         <td>
           <Button
