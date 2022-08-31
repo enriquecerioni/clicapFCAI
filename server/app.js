@@ -12,6 +12,7 @@ const JobModalityRouter = require("./routes/JobModality");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
+const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
 
 // Models
 require("./models/UserModel");
@@ -21,7 +22,7 @@ require("./models/AreaModel");
 require("./models/JobModalityModel");
 require("./models/JobDetailModel");
 require("./models/CorrectionModel");
-
+require("./models/StudentCertificateModel");
 
 dotenv.config({ path: "./.env" });
 
@@ -47,6 +48,7 @@ app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
+app.use("/api/clicap/student/", StudentCertificateRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
 db.sync({force:false})

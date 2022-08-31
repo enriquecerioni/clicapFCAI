@@ -39,7 +39,14 @@ const EntitiesProvider = ({ children }) => {
     iva: "",
     detail: "",
     urlFile: "",
-    authorId: userId
+    authorId: userId,
+  };
+
+  //ESTADO INICIAL PARA SUBIR TRABAJO
+  const initialStateCertificate = {
+    detail: "",
+    urlFile: "",
+    authorId: userId,
   };
   //--------------------------------------------------------------
   //ESTADOS
@@ -49,14 +56,18 @@ const EntitiesProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   //TRABAJO
   const [job, setJob] = useState(initialStateUpJob);
-  //TRABAJO
+  //PAGO
   const [pay, setPay] = useState(initialStatePay);
+  //PAGO
+  const [certificate, setCertificate] = useState(initialStateCertificate);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
   //MIS PAGOS
   const [myPays, setMyPays] = useState([]);
+  //MIS CERTIFICADOS
+  const [myCertificates, setMyCertificates] = useState([]);
   //TODOS LOS PAGOS
   const [allPays, setAllPays] = useState([]);
   //TODOS LOS USUARIOS
@@ -154,6 +165,31 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+
+  //Subida de un certificado
+  const handleChangeCertificate = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setCertificate({
+      ...certificate,
+      [e.target.name]: value,
+    });
+  };
+  const createNewCertificate = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in certificate) {
+        bodyFormData.append(key, certificate[key]);
+      }
+      await formDataAxios("POST", `/student/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   //Pagos
   const getAllPays = async () => {
     const getAllPay = await reqAxios("GET", "/pay/getall", "", "");
@@ -173,6 +209,20 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+  //Mis Certificados
+  const getMyCertificates = async (numPage, dataFilter) => {
+    try {
+      const dataMyCertificates = await reqAxios(
+        "GET",
+        `/student/get/certificate/${numPage}`,
+        dataFilter,
+        ""
+      );
+      setMyCertificates(dataMyCertificates.data.response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   //Areas
   const [areas, setAreas] = useState([]);
   const getAllAreas = async () => {
@@ -182,7 +232,12 @@ const EntitiesProvider = ({ children }) => {
   //Modalidades
   const [modalities, setModalities] = useState([]);
   const getAllModalities = async () => {
-    const getAllModalities = await reqAxios("GET", "/jobmodality/getall", "", "");
+    const getAllModalities = await reqAxios(
+      "GET",
+      "/jobmodality/getall",
+      "",
+      ""
+    );
     setModalities(getAllModalities.data.response);
   };
   //Usuarios
@@ -218,6 +273,11 @@ const EntitiesProvider = ({ children }) => {
         getAllPays,
         handleChangePay,
         getMyPays,
+        certificate,
+        myCertificates,
+        getMyCertificates,
+        handleChangeCertificate,
+        createNewCertificate,
         modalities,
         getAllModalities,
       }}
