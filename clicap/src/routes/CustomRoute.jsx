@@ -16,6 +16,8 @@ import PrivateAdminRoute from "./PrivateAdminRoute";
 import PayStudent from "../components/Payment/PaysStudent/PayStudent";
 import PayReceipt from "../components/UploadReceipt/PayReceipt/PayReceipt";
 import PaysAdmin from "../components/Payment/PaysAdmin/PaysAdmin";
+import StudentCertificate from "../components/StudentCertificate/Student/StudentCertificate";
+import Certificate from "../components/UploadStudentCertificate/Certificate";
 const CustomRoute = () => (
   <>
     <Routes>
@@ -24,8 +26,10 @@ const CustomRoute = () => (
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
+        <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
+        <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
         <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
         <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
