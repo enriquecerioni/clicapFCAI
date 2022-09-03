@@ -41,12 +41,17 @@ const EntitiesProvider = ({ children }) => {
   const [job, setJob] = useState(initialStateUpJob);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
+  const [totalPages, setTotalPages] = useState("");
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
   //UN TRABAJO
   const [jobId, setJobId] = useState([]);
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
+  const [usersSelector, setUsersSelector] = useState([]);
+  //Areas
+  const [areas, setAreas] = useState([]);
+  const [areasSelector, setAreasSelector] = useState([]);
 
   // -----------------------------------------------------------------
   //Registro - Editar Usuario
@@ -97,9 +102,15 @@ const EntitiesProvider = ({ children }) => {
     }
   };
   //Trabajos
-  const getAllJobs = async () => {
-    const getAllJob = await reqAxios("GET", "/job/getall", "", "");
+  const getAllJobs = async (page, params) => {
+    const getAllJob = await reqAxios(
+      "GET",
+      `/job/get/jobs/${page}`,
+      params,
+      ""
+    );
     setAllJobs(getAllJob.data.response);
+    setTotalPages(getAllJob.data.pages);
   };
   //Mis Trabajos / LOS TRABAJOS
   const getMyJobs = async (numPage, dataFilter) => {
@@ -127,10 +138,18 @@ const EntitiesProvider = ({ children }) => {
     }
   };
   //Areas
-  const [areas, setAreas] = useState([]);
   const getAllAreas = async () => {
     const getAllArea = await reqAxios("GET", "/area/getall", "", "");
     setAreas(getAllArea.data.response);
+    const array = [];
+    getAllArea.data.response.map((item, i) => {
+      array.push({
+        label: item.name,
+        value: item.id,
+        target: { name: "areaId", value: item.id },
+      });
+    });
+    setAreasSelector(array);
   };
   //Modalidades
   const [modalities, setModalities] = useState([]);
@@ -147,6 +166,15 @@ const EntitiesProvider = ({ children }) => {
   const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
     setUsers(getAllUser.data.response);
+    const array = [];
+    getAllUser.data.response.map((item, i) => {
+      array.push({
+        label: item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "authorId", value: item.id },
+      });
+    });
+    setUsersSelector(array);
   };
 
   return (
@@ -173,6 +201,9 @@ const EntitiesProvider = ({ children }) => {
         getAllmodalities,
         getJobId,
         jobId,
+        usersSelector,
+        areasSelector,
+        totalPages,
       }}
     >
       {children}

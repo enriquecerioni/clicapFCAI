@@ -9,7 +9,7 @@ const ModalDelete = ({ entity, showAlert }) => {
     const entityDeleted = await deleteAxios(
       `/${entity.entityType}/delete/${entity.id}`
     );
-    console.log("----"+entityDeleted);
+    console.log("----" + entityDeleted);
     showAlert(false);
     if (entityDeleted.status === 200) {
       console.log("entro");
