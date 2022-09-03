@@ -4,6 +4,8 @@ const { PAGE_LIMIT } = process.env;
 const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
+const CorrectionModel = require("../models/CorrectionModel");
+const JobModel = require("../models/JobModel");
 
 exports.create = async (req, res) => {
   const { JobId, correctionId, details, date } = req.body;
@@ -39,8 +41,17 @@ exports.updateById = async (req, res) => {
   }
 };
 exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const detail = await JobDetailModel.findByPk(id);
+  const { jobId } = req.params;
+  const detail = await JobDetailModel.findAll({
+    where: jobId,
+    include: [
+      { model: CorrectionModel },
+      {
+        model: JobModel,
+        attributes: ["name"],
+      },
+    ],
+  });
 
   if (detail) {
     res.status(200).json({ response: detail });

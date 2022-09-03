@@ -193,12 +193,21 @@ exports.getAllPaginated = async (req, res) => {
   const { authorId, name, surname, areaId } = req.query;
   console.log(req.query);
   const { page } = req.params;
-
   const Op = Sequelize.Op;
   const offsetIns = calcNumOffset(page);
   let options = {
     where: {},
-    include: [{ model: AreaModel }, { model: JobModalityModel }],
+    include: [
+      { model: AreaModel },
+      { model: JobModalityModel },
+      {
+        model: UserModel,
+        as: "author",
+        attributes: ["name", "surname"],
+      },
+      { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
+      { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
+    ],
     offset: offsetIns,
     limit: Number(PAGE_LIMIT),
   };

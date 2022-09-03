@@ -12,6 +12,7 @@ const JobModalityRouter = require("./routes/JobModality");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
+const JobDetailsRouter = require("./routes/JobDetailRouter");
 
 // Models
 require("./models/UserModel");
@@ -42,6 +43,7 @@ app.listen(PORT, () => {
 // URL Routes
 app.use("/api/clicap/area/", AreaRouter);
 app.use("/api/clicap/job/", JobRouter);
+app.use("/api/clicap/jobdetails/", JobDetailsRouter);
 app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
