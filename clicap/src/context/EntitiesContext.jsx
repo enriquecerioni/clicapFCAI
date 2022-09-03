@@ -52,6 +52,8 @@ const EntitiesProvider = ({ children }) => {
   //Areas
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
+  //CORRECCIONES
+  const [corrections, setCorrections] = useState([]);
 
   // -----------------------------------------------------------------
   //Registro - Editar Usuario
@@ -137,6 +139,21 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+  //Buscar las correciones de un trabajo
+  const getCorrectionsByJob = async (id) => {
+    try {
+      const corrections = await reqAxios(
+        "GET",
+        `/jobdetails/get?jobId=${id}`,
+        "",
+        ""
+      );
+      setCorrections(corrections.data.response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Areas
   const getAllAreas = async () => {
     const getAllArea = await reqAxios("GET", "/area/getall", "", "");
@@ -204,6 +221,8 @@ const EntitiesProvider = ({ children }) => {
         usersSelector,
         areasSelector,
         totalPages,
+        getCorrectionsByJob,
+        corrections,
       }}
     >
       {children}

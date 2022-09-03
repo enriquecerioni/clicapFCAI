@@ -10,10 +10,15 @@ export const CorrectionList = ({ correction, setuserToDelete }) => {
   return (
     <>
       {/* MODAL FILTER */}
-      {showCorrecModal ? <CorrectionModal showModal={setCorrecModal} /> : null}
+      {showCorrecModal ? (
+        <CorrectionModal
+          description={correction.details}
+          showModal={setCorrecModal}
+        />
+      ) : null}
       <tr>
         <td>{correction.date}</td>
-        <td>{correction.state}</td>
+        <td>{correction.correction.name}</td>
         <td>
           <Button variant="primary" onClick={() => setCorrecModal(true)}>
             Ver

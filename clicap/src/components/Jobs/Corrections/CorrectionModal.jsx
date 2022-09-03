@@ -3,7 +3,7 @@ import React from "react";
 //components
 import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 
-export const CorrectionModal = ({ showModal }) => {
+export const CorrectionModal = ({ showModal, description }) => {
   const closeModal = () => showModal(false);
 
   return (
@@ -19,7 +19,7 @@ export const CorrectionModal = ({ showModal }) => {
             Corrección
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="">Descripcion</Modal.Body>
+        <Modal.Body className="">{description}</Modal.Body>
       </Modal>
     </>
   );

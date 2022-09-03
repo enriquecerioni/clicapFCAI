@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CorrectionList } from "./CorrectionList";
 import { Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { EntitiesContext } from "../../../context/EntitiesContext";
 
-export const Corrections = ({ job }) => {
-  const corrections = [
-    { detail: "dgafdgfdg", state: "Aceptado", date: "20-08-2022" },
-  ];
+export const Corrections = () => {
+  const { id } = useParams();
+  const { getCorrectionsByJob, corrections, getJobId, jobId } =
+    useContext(EntitiesContext);
+
+  useEffect(() => {
+    getJobId(id);
+    getCorrectionsByJob(id);
+  }, []);
   return (
     <>
-      <h2 className="text-center">Correcciones del TP2</h2>
+      <h2 className="text-center">
+        Correcciones del {jobId ? jobId.name : null}
+      </h2>
       <div className="text-end me-3">
         <Button variant="primary">Descargar Ult. Version</Button>
       </div>
