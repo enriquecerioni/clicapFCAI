@@ -28,9 +28,10 @@ export const reqAxios = async (method, shortUrl, param, data) => {
         "Content-Type": "application/json",
       },
     });
-    /*     if (method != "get") {
+    console.log(res);
+    if (method != "get") {
       alertSuccess(res.data.msg);
-    } */
+    }
     return res;
   } catch (error) {
     return error;

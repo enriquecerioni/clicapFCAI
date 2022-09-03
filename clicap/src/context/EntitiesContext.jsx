@@ -25,7 +25,7 @@ const EntitiesProvider = ({ children }) => {
     name: "",
     jobModalityId: "",
     areaId: "",
-    authorId: "",
+    authorId: userId,
     members: "",
     urlFile: "",
     evaluatorId1: "",

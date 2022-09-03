@@ -7,13 +7,11 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
-  const { allJobs, getAllJobs, users, getAllUsers } =
-    useContext(EntitiesContext);
+  const { allJobs, getAllJobs } = useContext(EntitiesContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
 
   useEffect(() => {
-    getAllUsers();
     getAllJobs();
   }, []);
   return (
@@ -31,14 +29,11 @@ const JobsAdmin = () => {
           </Button> */}
         </div>
         {showDeleteModal ? (
-          <ModalDelete
-            entity={JobToDelete}
-            showAlert={setShowDeleteModal}
-          />
+          <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
         ) : null}
         {allJobs.length > 0 ? (
           <>
-            <div >
+            <div>
               <table className="table">
                 <thead>
                   <tr>
@@ -57,7 +52,6 @@ const JobsAdmin = () => {
                   {allJobs.map((work) => (
                     <JobsAdminList
                       work={work}
-                      users={users}
                       showAlert={setShowDeleteModal}
                       setJobToDelete={setJobToDelete}
                       key={work.id}

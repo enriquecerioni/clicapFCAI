@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { reqAxios } from "../../../helpers/helpers";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 
-export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
+export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
   const { job, setJob, getAllJobs, allJobs } = useContext(EntitiesContext);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
@@ -26,41 +26,6 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
   const [evaluatorsOptions2, setEvaluatorOptions2] = useState([]);
   const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
   const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
-
-  const evaluatorsOptions = [
-    {
-      value: 1,
-      label: "Ivan Castro",
-      target: { name: "evaluator1", value: 1 },
-    },
-    {
-      value: 2,
-      label: "Enrique Cerioni",
-      target: { name: "evaluator1", value: 2 },
-    },
-    {
-      value: 3,
-      label: "Gaston Rodiguez",
-      target: { name: "evaluator1", value: 3 },
-    },
-  ];
-  const evaluators2Options = [
-    {
-      value: 1,
-      label: "Ivan Castro",
-      target: { name: "evaluator2", value: 1 },
-    },
-    {
-      value: 2,
-      label: "Enrique Cerioni",
-      target: { name: "evaluator2", value: 2 },
-    },
-    {
-      value: 3,
-      label: "Gaston Rodiguez",
-      target: { name: "evaluator2", value: 3 },
-    },
-  ];
 
   const handleSubmit = () => {};
   const getAllEvaluators = async () => {
@@ -90,37 +55,33 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
   const addEvaluators = async (id) => {
     const jobSelected = allJobs.find((item) => item.id === id);
     const jobEdited = {
-      name: jobSelected.name,
-      jobModalityId: jobSelected.jobModalityId,
-      areaId: jobSelected.areaId,
-      authorId: jobSelected.authorId,
-      members: jobSelected.members,
-      urlFile: jobSelected.urlFile,
+      ...jobSelected,
       evaluatorId1: evaluatorSelected1,
       evaluatorId2: evaluatorSelected2,
     };
     const editJob = await reqAxios(
       "PUT",
-      `/job//edit/${jobSelected.id}`,
+      `/job/edit/${jobSelected.id}`,
       "",
       jobEdited
     );
   };
   useEffect(() => {
     getAllEvaluators();
-    console.log(job);
   }, []);
   return (
     <>
       <tr>
-        <td>{users.find((user) => user.id === work.authorId).name}</td>
+        <td>{work.author.name}</td>
         <td>{work.name}</td>
         <td>
           {" "}
           {assignEvaluator ? (
             <div style={{ width: "175px" }} className="">
               <Select
-                options={evaluatorsOptions1}
+                options={evaluatorsOptions1.filter(
+                  (el) => el.value !== evaluatorSelected2
+                )}
                 placeholder={"seleccione.."}
                 name="evaluator1"
                 isClearable={true}
@@ -134,14 +95,20 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
                 onChange={(e) => handleChangeEvaluator(e, "evaluator1")}
               />
             </div>
-          ) : null}
+          ) : work.evaluator1 ? (
+            work.evaluator1.name + " " + work.evaluator1.surname
+          ) : (
+            ""
+          )}
         </td>
         <td>
           {" "}
           {assignEvaluator ? (
             <div style={{ width: "175px" }} className="">
               <Select
-                options={evaluatorsOptions2}
+                options={evaluatorsOptions2.filter(
+                  (el) => el.value !== evaluatorSelected1
+                )}
                 placeholder={"seleccione.."}
                 name="evaluator2"
                 isClearable={true}
@@ -155,7 +122,11 @@ export const JobsAdminList = ({ work, users, showAlert, setJobToDelete }) => {
                 onChange={(e) => handleChangeEvaluator(e, "evaluator2")}
               />
             </div>
-          ) : null}
+          ) : work.evaluator2 ? (
+            work.evaluator2.name + " " + work.evaluator2.surname
+          ) : (
+            ""
+          )}
         </td>
         <td>{work.area.name}</td>
         <td>
