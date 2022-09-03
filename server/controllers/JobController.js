@@ -6,6 +6,7 @@ const path = require("path");
 const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
+const fs = require("fs");
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -34,7 +35,7 @@ exports.upload = async (req, res) => {
     if (evaluatorId2 === "") {
       evaluatorId2 = null;
     }
-    
+
     const doc = await JobModel.create({
       name: name,
       jobModalityId,
@@ -51,6 +52,17 @@ exports.upload = async (req, res) => {
       return res.status(500).json({ msg: "Error al crear el Trabajo." });
     }
   });
+};
+exports.downloadFile = (req, res) => {
+  console.log("fileController.download: started");
+  const ruta = path.join(__dirname, "../public/documents/sequelize.docx");
+  const file = fs.createReadStream(ruta);
+  const filename = new Date().toISOString();
+  res.setHeader(
+    "Content-Disposition",
+    'attachment: filename="' + filename + '"'
+  );
+  file.pipe(res);
 };
 
 exports.create = async (req, res) => {
@@ -96,7 +108,7 @@ exports.updateById = async (req, res) => {
     { where: { id: id } }
   );
   if (doc) {
-    res.status(200).json("Trabajo editado!");
+    res.status(200).json({ msg: "Trabajo editado!" });
   } else {
     res.status(500).json({ msg: "El Trabajo no existe!" });
   }
@@ -122,7 +134,12 @@ exports.getById = async (req, res) => {
 };
 exports.getAll = async (req, res) => {
   const doc = await JobModel.findAll({
-    include: [{ model: UserModel, model: AreaModel },{ model: UserModel, as: "evaluator1" },{ model: UserModel, as: "evaluator2" }],
+    include: [
+      { model: UserModel, as: "author" },
+      { model: AreaModel },
+      { model: UserModel, as: "evaluator1" },
+      { model: UserModel, as: "evaluator2" },
+    ],
   });
   if (doc) {
     res.status(200).json({ response: doc });
