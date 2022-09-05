@@ -54,8 +54,9 @@ exports.upload = async (req, res) => {
   });
 };
 exports.downloadFile = (req, res) => {
-  console.log("fileController.download: started");
-  const ruta = path.join(__dirname, "../public/documents/sequelize.docx");
+  console.log("Descargo el archivo");
+  const { nameFile } = req.query;
+  const ruta = path.join(__dirname, `../public/documents/${nameFile}`);
   const file = fs.createReadStream(ruta);
   const filename = new Date().toISOString();
   res.setHeader(

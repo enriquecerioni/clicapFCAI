@@ -48,7 +48,7 @@ exports.getById = async (req, res) => {
       { model: CorrectionModel },
       {
         model: JobModel,
-        attributes: ["name"],
+        attributes: ["name", "urlFile"],
       },
     ],
   });
