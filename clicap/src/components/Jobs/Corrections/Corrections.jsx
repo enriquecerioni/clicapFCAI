@@ -3,11 +3,33 @@ import { CorrectionList } from "./CorrectionList";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { EntitiesContext } from "../../../context/EntitiesContext";
+import axios from "axios";
 
 export const Corrections = () => {
   const { id } = useParams();
   const { getCorrectionsByJob, corrections, getJobId, jobId } =
     useContext(EntitiesContext);
+
+  const downloadFile = async (nameFile) => {
+    try {
+      await axios({
+        url: `http://localhost:3000/api/clicap/job/downloadfile?nameFile=${nameFile}`, //your url
+        params: "",
+        method: "GET",
+        responseType: "blob", // important
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${nameFile}`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      });
+      return "Descargado";
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getJobId(id);
@@ -19,7 +41,9 @@ export const Corrections = () => {
         Correcciones del {jobId ? jobId.name : null}
       </h2>
       <div className="text-end me-3">
-        <Button variant="primary">Descargar Ult. Version</Button>
+        <Button variant="primary" onClick={() => downloadFile(jobId.urlFile)}>
+          Descargar Ult. Version
+        </Button>
       </div>
       {corrections.length > 0 ? (
         <>
@@ -30,6 +54,7 @@ export const Corrections = () => {
                   <th>Fecha</th>
                   <th>Estado</th>
                   <th>Detalle</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>

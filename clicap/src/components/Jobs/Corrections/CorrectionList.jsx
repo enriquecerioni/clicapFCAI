@@ -24,6 +24,11 @@ export const CorrectionList = ({ correction, setuserToDelete }) => {
             Ver
           </Button>
         </td>
+        <td>
+          <Button variant="primary" onClick={() => setCorrecModal(true)}>
+            Subir Corrección
+          </Button>
+        </td>
       </tr>
     </>
   );
