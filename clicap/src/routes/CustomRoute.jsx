@@ -13,8 +13,16 @@ import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
 import Sidebar from "../components/Sidebar/SideBar";
 import PrivateAdminRoute from "./PrivateAdminRoute";
+<<<<<<< HEAD
 import { JobInformation } from "../components/Jobs/JobInformation/JobInformation";
 import { Corrections } from "../components/Jobs/Corrections/Corrections";
+=======
+import PayStudent from "../components/Payment/PaysStudent/PayStudent";
+import PayReceipt from "../components/UploadReceipt/PayReceipt/PayReceipt";
+import PaysAdmin from "../components/Payment/PaysAdmin/PaysAdmin";
+import StudentCertificate from "../components/StudentCertificate/Student/StudentCertificate";
+import Certificate from "../components/UploadStudentCertificate/Certificate";
+>>>>>>> 17b0af2cb5ac0d9c68061d26e254b9f6a7a24504
 const CustomRoute = () => (
   <>
     <Routes>
@@ -22,10 +30,15 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
+        <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
+        <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
         <Route path="job/:id" element={<PrivateRoute><JobInformation/></PrivateRoute>} />
         <Route path="job/corrections/:id" element={<PrivateRoute><Corrections/></PrivateRoute>} />
         <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
+        <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
+        <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
+        <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
         <Route path="register" element={<Home><Register/></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />

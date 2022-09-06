@@ -7,19 +7,20 @@ import { EntitiesContext } from "../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
 
 const DeliveryTask = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { job, handleChangeUpJob, createNewJob } = useContext(EntitiesContext);
-  const { areas, getAllAreas,modalities,getAllmodalities } = useContext(EntitiesContext);
+  const { areas, getAllAreas, modalities, getAllModalities } =
+    useContext(EntitiesContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewJob();
-    navigate('/myjobs');
+    navigate("/myjobs");
   };
 
   useEffect(() => {
     getAllAreas();
-    getAllmodalities();
+    getAllModalities();
   }, []);
   return (
     <>

@@ -1,4 +1,4 @@
-const PayModel = require("../models/PayModel");
+const StudentCertificateModel = require("../models/StudentCertificateModel");
 const multer = require("multer");
 const path = require("path");
 const Sequelize = require("sequelize");
@@ -7,46 +7,36 @@ const { PAGE_LIMIT } = process.env;
 
 // Multer Config
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "../public/payments"),
+  destination: path.join(__dirname, "../public/student-certificates"),
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
-const createPayment = multer({
+const createCertificate = multer({
   storage,
   limits: { fileSize: 1000000 },
 }).single("urlFile");
 
 exports.create = async (req, res) => {
-  createPayment(req, res, async (err) => {
+  createCertificate(req, res, async (err) => {
     if (err) {
       err.message = "The file is so heavy for my service";
       return res.send(err);
     }
     const {
-      amount,
-      moneyType,
-      payType,
-      cuitCuil,
-      iva,
       detail,
       urlFile,
       authorId,
     } = req.body;
-    const pay = await PayModel.create({
-      amount: amount,
-      moneyType: moneyType,
-      payType: payType,
-      cuitCuil: cuitCuil,
-      iva: iva,
+    const certificate = await StudentCertificateModel.create({
       detail: detail,
       urlFile: req.file.filename,
       authorId: authorId,
     });
-    if (pay) {
-      res.status(200).send("Pago creado!");
+    if (certificate) {
+      res.status(200).send("Certificado creado!");
     } else {
-      res.status(500).json({ msg: "Error al crear el pago." });
+      res.status(500).json({ msg: "Error al crear el certificado." });
     }
   });
 };
@@ -62,7 +52,7 @@ exports.create = async (req, res) => {
 //     urlFile,
 //     authorId,
 //   } = req.body;
-//   const pay = await PayModel.create({
+//   const pay = await StudentCertificateModel.create({
 //     amount: amount,
 //     moneyType: moneyType,
 //     payType: payType,
@@ -82,63 +72,53 @@ exports.create = async (req, res) => {
 exports.updateById = async (req, res) => {
   const { id } = req.params;
   const {
-    amount,
-    moneyType,
-    payType,
-    cuitCuil,
-    iva,
     detail,
     urlFile,
     authorId,
   } = req.body;
 
-  const pay = await PayModel.update(
+  const pay = await StudentCertificateModel.update(
     {
-      amount: amount,
-      moneyType: moneyType,
-      payType: payType,
-      cuitCuil: cuitCuil,
-      iva: iva,
       detail: detail,
       urlFile: urlFile,
       authorId: authorId,
     },
     { where: { id: id } }
   );
-  if (pay) {
-    res.status(200).json("Pago editado!");
+  if (certificate) {
+    res.status(200).json("Certificado editado!");
   } else {
-    res.status(500).json({ msg: "El pago no existe!" });
+    res.status(500).json({ msg: "El certificado no existe!" });
   }
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
-  const pay = await PayModel.findByPk(id);
+  const certificate = await StudentCertificateModel.findByPk(id);
 
-  if (pay) {
-    res.status(200).json({ response: pay });
+  if (certificate) {
+    res.status(200).json({ response: certificate });
   } else {
-    res.status(500).json({ msg: "Error al obtener el pago." });
+    res.status(500).json({ msg: "Error al obtener el certificado." });
   }
 };
 exports.getAll = async (req, res) => {
-  const pay = await PayModel.findAll();
-  if (pay) {
-    res.status(200).json({ response: pay });
+  const certificate = await StudentCertificateModel.findAll();
+  if (certificate) {
+    res.status(200).json({ response: certificate });
   } else {
     res.status(500).json({ msg: "Error al obtener los pagos." });
   }
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
-  const pay = await PayModel.destroy({
+  const pay = await StudentCertificateModel.destroy({
     where: { id: id },
   });
 
   if (pay) {
-    res.status(200).send("Pago eliminado!");
+    res.status(200).send("Certificado eliminado!");
   } else {
-    res.status(500).json({ msg: "Error al eliminar el pago." });
+    res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
 };
 
@@ -199,7 +179,7 @@ exports.getAllPaginated = async (req, res) => {
     options.where.endDate = { [Op.between]: [sinceDateEnd, untilDateEnd] };
   } */
 
-  const { count, rows } = await PayModel.findAndCountAll(options);
+  const { count, rows } = await StudentCertificateModel.findAndCountAll(options);
   const cantPages = calcTotalPages(count);
 
   if (rows) {

@@ -21,7 +21,7 @@ const ModalDelete = ({ entity, showAlert }) => {
       <Modal show={true} backdrop="static" centered>
         <Modal.Header>
           <Modal.Title>
-            ¿Desea eliminar a <strong>{entity.entityName}</strong>?
+            ¿Desea eliminar <strong>{entity.entityName}</strong>?
           </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
