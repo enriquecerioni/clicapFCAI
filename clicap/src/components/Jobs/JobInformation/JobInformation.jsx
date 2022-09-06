@@ -64,18 +64,10 @@ export const JobInformation = () => {
                 <div>
                   <p className="m-0 fw-bold">Evaluadores</p>
                   <p className="m-0">
-                    {jobId.evaluatorId1
-                      ? jobId.evaluator
-                        ? jobId.evaluator1.name
-                        : null
-                      : null}
+                    {jobId.evaluatorId1 ? jobId.evaluator1.name : null}
                   </p>
                   <p className="m-0">
-                    {jobId.name
-                      ? jobId.evaluatorId2
-                        ? jobId.evaluator2.name
-                        : null
-                      : null}
+                    {jobId.evaluatorId2 ? jobId.evaluator2.name : null}
                   </p>
                 </div>
               </div>
