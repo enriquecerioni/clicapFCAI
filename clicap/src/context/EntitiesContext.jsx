@@ -32,7 +32,6 @@ const EntitiesProvider = ({ children }) => {
     evaluatorId2: "",
   };
 
-  //ESTADO INICIAL PARA SUBIR TRABAJO
   const initialStatePay = {
     amount: "",
     moneyType: "",
@@ -44,7 +43,6 @@ const EntitiesProvider = ({ children }) => {
     authorId: userId,
   };
 
-  //ESTADO INICIAL PARA SUBIR TRABAJO
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
@@ -58,10 +56,6 @@ const EntitiesProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   //TRABAJO
   const [job, setJob] = useState(initialStateUpJob);
-  //PAGO
-  const [pay, setPay] = useState(initialStatePay);
-  //PAGO
-  const [certificate, setCertificate] = useState(initialStateCertificate);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
   const [totalPages, setTotalPages] = useState("");
@@ -69,12 +63,6 @@ const EntitiesProvider = ({ children }) => {
   const [myJobs, setMyJobs] = useState([]);
   //UN TRABAJO
   const [jobId, setJobId] = useState([]);
-  //MIS PAGOS
-  const [myPays, setMyPays] = useState([]);
-  //MIS CERTIFICADOS
-  const [myCertificates, setMyCertificates] = useState([]);
-  //TODOS LOS PAGOS
-  const [allPays, setAllPays] = useState([]);
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
   const [usersSelector, setUsersSelector] = useState([]);
@@ -83,6 +71,16 @@ const EntitiesProvider = ({ children }) => {
   const [areasSelector, setAreasSelector] = useState([]);
   //CORRECCIONES
   const [corrections, setCorrections] = useState([]);
+  const [myPays, setMyPays] = useState([]);
+  //MIS CERTIFICADOS
+  const [myCertificates, setMyCertificates] = useState([]);
+  //TODOS LOS PAGOS
+  const [pay, setPay] = useState(initialStatePay);
+  const [allPays, setAllPays] = useState([]);
+  //PAGO
+  const [certificate, setCertificate] = useState(initialStateCertificate);
+  //Modalidades
+  const [modalities, setModalities] = useState([]);
 
   // -----------------------------------------------------------------
   //Registro - Editar Usuario
@@ -167,190 +165,188 @@ const EntitiesProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+  //Subida de un pago
+  const handleChangePay = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setPay({
+      ...pay,
+      [e.target.name]: value,
+    });
+  };
+  const createNewPay = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in pay) {
+        bodyFormData.append(key, pay[key]);
+      }
+      await formDataAxios("POST", `/pay/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    //Subida de un pago
-    const handleChangePay = (e) => {
-      let value =
-        e.target.type === "file"
-          ? e.target.value === ""
-            ? ""
-            : e.target.files[0]
-          : e.target.value;
-      setPay({
-        ...pay,
-        [e.target.name]: value,
-      });
-    };
-    const createNewPay = async () => {
-      try {
-        const bodyFormData = new FormData();
-        for (const key in pay) {
-          bodyFormData.append(key, pay[key]);
-        }
-        await formDataAxios("POST", `/pay/create`, "", bodyFormData);
-      } catch (e) {
-        console.log(e);
+  //Subida de un certificado
+  const handleChangeCertificate = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setCertificate({
+      ...certificate,
+      [e.target.name]: value,
+    });
+  };
+  const createNewCertificate = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in certificate) {
+        bodyFormData.append(key, certificate[key]);
       }
-    };
-
-    //Subida de un certificado
-    const handleChangeCertificate = (e) => {
-      let value =
-        e.target.type === "file"
-          ? e.target.value === ""
-            ? ""
-            : e.target.files[0]
-          : e.target.value;
-      setCertificate({
-        ...certificate,
-        [e.target.name]: value,
-      });
-    };
-    const createNewCertificate = async () => {
-      try {
-        const bodyFormData = new FormData();
-        for (const key in certificate) {
-          bodyFormData.append(key, certificate[key]);
-        }
-        await formDataAxios("POST", `/student/create`, "", bodyFormData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    //Buscar las correciones de un trabajo
-    const getCorrectionsByJob = async (id) => {
-      try {
-        const corrections = await reqAxios(
-          "GET",
-          `/jobdetails/get?jobId=${id}`,
-          "",
-          ""
-        );
-        setCorrections(corrections.data.response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    //Pagos
-    const getAllPays = async () => {
-      const getAllPay = await reqAxios("GET", "/pay/getall", "", "");
-      setAllPays(getAllPay.data.response);
-    };
-    //Mis Pagos
-    const getMyPays = async (numPage, dataFilter) => {
-      try {
-        const dataMyPays = await reqAxios(
-          "GET",
-          `/pay/get/pay/${numPage}`,
-          dataFilter,
-          ""
-        );
-        setMyPays(dataMyPays.data.response);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    //Mis Certificados
-    const getMyCertificates = async (numPage, dataFilter) => {
-      try {
-        const dataMyCertificates = await reqAxios(
-          "GET",
-          `/student/get/certificate/${numPage}`,
-          dataFilter,
-          ""
-        );
-        setMyCertificates(dataMyCertificates.data.response);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    //Areas
-    const getAllAreas = async () => {
-      const getAllArea = await reqAxios("GET", "/area/getall", "", "");
-      setAreas(getAllArea.data.response);
-      const array = [];
-      getAllArea.data.response.map((item, i) => {
-        array.push({
-          label: item.name,
-          value: item.id,
-          target: { name: "areaId", value: item.id },
-        });
-      });
-      setAreasSelector(array);
-    };
-    //Modalidades
-    const [modalities, setModalities] = useState([]);
-    const getAllmodalities = async () => {
-      const getAllmodalities = await reqAxios(
+      await formDataAxios("POST", `/student/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  //Buscar las correciones de un trabajo
+  const getCorrectionsByJob = async (id) => {
+    try {
+      const corrections = await reqAxios(
         "GET",
-        "/jobmodality/getall",
+        `/jobdetails/get?jobId=${id}`,
         "",
         ""
       );
-      setModalities(getAllmodalities.data.response);
-    };
-    //Usuarios
-    const getAllUsers = async () => {
-      const getAllUser = await reqAxios("GET", "/user/getall", "", "");
-      setUsers(getAllUser.data.response);
-      const array = [];
-      getAllUser.data.response.map((item, i) => {
-        array.push({
-          label: item.name + " " + item.surname,
-          value: item.id,
-          target: { name: "authorId", value: item.id },
-        });
-      });
-      setUsersSelector(array);
-    };
-
-    return (
-      <EntitiesContext.Provider
-        value={{
-          userRegister,
-          setUserRegister,
-          handleChangeRegister,
-          getAllRoles,
-          roles,
-          getDataUser,
-          job,
-          handleChangeUpJob,
-          createNewJob,
-          areas,
-          getAllAreas,
-          allJobs,
-          getAllJobs,
-          users,
-          getAllUsers,
-          myJobs,
-          getMyJobs,
-          myPays,
-          pay,
-          createNewPay,
-          allPays,
-          getAllPays,
-          handleChangePay,
-          getMyPays,
-          certificate,
-          myCertificates,
-          getMyCertificates,
-          handleChangeCertificate,
-          createNewCertificate,
-          modalities,
-          getAllmodalities,
-          getJobId,
-          jobId,
-          usersSelector,
-          areasSelector,
-          totalPages,
-          getCorrectionsByJob,
-          corrections,
-        }}
-      >
-        {children}
-      </EntitiesContext.Provider>
-    );
+      setCorrections(corrections.data.response);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  //Pagos
+  const getAllPays = async () => {
+    const getAllPay = await reqAxios("GET", "/pay/getall", "", "");
+    setAllPays(getAllPay.data.response);
+  };
+  //Mis Pagos
+  const getMyPays = async (numPage, dataFilter) => {
+    try {
+      const dataMyPays = await reqAxios(
+        "GET",
+        `/pay/get/pay/${numPage}`,
+        dataFilter,
+        ""
+      );
+      setMyPays(dataMyPays.data.response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  //Mis Certificados
+  const getMyCertificates = async (numPage, dataFilter) => {
+    try {
+      const dataMyCertificates = await reqAxios(
+        "GET",
+        `/student/get/certificate/${numPage}`,
+        dataFilter,
+        ""
+      );
+      setMyCertificates(dataMyCertificates.data.response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Areas
+  const getAllAreas = async () => {
+    const getAllArea = await reqAxios("GET", "/area/getall", "", "");
+    setAreas(getAllArea.data.response);
+    const array = [];
+    getAllArea.data.response.map((item, i) => {
+      array.push({
+        label: item.name,
+        value: item.id,
+        target: { name: "areaId", value: item.id },
+      });
+    });
+    setAreasSelector(array);
+  };
+
+  const getAllmodalities = async () => {
+    const getAllmodalities = await reqAxios(
+      "GET",
+      "/jobmodality/getall",
+      "",
+      ""
+    );
+    setModalities(getAllmodalities.data.response);
+  };
+  //Usuarios
+  const getAllUsers = async () => {
+    const getAllUser = await reqAxios("GET", "/user/getall", "", "");
+    setUsers(getAllUser.data.response);
+    const array = [];
+    getAllUser.data.response.map((item, i) => {
+      array.push({
+        label: item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "authorId", value: item.id },
+      });
+    });
+    setUsersSelector(array);
+  };
+
+  return (
+    <EntitiesContext.Provider
+      value={{
+        userRegister,
+        setUserRegister,
+        handleChangeRegister,
+        getAllRoles,
+        roles,
+        getDataUser,
+        job,
+        handleChangeUpJob,
+        createNewJob,
+        areas,
+        getAllAreas,
+        allJobs,
+        getAllJobs,
+        users,
+        getAllUsers,
+        myJobs,
+        getMyJobs,
+        myPays,
+        pay,
+        createNewPay,
+        allPays,
+        getAllPays,
+        handleChangePay,
+        getMyPays,
+        certificate,
+        myCertificates,
+        getMyCertificates,
+        handleChangeCertificate,
+        createNewCertificate,
+        modalities,
+        getAllmodalities,
+        getJobId,
+        jobId,
+        usersSelector,
+        areasSelector,
+        totalPages,
+        getCorrectionsByJob,
+        corrections,
+      }}
+    >
+      {children}
+    </EntitiesContext.Provider>
+  );
 };
 export default EntitiesProvider;
