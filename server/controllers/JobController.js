@@ -191,7 +191,8 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, areaId } = req.query;
+  const { authorId, name, surname, areaId, evaluatorId1, evaluatorId2 } =
+    req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -225,6 +226,12 @@ exports.getAllPaginated = async (req, res) => {
   }
   if (authorId) {
     options.where.authorId = authorId;
+  }
+  if (evaluatorId1) {
+    options.where.evaluatorId1 = evaluatorId1;
+  }
+  if (evaluatorId2) {
+    options.where.evaluatorId2 = evaluatorId2;
   }
   if (areaId) {
     options.where.areaId = areaId;

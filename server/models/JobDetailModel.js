@@ -26,6 +26,7 @@ const JobDetailModel = db.define("jobdetail", {
   date: {
     allowNull: false,
     type: DataTypes.DATEONLY,
+    defaultValue: db.fn("now"),
   },
 });
 

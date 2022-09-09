@@ -8,15 +8,15 @@ const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
 
 exports.create = async (req, res) => {
-  const { JobId, correctionId, details, date } = req.body;
+  const { jobId, correctionId, details } = req.body;
+  console.log(req.body);
   const detail = await JobDetailModel.create({
-    JobId,
+    jobId,
     correctionId,
     details,
-    date,
   });
   if (detail) {
-    res.status(200).send("Corrección creada!");
+    res.status(200).json({ msg: "Correción creada!" });
   } else {
     res.status(500).json({ msg: "Error al crear la corrección." });
   }
