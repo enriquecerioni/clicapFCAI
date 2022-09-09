@@ -11,14 +11,14 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import PaidIcon from '@mui/icons-material/Paid';
-import TaskIcon from '@mui/icons-material/Task';
+import PaidIcon from "@mui/icons-material/Paid";
+import TaskIcon from "@mui/icons-material/Task";
 import { Link, useNavigate } from "react-router-dom";
 import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
 
 const Sidebar = () => {
-  const roleId = getDataUserByKey('roleId');
-  const idUser = getDataUserByKey('id');
+  const roleId = getDataUserByKey("roleId");
+  const idUser = getDataUserByKey("id");
   const loggout = () => {
     sessionStorage.removeItem("user");
     navigate("/");
@@ -26,6 +26,12 @@ const Sidebar = () => {
   };
   const navigate = useNavigate();
 
+  const redirectJobPage = () => {
+    if (roleId === 1 || roleId === 2) {
+      return navigate("/jobs");
+    }
+    navigate("/myjobs");
+  };
   return (
     <div className="sidebar sidebarshow col-lg-2 col-md-6 animate__animated animate__fadeInLeftBig">
       <div className="center">
@@ -36,24 +42,50 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </li>
           <p className="title">LISTS</p>
-          { roleId === 1 ? <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Usuarios</span>
-            </li>
-          </Link> : null}
-            <li onClick={ roleId === 1 ? ()=>navigate('/jobs') : ()=>navigate('/myjobs') }>
-              <StoreIcon className="icon" />
-              { roleId === 1 ? <span>Listado de Trabajos</span> : <span>Mis Trabajos</span>}
-            </li>
-            <li onClick={ roleId === 1 ? ()=>navigate('/pays') : ()=>navigate('/mypays') }>
-              <PaidIcon className="icon" />
-              { roleId === 1 ? <span>Listado de Pagos</span> : <span>Mis Pagos</span>}
-            </li>
-            <li onClick={ roleId === 1 ? ()=>navigate('/certificates') : ()=>navigate('/student') }>
-              <TaskIcon className="icon" />
-              { roleId === 1 ? <span>Listado de Certificados</span> : <span>Certificado de Alumno</span>}
-            </li>
+          {roleId === 1 ? (
+            <Link to="/users" style={{ textDecoration: "none" }}>
+              <li>
+                <PersonOutlineIcon className="icon" />
+                <span>Usuarios</span>
+              </li>
+            </Link>
+          ) : null}
+          <li onClick={() => redirectJobPage()}>
+            <StoreIcon className="icon" />
+            {roleId === 1 ? (
+              <span>Listado de Trabajos</span>
+            ) : roleId === 2 ? (
+              <span>Trabajos asignados</span>
+            ) : (
+              <span>Mis Trabajos</span>
+            )}
+          </li>
+          <li
+            onClick={
+              roleId === 1 ? () => navigate("/pays") : () => navigate("/mypays")
+            }
+          >
+            <PaidIcon className="icon" />
+            {roleId === 1 ? (
+              <span>Listado de Pagos</span>
+            ) : (
+              <span>Mis Pagos</span>
+            )}
+          </li>
+          <li
+            onClick={
+              roleId === 1
+                ? () => navigate("/certificates")
+                : () => navigate("/student")
+            }
+          >
+            <TaskIcon className="icon" />
+            {roleId === 1 ? (
+              <span>Listado de Certificados</span>
+            ) : (
+              <span>Certificado de Alumno</span>
+            )}
+          </li>
           {/* <Link to="/works" style={{ textDecoration: "none" }}>
             <li>
               <CreditCardIcon className="icon" />
@@ -87,7 +119,7 @@ const Sidebar = () => {
             <span>Settings</span>
           </li> */}
           <p className="title">USUARIO</p>
-          <li onClick={()=>navigate(`/user/edit/${idUser}`)}>
+          <li onClick={() => navigate(`/user/edit/${idUser}`)}>
             <AccountCircleOutlinedIcon className="icon" />
             <span>Editar Perfil</span>
           </li>

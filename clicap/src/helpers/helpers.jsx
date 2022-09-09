@@ -23,10 +23,9 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       url: API_URL + shortUrl,
       params: param,
       data: data,
-      headers: {
-        Accept: "application/JSON",
+/*       headers: {
         "Content-Type": "application/json",
-      },
+      }, */
     });
     console.log(res);
     if (method != "get") {

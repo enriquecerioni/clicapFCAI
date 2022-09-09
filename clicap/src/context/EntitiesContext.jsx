@@ -48,6 +48,12 @@ const EntitiesProvider = ({ children }) => {
     urlFile: "",
     authorId: userId,
   };
+  //ESTADO INICIAL DE UNA CORRECCION
+  const initialCorrection = {
+    jobId: "",
+    correctionId: "",
+    details: "",
+  };
   //--------------------------------------------------------------
   //ESTADOS
   //REGISTRO
@@ -70,6 +76,7 @@ const EntitiesProvider = ({ children }) => {
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
   //CORRECCIONES
+  const [correction, setCorrection] = useState(initialCorrection);
   const [corrections, setCorrections] = useState([]);
   const [myPays, setMyPays] = useState([]);
   //MIS CERTIFICADOS
@@ -343,6 +350,8 @@ const EntitiesProvider = ({ children }) => {
         totalPages,
         getCorrectionsByJob,
         corrections,
+        correction,
+        setCorrection,
       }}
     >
       {children}
