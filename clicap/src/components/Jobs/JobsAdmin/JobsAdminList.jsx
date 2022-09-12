@@ -3,11 +3,12 @@ import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
 import { useEffect } from "react";
-import { reqAxios } from "../../../helpers/helpers";
+import { getDataUserByKey, reqAxios } from "../../../helpers/helpers";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 
 export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
+  const roleId = getDataUserByKey("id");
   const { job, setJob, getAllJobs, allJobs } = useContext(EntitiesContext);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
 
@@ -129,55 +130,68 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
           )}
         </td>
         <td>{work.area.name}</td>
-        <td>
-          {assignEvaluator ? (
-            <Button
-              className="btn btn-danger"
-              onClick={() => setAssignEvaluator(!assignEvaluator)}
-            >
-              <i className="fa-solid fa-xmark"></i>
-            </Button>
-          ) : (
-            <i
-              type="button"
-              className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-              onClick={deleteJob}
-            ></i>
-          )}
-        </td>
-        <td className="">
-          {assignEvaluator ? (
+        {roleId !== 1 ? (
+          <>
+            <td>
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-danger"
+                  onClick={() => setAssignEvaluator(!assignEvaluator)}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="fa-solid fa-trash-can icon-size-table btn-delete-table"
+                  onClick={deleteJob}
+                ></i>
+              )}
+            </td>
+            <td className="">
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-success"
+                  onClick={() => addEvaluators(work.id)}
+                >
+                  <i className="fa-solid fa-check"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+                  onClick={() => navigate(`/works/edit/${work.id}`)}
+                ></i>
+              )}
+            </td>
+            <td>
+              {!assignEvaluator ? (
+                <i
+                  type="button"
+                  className="icon-size-table fa-solid fa-user-tie"
+                  onClick={() => setAssignEvaluator(!assignEvaluator)}
+                ></i>
+              ) : null}
+            </td>
+            <td>
+              <Button
+                className="btn btn-success"
+                onClick={() => navigate("/customers/create")}
+              >
+                Aprobar
+              </Button>
+            </td>
+          </>
+        ) : (
+          <td>
             <Button
               className="btn btn-success"
-              onClick={() => addEvaluators(work.id)}
+              onClick={() => navigate(`/job/corrections/${work.id}`)}
             >
-              <i className="fa-solid fa-check"></i>
+              Correguir
             </Button>
-          ) : (
-            <i
-              type="button"
-              className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-              onClick={() => navigate(`/works/edit/${work.id}`)}
-            ></i>
-          )}
-        </td>
-        <td>
-          {!assignEvaluator ? (
-            <i
-              type="button"
-              className="icon-size-table fa-solid fa-user-tie"
-              onClick={() => setAssignEvaluator(!assignEvaluator)}
-            ></i>
-          ) : null}
-        </td>
-        <td>
-          <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
-          >
-            Aprobar
-          </Button>
-        </td>
+          </td>
+        )}
       </tr>
     </>
   );

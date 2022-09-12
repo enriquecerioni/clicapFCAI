@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { useState } from "react";
-import { formDataAxios, getDataUserByKey, reqAxios } from "../helpers/helpers";
+import { formDataAxios, getDataUserByKey, reqAxios, waitAndRefresh } from "../helpers/helpers";
 export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
@@ -40,13 +40,19 @@ const EntitiesProvider = ({ children }) => {
     iva: "",
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: getDataUserByKey("id"),
   };
 
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
     authorId: userId,
+  };
+  //ESTADO INICIAL DE UNA CORRECCION
+  const initialCorrection = {
+    jobId: "",
+    correctionId: "",
+    details: "",
   };
   //--------------------------------------------------------------
   //ESTADOS
@@ -70,6 +76,7 @@ const EntitiesProvider = ({ children }) => {
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
   //CORRECCIONES
+  const [correction, setCorrection] = useState(initialCorrection);
   const [corrections, setCorrections] = useState([]);
   const [myPays, setMyPays] = useState([]);
   //MIS CERTIFICADOS
@@ -191,6 +198,19 @@ const EntitiesProvider = ({ children }) => {
     }
   };
 
+  const updatePayInvoice = async (id) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in pay) {
+        bodyFormData.append(key, pay[key]);
+      }
+      await formDataAxios("POST", `/pay/edit/invoice/${id}`, "", bodyFormData);
+      waitAndRefresh(`/pays`, 1000);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Subida de un certificado
   const handleChangeCertificate = (e) => {
     let value =
@@ -278,7 +298,7 @@ const EntitiesProvider = ({ children }) => {
     setAreasSelector(array);
   };
 
-  const getAllmodalities = async () => {
+  const getAllModalities = async () => {
     const getAllmodalities = await reqAxios(
       "GET",
       "/jobmodality/getall",
@@ -335,7 +355,9 @@ const EntitiesProvider = ({ children }) => {
         handleChangeCertificate,
         createNewCertificate,
         modalities,
-        getAllmodalities,
+        getAllModalities,
+        updatePayInvoice,
+
         getJobId,
         jobId,
         usersSelector,
@@ -343,6 +365,8 @@ const EntitiesProvider = ({ children }) => {
         totalPages,
         getCorrectionsByJob,
         corrections,
+        correction,
+        setCorrection,
       }}
     >
       {children}
