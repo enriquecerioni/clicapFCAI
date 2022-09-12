@@ -46,11 +46,6 @@ exports.create = async (req, res) => {
       urlFile,
       authorId,
     } = req.body;
-
-    if (authorId === "") {
-      authorId = null;
-    }
-
     const pay = await PayModel.create({
       amount: amount,
       moneyType: moneyType,
@@ -62,7 +57,7 @@ exports.create = async (req, res) => {
       authorId: authorId,
     });
     if (pay) {
-      res.status(200).send("Pago creado!");
+      res.status(200).json({msg:"Pago creado!"});
     } else {
       res.status(500).json({ msg: "Error al crear el pago." });
     }
@@ -83,9 +78,9 @@ exports.updateInvoice = async (req, res) => {
       { where: { id: id } }
     );
     if (pay) {
-      res.status(200).json("Pago editado!");
+      res.status(200).json({msg:"Pago facturado correctamente!"});
     } else {
-      res.status(500).json({ msg: "El pago no existe!" });
+      res.status(500).json({ msg: "Error al generar la factura!" });
     }
   });
 };

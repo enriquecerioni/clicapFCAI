@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { useState } from "react";
-import { formDataAxios, getDataUserByKey, reqAxios } from "../helpers/helpers";
+import { formDataAxios, getDataUserByKey, reqAxios, waitAndRefresh } from "../helpers/helpers";
 export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
@@ -40,7 +40,7 @@ const EntitiesProvider = ({ children }) => {
     iva: "",
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: getDataUserByKey("id"),
   };
 
   const initialStateCertificate = {
@@ -205,6 +205,7 @@ const EntitiesProvider = ({ children }) => {
         bodyFormData.append(key, pay[key]);
       }
       await formDataAxios("POST", `/pay/edit/invoice/${id}`, "", bodyFormData);
+      waitAndRefresh(`/pays`, 1000);
     } catch (e) {
       console.log(e);
     }
@@ -297,7 +298,7 @@ const EntitiesProvider = ({ children }) => {
     setAreasSelector(array);
   };
 
-  const getAllmodalities = async () => {
+  const getAllModalities = async () => {
     const getAllmodalities = await reqAxios(
       "GET",
       "/jobmodality/getall",
@@ -356,7 +357,7 @@ const EntitiesProvider = ({ children }) => {
         modalities,
         getAllModalities,
         updatePayInvoice,
-        getAllmodalities,
+
         getJobId,
         jobId,
         usersSelector,
