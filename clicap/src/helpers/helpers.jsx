@@ -23,15 +23,14 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       url: API_URL + shortUrl,
       params: param,
       data: data,
-      headers: {
-        Accept: "application/JSON",
+/*       headers: {
         "Content-Type": "application/json",
-      },
+      }, */
     });
-    /*     if (method != "get") {
-      alertSuccess(res.data.msg);
-    } */
     console.log(res);
+    if (method != "get") {
+      alertSuccess(res.data.msg);
+    }
     return res;
   } catch (error) {
     return error;

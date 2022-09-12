@@ -46,6 +46,11 @@ exports.create = async (req, res) => {
       urlFile,
       authorId,
     } = req.body;
+
+    if (authorId === "") {
+      authorId = null;
+    }
+
     const pay = await PayModel.create({
       amount: amount,
       moneyType: moneyType,
