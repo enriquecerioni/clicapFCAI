@@ -28,6 +28,10 @@ const JobModel = db.define("job", {
       key: "id",
     },
   },
+  status: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   members: {
     type: DataTypes.STRING,
   },

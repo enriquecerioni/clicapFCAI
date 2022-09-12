@@ -27,6 +27,8 @@ exports.upload = async (req, res) => {
       return res.send(err);
     }
     const { name, areaId, authorId, members, jobModalityId } = req.body;
+    // status 1 = No corregido | 0 = corregido
+    const status = 1;
     let { evaluatorId1, evaluatorId2 } = req.body;
 
     if (evaluatorId1 === "") {
@@ -42,6 +44,7 @@ exports.upload = async (req, res) => {
       areaId: areaId,
       members: members,
       authorId: authorId,
+      status,
       urlFile: req.file.filename,
       evaluatorId1,
       evaluatorId2,
@@ -92,6 +95,7 @@ exports.updateById = async (req, res) => {
     authorId,
     members,
     urlFile,
+    status,
     evaluatorId1,
     evaluatorId2,
   } = req.body;
@@ -102,6 +106,7 @@ exports.updateById = async (req, res) => {
       areaId: areaId,
       members: members,
       authorId: authorId,
+      status,
       urlFile: urlFile,
       evaluatorId1: evaluatorId1,
       evaluatorId2: evaluatorId2,
