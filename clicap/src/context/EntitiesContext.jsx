@@ -166,6 +166,18 @@ const EntitiesProvider = ({ children }) => {
     }
   };
 
+  const updatePayInvoice = async (id) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in pay) {
+        bodyFormData.append(key, pay[key]);
+      }
+      await formDataAxios("POST", `/pay/edit/invoice/${id}`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Subida de un certificado
   const handleChangeCertificate = (e) => {
     let value =
@@ -280,6 +292,7 @@ const EntitiesProvider = ({ children }) => {
         createNewCertificate,
         modalities,
         getAllModalities,
+        updatePayInvoice
       }}
     >
       {children}
