@@ -33,6 +33,7 @@ export const NewCorrections = () => {
       "",
       correction
     );
+    const setCorrection = await reqAxios("PUT", `/job/setcorrection/${id}`, "", "");
   };
   useEffect(() => {
     setCorrection({

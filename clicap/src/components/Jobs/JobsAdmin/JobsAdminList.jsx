@@ -187,8 +187,9 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
             <Button
               className="btn btn-success"
               onClick={() => navigate(`/job/corrections/${work.id}`)}
+              disabled={work.status === 1 ? true : false}
             >
-              Correguir
+              Corregir
             </Button>
           </td>
         )}

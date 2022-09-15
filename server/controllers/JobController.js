@@ -27,8 +27,8 @@ exports.upload = async (req, res) => {
       return res.send(err);
     }
     const { name, areaId, authorId, members, jobModalityId } = req.body;
-    // status 1 = No corregido | 0 = corregido
-    const status = 1;
+    // status 1 = Corregido | 0 = No corregido
+    const status = 0;
     let { evaluatorId1, evaluatorId2 } = req.body;
 
     if (evaluatorId1 === "") {
@@ -263,5 +263,21 @@ exports.getAllPaginated = async (req, res) => {
     res.status(200).json({ pages: cantPages, response: rows });
   } else {
     res.status(500).json({ msg: "La instancia no existe." });
+  }
+};
+
+exports.setStatusJob = async (req, res) => {
+  const { id } = req.params;
+  const status = 1;
+  const doc = await JobModel.update(
+    {
+      status,
+    },
+    { where: { id: id } }
+  );
+  if (doc) {
+    res.status(200).json({ msg: "Trabajo corregido!" });
+  } else {
+    res.status(500).json({ msg: "El Trabajo no existe!" });
   }
 };

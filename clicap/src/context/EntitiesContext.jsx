@@ -1,6 +1,11 @@
 import React, { createContext } from "react";
 import { useState } from "react";
-import { formDataAxios, getDataUserByKey, reqAxios, waitAndRefresh } from "../helpers/helpers";
+import {
+  formDataAxios,
+  getDataUserByKey,
+  reqAxios,
+  waitAndRefresh,
+} from "../helpers/helpers";
 export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
@@ -26,6 +31,7 @@ const EntitiesProvider = ({ children }) => {
     jobModalityId: "",
     areaId: "",
     authorId: userId,
+    status: 0,
     members: "",
     urlFile: "",
     evaluatorId1: "",
@@ -240,7 +246,7 @@ const EntitiesProvider = ({ children }) => {
     try {
       const corrections = await reqAxios(
         "GET",
-        `/jobdetails/get?jobId=${id}`,
+        `/jobdetails/get/${id}`,
         "",
         ""
       );

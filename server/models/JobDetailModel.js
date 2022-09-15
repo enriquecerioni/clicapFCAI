@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/database");
 const CorrectionModel = require("./CorrectionModel");
 const JobModel = require("./JobModel");
+const UserModel = require("./UserModel");
 
 const JobDetailModel = db.define("jobdetail", {
   id: {
@@ -26,7 +27,7 @@ const JobDetailModel = db.define("jobdetail", {
   date: {
     allowNull: false,
     type: DataTypes.DATEONLY,
-    defaultValue: db.fn("now"),
+    /* defaultValue: db.fn("now"), */
   },
 });
 

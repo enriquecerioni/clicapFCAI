@@ -43,7 +43,7 @@ exports.updateById = async (req, res) => {
 exports.getById = async (req, res) => {
   const { jobId } = req.params;
   const detail = await JobDetailModel.findAll({
-    where: jobId,
+    where: { jobId },
     include: [
       { model: CorrectionModel },
       {

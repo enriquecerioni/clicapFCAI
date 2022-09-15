@@ -4,6 +4,7 @@ const JobController = require("../controllers/JobController");
 
 router.post("/create", JobController.upload);
 router.put("/edit/:id", JobController.updateById);
+router.put("/setcorrection/:id", JobController.setStatusJob);
 router.get("/get/:id", JobController.getById);
 router.get("/get/jobs/:page", JobController.getAllPaginated);
 router.get("/getall", JobController.getAll);
