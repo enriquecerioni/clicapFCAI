@@ -212,9 +212,9 @@ exports.getAllPaginated = async (req, res) => {
   //     [Op.like]: `%${surname}%`,
   //   };
   // }
-  // if (authorId) {
-  //   options.where.authorId = authorId;
-  // }
+  if (authorId) {
+    options.where.authorId = authorId;
+  }
   // if (areaId) {
   //   options.where.areaId = areaId;
   // }
