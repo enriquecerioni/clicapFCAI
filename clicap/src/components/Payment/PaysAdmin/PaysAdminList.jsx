@@ -41,12 +41,21 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
           ></i>
         </td>
         <td>
-          <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
+          {
+            pay.invoice ? 
+            <Button
+              className="btn btn-success"
+            >
+              Facturado
+            </Button>
+            :
+            (<Button
+            className="btn btn-primary"
+            onClick={() => navigate(`/pay/edit/${pay.id}`)}
           >
             Subir Factura
-          </Button>
+          </Button>)
+          }
         </td>
       </tr>
     </>

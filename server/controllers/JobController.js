@@ -5,6 +5,8 @@ const multer = require("multer");
 const path = require("path");
 const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
+const JobModalityModel = require("../models/JobModalityModel");
+const fs = require("fs");
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -25,13 +27,27 @@ exports.upload = async (req, res) => {
       return res.send(err);
     }
     const { name, areaId, authorId, members, jobModalityId } = req.body;
+    // status 1 = Corregido | 0 = No corregido
+    const status = 0;
+    let { evaluatorId1, evaluatorId2 } = req.body;
+
+    if (evaluatorId1 === "") {
+      evaluatorId1 = null;
+    }
+    if (evaluatorId2 === "") {
+      evaluatorId2 = null;
+    }
+
     const doc = await JobModel.create({
       name: name,
       jobModalityId,
       areaId: areaId,
       members: members,
       authorId: authorId,
+      status,
       urlFile: req.file.filename,
+      evaluatorId1,
+      evaluatorId2,
     });
     if (doc) {
       return res.status(200).json({ msg: "Trabajo creado!" });
@@ -39,6 +55,18 @@ exports.upload = async (req, res) => {
       return res.status(500).json({ msg: "Error al crear el Trabajo." });
     }
   });
+};
+exports.downloadFile = (req, res) => {
+  console.log("Descargo el archivo");
+  const { nameFile } = req.query;
+  const ruta = path.join(__dirname, `../public/documents/${nameFile}`);
+  const file = fs.createReadStream(ruta);
+  const filename = new Date().toISOString();
+  res.setHeader(
+    "Content-Disposition",
+    'attachment: filename="' + filename + '"'
+  );
+  file.pipe(res);
 };
 
 exports.create = async (req, res) => {
@@ -67,6 +95,7 @@ exports.updateById = async (req, res) => {
     authorId,
     members,
     urlFile,
+    status,
     evaluatorId1,
     evaluatorId2,
   } = req.body;
@@ -77,6 +106,7 @@ exports.updateById = async (req, res) => {
       areaId: areaId,
       members: members,
       authorId: authorId,
+      status,
       urlFile: urlFile,
       evaluatorId1: evaluatorId1,
       evaluatorId2: evaluatorId2,
@@ -84,14 +114,23 @@ exports.updateById = async (req, res) => {
     { where: { id: id } }
   );
   if (doc) {
-    res.status(200).json("Trabajo editado!");
+    res.status(200).json({ msg: "Trabajo editado!" });
   } else {
     res.status(500).json({ msg: "El Trabajo no existe!" });
   }
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
-  const doc = await JobModel.findByPk(id);
+  const doc = await JobModel.findAll({
+    where: { id },
+    include: [
+      { model: AreaModel },
+      { model: JobModalityModel },
+      { model: UserModel, as: "author" },
+      { model: UserModel, as: "evaluator1" },
+      { model: UserModel, as: "evaluator2" },
+    ],
+  });
 
   if (doc) {
     res.status(200).json({ response: doc });
@@ -101,7 +140,12 @@ exports.getById = async (req, res) => {
 };
 exports.getAll = async (req, res) => {
   const doc = await JobModel.findAll({
-    include: [{ model: UserModel, model: AreaModel }],
+    include: [
+      { model: UserModel, as: "author" },
+      { model: AreaModel },
+      { model: UserModel, as: "evaluator1" },
+      { model: UserModel, as: "evaluator2" },
+    ],
   });
   if (doc) {
     res.status(200).json({ response: doc });
@@ -152,15 +196,25 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, areaId } = req.query;
+  const { authorId, name, surname, areaId, evaluatorId1, evaluatorId2 } =
+    req.query;
   console.log(req.query);
   const { page } = req.params;
-
   const Op = Sequelize.Op;
   const offsetIns = calcNumOffset(page);
   let options = {
     where: {},
-    include: [{ model: UserModel, model: AreaModel }],
+    include: [
+      { model: AreaModel },
+      { model: JobModalityModel },
+      {
+        model: UserModel,
+        as: "author",
+        attributes: ["name", "surname"],
+      },
+      { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
+      { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
+    ],
     offset: offsetIns,
     limit: Number(PAGE_LIMIT),
   };
@@ -177,6 +231,12 @@ exports.getAllPaginated = async (req, res) => {
   }
   if (authorId) {
     options.where.authorId = authorId;
+  }
+  if (evaluatorId1) {
+    options.where.evaluatorId1 = evaluatorId1;
+  }
+  if (evaluatorId2) {
+    options.where.evaluatorId2 = evaluatorId2;
   }
   if (areaId) {
     options.where.areaId = areaId;
@@ -203,5 +263,21 @@ exports.getAllPaginated = async (req, res) => {
     res.status(200).json({ pages: cantPages, response: rows });
   } else {
     res.status(500).json({ msg: "La instancia no existe." });
+  }
+};
+
+exports.setStatusJob = async (req, res) => {
+  const { id } = req.params;
+  const status = 1;
+  const doc = await JobModel.update(
+    {
+      status,
+    },
+    { where: { id: id } }
+  );
+  if (doc) {
+    res.status(200).json({ msg: "Trabajo corregido!" });
+  } else {
+    res.status(500).json({ msg: "El Trabajo no existe!" });
   }
 };

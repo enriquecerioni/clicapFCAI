@@ -1,6 +1,11 @@
 import React, { createContext } from "react";
 import { useState } from "react";
-import { formDataAxios, getDataUserByKey, reqAxios } from "../helpers/helpers";
+import {
+  formDataAxios,
+  getDataUserByKey,
+  reqAxios,
+  waitAndRefresh,
+} from "../helpers/helpers";
 export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
@@ -26,11 +31,13 @@ const EntitiesProvider = ({ children }) => {
     jobModalityId: "",
     areaId: "",
     authorId: userId,
+    status: 0,
     members: "",
     urlFile: "",
+    evaluatorId1: "",
+    evaluatorId2: "",
   };
 
-  //ESTADO INICIAL PARA SUBIR TRABAJO
   const initialStatePay = {
     amount: "",
     moneyType: "",
@@ -39,14 +46,19 @@ const EntitiesProvider = ({ children }) => {
     iva: "",
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: getDataUserByKey("id"),
   };
 
-  //ESTADO INICIAL PARA SUBIR TRABAJO
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
     authorId: userId,
+  };
+  //ESTADO INICIAL DE UNA CORRECCION
+  const initialCorrection = {
+    jobId: "",
+    correctionId: "",
+    details: "",
   };
   //--------------------------------------------------------------
   //ESTADOS
@@ -56,22 +68,32 @@ const EntitiesProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   //TRABAJO
   const [job, setJob] = useState(initialStateUpJob);
-  //PAGO
-  const [pay, setPay] = useState(initialStatePay);
-  //PAGO
-  const [certificate, setCertificate] = useState(initialStateCertificate);
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
+  const [totalPages, setTotalPages] = useState("");
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
-  //MIS PAGOS
+  //UN TRABAJO
+  const [jobId, setJobId] = useState([]);
+  //TODOS LOS USUARIOS
+  const [users, setUsers] = useState([]);
+  const [usersSelector, setUsersSelector] = useState([]);
+  //Areas
+  const [areas, setAreas] = useState([]);
+  const [areasSelector, setAreasSelector] = useState([]);
+  //CORRECCIONES
+  const [correction, setCorrection] = useState(initialCorrection);
+  const [corrections, setCorrections] = useState([]);
   const [myPays, setMyPays] = useState([]);
   //MIS CERTIFICADOS
   const [myCertificates, setMyCertificates] = useState([]);
   //TODOS LOS PAGOS
+  const [pay, setPay] = useState(initialStatePay);
   const [allPays, setAllPays] = useState([]);
-  //TODOS LOS USUARIOS
-  const [users, setUsers] = useState([]);
+  //PAGO
+  const [certificate, setCertificate] = useState(initialStateCertificate);
+  //Modalidades
+  const [modalities, setModalities] = useState([]);
 
   // -----------------------------------------------------------------
   //Registro - Editar Usuario
@@ -122,16 +144,22 @@ const EntitiesProvider = ({ children }) => {
     }
   };
   //Trabajos
-  const getAllJobs = async () => {
-    const getAllJob = await reqAxios("GET", "/job/getall", "", "");
+  const getAllJobs = async (page, params) => {
+    const getAllJob = await reqAxios(
+      "GET",
+      `/job/get/jobs/${page}`,
+      params,
+      ""
+    );
     setAllJobs(getAllJob.data.response);
+    setTotalPages(getAllJob.data.pages);
   };
-  //Mis Trabajos
+  //Mis Trabajos / LOS TRABAJOS
   const getMyJobs = async (numPage, dataFilter) => {
     try {
       const dataMyJobs = await reqAxios(
         "GET",
-        `/job/get/job/${numPage}`,
+        `/job/get/jobs/${numPage}`,
         dataFilter,
         ""
       );
@@ -140,7 +168,17 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
-
+  //Buscar un trabajo en particular
+  const getJobId = async (id) => {
+    try {
+      const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
+      const partners = dataJobId.data.response[0].members.split(";");
+      dataJobId.data.response[0].members = partners;
+      setJobId(dataJobId.data.response[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //Subida de un pago
   const handleChangePay = (e) => {
     let value =
@@ -161,6 +199,19 @@ const EntitiesProvider = ({ children }) => {
         bodyFormData.append(key, pay[key]);
       }
       await formDataAxios("POST", `/pay/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const updatePayInvoice = async (id) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in pay) {
+        bodyFormData.append(key, pay[key]);
+      }
+      await formDataAxios("POST", `/pay/edit/invoice/${id}`, "", bodyFormData);
+      waitAndRefresh(`/pays`, 1000);
     } catch (e) {
       console.log(e);
     }
@@ -188,6 +239,20 @@ const EntitiesProvider = ({ children }) => {
       await formDataAxios("POST", `/student/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
+    }
+  };
+  //Buscar las correciones de un trabajo
+  const getCorrectionsByJob = async (id) => {
+    try {
+      const corrections = await reqAxios(
+        "GET",
+        `/jobdetails/get/${id}`,
+        "",
+        ""
+      );
+      setCorrections(corrections.data.response);
+    } catch (error) {
+      console.log(error);
     }
   };
   //Pagos
@@ -223,27 +288,44 @@ const EntitiesProvider = ({ children }) => {
       console.log(e);
     }
   };
+
   //Areas
-  const [areas, setAreas] = useState([]);
   const getAllAreas = async () => {
     const getAllArea = await reqAxios("GET", "/area/getall", "", "");
     setAreas(getAllArea.data.response);
+    const array = [];
+    getAllArea.data.response.map((item, i) => {
+      array.push({
+        label: item.name,
+        value: item.id,
+        target: { name: "areaId", value: item.id },
+      });
+    });
+    setAreasSelector(array);
   };
-  //Modalidades
-  const [modalities, setModalities] = useState([]);
+
   const getAllModalities = async () => {
-    const getAllModalities = await reqAxios(
+    const getAllmodalities = await reqAxios(
       "GET",
       "/jobmodality/getall",
       "",
       ""
     );
-    setModalities(getAllModalities.data.response);
+    setModalities(getAllmodalities.data.response);
   };
   //Usuarios
   const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
     setUsers(getAllUser.data.response);
+    const array = [];
+    getAllUser.data.response.map((item, i) => {
+      array.push({
+        label: item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "authorId", value: item.id },
+      });
+    });
+    setUsersSelector(array);
   };
 
   return (
@@ -280,6 +362,17 @@ const EntitiesProvider = ({ children }) => {
         createNewCertificate,
         modalities,
         getAllModalities,
+        updatePayInvoice,
+
+        getJobId,
+        jobId,
+        usersSelector,
+        areasSelector,
+        totalPages,
+        getCorrectionsByJob,
+        corrections,
+        correction,
+        setCorrection,
       }}
     >
       {children}

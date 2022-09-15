@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 html {
   height: 100%;
@@ -9,7 +9,7 @@ html {
 }
 :root {
   --color-clicap: #2c4580;
-  --color-clicap-grey: #BDBDBD;
+  --color-clicap-grey: #bdbdbd;
   --color-clicap-greylight: #bdbdbd21;
   --color-clicap-hover: #a45701;
   --color-clicap-focus: rgb(200 106 2 / 50%);
@@ -22,7 +22,7 @@ html {
 .table thead th {
   border-bottom: 2px solid var(--color-clicap);
 }
-.icon-size-table{
+.icon-size-table {
   font-size: 1.2rem;
 }
 .btn-edit-table:hover {
@@ -31,4 +31,12 @@ html {
 
 .btn-delete-table:hover {
   color: red;
+}
+.modal-50w {
+  min-width: 50%;
+}
+.center-filters {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }

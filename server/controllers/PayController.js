@@ -3,9 +3,10 @@ const multer = require("multer");
 const path = require("path");
 const Sequelize = require("sequelize");
 const UserModel = require("../models/UserModel");
+const { log } = require("console");
 const { PAGE_LIMIT } = process.env;
 
-// Multer Config
+// Multer Config Pay
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/payments"),
   filename: (req, file, cb) => {
@@ -16,6 +17,18 @@ const createPayment = multer({
   storage,
   limits: { fileSize: 1000000 },
 }).single("urlFile");
+
+// Multer Config Invoice
+const storageInvoice = multer.diskStorage({
+  destination: path.join(__dirname, "../public/invoices"),
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+const createInvoice = multer({
+  storage: storageInvoice,
+  limits: { fileSize: 1000000 },
+}).single("invoice");
 
 exports.create = async (req, res) => {
   createPayment(req, res, async (err) => {
@@ -44,9 +57,30 @@ exports.create = async (req, res) => {
       authorId: authorId,
     });
     if (pay) {
-      res.status(200).send("Pago creado!");
+      res.status(200).json({msg:"Pago creado!"});
     } else {
       res.status(500).json({ msg: "Error al crear el pago." });
+    }
+  });
+};
+
+exports.updateInvoice = async (req, res) => {
+  createInvoice(req, res, async (err) => {
+    if (err) {
+      err.message = "The file is so heavy for my service";
+      return res.send(err);
+    }
+    const { id } = req.params;
+    const pay = await PayModel.update(
+      {
+        invoice: req.file.filename
+      },
+      { where: { id: id } }
+    );
+    if (pay) {
+      res.status(200).json({msg:"Pago facturado correctamente!"});
+    } else {
+      res.status(500).json({ msg: "Error al generar la factura!" });
     }
   });
 };
@@ -178,9 +212,9 @@ exports.getAllPaginated = async (req, res) => {
   //     [Op.like]: `%${surname}%`,
   //   };
   // }
-  // if (authorId) {
-  //   options.where.authorId = authorId;
-  // }
+  if (authorId) {
+    options.where.authorId = authorId;
+  }
   // if (areaId) {
   //   options.where.areaId = areaId;
   // }

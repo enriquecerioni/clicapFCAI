@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
-const db = require('../database/database');
+const db = require("../database/database");
 const CorrectionModel = require("./CorrectionModel");
 const JobModel = require("./JobModel");
+const UserModel = require("./UserModel");
 
 const JobDetailModel = db.define("jobdetail", {
   id: {
@@ -12,27 +13,32 @@ const JobDetailModel = db.define("jobdetail", {
     allowNull: false,
   },
   jobId: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.INTEGER,
   },
   correctionId: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.INTEGER,
   },
   details: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.TEXT,
+  },
+  date: {
+    allowNull: false,
+    type: DataTypes.DATEONLY,
+    /* defaultValue: db.fn("now"), */
   },
 });
 
 // JOBDETAIL - JOB
-JobDetailModel.belongsTo(JobModel, {foreignKey: 'jobId'});
+JobDetailModel.belongsTo(JobModel, { foreignKey: "jobId" });
 JobModel.hasMany(JobDetailModel, {
   foreignKey: "jobId",
 });
 
 // JOBDETAIL - CORRECTION
-JobDetailModel.belongsTo(CorrectionModel, {foreignKey: 'correctionId'});
+JobDetailModel.belongsTo(CorrectionModel, { foreignKey: "correctionId" });
 CorrectionModel.hasMany(JobDetailModel, {
   foreignKey: "correctionId",
 });

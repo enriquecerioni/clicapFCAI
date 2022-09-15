@@ -12,6 +12,7 @@ const JobModalityRouter = require("./routes/JobModality");
 const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
+const JobDetailsRouter = require("./routes/JobDetailRouter");
 const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
 
 // Models
@@ -44,6 +45,7 @@ app.listen(PORT, () => {
 // URL Routes
 app.use("/api/clicap/area/", AreaRouter);
 app.use("/api/clicap/job/", JobRouter);
+app.use("/api/clicap/jobdetails/", JobDetailsRouter);
 app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
@@ -51,7 +53,7 @@ app.use("/api/clicap/role/", RoleRouter);
 app.use("/api/clicap/student/", StudentCertificateRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
-db.sync({force:false})
+db.sync({ force: false })
   .then(() => {
     console.log("Database connected...");
   })

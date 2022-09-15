@@ -312,6 +312,26 @@ exports.getAll = async (req, res) => {
     res.status(500).json({ msg: "Error al obtener los usuarios." });
   }
 };
+exports.getAllEvaluators = async (req, res) => {
+  let evaluatorsFormat = [];
+  const evaluators = await UserModel.findAll({
+    where: { roleId: 2 },
+    attributes: ["id", "name", "surname"],
+  });
+
+  evaluators.map((item, i) => {
+    evaluatorsFormat.push({
+      value: item.id,
+      label: item.name + " " + item.surname,
+    });
+  });
+  
+  if (evaluators) {
+    res.status(200).json({ response: evaluatorsFormat });
+  } else {
+    res.status(500).json({ msg: "Error al obtener los evaluadores." });
+  }
+};
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
   const user = await UserModel.destroy({
