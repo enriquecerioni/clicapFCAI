@@ -6,15 +6,74 @@ const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
+//NODEMAILER
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
+
+var transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_APP,
+    pass: "ifctzypbifginnzc",
+  },
+});
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
 
 exports.create = async (req, res) => {
-  const { jobId, correctionId, details } = req.body;
+  const { jobId, correctionId, details, sendMail } = req.body;
   console.log(req.body);
   const detail = await JobDetailModel.create({
     jobId,
     correctionId,
     details,
+    sendMail,
   });
+  if (Number(sendMail) === 1) {
+    const doc = await JobModel.findOne({
+      where: { id: jobId },
+      include: [{ model: UserModel, as: "author" }],
+    });
+    var mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: doc.author.email,
+      subject: "Nueva corrección",
+      template: "mailNewCorrection",
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo", //my mistake was putting "cid:logo@cid" here!
+        },
+      ],
+       context: {
+        titleTp: doc.name,
+      },
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+    return res.status(200).json({ msg: "Correción creada!" });
+  }
   if (detail) {
     res.status(200).json({ msg: "Correción creada!" });
   } else {
@@ -48,7 +107,7 @@ exports.getById = async (req, res) => {
       { model: CorrectionModel },
       {
         model: JobModel,
-        attributes: ["name", "urlFile"],
+        attributes: ["name", "urlFile", "evaluatorId1"],
       },
     ],
   });

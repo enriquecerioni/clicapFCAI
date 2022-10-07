@@ -7,6 +7,7 @@ const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
+const CorrectionModel = require("../models/CorrectionModel");
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -142,6 +143,7 @@ exports.getAll = async (req, res) => {
   const doc = await JobModel.findAll({
     include: [
       { model: UserModel, as: "author" },
+      { model: CorrectionModel, as: "jobStatus" },
       { model: AreaModel },
       { model: UserModel, as: "evaluator1" },
       { model: UserModel, as: "evaluator2" },
@@ -196,8 +198,15 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, areaId, evaluatorId1, evaluatorId2 } =
-    req.query;
+  const {
+    authorId,
+    name,
+    surname,
+    areaId,
+    evaluatorId1,
+    evaluatorId2,
+    correction,
+  } = req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -212,6 +221,7 @@ exports.getAllPaginated = async (req, res) => {
         as: "author",
         attributes: ["name", "surname"],
       },
+      { model: CorrectionModel, as: "jobStatus" },
       { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
       { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
     ],
@@ -231,6 +241,9 @@ exports.getAllPaginated = async (req, res) => {
   }
   if (authorId) {
     options.where.authorId = authorId;
+  }
+  if (correction) {
+    options.where.status = correction;
   }
   if (evaluatorId1) {
     options.where.evaluatorId1 = evaluatorId1;

@@ -24,10 +24,14 @@ const JobDetailModel = db.define("jobdetail", {
     allowNull: false,
     type: DataTypes.TEXT,
   },
+  sendMail: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
   date: {
     allowNull: false,
     type: DataTypes.DATEONLY,
-    /* defaultValue: db.fn("now"), */
+    defaultValue: db.fn("now"),
   },
 });
 

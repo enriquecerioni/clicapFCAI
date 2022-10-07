@@ -3,6 +3,7 @@ const db = require("../database/database");
 const AreaModel = require("./AreaModel");
 const JobModalityModel = require("./JobModalityModel");
 const UserModel = require("./UserModel");
+const CorrectionModel = require("./CorrectionModel");
 
 const JobModel = db.define("job", {
   id: {
@@ -30,7 +31,7 @@ const JobModel = db.define("job", {
   },
   status: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   members: {
     type: DataTypes.STRING,
@@ -65,6 +66,11 @@ const JobModel = db.define("job", {
 JobModel.belongsTo(AreaModel, { foreignKey: "areaId" });
 AreaModel.hasMany(JobModel, {
   foreignKey: "areaId",
+});
+// JOB - CORRECTION(ESTADO)
+JobModel.belongsTo(CorrectionModel, { foreignKey: "status", as: "jobStatus" });
+CorrectionModel.hasMany(JobModel, {
+  foreignKey: "status",
 });
 
 // JOB - AUTHOR
