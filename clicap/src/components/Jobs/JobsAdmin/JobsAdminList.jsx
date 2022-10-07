@@ -10,6 +10,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("id");
   const { job, setJob, getAllJobs, allJobs } = useContext(EntitiesContext);
+  console.log(allJobs);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
 
   /*  const startDate = work.startDate.split('-') */
@@ -130,6 +131,8 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
           )}
         </td>
         <td>{work.area.name}</td>
+        <td>{work.jobmodality.name}</td>
+        <td>{work.jobStatus ? work.jobStatus.name : null}</td>
         {roleId !== 1 ? (
           <>
             <td>
@@ -176,7 +179,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
             <td>
               <Button
                 className="btn btn-success"
-                onClick={() => navigate("/customers/create")}
+                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
               >
                 Aprobar
               </Button>

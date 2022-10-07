@@ -19,6 +19,15 @@ html {
   justify-content: center;
   align-items: center;
 }
+.left-right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 3px;
+}
+.h-100{
+  min-height: 100%;
+}
 .table thead th {
   border-bottom: 2px solid var(--color-clicap);
 }

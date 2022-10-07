@@ -138,10 +138,12 @@ const JobsAdmin = () => {
                 <thead>
                   <tr>
                     <th>Autor</th>
-                    <th>Nombre TP</th>
+                    <th>Título</th>
                     <th>Evaludor 1</th>
                     <th>Evaludor 2</th>
                     <th>Area</th>
+                    <th>Modalidad</th>
+                    <th>Estado</th>
                     <th></th>
                     <th></th>
                     <th></th>

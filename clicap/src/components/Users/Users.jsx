@@ -8,16 +8,20 @@ const Users = () => {
   const navigate = useNavigate();
   const { users, getAllUsers } = useContext(EntitiesContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(false);
 
   useEffect(() => {
     getAllUsers();
   }, []);
   return (
     <>
+      {showDeleteModal ? (
+        <ModalDelete entity={userToDelete} showAlert={setShowDeleteModal} />
+      ) : null}
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
       <div style={{ margin: "5rem 5rem 0 5rem" }}>
-        <h2 className="text-center">Usuarios</h2>
+        <h2 className="text-center">Listado de Usuarios</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
             className="btn btn-success"
@@ -50,6 +54,8 @@ const Users = () => {
                   {users.map((user) => (
                     <UsersList
                       user={user}
+                      showAlert={setShowDeleteModal}
+                      setUserToDelete={setUserToDelete}
                       /*     setCustomerToDelete={handleDelete} */
                       key={user.id}
                     />
