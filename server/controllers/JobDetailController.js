@@ -35,10 +35,11 @@ transporter.use(
 );
 
 exports.create = async (req, res) => {
-  const { jobId, correctionId, details, sendMail } = req.body;
+  const { jobId, evaluatorId, correctionId, details, sendMail } = req.body;
   console.log(req.body);
   const detail = await JobDetailModel.create({
     jobId,
+    evaluatorId,
     correctionId,
     details,
     sendMail,
@@ -46,7 +47,7 @@ exports.create = async (req, res) => {
   if (Number(sendMail) === 1) {
     const doc = await JobModel.findOne({
       where: { id: jobId },
-      include: [{ model: UserModel, as: "author" }],
+      include: [{ model: UserModel, as: "author", attributes: ["email"] }],
     });
     var mailOptions = {
       from: process.env.EMAIL_APP,
@@ -60,7 +61,7 @@ exports.create = async (req, res) => {
           cid: "logo", //my mistake was putting "cid:logo@cid" here!
         },
       ],
-       context: {
+      context: {
         titleTp: doc.name,
       },
     };
@@ -82,11 +83,14 @@ exports.create = async (req, res) => {
 };
 exports.updateById = async (req, res) => {
   const { id } = req.params;
-  const { JobId, correctionId, details, date } = req.body;
+  const { jobId, evaluatorId, correctionId, details, sendMail, date } =
+    req.body;
 
   const detail = await JobDetailModel.update(
     {
-      JobId,
+      jobId,
+      evaluatorId,
+      sendMail,
       correctionId,
       details,
       date,
@@ -105,9 +109,10 @@ exports.getById = async (req, res) => {
     where: { jobId },
     include: [
       { model: CorrectionModel },
+      { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
       {
         model: JobModel,
-        attributes: ["name", "urlFile", "evaluatorId1"],
+        attributes: ["name", "urlFile"],
       },
     ],
   });
