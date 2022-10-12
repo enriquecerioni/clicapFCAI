@@ -3,13 +3,25 @@ import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
 import { useEffect } from "react";
-import { getDataUserByKey, reqAxios } from "../../../helpers/helpers";
+import {
+  getDataUserByKey,
+  reqAxios,
+  waitAndRefresh,
+} from "../../../helpers/helpers";
 import { EntitiesContext } from "../../../context/EntitiesContext";
+import { alertError } from "../../../helpers/alerts";
 
 export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("id");
-  const { job, setJob, getAllJobs, allJobs } = useContext(EntitiesContext);
+  const {
+    job,
+    setJob,
+    getAllJobs,
+    allJobs,
+    allEvaluatorsSelector,
+    getAllEvaluators,
+  } = useContext(EntitiesContext);
   console.log(allJobs);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
 
@@ -30,7 +42,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
 
   const handleSubmit = () => {};
-  const getAllEvaluators = async () => {
+  /*   const getAllEvaluators = async () => {
     const allEvaluators = await reqAxios(
       "GET",
       "/user/getallevaluators",
@@ -44,33 +56,50 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
 
     setEvaluatorOptions1(arrayMod);
     setEvaluatorOptions2(arrayMod);
-  };
+  }; */
 
   const handleChangeEvaluator = (e, name) => {
+    if (e) {
+      if (name === "evaluator1") {
+        return setEvaluatorSelected1(e.target.value);
+      } else {
+        return setEvaluatorSelected2(e.target.value);
+      }
+    }
     if (name === "evaluator1") {
-      setEvaluatorSelected1(e.target.value);
+      setEvaluatorSelected1("");
     } else {
-      setEvaluatorSelected2(e.target.value);
+      setEvaluatorSelected2("");
     }
   };
 
+  const setEvaluatorsOptions = () => {
+    setEvaluatorOptions1(allEvaluatorsSelector);
+    setEvaluatorOptions2(allEvaluatorsSelector);
+  };
   const addEvaluators = async (id) => {
+    if (evaluatorSelected1 === evaluatorSelected2) {
+      return alertError("No se puede asignar el mismo evaluador!");
+    }
     const jobSelected = allJobs.find((item) => item.id === id);
     const jobEdited = {
       ...jobSelected,
-      evaluatorId1: evaluatorSelected1,
-      evaluatorId2: evaluatorSelected2,
+      evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : "",
+      evaluatorId2: evaluatorSelected2 !== "" ? evaluatorSelected2 : "",
     };
-    const editJob = await reqAxios(
-      "PUT",
-      `/job/edit/${jobSelected.id}`,
-      "",
-      jobEdited
-    );
+
+    await reqAxios("PUT", `/job/edit/${jobSelected.id}`, "", jobEdited);
+    waitAndRefresh(`/jobs`, 1000);
   };
+
   useEffect(() => {
     getAllEvaluators();
   }, []);
+
+  useEffect(() => {
+    setEvaluatorsOptions();
+  }, [allEvaluatorsSelector]);
+
   return (
     <>
       <tr>

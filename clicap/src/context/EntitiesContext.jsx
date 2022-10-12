@@ -60,6 +60,20 @@ const EntitiesProvider = ({ children }) => {
     correctionId: "",
     details: "",
   };
+  const allStatusJob = [
+    { label: "Aceptado", value: 1, target: { name: "status", value: 1 } },
+    {
+      label: "Aceptado con modificaciones Menores",
+      value: 2,
+      target: { name: "status", value: 2 },
+    },
+    {
+      label: "Aceptado con modificaciones mayores",
+      value: 3,
+      target: { name: "status", value: 3 },
+    },
+    { label: "No aceptado", value: 4, target: { name: "status", value: 4 } },
+  ];
   //--------------------------------------------------------------
   //ESTADOS
   //REGISTRO
@@ -78,6 +92,10 @@ const EntitiesProvider = ({ children }) => {
   //TODOS LOS USUARIOS
   const [users, setUsers] = useState([]);
   const [usersSelector, setUsersSelector] = useState([]);
+  //TODOS LOS EVALUADORES
+  const [allEvaluators, setAllEvaluators] = useState([]);
+  const [allEvaluatorsSelector, setAllEvaluatorsSelector] = useState([]);
+
   //Areas
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
@@ -327,6 +345,24 @@ const EntitiesProvider = ({ children }) => {
     });
     setUsersSelector(array);
   };
+  const getAllEvaluators = async () => {
+    const allEvaluators = await reqAxios(
+      "GET",
+      "/user/getallevaluators",
+      "",
+      ""
+    );
+    setAllEvaluators(allEvaluators.data.response);
+    const array = [];
+    allEvaluators.data.response.map((item, i) => {
+      array.push({
+        label: item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "evaluatorId", value: item.id },
+      });
+    });
+    setAllEvaluatorsSelector(array);
+  };
 
   return (
     <EntitiesContext.Provider
@@ -373,6 +409,10 @@ const EntitiesProvider = ({ children }) => {
         corrections,
         correction,
         setCorrection,
+        allStatusJob,
+        getAllEvaluators,
+        allEvaluators,
+        allEvaluatorsSelector
       }}
     >
       {children}

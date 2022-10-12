@@ -18,12 +18,15 @@ const JobsAdmin = () => {
     usersSelector,
     areasSelector,
     totalPages,
+    allStatusJob,
   } = useContext(EntitiesContext);
 
   const initialFilters = {
     authorId: "",
     name: "",
     areaId: "",
+    status: "",
+    evaluatorId: "",
   };
   const [filters, setFilters] = useState(initialFilters);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -124,6 +127,44 @@ const JobsAdmin = () => {
                   },
                 })}
                 onChange={(e) => handleChangeFilter(e, "areaId")}
+              />
+            </div>
+            <div style={{ width: "200px" }} className="me-3">
+              <label htmlFor="forArea" className="form-label">
+                Evaluador
+              </label>
+              <Select
+                options={areasSelector}
+                placeholder={"seleccione.."}
+                name="evaluatorId"
+                isClearable={true}
+                theme={(theme) => ({
+                  ...theme,
+                  colors: {
+                    ...theme.colors,
+                    primary: "#3D84A8",
+                  },
+                })}
+                onChange={(e) => handleChangeFilter(e, "evaluatorId")}
+              />
+            </div>
+            <div style={{ width: "200px" }} className="me-3">
+              <label htmlFor="forArea" className="form-label">
+                Estado
+              </label>
+              <Select
+                options={allStatusJob}
+                placeholder={"seleccione.."}
+                name="status"
+                isClearable={true}
+                theme={(theme) => ({
+                  ...theme,
+                  colors: {
+                    ...theme.colors,
+                    primary: "#3D84A8",
+                  },
+                })}
+                onChange={(e) => handleChangeFilter(e, "status")}
               />
             </div>
             <Button variant="primary" type="submit">
