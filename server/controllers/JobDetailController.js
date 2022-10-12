@@ -49,6 +49,8 @@ exports.create = async (req, res) => {
       where: { id: jobId },
       include: [{ model: UserModel, as: "author", attributes: ["email"] }],
     });
+    await JobModel.update({ status: correctionId }, { where: { id: jobId } });
+    
     var mailOptions = {
       from: process.env.EMAIL_APP,
       to: doc.author.email,

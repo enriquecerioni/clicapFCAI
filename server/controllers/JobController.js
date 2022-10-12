@@ -8,6 +8,32 @@ const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
 const CorrectionModel = require("../models/CorrectionModel");
+//NODEMAILER
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+
+var transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_APP,
+    pass: "ifctzypbifginnzc",
+  },
+});
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -89,8 +115,10 @@ exports.create = async (req, res) => {
   }
 };
 exports.updateById = async (req, res) => {
+  const Op = Sequelize.Op;
+  let assignEvaluators = [];
   const { id } = req.params;
-  const {
+  let {
     name,
     areaId,
     authorId,
@@ -100,6 +128,20 @@ exports.updateById = async (req, res) => {
     evaluatorId1,
     evaluatorId2,
   } = req.body;
+  console.log(req.body);
+
+  //verify that if evaluators are empty if not search de user email
+  if (evaluatorId1 === "") {
+    evaluatorId1 = null;
+  } else {
+    assignEvaluators.push({ id: Number(evaluatorId1) });
+  }
+
+  if (evaluatorId2 === "") {
+    evaluatorId2 = null;
+  } else {
+    assignEvaluators.push({ id: Number(evaluatorId2) });
+  }
 
   const doc = await JobModel.update(
     {
@@ -114,7 +156,48 @@ exports.updateById = async (req, res) => {
     },
     { where: { id: id } }
   );
+  let options = {
+    where: {},
+    attributes: ["name", "email"],
+  };
+
   if (doc) {
+    if (assignEvaluators.length) {
+      options.where = {
+        [Op.or]: assignEvaluators,
+      };
+      //search user email
+      const user = await UserModel.findAll(options);
+
+      //send email with your configuration
+      user.forEach((evaluator, i) => {
+        var mailOptions = {
+          from: process.env.EMAIL_APP,
+          to: user[i].email,
+          subject: "Nueva corrección",
+          template: "mailAssignToJob",
+          attachments: [
+            {
+              filename: "clicap.png",
+              path: "./assets/clicap.png",
+              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+            },
+          ],
+          context: {
+            evaluatorName: user[i].name,
+          },
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.status(500).json({ msg: error.message });
+          } else {
+            console.log("Email enviado!");
+            res.end();
+          }
+        });
+      });
+      return res.status(200).json({ msg: "Evaluador asignado!" });
+    }
     res.status(200).json({ msg: "Trabajo editado!" });
   } else {
     res.status(500).json({ msg: "El Trabajo no existe!" });
@@ -198,15 +281,7 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const {
-    authorId,
-    name,
-    surname,
-    areaId,
-    evaluatorId1,
-    evaluatorId2,
-    correction,
-  } = req.query;
+  const { authorId, name, surname, status, areaId, evaluatorId } = req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -242,14 +317,14 @@ exports.getAllPaginated = async (req, res) => {
   if (authorId) {
     options.where.authorId = authorId;
   }
-  if (correction) {
-    options.where.status = correction;
+  if (status) {
+    options.where.status = status;
   }
-  if (evaluatorId1) {
-    options.where.evaluatorId1 = evaluatorId1;
-  }
-  if (evaluatorId2) {
-    options.where.evaluatorId2 = evaluatorId2;
+
+  if (evaluatorId) {
+    options.where = {
+      [Op.or]: [{ evaluatorId1: evaluatorId }, { evaluatorId2: evaluatorId }],
+    };
   }
   if (areaId) {
     options.where.areaId = areaId;

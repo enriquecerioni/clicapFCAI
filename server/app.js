@@ -60,6 +60,7 @@ const insertData = async () => {
   const areas = ["Alimentos", "Química"];
   const roles = ["Admin", "Evaluador", "Docente Investigador", "Alumno"];
   const modality = ["Trabajo Completo", "Resumen"];
+  const users = ["Trabajo Completo", "Resumen"];
   const corrections = [
     "Aceptado",
     "Aceptado con modificaciones Menores",
