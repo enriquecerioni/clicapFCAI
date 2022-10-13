@@ -23,6 +23,7 @@ import Certificate from "../components/UploadStudentCertificate/Certificate";
 import UpdateInvoce from "../components/Payment/PaysAdmin/UpdateInvoice";
 const CustomRoute = () => (
   <>
+  <br /><br />
     <Routes>
         <Route path="/" element={<Home><Start/></Home>} />
         <Route element={<Home />} />

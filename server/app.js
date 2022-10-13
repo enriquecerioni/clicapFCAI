@@ -6,6 +6,7 @@ const cors = require("cors");
 const db = require("./database/database");
 
 // Routes
+const DateRouter = require("./routes/DateRouter");
 const AreaRouter = require("./routes/AreaRouter");
 const JobRouter = require("./routes/JobRouter");
 const JobModalityRouter = require("./routes/JobModality");
@@ -16,6 +17,7 @@ const JobDetailsRouter = require("./routes/JobDetailRouter");
 const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
 
 // Models
+require("./models/DateModel");
 require("./models/UserModel");
 require("./models/JobModel");
 require("./models/PayModel");
@@ -43,6 +45,7 @@ app.listen(PORT, () => {
 });
 
 // URL Routes
+app.use("/api/clicap/date/", DateRouter);
 app.use("/api/clicap/area/", AreaRouter);
 app.use("/api/clicap/job/", JobRouter);
 app.use("/api/clicap/jobdetails/", JobDetailsRouter);

@@ -11,6 +11,8 @@ export const EntitiesContext = createContext();
 const EntitiesProvider = ({ children }) => {
   const userId = getDataUserByKey("id");
   //Estados iniciales
+  //Estado inicial cuenta regresiva
+  const [time, setTime] = useState('2022-11-12');
   //ESTADO INICIAL REGISTRO
   const initialStateRegister = {
     roleId: "",
@@ -96,6 +98,21 @@ const EntitiesProvider = ({ children }) => {
   const [modalities, setModalities] = useState([]);
 
   // -----------------------------------------------------------------
+  // Fecha - Obtener Fecha
+  const getDate = async () => {
+    const obj = await reqAxios("GET", '/date/get', "", "");
+    setTime(await obj.data.response.date);
+  }
+
+  const handleTime = async(event) => {
+    let date = event.target.value;
+    await reqAxios("PUT", `/date/edit/${date}`, "", "");
+    window.location.reload();
+    // console.log(date);
+    // date = date.split('-');
+    // let timestamp = new Date(date[0], date[1] - 1, date[2]);
+    // console.log(timestamp.getTime());
+  }
   //Registro - Editar Usuario
   const handleChangeRegister = (e) => {
     setUserRegister({
@@ -331,6 +348,10 @@ const EntitiesProvider = ({ children }) => {
   return (
     <EntitiesContext.Provider
       value={{
+        time,
+        setTime,
+        getDate,
+        handleTime,
         userRegister,
         setUserRegister,
         handleChangeRegister,
