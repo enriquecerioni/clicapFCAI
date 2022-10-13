@@ -75,6 +75,7 @@ exports.upload = async (req, res) => {
       urlFile: req.file.filename,
       evaluatorId1,
       evaluatorId2,
+      approve:0
     });
     if (doc) {
       return res.status(200).json({ msg: "Trabajo creado!" });

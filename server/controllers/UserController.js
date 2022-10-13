@@ -318,13 +318,6 @@ exports.getAllEvaluators = async (req, res) => {
     where: { roleId: 2 },
     attributes: ["id", "name", "surname"],
   });
-
-/*   evaluators.map((item, i) => {
-    evaluatorsFormat.push({
-      value: item.id,
-      label: item.name + " " + item.surname,
-    });
-  }); */
   
   if (evaluators) {
     res.status(200).json({ response: evaluators });

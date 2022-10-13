@@ -44,6 +44,10 @@ const JobModel = db.define("job", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  approve: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   evaluatorId1: {
     allowNull: true,
     type: DataTypes.INTEGER,

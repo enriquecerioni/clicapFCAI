@@ -35,7 +35,8 @@ transporter.use(
 );
 
 exports.create = async (req, res) => {
-  const { jobId, evaluatorId, correctionId, details, sendMail } = req.body;
+  const { jobId, evaluatorId, correctionId, details, sendMail, approve } =
+    req.body;
   console.log(req.body);
   const detail = await JobDetailModel.create({
     jobId,
@@ -44,13 +45,19 @@ exports.create = async (req, res) => {
     details,
     sendMail,
   });
+  //approve in 1 to admin approve
+  await JobModel.update({ approve: 1 }, { where: { id: jobId } });
   if (Number(sendMail) === 1) {
     const doc = await JobModel.findOne({
       where: { id: jobId },
       include: [{ model: UserModel, as: "author", attributes: ["email"] }],
     });
-    await JobModel.update({ status: correctionId }, { where: { id: jobId } });
-    
+    //approve in 0 because correction is approved
+    await JobModel.update(
+      { status: correctionId, approve: 0 },
+      { where: { id: jobId } }
+    );
+
     var mailOptions = {
       from: process.env.EMAIL_APP,
       to: doc.author.email,
