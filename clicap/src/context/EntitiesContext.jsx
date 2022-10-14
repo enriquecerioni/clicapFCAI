@@ -10,6 +10,7 @@ export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
   const userId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
   //Estados iniciales
   //Estado inicial cuenta regresiva
   const [time, setTime] = useState('2022-11-12');
@@ -60,8 +61,24 @@ const EntitiesProvider = ({ children }) => {
   const initialCorrection = {
     jobId: "",
     correctionId: "",
+    evaluatorId:userId,
     details: "",
+    sendMail:0
   };
+  const allStatusJob = [
+    { label: "Aceptado", value: 1, target: { name: "status", value: 1 } },
+    {
+      label: "Aceptado con modificaciones Menores",
+      value: 2,
+      target: { name: "status", value: 2 },
+    },
+    {
+      label: "Aceptado con modificaciones mayores",
+      value: 3,
+      target: { name: "status", value: 3 },
+    },
+    { label: "No aceptado", value: 4, target: { name: "status", value: 4 } },
+  ];
   //--------------------------------------------------------------
   //ESTADOS
   //REGISTRO
@@ -78,8 +95,14 @@ const EntitiesProvider = ({ children }) => {
   //UN TRABAJO
   const [jobId, setJobId] = useState([]);
   //TODOS LOS USUARIOS
+  const [usersFiltered, setUsersFiltered] = useState([]);
+  const [totalUsersPages, setTotalUsersPages] = useState("");
   const [users, setUsers] = useState([]);
   const [usersSelector, setUsersSelector] = useState([]);
+  //TODOS LOS EVALUADORES
+  const [allEvaluators, setAllEvaluators] = useState([]);
+  const [allEvaluatorsSelector, setAllEvaluatorsSelector] = useState([]);
+
   //Areas
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
@@ -189,8 +212,9 @@ const EntitiesProvider = ({ children }) => {
   const getJobId = async (id) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
-      const partners = dataJobId.data.response[0].members.split(";");
+     /*  const partners = dataJobId.data.response[0].members.split(";");
       dataJobId.data.response[0].members = partners;
+      console.log(dataJobId.data.response); */
       setJobId(dataJobId.data.response[0]);
     } catch (error) {
       console.log(error);
@@ -260,11 +284,12 @@ const EntitiesProvider = ({ children }) => {
   };
   //Buscar las correciones de un trabajo
   const getCorrectionsByJob = async (id) => {
+    const params = {roleId,evaluatorId:userId}
     try {
       const corrections = await reqAxios(
         "GET",
         `/jobdetails/get/${id}`,
-        "",
+        params,
         ""
       );
       setCorrections(corrections.data.response);
@@ -344,7 +369,34 @@ const EntitiesProvider = ({ children }) => {
     });
     setUsersSelector(array);
   };
-
+  const getAllEvaluators = async () => {
+    const allEvaluators = await reqAxios(
+      "GET",
+      "/user/getallevaluators",
+      "",
+      ""
+    );
+    setAllEvaluators(allEvaluators.data.response);
+    const array = [];
+    allEvaluators.data.response.map((item, i) => {
+      array.push({
+        label: item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "evaluatorId", value: item.id },
+      });
+    });
+    setAllEvaluatorsSelector(array);
+  };
+  const getUsersFiltered = async (page, params) => {
+    const getAllJob = await reqAxios(
+      "get",
+      `/user/get/users/${page}`,
+      params,
+      ""
+    );
+    setUsersFiltered(getAllJob.data.response);
+    setTotalUsersPages(getAllJob.data.pages);
+  };
   return (
     <EntitiesContext.Provider
       value={{
@@ -365,6 +417,9 @@ const EntitiesProvider = ({ children }) => {
         getAllAreas,
         allJobs,
         getAllJobs,
+        usersFiltered,
+        totalUsersPages,
+        getUsersFiltered,
         users,
         getAllUsers,
         myJobs,
@@ -394,6 +449,10 @@ const EntitiesProvider = ({ children }) => {
         corrections,
         correction,
         setCorrection,
+        allStatusJob,
+        getAllEvaluators,
+        allEvaluators,
+        allEvaluatorsSelector
       }}
     >
       {children}

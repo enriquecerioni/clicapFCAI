@@ -2,6 +2,8 @@ const UserModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const Sequelize = require("sequelize");
+const { PAGE_LIMIT } = process.env;
 //NODEMAILER
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
@@ -313,21 +315,14 @@ exports.getAll = async (req, res) => {
   }
 };
 exports.getAllEvaluators = async (req, res) => {
-  let evaluatorsFormat = [];
+/*   let evaluatorsFormat = []; */
   const evaluators = await UserModel.findAll({
     where: { roleId: 2 },
     attributes: ["id", "name", "surname"],
   });
-
-  evaluators.map((item, i) => {
-    evaluatorsFormat.push({
-      value: item.id,
-      label: item.name + " " + item.surname,
-    });
-  });
   
   if (evaluators) {
-    res.status(200).json({ response: evaluatorsFormat });
+    res.status(200).json({ response: evaluators });
   } else {
     res.status(500).json({ msg: "Error al obtener los evaluadores." });
   }
@@ -342,5 +337,50 @@ exports.deleteById = async (req, res) => {
     res.status(200).send("Usuario eliminado correctamente!");
   } else {
     res.status(500).json({ msg: "Error al eliminar el usuario." });
+  }
+};
+const calcNumOffset = (page) => {
+  //calculo el numero del offset
+  let numOffset = (Number(page) - 1) * Number(PAGE_LIMIT);
+  return numOffset;
+};
+const calcTotalPages = (totalItems) => {
+  //Cantidad de paginas en total
+  const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
+  return cantPages;
+};
+exports.getAllPaginated = async (req, res) => {
+  const { name,identifyNumber,roleId, } = req.query;
+  console.log(req.query);
+  const { page } = req.params;
+  const Op = Sequelize.Op;
+  const offsetIns = calcNumOffset(page);
+  let options = {
+    where: {},
+    include: [{ model: RoleModel }],
+    offset: offsetIns,
+    limit: Number(PAGE_LIMIT),
+  };
+
+  if (name) {
+    options.where.name = {
+      [Op.like]: `%${name}%`,
+    };
+  }
+
+  if (identifyNumber) {
+    options.where.identifyNumber = identifyNumber;
+  }
+  if (roleId) {
+    options.where.roleId = roleId;
+  }
+
+  const { count, rows } = await UserModel.findAndCountAll(options);
+  const cantPages = calcTotalPages(count);
+
+  if (rows) {
+    res.status(200).json({ pages: cantPages, response: rows });
+  } else {
+    res.status(500).json({ msg: "La instancia no existe." });
   }
 };

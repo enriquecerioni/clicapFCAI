@@ -6,15 +6,84 @@ const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
+//NODEMAILER
+const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
+
+var transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_APP,
+    pass: "ifctzypbifginnzc",
+  },
+});
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
 
 exports.create = async (req, res) => {
-  const { jobId, correctionId, details } = req.body;
+  const { jobId, evaluatorId, correctionId, details, sendMail, approve } =
+    req.body;
   console.log(req.body);
   const detail = await JobDetailModel.create({
     jobId,
+    evaluatorId,
     correctionId,
     details,
+    sendMail,
   });
+  //approve in 1 to admin approve
+  await JobModel.update({ approve: 1 }, { where: { id: jobId } });
+  if (Number(sendMail) === 1) {
+    const doc = await JobModel.findOne({
+      where: { id: jobId },
+      include: [{ model: UserModel, as: "author", attributes: ["email"] }],
+    });
+    //approve in 0 because correction is approved
+    await JobModel.update(
+      { status: correctionId, approve: 0 },
+      { where: { id: jobId } }
+    );
+
+    var mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: doc.author.email,
+      subject: "Nueva corrección",
+      template: "mailNewCorrection",
+      attachments: [
+        {
+          filename: "clicap.png",
+          path: "./assets/clicap.png",
+          cid: "logo", //my mistake was putting "cid:logo@cid" here!
+        },
+      ],
+      context: {
+        titleTp: doc.name,
+      },
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+    return res.status(200).json({ msg: "Correción creada!" });
+  }
   if (detail) {
     res.status(200).json({ msg: "Correción creada!" });
   } else {
@@ -23,11 +92,14 @@ exports.create = async (req, res) => {
 };
 exports.updateById = async (req, res) => {
   const { id } = req.params;
-  const { JobId, correctionId, details, date } = req.body;
+  const { jobId, evaluatorId, correctionId, details, sendMail, date } =
+    req.body;
 
   const detail = await JobDetailModel.update(
     {
-      JobId,
+      jobId,
+      evaluatorId,
+      sendMail,
       correctionId,
       details,
       date,
@@ -42,21 +114,53 @@ exports.updateById = async (req, res) => {
 };
 exports.getById = async (req, res) => {
   const { jobId } = req.params;
-  const detail = await JobDetailModel.findAll({
-    where: { jobId },
-    include: [
-      { model: CorrectionModel },
-      {
-        model: JobModel,
-        attributes: ["name", "urlFile"],
-      },
-    ],
-  });
+  const { roleId, evaluatorId } = req.query;
+  console.log(req.query);
+  let options = "";
+  if (Number(roleId) === 2) {
+    options = {
+      where: { jobId, evaluatorId: Number(evaluatorId) },
+      include: [
+        { model: CorrectionModel },
+        { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
+        {
+          model: JobModel,
+          attributes: ["name", "urlFile"],
+        },
+      ],
+    };
+  } else {
+    options = {
+      where: { jobId },
+      include: [
+        { model: CorrectionModel },
+        { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
+        {
+          model: JobModel,
+          attributes: ["name", "urlFile"],
+        },
+      ],
+    };
+  }
+
+  const detail = await JobDetailModel.findAll(options);
 
   if (detail) {
     res.status(200).json({ response: detail });
   } else {
     res.status(500).json({ msg: "Error al obtener la corrección." });
+  }
+};
+exports.checkCorrection = async (req, res) => {
+  const { jobId, evaluatorId } = req.params;
+  const detail = await JobDetailModel.findOne({
+    where: { jobId, evaluatorId },
+  });
+
+  if (detail) {
+    res.status(200).json({ response: detail, value: 1 });
+  } else {
+    res.status(200).json({ msg: "Error al obtener la corrección.", value: 0 });
   }
 };
 exports.getAll = async (req, res) => {

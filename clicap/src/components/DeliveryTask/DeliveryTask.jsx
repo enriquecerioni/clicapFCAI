@@ -35,7 +35,7 @@ const DeliveryTask = () => {
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Nombre del trabajo
+                  Título del trabajo
                 </label>
                 <div className="">
                   <input
@@ -109,7 +109,7 @@ const DeliveryTask = () => {
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold"
               >
-                Miembros del grupo
+                Autor/es del trabajo
               </label>
               <div className="">
                 <input

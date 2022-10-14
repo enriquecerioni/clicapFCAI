@@ -7,7 +7,7 @@ import { getDataUserByKey } from "../../../helpers/helpers";
 export const CorrectionList = ({ correction, setuserToDelete }) => {
   const navigate = useNavigate();
   const [showCorrecModal, setCorrecModal] = useState(false);
-  const roleId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
   /*  const startDate = user.startDate.split('-') */
   return (
     <>
