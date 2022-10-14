@@ -67,45 +67,27 @@ const JobStudent = () => {
           </button>
         </div>
       </div>
-      <div className=" mt-2">
-        <form method="get" className="center-filters" onSubmit={handleSubmit}>
-          <div className="me-3">
-            <label htmlFor="forName" className="form-label">
-              Nombre
-            </label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              id="exampleFormControlInput1"
-              placeholder="nombre"
-              onChange={(e) => handleChangeFilter(e, "name")}
-            />
-          </div>
-          <div style={{ width: "200px" }} className="me-3">
-            <label htmlFor="forArea" className="form-label">
-              Area
-            </label>
-            <Select
-              options={areasSelector}
-              placeholder={"seleccione.."}
-              name="areaId"
-              isClearable={true}
-              theme={(theme) => ({
-                ...theme,
-                colors: {
-                  ...theme.colors,
-                  primary: "#3D84A8",
-                },
-              })}
-              onChange={(e) => handleChangeFilter(e, "areaId")}
-            />
-          </div>
-          <Button variant="primary" type="submit">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </Button>
-        </form>
+      <div className="mt-3">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Area</th>
+              <th>Modalidad</th>
+              <th>Estado</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {allJobs.map((job, i) => (
+              <JobStudentList job={job} key={job.id} />
+            ))}
+          </tbody>
+        </table>
       </div>
+
       {/* <div className="box-InsanceFilter">
         <InstanceFilter filterQuery={filterQuery} setFilterQuery={setFilterQuery} partners={partners} />
       </div> */}
@@ -113,15 +95,15 @@ const JobStudent = () => {
       {/* TABLA */}
       {allJobs.length > 0 ? (
         <>
-          <div className="box-cardJob">
+          {/*   <div className="box-cardJob">
             {allJobs.map((job, i) => (
               <JobStudentList
                 job={job}
-                /* setInstanceToDelete={handleDelete} */
+             
                 key={job.id}
               />
             ))}
-          </div>
+          </div> */}
           <PaginationCustom
             currentPage={page}
             totalPages={totalPages}

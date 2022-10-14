@@ -198,7 +198,7 @@ const JobsAdmin = () => {
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3">
-              <table className="table">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th>Autor</th>

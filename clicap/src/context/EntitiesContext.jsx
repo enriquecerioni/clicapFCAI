@@ -93,6 +93,8 @@ const EntitiesProvider = ({ children }) => {
   //UN TRABAJO
   const [jobId, setJobId] = useState([]);
   //TODOS LOS USUARIOS
+  const [usersFiltered, setUsersFiltered] = useState([]);
+  const [totalUsersPages, setTotalUsersPages] = useState("");
   const [users, setUsers] = useState([]);
   const [usersSelector, setUsersSelector] = useState([]);
   //TODOS LOS EVALUADORES
@@ -368,7 +370,16 @@ const EntitiesProvider = ({ children }) => {
     });
     setAllEvaluatorsSelector(array);
   };
-
+  const getUsersFiltered = async (page, params) => {
+    const getAllJob = await reqAxios(
+      "get",
+      `/user/get/users/${page}`,
+      params,
+      ""
+    );
+    setUsersFiltered(getAllJob.data.response);
+    setTotalUsersPages(getAllJob.data.pages);
+  };
   return (
     <EntitiesContext.Provider
       value={{
@@ -385,6 +396,9 @@ const EntitiesProvider = ({ children }) => {
         getAllAreas,
         allJobs,
         getAllJobs,
+        usersFiltered,
+        totalUsersPages,
+        getUsersFiltered,
         users,
         getAllUsers,
         myJobs,

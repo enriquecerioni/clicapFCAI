@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 
-export const UsersList = ({ user, setUserToDelete,showAlert }) => {
+export const UsersList = ({ user, setUserToDelete, showAlert }) => {
   const navigate = useNavigate();
   /*  const startDate = user.startDate.split('-') */
   const deleteUser = () => {
@@ -15,8 +15,10 @@ export const UsersList = ({ user, setUserToDelete,showAlert }) => {
   };
   return (
     <>
+      {/*   { console.log(user.name)} */}
       <tr>
-        <td>{user.name}</td>
+        <td>{user.name + " " + user.surname}</td>
+        <td>{user.identifyNumber}</td>
         <td>{user.email}</td>
         <td>{user.role.name}</td>
         <td className="">
