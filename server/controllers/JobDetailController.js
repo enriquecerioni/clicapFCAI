@@ -114,22 +114,53 @@ exports.updateById = async (req, res) => {
 };
 exports.getById = async (req, res) => {
   const { jobId } = req.params;
-  const detail = await JobDetailModel.findAll({
-    where: { jobId },
-    include: [
-      { model: CorrectionModel },
-      { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
-      {
-        model: JobModel,
-        attributes: ["name", "urlFile"],
-      },
-    ],
-  });
+  const { roleId, evaluatorId } = req.query;
+  console.log(req.query);
+  let options = "";
+  if (Number(roleId) === 2) {
+    options = {
+      where: { jobId, evaluatorId: Number(evaluatorId) },
+      include: [
+        { model: CorrectionModel },
+        { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
+        {
+          model: JobModel,
+          attributes: ["name", "urlFile"],
+        },
+      ],
+    };
+  } else {
+    options = {
+      where: { jobId },
+      include: [
+        { model: CorrectionModel },
+        { model: UserModel, as: "evaluator", attributes: ["name", "surname"] },
+        {
+          model: JobModel,
+          attributes: ["name", "urlFile"],
+        },
+      ],
+    };
+  }
+
+  const detail = await JobDetailModel.findAll(options);
 
   if (detail) {
     res.status(200).json({ response: detail });
   } else {
     res.status(500).json({ msg: "Error al obtener la corrección." });
+  }
+};
+exports.checkCorrection = async (req, res) => {
+  const { jobId, evaluatorId } = req.params;
+  const detail = await JobDetailModel.findOne({
+    where: { jobId, evaluatorId },
+  });
+
+  if (detail) {
+    res.status(200).json({ response: detail, value: 1 });
+  } else {
+    res.status(200).json({ msg: "Error al obtener la corrección.", value: 0 });
   }
 };
 exports.getAll = async (req, res) => {

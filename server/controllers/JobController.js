@@ -64,18 +64,19 @@ exports.upload = async (req, res) => {
     if (evaluatorId2 === "") {
       evaluatorId2 = null;
     }
+    console.log(req.body);
 
     const doc = await JobModel.create({
       name: name,
       jobModalityId,
       areaId: areaId,
       members: members,
-      authorId: authorId,
-      status,
+      authorId: Number(authorId),
+      status: null,
       urlFile: req.file.filename,
       evaluatorId1,
       evaluatorId2,
-      approve:0
+      approve: 0,
     });
     if (doc) {
       return res.status(200).json({ msg: "Trabajo creado!" });
@@ -282,7 +283,7 @@ const calcTotalPages = (totalItems) => {
   }
 }; */
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, status, areaId, evaluatorId } = req.query;
+  const { authorId, name, surname, status, areaId, evaluatorId,approve } = req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -320,6 +321,9 @@ exports.getAllPaginated = async (req, res) => {
   }
   if (status) {
     options.where.status = status;
+  }
+  if (approve) {
+    options.where.approve = approve;
   }
 
   if (evaluatorId) {
