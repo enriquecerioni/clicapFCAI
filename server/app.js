@@ -15,6 +15,7 @@ const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
 const JobDetailsRouter = require("./routes/JobDetailRouter");
 const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
+const FileRouter = require("./routes/FileRouter");
 
 // Models
 require("./models/DateModel");
@@ -54,6 +55,7 @@ app.use("/api/clicap/pay/", PayRouter);
 app.use("/api/clicap/user/", UserRouter);
 app.use("/api/clicap/role/", RoleRouter);
 app.use("/api/clicap/student/", StudentCertificateRouter);
+app.use("/api/clicap/file/", FileRouter);
 
 //SYNC -> sync with the database, if the model matches the table.
 db.sync({ force: false })

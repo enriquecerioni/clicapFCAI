@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import { downloadFile } from "../../../helpers/helpers";
 
 const PayStudentList = ({ pay }) => {
   const navigate = useNavigate();
@@ -14,16 +15,27 @@ const PayStudentList = ({ pay }) => {
         type="button"
         style={{ width: "60rem" }}
         className={pay.active === 0 ? classInactive : classActive}
-        onClick={() => navigate(`/pay/get/${pay.id}`)}
+        // onClick={() => navigate(`/pay/get/${pay.id}`)}
       >
-        <Card.Body>
-          <Card.Title className="text-center mb-2">COMPROBANTE DE PAGO</Card.Title>
-          <div className="cardbody-job">
+        <Card.Body class="card p-5">
+          <Card.Title className="mb-4">DETALLES DEL PAGO</Card.Title>
+          <div className="">
             <div className="">
-              <div className="text-center mb-2">{pay.moneyType} - {pay.amount} </div>
-              <div>
-                <button className="btn btn-primary">Descargar Comprobante</button>
+              <div className="mb-2"><strong>Monto</strong>: {pay.amount} - {pay.moneyType} </div>
+              <div className="mb-2"><strong>Forma de Pago</strong>: {pay.payType} </div>
+              <div className="mb-2"><strong>Condición Frente al IVA</strong>: {pay.iva} </div>
+              <div className="mb-2"><strong>Detalle del Pago</strong>: {pay.detail} </div>
+              <div className="mb-3">
+                <button className="btn btn-primary" onClick={() => downloadFile(pay.urlFile, 'payments')}>Descargar Comprobante</button>
               </div>
+              {/* <br /> */}
+              {pay.invoice ? <div>
+                <button type="button" className="btn btn-success" onClick={() => downloadFile(pay.invoice, 'invoices')}>Descargar Factura</button>
+              </div>
+              :
+              <div class="alert alert-warning" role="alert">
+              Pronto podrás descargar tu factura aquí.
+              </div>}
             </div>
           </div>
         </Card.Body>

@@ -39,14 +39,14 @@ const Sidebar = () => {
           <p className="title">MAIN</p>
           <li onClick={() => navigate("/home")}>
             <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+            <span>Menú Principal</span>
           </li>
           <p className="title">LISTS</p>
           {roleId === 1 ? (
             <Link to="/users" style={{ textDecoration: "none" }}>
               <li>
                 <PersonOutlineIcon className="icon" />
-                <span>Usuarios</span>
+                <span>Listado de Usuarios</span>
               </li>
             </Link>
           ) : null}

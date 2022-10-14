@@ -20,7 +20,7 @@ const PaysAdmin = () => {
     <>
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "5rem 5rem 0 5rem" }}>
+      <div style={{ margin: "5rem" }}>
         <h2 className="text-center">Pagos</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -48,6 +48,7 @@ const PaysAdmin = () => {
                     <th>Monto</th>
                     <th>Modo de Pago</th>
                     <th>Detalle</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>
