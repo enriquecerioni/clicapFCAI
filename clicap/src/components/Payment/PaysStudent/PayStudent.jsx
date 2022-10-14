@@ -41,7 +41,7 @@ const PayStudent = () => {
       {/* TABLA */}
       {myPays.length > 0 ? (
         <>
-          <div className="box-cardJob">
+          <div className="box-cardPay col d-flex justify-content-center">
             {myPays.map((pay, i) => (
               <PayStudentList
                 pay={pay}

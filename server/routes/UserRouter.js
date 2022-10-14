@@ -8,6 +8,7 @@ router.put('/edit/:id',UserController.updateById);
 router.get('/get/:id',UserController.getById);
 router.get('/getallevaluators',UserController.getAllEvaluators);
 router.get('/getall',UserController.getAll);
+router.get("/get/users/:page", UserController.getAllPaginated);
 router.delete('/delete/:id',UserController.deleteById);
 
 

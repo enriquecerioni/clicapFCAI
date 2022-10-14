@@ -2,13 +2,23 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 
-export const UsersList = ({ user, setuserToDelete }) => {
+export const UsersList = ({ user, setUserToDelete, showAlert }) => {
   const navigate = useNavigate();
   /*  const startDate = user.startDate.split('-') */
+  const deleteUser = () => {
+    showAlert(true);
+    setUserToDelete({
+      id: user.id,
+      entityName: user.name,
+      entityType: "users",
+    });
+  };
   return (
     <>
+      {/*   { console.log(user.name)} */}
       <tr>
-        <td>{user.name}</td>
+        <td>{user.name + " " + user.surname}</td>
+        <td>{user.identifyNumber}</td>
         <td>{user.email}</td>
         <td>{user.role.name}</td>
         <td className="">
@@ -22,13 +32,7 @@ export const UsersList = ({ user, setuserToDelete }) => {
           <i
             type="button"
             className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-            onClick={() =>
-              setuserToDelete({
-                id: user.id,
-                entityName: user.name,
-                entityType: "user",
-              })
-            }
+            onClick={deleteUser}
           ></i>
         </td>
       </tr>

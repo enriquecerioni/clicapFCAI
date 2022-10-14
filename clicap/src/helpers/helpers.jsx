@@ -79,3 +79,38 @@ export const waitAndRefresh = (path, time) => {
     window.location.pathname = path;
   }, time);
 };
+
+export const downloadFile = async (nameFile, folder) => {
+  try {
+    await axios({
+      url: `http://localhost:3000/api/clicap/job/downloadfile?nameFile=${nameFile}&folder=${folder}`, //your url
+      params: "",
+      method: "GET",
+      responseType: "blob", // important
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${nameFile}`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+    return "Descargado";
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteFile = async (nameFile, folder) => {
+  try {
+    await axios({
+      url: `http://localhost:3000/api/clicap/file/delete-file?nameFile=${nameFile}&folder=${folder}`, //your url
+      params: "",
+      method: "GET",
+      responseType: "blob", // important
+    });
+    console.log("Archivo eliminado.")
+  } catch (error) {
+    console.log(error);
+  }
+};

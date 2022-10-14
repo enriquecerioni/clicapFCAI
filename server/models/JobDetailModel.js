@@ -16,6 +16,10 @@ const JobDetailModel = db.define("jobdetail", {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
+  evaluatorId: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+  },
   correctionId: {
     allowNull: false,
     type: DataTypes.INTEGER,
@@ -24,10 +28,14 @@ const JobDetailModel = db.define("jobdetail", {
     allowNull: false,
     type: DataTypes.TEXT,
   },
+  sendMail: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
   date: {
     allowNull: false,
     type: DataTypes.DATEONLY,
-    /* defaultValue: db.fn("now"), */
+    defaultValue: db.fn("now"),
   },
 });
 
@@ -35,6 +43,14 @@ const JobDetailModel = db.define("jobdetail", {
 JobDetailModel.belongsTo(JobModel, { foreignKey: "jobId" });
 JobModel.hasMany(JobDetailModel, {
   foreignKey: "jobId",
+});
+// JOBDETAIL - EVALUATOR
+JobDetailModel.belongsTo(UserModel, {
+  foreignKey: "evaluatorId",
+  as: "evaluator",
+});
+UserModel.hasMany(JobDetailModel, {
+  foreignKey: "evaluatorId",
 });
 
 // JOBDETAIL - CORRECTION
