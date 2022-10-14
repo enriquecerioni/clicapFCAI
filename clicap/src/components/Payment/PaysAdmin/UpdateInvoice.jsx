@@ -5,14 +5,18 @@ import { Button } from "react-bootstrap";
 import { useParams } from "react-router";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
+import { getDataUserByKey } from "../../../helpers/helpers";
 
 const UpdateInvoce = () => {
     
     const navigate = useNavigate();
-    const { allPays, getAllPays, handleChangePay, updatePayInvoice} =
+    const { allPays, getAllPays, handleChangePay, updatePayInvoice, getAllUsers, users } =
     useContext(EntitiesContext); 
     const {id} = useParams();
-    const pay = allPays.find(p => p.id == id)
+    const pay = allPays.find(p => p.id == id);
+    const author = users.find(user => user.id === pay.authorId);
+    // const author = users.find(user => user?.id === pay?.authorId)
+    // console.log(author);
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,16 +29,15 @@ const UpdateInvoce = () => {
     },[])
 
     return(
-        <div>
-            <h1>Datos del Pago</h1>
-            <div>
-                <h2>{pay.moneyType}</h2>
-                <h2>{pay.amount}</h2>
-                <h2>{pay.payType}</h2>
-            </div>
-            <h2>{pay.authorId}</h2>
-            <h2>{pay.iva}</h2>
-            <h2>{pay.detail}</h2>
+        <div className="container m-5 card p-5">
+            <h1 class="text-center mb-4">Datos del Pago</h1>
+            <div className="mb-2"><strong>Autor</strong>: {author.name}</div>
+            <div className="mb-2"><strong>CUIL/CUIT</strong>: {pay.cuitCuil.slice(0,2) + '-' + pay.cuitCuil.slice(2,10) + '-' + pay.cuitCuil.slice(10,11)}</div>
+            <div className="mb-2"><strong>Monto</strong>: {pay.amount} - {pay.moneyType} </div>
+            <div className="mb-2"><strong>Forma de Pago</strong>: {pay.payType} </div>
+            <div className="mb-2"><strong>Condición Frente al IVA</strong>: {pay.iva} </div>
+            <div className="mb-2"><strong>Detalle del Pago</strong>: {pay.detail} </div>
+
             <form onSubmit={handleSubmit}>
                 <div className="">
                     <input
@@ -45,8 +48,8 @@ const UpdateInvoce = () => {
                     onChange={handleChangePay}
                     />
                 </div>
-                <div className="mt-3">
-                <Button type="submit" variant="primary">
+                <div className="mt-3 text-center">
+                <Button type="submit" variant="primary" className="w-25">
                     Subir Factura
                 </Button>
                 </div>

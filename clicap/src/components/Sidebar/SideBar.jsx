@@ -81,9 +81,9 @@ const Sidebar = () => {
           >
             <TaskIcon className="icon" />
             {roleId === 1 ? (
-              <span>Listado de Certificados</span>
+              <span>Listado de Constancias de AR</span>
             ) : (
-              <span>Certificado de Alumno</span>
+              <span>Constancia de Alumno regular</span>
             )}
           </li>
           {/* <Link to="/works" style={{ textDecoration: "none" }}>

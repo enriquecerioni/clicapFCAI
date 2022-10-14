@@ -48,7 +48,7 @@ const EntitiesProvider = ({ children }) => {
     iva: "",
     detail: "",
     urlFile: "",
-    authorId: getDataUserByKey("id"),
+    authorId: userId,
   };
 
   const initialStateCertificate = {
