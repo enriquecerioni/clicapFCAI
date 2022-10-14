@@ -6,9 +6,11 @@ import ModalDelete from "../../Modals/ModalDelete";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { PaginationCustom } from "../../Pagination/Pagination";
+import { getDataUserByKey } from "../../../helpers/helpers";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
+  const roleId = getDataUserByKey("roleId");
   const {
     allJobs,
     getAllJobs,
@@ -19,6 +21,8 @@ const JobsAdmin = () => {
     areasSelector,
     totalPages,
     allStatusJob,
+    getAllEvaluators,
+    allEvaluatorsSelector,
   } = useContext(EntitiesContext);
 
   const initialFilters = {
@@ -28,6 +32,18 @@ const JobsAdmin = () => {
     status: "",
     evaluatorId: "",
   };
+  const toCorrectionOptions = [
+    {
+      value: 1,
+      label: "Para corregir",
+      target: { name: "approve", value: 1 },
+    },
+    {
+      value: 0,
+      label: "Corregidos",
+      target: { name: "approve", value: 0 },
+    },
+  ];
   const [filters, setFilters] = useState(initialFilters);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
@@ -55,6 +71,7 @@ const JobsAdmin = () => {
   useEffect(() => {
     getAllUsers();
     getAllAreas();
+    getAllEvaluators();
     getAllJobs(page, filters);
   }, [page]);
 
@@ -76,102 +93,108 @@ const JobsAdmin = () => {
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
         ) : null}
 
-        <div className=" mt-2">
-          <form method="get" className="center-filters" onSubmit={handleSubmit}>
-            <div className="me-3">
-              <label htmlFor="forName" className="form-label">
-                Nombre
-              </label>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                id="exampleFormControlInput1"
-                placeholder="nombre"
-                onChange={(e) => handleChangeFilter(e, "name")}
-              />
-            </div>
-            <div style={{ width: "200px" }} className="me-3">
-              <label htmlFor="forAuthorId" className="form-label">
-                Autor
-              </label>
-              <Select
-                options={usersSelector}
-                placeholder={"seleccione.."}
-                name="authorId"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeFilter(e, "authorId")}
-              />
-            </div>
-            <div style={{ width: "200px" }} className="me-3">
-              <label htmlFor="forArea" className="form-label">
-                Area
-              </label>
-              <Select
-                options={areasSelector}
-                placeholder={"seleccione.."}
-                name="areaId"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeFilter(e, "areaId")}
-              />
-            </div>
-            <div style={{ width: "200px" }} className="me-3">
-              <label htmlFor="forArea" className="form-label">
-                Evaluador
-              </label>
-              <Select
-                options={areasSelector}
-                placeholder={"seleccione.."}
-                name="evaluatorId"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeFilter(e, "evaluatorId")}
-              />
-            </div>
-            <div style={{ width: "200px" }} className="me-3">
-              <label htmlFor="forArea" className="form-label">
-                Estado
-              </label>
-              <Select
-                options={allStatusJob}
-                placeholder={"seleccione.."}
-                name="status"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeFilter(e, "status")}
-              />
-            </div>
-            <Button variant="primary" type="submit">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </Button>
-          </form>
-        </div>
+        {roleId === 1 ? (
+          <div className=" mt-2">
+            <form
+              method="get"
+              className="center-filters"
+              onSubmit={handleSubmit}
+            >
+              <div className="me-3">
+                <label htmlFor="forName" className="form-label">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  className="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="nombre"
+                  onChange={(e) => handleChangeFilter(e, "name")}
+                />
+              </div>
+              <div style={{ width: "200px" }} className="me-3">
+                <label htmlFor="forAuthorId" className="form-label">
+                  Autor
+                </label>
+                <Select
+                  options={usersSelector}
+                  placeholder={"seleccione.."}
+                  name="authorId"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeFilter(e, "authorId")}
+                />
+              </div>
+              <div style={{ width: "200px" }} className="me-3">
+                <label htmlFor="forArea" className="form-label">
+                  Area
+                </label>
+                <Select
+                  options={areasSelector}
+                  placeholder={"seleccione.."}
+                  name="areaId"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeFilter(e, "areaId")}
+                />
+              </div>
+              <div style={{ width: "200px" }} className="me-3">
+                <label htmlFor="forArea" className="form-label">
+                  Evaluador
+                </label>
+                <Select
+                  options={allEvaluatorsSelector}
+                  placeholder={"seleccione.."}
+                  name="evaluatorId"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeFilter(e, "evaluatorId")}
+                />
+              </div>
+              <div style={{ width: "200px" }} className="me-3">
+                <label htmlFor="forArea" className="form-label">
+                  Estado
+                </label>
+                <Select
+                  options={toCorrectionOptions}
+                  placeholder={"seleccione.."}
+                  name="status"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeFilter(e, "status")}
+                />
+              </div>
+              <Button variant="primary" type="submit">
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </Button>
+            </form>
+          </div>
+        ) : null}
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3">

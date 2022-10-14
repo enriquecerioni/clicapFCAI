@@ -13,7 +13,8 @@ import { alertError } from "../../../helpers/alerts";
 
 export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
-  const roleId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
+  const userId = getDataUserByKey("id");
   const {
     job,
     setJob,
@@ -24,6 +25,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   } = useContext(EntitiesContext);
   console.log(allJobs);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
+  const [haveCorrection, setHaveCorrection] = useState(false);
 
   /*  const startDate = work.startDate.split('-') */
   const deleteJob = () => {
@@ -92,8 +94,13 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     waitAndRefresh(`/jobs`, 1000);
   };
 
+  const checkCorrection=async()=>{
+    const check = await reqAxios('get',`/jobdetails/check/${work.id}/${userId}`,'','');
+    setHaveCorrection(check.data.value);
+  }
   useEffect(() => {
     getAllEvaluators();
+    checkCorrection();
   }, []);
 
   useEffect(() => {
@@ -162,7 +169,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
         <td>{work.area.name}</td>
         <td>{work.jobmodality.name}</td>
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
-        {roleId !== 1 ? (
+        {roleId === 1 ? (
           <>
             <td>
               {assignEvaluator ? (
@@ -209,6 +216,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
               <Button
                 className="btn btn-success"
                 onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
+                disabled={work.approve===1?false:true}
               >
                 Aprobar
               </Button>
@@ -219,7 +227,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
             <Button
               className="btn btn-success"
               onClick={() => navigate(`/job/corrections/${work.id}`)}
-              disabled={work.status === 1 ? true : false}
+              disabled={haveCorrection !== 0 ? true : false}
             >
               Corregir
             </Button>

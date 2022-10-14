@@ -10,6 +10,7 @@ export const EntitiesContext = createContext();
 
 const EntitiesProvider = ({ children }) => {
   const userId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
   //Estados iniciales
   //ESTADO INICIAL REGISTRO
   const initialStateRegister = {
@@ -58,7 +59,9 @@ const EntitiesProvider = ({ children }) => {
   const initialCorrection = {
     jobId: "",
     correctionId: "",
+    evaluatorId:userId,
     details: "",
+    sendMail:0
   };
   const allStatusJob = [
     { label: "Aceptado", value: 1, target: { name: "status", value: 1 } },
@@ -190,8 +193,9 @@ const EntitiesProvider = ({ children }) => {
   const getJobId = async (id) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
-      const partners = dataJobId.data.response[0].members.split(";");
+     /*  const partners = dataJobId.data.response[0].members.split(";");
       dataJobId.data.response[0].members = partners;
+      console.log(dataJobId.data.response); */
       setJobId(dataJobId.data.response[0]);
     } catch (error) {
       console.log(error);
@@ -261,11 +265,12 @@ const EntitiesProvider = ({ children }) => {
   };
   //Buscar las correciones de un trabajo
   const getCorrectionsByJob = async (id) => {
+    const params = {roleId,evaluatorId:userId}
     try {
       const corrections = await reqAxios(
         "GET",
         `/jobdetails/get/${id}`,
-        "",
+        params,
         ""
       );
       setCorrections(corrections.data.response);
