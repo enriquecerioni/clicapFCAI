@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 
 const JobStudentList = ({ job, setjobToDelete }) => {
   const navigate = useNavigate();
@@ -22,14 +22,15 @@ const JobStudentList = ({ job, setjobToDelete }) => {
           ></i>
         </td>
         <td>
-          <i
-            type="button"
-            className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-            onClick={() => navigate(`/works/edit/${job.id}`)}
-          ></i>
+          <Button
+            className="btn btn-success"
+            disabled={job.status === null ? true : false}
+          >
+            <i className="fa-solid fa-file-arrow-up"></i>
+          </Button>
         </td>
         <td>
-        <i className="icon-size-table fa-solid fa-file-arrow-down"></i>
+          <i className="icon-size-table fa-solid fa-file-arrow-down"></i>
         </td>
       </tr>
     </>
