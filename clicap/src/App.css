@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight&family=Montserrat&display=swap');
-* {
-  font-family: 'Inter Tight', sans-serif !important;
-}
+
 html {
   height: 100%;
   margin: 0;
