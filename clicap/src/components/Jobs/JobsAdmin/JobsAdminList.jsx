@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Select from "react-select";
 import { useEffect } from "react";
 import {
@@ -94,10 +94,15 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     waitAndRefresh(`/jobs`, 1000);
   };
 
-  const checkCorrection=async()=>{
-    const check = await reqAxios('get',`/jobdetails/check/${work.id}/${userId}`,'','');
+  const checkCorrection = async () => {
+    const check = await reqAxios(
+      "get",
+      `/jobdetails/check/${work.id}/${userId}`,
+      "",
+      ""
+    );
     setHaveCorrection(check.data.value);
-  }
+  };
   useEffect(() => {
     getAllEvaluators();
     checkCorrection();
@@ -105,6 +110,8 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
 
   useEffect(() => {
     setEvaluatorsOptions();
+    setEvaluatorSelected1(work.evaluatorId1);
+    setEvaluatorSelected2(work.evaluatorId2);
   }, [allEvaluatorsSelector]);
 
   return (
@@ -119,6 +126,9 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
               <Select
                 options={evaluatorsOptions1.filter(
                   (el) => el.value !== evaluatorSelected2
+                )}
+                value={evaluatorsOptions1.filter(
+                  (el) => el.value === evaluatorSelected1
                 )}
                 placeholder={"seleccione.."}
                 name="evaluator1"
@@ -146,6 +156,9 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
               <Select
                 options={evaluatorsOptions2.filter(
                   (el) => el.value !== evaluatorSelected1
+                )}
+                value={evaluatorsOptions2.filter(
+                  (el) => el.value === evaluatorSelected2
                 )}
                 placeholder={"seleccione.."}
                 name="evaluator2"
@@ -205,20 +218,25 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
             </td>
             <td>
               {!assignEvaluator ? (
-                <i
-                  type="button"
-                  className="icon-size-table fa-solid fa-user-tie"
-                  onClick={() => setAssignEvaluator(!assignEvaluator)}
-                ></i>
+                <OverlayTrigger
+                  placement={"top"}
+                  overlay={<Tooltip>Asignar evaluador</Tooltip>}
+                >
+                  <i
+                    type="button"
+                    className="icon-size-table fa-solid fa-user-tie"
+                    onClick={() => setAssignEvaluator(!assignEvaluator)}
+                  ></i>
+                </OverlayTrigger>
               ) : null}
             </td>
             <td>
               <Button
                 className="btn btn-success"
                 onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
-                disabled={work.approve===1?false:true}
+                disabled={work.approve === 1 ? false : true}
               >
-                Aprobar
+                Evaluaciones
               </Button>
             </td>
           </>

@@ -25,10 +25,15 @@ const JobsAdmin = () => {
     allEvaluatorsSelector,
   } = useContext(EntitiesContext);
 
+  const modalities = [
+    { label: "Trabajo completo",value: 1, target: { name: "jobModalityId", value: 1 } },
+    { label: "Resumen",value: 2, target: { name: "jobModalityId", value: 2 } },
+  ];
   const initialFilters = {
     authorId: "",
     name: "",
     areaId: "",
+    jobModalityId: "",
     status: "",
     evaluatorId: "",
   };
@@ -79,7 +84,7 @@ const JobsAdmin = () => {
     <>
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "0 5rem 0 5rem" }}>
+      <div /* style={{ margin: "0 5rem 0 5rem" }} */>
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -102,14 +107,14 @@ const JobsAdmin = () => {
             >
               <div className="me-3">
                 <label htmlFor="forName" className="form-label">
-                  Nombre
+                  Título
                 </label>
                 <input
                   type="text"
                   name="name"
                   className="form-control"
                   id="exampleFormControlInput1"
-                  placeholder="nombre"
+                  placeholder="Título"
                   onChange={(e) => handleChangeFilter(e, "name")}
                 />
               </div>
@@ -149,6 +154,25 @@ const JobsAdmin = () => {
                     },
                   })}
                   onChange={(e) => handleChangeFilter(e, "areaId")}
+                />
+              </div>
+              <div style={{ width: "200px" }} className="me-3">
+                <label htmlFor="forArea" className="form-label">
+                  Modalidad
+                </label>
+                <Select
+                  options={modalities}
+                  placeholder={"seleccione.."}
+                  name="jobModalityId"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeFilter(e, "jobModalityId")}
                 />
               </div>
               <div style={{ width: "200px" }} className="me-3">

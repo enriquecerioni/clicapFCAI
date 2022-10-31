@@ -23,7 +23,7 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       url: API_URL + shortUrl,
       params: param,
       data: data,
-/*       headers: {
+      /*       headers: {
         "Content-Type": "application/json",
       }, */
     });
@@ -78,4 +78,31 @@ export const waitAndRefresh = (path, time) => {
   setTimeout(() => {
     window.location.pathname = path;
   }, time);
+};
+//download
+export const reqAxiosDownload = async (shortUrl, param) => {
+  const load = toast.loading("Espere unos segundos...");
+  try {
+    await axios({
+      url: API_URL + shortUrl, //your url
+      params: param,
+      method: "GET",
+      responseType: "blob", // important
+      headers: {
+        Accept: "application/JSON",
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "reporte.xlsx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+    return toast.update(load, loadSuccess("Datos descargados"));
+  } catch (error) {
+    console.log(error);
+      alertError("Error al descargar, fallo en el servidor");
+  }
 };

@@ -6,29 +6,33 @@ import { UsersList } from "./UsersList";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
 import { PaginationCustom } from "../Pagination/Pagination";
-import { getDataUserByKey } from "../../helpers/helpers";
+import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
 
 const Users = () => {
   const navigate = useNavigate();
-  const roleId = getDataUserByKey('roleId');
+  const roleId = getDataUserByKey("roleId");
   const initialFilters = {
     name: "",
     roleId: "",
     identifyNumber: "",
   };
-  const { usersFiltered, getUsersFiltered,totalUsersPages } = useContext(EntitiesContext);
+  const { usersFiltered, getUsersFiltered, totalUsersPages } =
+    useContext(EntitiesContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
   const [userToDelete, setUserToDelete] = useState(false);
   const [page, setPage] = useState(1);
 
-
   const RolesOptions = [
-    {value:1,label:"Administrador",target:{name:"roleId",value:1}},
-    {value:2,label:"Evaluador",target:{name:"roleId",value:2}},
-    {value:3,label:"Docente investigador",target:{name:"roleId",value:3}},
-    {value:4,label:"Alumno",target:{name:"roleId",value:4}}
-  ]
+    { value: 1, label: "Administrador", target: { name: "roleId", value: 1 } },
+    { value: 2, label: "Evaluador", target: { name: "roleId", value: 2 } },
+    {
+      value: 3,
+      label: "Docente investigador",
+      target: { name: "roleId", value: 3 },
+    },
+    { value: 4, label: "Alumno", target: { name: "roleId", value: 4 } },
+  ];
   const handleChangeFilter = (e, name) => {
     if (e) {
       setFilters({
@@ -41,6 +45,9 @@ const Users = () => {
         [name]: "",
       });
     }
+  };
+  const exportToExcel = async () => {
+    await reqAxiosDownload(`/user/export/users`, filters);
   };
 
   const handleSubmit = (e) => {
@@ -118,6 +125,9 @@ const Users = () => {
                 <i className="fa-solid fa-magnifying-glass"></i>
               </Button>
             </form>
+            <Button variant="primary" onClick={exportToExcel}>
+              Exportar
+            </Button>
           </div>
         ) : null}
         {usersFiltered.length > 0 ? (

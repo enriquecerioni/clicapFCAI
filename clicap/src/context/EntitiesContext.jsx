@@ -59,9 +59,9 @@ const EntitiesProvider = ({ children }) => {
   const initialCorrection = {
     jobId: "",
     correctionId: "",
-    evaluatorId:userId,
+    evaluatorId: userId,
     details: "",
-    sendMail:0
+    sendMail: 0,
   };
   const allStatusJob = [
     { label: "Aceptado", value: 1, target: { name: "status", value: 1 } },
@@ -195,7 +195,7 @@ const EntitiesProvider = ({ children }) => {
   const getJobId = async (id) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
-     /*  const partners = dataJobId.data.response[0].members.split(";");
+      /*  const partners = dataJobId.data.response[0].members.split(";");
       dataJobId.data.response[0].members = partners;
       console.log(dataJobId.data.response); */
       setJobId(dataJobId.data.response[0]);
@@ -267,7 +267,7 @@ const EntitiesProvider = ({ children }) => {
   };
   //Buscar las correciones de un trabajo
   const getCorrectionsByJob = async (id) => {
-    const params = {roleId,evaluatorId:userId}
+    const params = { roleId, evaluatorId: userId };
     try {
       const corrections = await reqAxios(
         "GET",
@@ -276,6 +276,20 @@ const EntitiesProvider = ({ children }) => {
         ""
       );
       setCorrections(corrections.data.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCorrectionByJob = async (id) => {
+    const params = { roleId, evaluatorId: null };
+    try {
+      const corrections = await reqAxios(
+        "GET",
+        `/jobdetails/get/${id}`,
+        params,
+        ""
+      );
+      setCorrection(corrections.data.response[0]);
     } catch (error) {
       console.log(error);
     }
@@ -425,13 +439,14 @@ const EntitiesProvider = ({ children }) => {
         areasSelector,
         totalPages,
         getCorrectionsByJob,
+        getCorrectionByJob,
         corrections,
         correction,
         setCorrection,
         allStatusJob,
         getAllEvaluators,
         allEvaluators,
-        allEvaluatorsSelector
+        allEvaluatorsSelector,
       }}
     >
       {children}
