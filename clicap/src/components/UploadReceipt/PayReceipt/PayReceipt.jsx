@@ -18,8 +18,8 @@ const PayReceipt = () => {
 
   return (
     <>
-      <div className="poderver  flex-column">
-        <h2>Subir Comprobante de Pago</h2>
+      <div className="poderver flex-column container card p-5 ">
+        <h2 className="text-center">Subir Comprobante de Pago</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
@@ -29,7 +29,7 @@ const PayReceipt = () => {
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  MONTO
+                  Monto ($)
                 </label>
                 <div className="">
                   <input

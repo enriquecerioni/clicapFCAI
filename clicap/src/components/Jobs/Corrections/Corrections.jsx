@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import axios from "axios";
 import { NewCorrections } from "./NewCorrections";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { downloadFile, getDataUserByKey } from "../../../helpers/helpers";
 //components
 
 export const Corrections = () => {
@@ -15,27 +15,6 @@ export const Corrections = () => {
     useContext(EntitiesContext);
 
   const [newCorrection, setNewCorrection] = useState(false);
-
-  const downloadFile = async (nameFile) => {
-    try {
-      await axios({
-        url: `http://localhost:3000/api/clicap/job/downloadfile?nameFile=${nameFile}`, //your url
-        params: "",
-        method: "GET",
-        responseType: "blob", // important
-      }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `${nameFile}`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      });
-      return "Descargado";
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     getJobId(id);
@@ -56,7 +35,7 @@ export const Corrections = () => {
             Nueva Corrección
           </Button>
         ) : null}
-        <Button variant="primary" onClick={() => downloadFile(jobId.urlFile)}>
+        <Button variant="primary" onClick={() => downloadFile(jobId.urlFile, 'documents')}>
           Descargar Ult. Version
         </Button>
       </div>

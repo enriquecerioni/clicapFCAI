@@ -1,7 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
-* {
-  font-family: "Open Sans", sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&family=Montserrat&display=swap');
+
 html {
   height: 100%;
   margin: 0;

@@ -87,8 +87,8 @@ exports.upload = async (req, res) => {
 };
 exports.downloadFile = (req, res) => {
   console.log("Descargo el archivo");
-  const { nameFile } = req.query;
-  const ruta = path.join(__dirname, `../public/documents/${nameFile}`);
+  const { nameFile, folder } = req.query;
+  const ruta = path.join(__dirname, `../public/${folder}/${nameFile}`);
   const file = fs.createReadStream(ruta);
   const filename = new Date().toISOString();
   res.setHeader(

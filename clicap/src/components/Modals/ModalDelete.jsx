@@ -1,10 +1,16 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import { deleteAxios, waitAndRefresh } from "../../helpers/helpers";
+import { deleteAxios, deleteFile, waitAndRefresh } from "../../helpers/helpers";
 
 const ModalDelete = ({ entity, showAlert }) => {
   //entity.entityType -> instance/partner/customer
   console.log(entity);
+  if(entity.entityType === 'pay'){
+    deleteFile(entity.receipt, 'payments');
+    deleteFile(entity.invoice, 'invoices');
+  } else if(entity.entityType === 'job'){
+    deleteFile(entity.job, 'documents');
+  }
   const deleteEntity = async () => {
     const entityDeleted = await deleteAxios(
       `/${entity.entityType}/delete/${entity.id}`
