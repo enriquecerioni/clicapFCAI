@@ -3,7 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const Sequelize = require("sequelize");
+const excelJS = require("exceljs");
 const { PAGE_LIMIT } = process.env;
+const EXCEL_CELL_WIDTH = 12;
 //NODEMAILER
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
@@ -315,12 +317,12 @@ exports.getAll = async (req, res) => {
   }
 };
 exports.getAllEvaluators = async (req, res) => {
-/*   let evaluatorsFormat = []; */
+  /*   let evaluatorsFormat = []; */
   const evaluators = await UserModel.findAll({
     where: { roleId: 2 },
     attributes: ["id", "name", "surname"],
   });
-  
+
   if (evaluators) {
     res.status(200).json({ response: evaluators });
   } else {
@@ -350,7 +352,7 @@ const calcTotalPages = (totalItems) => {
   return cantPages;
 };
 exports.getAllPaginated = async (req, res) => {
-  const { name,identifyNumber,roleId, } = req.query;
+  const { name, identifyNumber, roleId } = req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -382,5 +384,114 @@ exports.getAllPaginated = async (req, res) => {
     res.status(200).json({ pages: cantPages, response: rows });
   } else {
     res.status(500).json({ msg: "La instancia no existe." });
+  }
+};
+
+//Export in excel
+const optionsToFilter = (req) => {
+  try {
+    const { name, identifyNumber, roleId } = req.query;
+    const Op = Sequelize.Op;
+    let options = {
+      where: {},
+      include: [{ model: RoleModel }],
+    };
+
+    if (name) {
+      options.where.name = {
+        [Op.like]: `%${name}%`,
+      };
+    }
+
+    if (identifyNumber) {
+      options.where.identifyNumber = identifyNumber;
+    }
+    if (roleId) {
+      options.where.roleId = roleId;
+    }
+    return options;
+  } catch (e) {
+    console.log(e);
+    return res.status(503).json({ msg: "Fallo en el servidor" });
+  }
+};
+exports.downloadFilter = async (req, res) => {
+  const options = optionsToFilter(req);
+  const rows = await UserModel.findAll(options);
+  const workbook = new excelJS.Workbook(); // Create a new workbook
+  const worksheet = workbook.addWorksheet("Mi reporte"); // New Worksheet
+  // Column for data in excel. key must match data key
+  worksheet.columns = [
+    { header: "Nombre", key: "name", width: EXCEL_CELL_WIDTH },
+    { header: "Dni", key: "identifyNumber", width: EXCEL_CELL_WIDTH },
+    { header: "Email", key: "email", width: EXCEL_CELL_WIDTH },
+    { header: "Rol", key: "roleId", width: EXCEL_CELL_WIDTH },
+  ];
+  // Looping through User data
+  rows.forEach((user) => {
+    user.roleId = user.role.name;
+    worksheet.addRow(user); // Add data in worksheet
+  });
+  // put styles
+  worksheet.getRow(1).eachCell((cell) => {
+    (cell.font = { bold: true }),
+      (cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: {
+          argb: "FF9966",
+        },
+        bgColor: {
+          argb: "FF000000",
+        },
+      }),
+      (cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      });
+  });
+  worksheet.getRow(1).eachCell((cell) => {
+    (cell.font = { bold: true }),
+      (cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: {
+          argb: "FF9966",
+        },
+        bgColor: {
+          argb: "FF000000",
+        },
+      }),
+      (cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      });
+  });
+  rows.forEach((element, i) => {
+    worksheet.getRow(i + 2).eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+  //header to download
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", "attachment; filename=reporte.xlsx");
+  try {
+    return await workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    res.send("Error al descargar");
   }
 };

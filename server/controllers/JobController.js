@@ -262,28 +262,18 @@ const calcTotalPages = (totalItems) => {
   const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
   return cantPages;
 };
-/* exports.getDocumentPaginated = async (req, res) => {
-  try {
-    const { page } = req.params;
-    const offsetIns = calcNumOffset(page);
-    let { count, rows } = await JobModel.findAndCountAll({
-      include: [{ model: AreaModel }],
-      offset: offsetIns,
-      limit: Number(PAGE_LIMIT),
-    });
-    const cantPages = calcTotalPages(count);
-    if (rows) {
-      res.status(200).json({ pages: cantPages, response: rows });
-    } else {
-      res.status(500).json({ msg: "Los Trabajos no existen." });
-    }
-  } catch (e) {
-    console.log(e);
-    return res.status(503).json({ msg: "Fallo en el servidor" });
-  }
-}; */
+
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, status, areaId, evaluatorId,approve } = req.query;
+  const {
+    authorId,
+    name,
+    surname,
+    status,
+    areaId,
+    evaluatorId,
+    approve,
+    jobModalityId,
+  } = req.query;
   console.log(req.query);
   const { page } = req.params;
   const Op = Sequelize.Op;
@@ -318,6 +308,9 @@ exports.getAllPaginated = async (req, res) => {
   }
   if (authorId) {
     options.where.authorId = authorId;
+  }
+  if (jobModalityId) {
+    options.where.jobModalityId = jobModalityId;
   }
   if (status) {
     options.where.status = status;
