@@ -13,7 +13,7 @@ const EntitiesProvider = ({ children }) => {
   const roleId = getDataUserByKey("roleId");
   //Estados iniciales
   //Estado inicial cuenta regresiva
-  const [time, setTime] = useState('2022-11-12');
+  const [time, setTime] = useState("2022-11-12");
   //ESTADO INICIAL REGISTRO
   const initialStateRegister = {
     roleId: "",
@@ -123,11 +123,11 @@ const EntitiesProvider = ({ children }) => {
   // -----------------------------------------------------------------
   // Fecha - Obtener Fecha
   const getDate = async () => {
-    const obj = await reqAxios("GET", '/date/get', "", "");
+    const obj = await reqAxios("GET", "/date/get", "", "");
     setTime(await obj.data.response.date);
-  }
+  };
 
-  const handleTime = async(event) => {
+  const handleTime = async (event) => {
     let date = event.target.value;
     await reqAxios("PUT", `/date/edit/${date}`, "", "");
     window.location.reload();
@@ -135,7 +135,7 @@ const EntitiesProvider = ({ children }) => {
     // date = date.split('-');
     // let timestamp = new Date(date[0], date[1] - 1, date[2]);
     // console.log(timestamp.getTime());
-  }
+  };
   //Registro - Editar Usuario
   const handleChangeRegister = (e) => {
     setUserRegister({
@@ -158,6 +158,7 @@ const EntitiesProvider = ({ children }) => {
 
   //Subida de un trabajo
   const handleChangeUpJob = (e) => {
+    console.log(e.target.value);
     let value =
       e.target.type === "file"
         ? e.target.value === ""

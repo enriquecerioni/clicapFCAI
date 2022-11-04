@@ -5,16 +5,26 @@ import { Button } from "react-bootstrap";
 import { getDataUserByKey } from "../../helpers/helpers";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
+import { MembersChips } from "./MembersChips";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
   const { job, handleChangeUpJob, createNewJob } = useContext(EntitiesContext);
   const { areas, getAllAreas, modalities, getAllModalities } =
     useContext(EntitiesContext);
+  const [members, setMembers] = useState({
+    items: [],
+    value: "",
+    error: null,
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createNewJob();
+    //Save members in initialStateUpJob
+    await handleChangeUpJob({
+      target: { type: "text", name: "members", value: members.items.join(",") },
+    });
+    await createNewJob();
     navigate("/myjobs");
   };
 
@@ -25,7 +35,7 @@ const DeliveryTask = () => {
   return (
     <>
       <div className="poderver  flex-column">
-        <h2>Entregar trabajo</h2>
+        <h2>Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
@@ -107,11 +117,15 @@ const DeliveryTask = () => {
             <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
-                className="form-label fw-bold"
+                className="form-label fw-bold pe-3"
               >
                 Autor/es del trabajo
               </label>
-              <div className="">
+              <MembersChips
+                membersToSend={members}
+                setMembersToSend={setMembers}
+              />
+              {/*               <div className="">
                 <input
                   type="text"
                   placeholder="Ivan castro;Enrique Cerioni;"
@@ -120,7 +134,7 @@ const DeliveryTask = () => {
                   value={job.members}
                   onChange={handleChangeUpJob}
                 />
-              </div>
+              </div> */}
             </div>
             {/* Archivo */}
             <div className="mt-2">
