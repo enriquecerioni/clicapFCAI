@@ -111,11 +111,11 @@ exports.create = async (req, res) => {
     evaluatorId2: evaluatorId2,
   });
   console.log(members);
-  /* if (doc) {
+  if (doc) {
     res.status(200).send("Trabajo creado!");
   } else {
     res.status(500).json({ msg: "Error al crear el Trabajo." });
-  } */
+  }
 };
 exports.updateById = async (req, res) => {
   const Op = Sequelize.Op;
