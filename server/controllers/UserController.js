@@ -152,7 +152,11 @@ exports.acountActivate = async (req, res) => {
       } = decoded;
 
       //encripta la contraseña
-      let encryptedPassword = bcrypt.hashSync(password, 10);
+      /* let encryptedPassword = bcrypt.hashSync(password, 10); */
+      let encryptedPassword = jwt.sign(
+        { password },
+        process.env.JWT_ACOUNT_ACTIVE
+      );
 
       //verifica que el usuario no exista
       const oldUser = await UserModel.findOne({
@@ -220,12 +224,21 @@ exports.login = async (req, res) => {
     where: { identifyNumber: identifyNumber },
   });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    delete user.password;
-    return res.status(200).json({ msg: "Usuario logado!", user: user });
-  } else {
-    return res.status(401).json({ msg: "Id o contraseña incorrecta" });
-  }
+  jwt.verify(user.password, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ msg: "Token incorrecto o el tiempo expiró." });
+    }
+    const passwordToken = decoded.password;
+
+    if (user && password === passwordToken) {
+      delete user.password;
+      return res.status(200).json({ msg: "Usuario logado!", user: user });
+    } else {
+      return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+    }
+  });
 };
 
 exports.updateById = async (req, res) => {
@@ -299,12 +312,20 @@ exports.updateById = async (req, res) => {
 exports.getById = async (req, res) => {
   const { id } = req.params;
   const user = await UserModel.findByPk(id);
-
-  if (user) {
-    res.status(200).json({ response: user });
-  } else {
-    res.status(500).json({ msg: "Error al obtener el usuario." });
-  }
+  jwt.verify(user.password, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ msg: "Token incorrecto o el tiempo expiró." });
+    }
+    user.password = decoded.password;
+    if (user) {
+      res.status(200).json({ response: user });
+    } else {
+      res.status(500).json({ msg: "Error al obtener el usuario." });
+    }
+  });
+ 
 };
 exports.getAll = async (req, res) => {
   const user = await UserModel.findAll({
