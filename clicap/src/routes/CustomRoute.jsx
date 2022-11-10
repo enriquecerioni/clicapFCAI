@@ -22,6 +22,8 @@ import StudentCertificate from "../components/StudentCertificate/Student/Student
 import Certificate from "../components/UploadStudentCertificate/Certificate";
 import UpdateInvoce from "../components/Payment/PaysAdmin/UpdateInvoice";
 import { SendCorrectionAdmin } from "../components/Jobs/SendCorrectionAdmin/SendCorrectionAdmin";
+import { UserState } from "../context/User/UserState";
+
 const CustomRoute = () => (
   <>
   <br /><br />
@@ -42,10 +44,10 @@ const CustomRoute = () => (
         <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
         <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
-        <Route path="register" element={<Home><Register/></Home>} />
+        <Route path="register" element={<Home><UserState><Register/></UserState></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
-        <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
+        <Route path="user/edit/:id" element={<PrivateRoute><UserState><Register/></UserState></PrivateRoute>} />
         {/* <Route path="users">
           <Route index element={<ListUser />} />
           <Route path=":userId" element={<SingleUser />} />
