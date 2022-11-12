@@ -224,21 +224,25 @@ exports.login = async (req, res) => {
     where: { identifyNumber: identifyNumber },
   });
 
-  jwt.verify(user.password, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
-    if (err) {
-      return res
-        .status(401)
-        .json({ msg: "Token incorrecto o el tiempo expiró." });
-    }
-    const passwordToken = decoded.password;
+  jwt.verify(
+    user.password,
+    process.env.JWT_ACOUNT_ACTIVE,
+    async (err, decoded) => {
+      if (err) {
+        return res
+          .status(401)
+          .json({ msg: "Token incorrecto o el tiempo expiró." });
+      }
+      const passwordToken = decoded.password;
 
-    if (user && password === passwordToken) {
-      delete user.password;
-      return res.status(200).json({ msg: "Usuario logado!", user: user });
-    } else {
-      return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+      if (user && password === passwordToken) {
+        delete user.password;
+        return res.status(200).json({ msg: "Usuario logado!", user: user });
+      } else {
+        return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+      }
     }
-  });
+  );
 };
 
 exports.updateById = async (req, res) => {
@@ -256,7 +260,53 @@ exports.updateById = async (req, res) => {
     password,
   } = req.body;
   const userDB = await UserModel.findByPk(id);
-  if (
+  //encripta la contraseña
+  let encryptedPassword = jwt.sign({ password }, process.env.JWT_ACOUNT_ACTIVE);
+  const user = await UserModel.update(
+    {
+      name: name,
+      surname: surname,
+      email: email,
+      roleId: roleId,
+      identifyType: identifyType,
+      identifyNumber: identifyNumber,
+      address: address,
+      institution: institution,
+      phone: phone,
+      password: encryptedPassword,
+    },
+    { where: { id: id } }
+  );
+  var mailOptions = {
+    from: process.env.EMAIL_APP,
+    to: email,
+    subject: "Usuario editado - credenciales",
+    template: "mailCredentials",
+    attachments: [
+      {
+        filename: "clicap.png",
+        path: "./assets/clicap.png",
+        cid: "logo",
+      },
+    ],
+    context: { id: identifyNumber, password: password },
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).json({ msg: error.message });
+    } else {
+      console.log("Email enviado!");
+      res.end();
+    }
+  });
+
+  if (user) {
+    return res.status(200).json({ response: "Usuario editado correctamente!" });
+  } else {
+    res.status(500).json({ msg: "El usuario no existe!" });
+  }
+  /*   if (
     userDB.identifyNumber != identifyNumber ||
     !(await bcrypt.compare(password, userDB.password)) ||
     userDB.email != email
@@ -284,48 +334,28 @@ exports.updateById = async (req, res) => {
         res.end();
       }
     });
-  }
-  //encripta la contraseña
-  let encryptedPassword = bcrypt.hashSync(password, 10);
-
-  const user = await UserModel.update(
-    {
-      name: name,
-      surname: surname,
-      email: email,
-      roleId: roleId,
-      identifyType: identifyType,
-      identifyNumber: identifyNumber,
-      address: address,
-      institution: institution,
-      phone: phone,
-      password: encryptedPassword,
-    },
-    { where: { id: id } }
-  );
-  if (user) {
-    return res.status(200).json({ response: "Usuario editado correctamente!" });
-  } else {
-    res.status(500).json({ msg: "El usuario no existe!" });
-  }
+  } */
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
   const user = await UserModel.findByPk(id);
-  jwt.verify(user.password, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
-    if (err) {
-      return res
-        .status(401)
-        .json({ msg: "Token incorrecto o el tiempo expiró." });
+  jwt.verify(
+    user.password,
+    process.env.JWT_ACOUNT_ACTIVE,
+    async (err, decoded) => {
+      if (err) {
+        return res
+          .status(401)
+          .json({ msg: "Token incorrecto o el tiempo expiró." });
+      }
+      user.password = decoded.password;
+      if (user) {
+        res.status(200).json({ response: user });
+      } else {
+        res.status(500).json({ msg: "Error al obtener el usuario." });
+      }
     }
-    user.password = decoded.password;
-    if (user) {
-      res.status(200).json({ response: user });
-    } else {
-      res.status(500).json({ msg: "Error al obtener el usuario." });
-    }
-  });
- 
+  );
 };
 exports.getAll = async (req, res) => {
   const user = await UserModel.findAll({

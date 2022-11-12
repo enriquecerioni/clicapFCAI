@@ -8,6 +8,8 @@ const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
 const CorrectionModel = require("../models/CorrectionModel");
+const excelJS = require("exceljs");
+const EXCEL_CELL_WIDTH = 12;
 //NODEMAILER
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
@@ -366,5 +368,164 @@ exports.setStatusJob = async (req, res) => {
     res.status(200).json({ msg: "Trabajo corregido!" });
   } else {
     res.status(500).json({ msg: "El Trabajo no existe!" });
+  }
+};
+const optionsToFilter = (req) => {
+  try {
+    const Op = Sequelize.Op;
+    const {
+      authorId,
+      name,
+      surname,
+      status,
+      areaId,
+      evaluatorId,
+      approve,
+      jobModalityId,
+    } = req.query;
+
+    console.log(req.query);
+
+    let options = {
+      where: {},
+      include: [
+        { model: AreaModel },
+        { model: JobModalityModel },
+        {
+          model: UserModel,
+          as: "author",
+          attributes: ["name", "surname"],
+        },
+        { model: CorrectionModel, as: "jobStatus" },
+        { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
+        { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
+      ],
+    };
+
+    if (name) {
+      options.where.name = {
+        [Op.like]: `%${name}%`,
+      };
+    }
+    if (surname) {
+      options.where.surname = {
+        [Op.like]: `%${surname}%`,
+      };
+    }
+    if (authorId) {
+      options.where.authorId = authorId;
+    }
+    if (jobModalityId) {
+      options.where.jobModalityId = jobModalityId;
+    }
+    if (status) {
+      options.where.status = status;
+    }
+    if (approve) {
+      options.where.approve = approve;
+    }
+
+    if (evaluatorId) {
+      options.where = {
+        [Op.or]: [{ evaluatorId1: evaluatorId }, { evaluatorId2: evaluatorId }],
+      };
+    }
+    if (areaId) {
+      options.where.areaId = areaId;
+    }
+    return options;
+  } catch (e) {
+    console.log(e);
+    return res.status(503).json({ msg: "Fallo en el servidor" });
+  }
+};
+exports.downloadFilter = async (req, res) => {
+  const options = optionsToFilter(req);
+  const rows = await JobModel.findAll(options);
+  console.log(rows);
+  const workbook = new excelJS.Workbook(); // Create a new workbook
+  const worksheet = workbook.addWorksheet("Mi reporte"); // New Worksheet
+  // Column for data in excel. key must match data key
+  worksheet.columns = [
+    { header: "Autor", key: "author", width: EXCEL_CELL_WIDTH },
+    { header: "Título", key: "name", width: EXCEL_CELL_WIDTH },
+    { header: "Miembros", key: "members", width: EXCEL_CELL_WIDTH },
+    { header: "Evaluador 1", key: "evaluator1", width: EXCEL_CELL_WIDTH },
+    { header: "Evaluador 2", key: "evaluator2", width: EXCEL_CELL_WIDTH },
+    { header: "Área", key: "area", width: EXCEL_CELL_WIDTH },
+    { header: "Modalidad", key: "modality", width: EXCEL_CELL_WIDTH },
+    { header: "Estado", key: "status", width: EXCEL_CELL_WIDTH },
+  ];
+  // Looping through User data
+  rows.forEach((job) => {
+    job.author = job.author.name + " " + job.author.surname;
+    job.evaluator1 = job.evaluatorId1 != null? job.evaluator1.name + " " + job.evaluator1.surname: null;
+    job.evaluator2 = job.evaluatorId2 != null ? job.evaluator2.name + " " + job.evaluator2.surname : '';
+    job.area = job.area.name;
+    job.modality = job.jobmodality.name;
+    job.status = job.status != null? job.jobStatus.name:null;
+    worksheet.addRow(job); // Add data in worksheet
+  });
+  // put styles
+  worksheet.getRow(1).eachCell((cell) => {
+    (cell.font = { bold: true }),
+      (cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: {
+          argb: "FF9966",
+        },
+        bgColor: {
+          argb: "FF000000",
+        },
+      }),
+      (cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      });
+  });
+  worksheet.getRow(1).eachCell((cell) => {
+    (cell.font = { bold: true }),
+      (cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: {
+          argb: "FF9966",
+        },
+        bgColor: {
+          argb: "FF000000",
+        },
+      }),
+      (cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      });
+  });
+  rows.forEach((element, i) => {
+    worksheet.getRow(i + 2).eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+  //header to download
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", "attachment; filename=reporte.xlsx");
+  try {
+    return await workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    res.send("Error al descargar");
   }
 };
