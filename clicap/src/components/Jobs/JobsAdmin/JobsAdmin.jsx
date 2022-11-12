@@ -6,7 +6,7 @@ import ModalDelete from "../../Modals/ModalDelete";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { PaginationCustom } from "../../Pagination/Pagination";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
@@ -26,8 +26,12 @@ const JobsAdmin = () => {
   } = useContext(EntitiesContext);
 
   const modalities = [
-    { label: "Trabajo completo",value: 1, target: { name: "jobModalityId", value: 1 } },
-    { label: "Resumen",value: 2, target: { name: "jobModalityId", value: 2 } },
+    {
+      label: "Trabajo completo",
+      value: 1,
+      target: { name: "jobModalityId", value: 1 },
+    },
+    { label: "Resumen", value: 2, target: { name: "jobModalityId", value: 2 } },
   ];
   const initialFilters = {
     authorId: "",
@@ -71,6 +75,10 @@ const JobsAdmin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     getAllJobs(1, filters);
+  };
+
+  const exportToExcel = async () => {
+    await reqAxiosDownload(`/job/export/jobs`, filters);
   };
 
   useEffect(() => {
@@ -219,6 +227,11 @@ const JobsAdmin = () => {
             </form>
           </div>
         ) : null}
+        <div className="mt-2">
+          <Button variant="primary" onClick={exportToExcel}>
+            Exportar
+          </Button>
+        </div>
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3">

@@ -158,7 +158,6 @@ const EntitiesProvider = ({ children }) => {
 
   //Subida de un trabajo
   const handleChangeUpJob = (e) => {
-    console.log(e.target.value);
     let value =
       e.target.type === "file"
         ? e.target.value === ""
@@ -173,12 +172,15 @@ const EntitiesProvider = ({ children }) => {
       [e.target.name]: value,
     });
   };
+
   const createNewJob = async () => {
     try {
+
       const bodyFormData = new FormData();
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
+      console.log(bodyFormData);
       await formDataAxios("POST", `/job/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);

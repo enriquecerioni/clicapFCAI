@@ -118,7 +118,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   return (
     <>
       <tr>
-        <td>{work.author.name}</td>
+        <td>{work.author.name +' '+ work.author.surname}</td>
         <td>{work.name}</td>
         <td>
           {" "}
