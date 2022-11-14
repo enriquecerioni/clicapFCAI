@@ -23,6 +23,7 @@ import Certificate from "../components/UploadStudentCertificate/Certificate";
 import UpdateInvoce from "../components/Payment/PaysAdmin/UpdateInvoice";
 import { SendCorrectionAdmin } from "../components/Jobs/SendCorrectionAdmin/SendCorrectionAdmin";
 import { UserState } from "../context/User/UserState";
+import { JobState } from '../context/Job/JobState';
 
 const CustomRoute = () => (
   <>
@@ -31,7 +32,7 @@ const CustomRoute = () => (
         <Route path="/" element={<Home><Start/></Home>} />
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
-        <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
+        <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
         <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />
         <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />
