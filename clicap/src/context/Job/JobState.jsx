@@ -26,9 +26,11 @@ export const JobState = ({ children }) => {
   const getJobId = async (id) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
-      /*  const partners = dataJobId.data.response[0].members.split(";");
-      dataJobId.data.response[0].members = partners;
-      console.log(dataJobId.data.response); */
+      if (dataJobId.data.response[0].members !== '') {
+        const partners = dataJobId.data.response[0].members.split(",");
+        dataJobId.data.response[0].members = partners;
+      }
+
       dispatch({
         type: "GET_JOB",
         payload: dataJobId.data.response[0],

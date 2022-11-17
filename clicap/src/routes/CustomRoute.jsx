@@ -33,6 +33,7 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
+        <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
         <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />
         <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />

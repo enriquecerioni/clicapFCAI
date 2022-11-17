@@ -4,19 +4,18 @@ import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
 import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
 import { EntitiesContext } from "../../context/EntitiesContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
 import { JobContext } from "../../context/Job/JobContext";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
-
-  const { jobData } = useContext(JobContext);
+  const { id } = useParams();
+  const { jobData, getJobId } = useContext(JobContext);
   const { areas, getAllAreas, modalities, getAllModalities } =
     useContext(EntitiesContext);
 
   const [job, setJob] = useState(jobData);
-
   const [members, setMembers] = useState({
     items: [],
     value: "",
@@ -53,18 +52,34 @@ const DeliveryTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Save members in initialStateUpJob
-/*     await handleChangeUpJob({
-      target: { type: "text", name: "members", value: members.items.join(",") },
-    }); */
     await createNewJob();
     navigate("/myjobs");
   };
 
   useEffect(() => {
+    if (id) {
+      getJobId(id);
+    }
     getAllAreas();
     getAllModalities();
   }, []);
+
+  useEffect(() => {
+    setJob(jobData);
+    if (jobData.members !== "") {
+      setMembers({
+        ...members,
+        items: jobData.members,
+      });
+    }
+  }, [jobData]);
+
+  useEffect(() => {
+    setJob({
+      ...job,
+      members: members.items.join(","),
+    });
+  }, [members]);
 
   return (
     <>
@@ -132,7 +147,7 @@ const DeliveryTask = () => {
                   <select
                     className="form-select"
                     name="jobModalityId"
-                    value={job.modality}
+                    value={job.jobModalityId}
                     onChange={handleChangeUpJob}
                   >
                     <option value={""}>Seleccione</option>
