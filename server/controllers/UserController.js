@@ -11,6 +11,7 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const RoleModel = require("../models/RoleModel");
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 
 var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -392,16 +393,7 @@ exports.deleteById = async (req, res) => {
     res.status(500).json({ msg: "Error al eliminar el usuario." });
   }
 };
-const calcNumOffset = (page) => {
-  //calculo el numero del offset
-  let numOffset = (Number(page) - 1) * Number(PAGE_LIMIT);
-  return numOffset;
-};
-const calcTotalPages = (totalItems) => {
-  //Cantidad de paginas en total
-  const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
-  return cantPages;
-};
+
 exports.getAllPaginated = async (req, res) => {
   const { name, identifyNumber, roleId } = req.query;
   console.log(req.query);

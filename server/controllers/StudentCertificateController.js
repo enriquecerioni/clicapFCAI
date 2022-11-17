@@ -4,7 +4,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const UserModel = require("../models/UserModel");
 const { PAGE_LIMIT } = process.env;
-
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 // Multer Config
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/student-certificates"),
@@ -120,18 +120,6 @@ exports.deleteById = async (req, res) => {
   } else {
     res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
-};
-
-const calcNumOffset = (page) => {
-  //calculo el numero del offset
-  let numOffset = (Number(page) - 1) * Number(PAGE_LIMIT);
-  return numOffset;
-};
-
-const calcTotalPages = (totalItems) => {
-  //Cantidad de paginas en total
-  const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
-  return cantPages;
 };
 
 exports.getAllPaginated = async (req, res) => {

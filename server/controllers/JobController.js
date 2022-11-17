@@ -10,6 +10,7 @@ const fs = require("fs");
 const CorrectionModel = require("../models/CorrectionModel");
 const excelJS = require("exceljs");
 const EXCEL_CELL_WIDTH = 12;
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 //NODEMAILER
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
@@ -254,16 +255,6 @@ exports.deleteById = async (req, res) => {
   } else {
     res.status(500).json({ msg: "Error al eliminar el Trabajo." });
   }
-};
-const calcNumOffset = (page) => {
-  //calculo el numero del offset
-  let numOffset = (Number(page) - 1) * Number(PAGE_LIMIT);
-  return numOffset;
-};
-const calcTotalPages = (totalItems) => {
-  //Cantidad de paginas en total
-  const cantPages = Math.ceil(totalItems / Number(PAGE_LIMIT));
-  return cantPages;
 };
 
 exports.getAllPaginated = async (req, res) => {
