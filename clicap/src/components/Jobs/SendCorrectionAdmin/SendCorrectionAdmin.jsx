@@ -6,6 +6,7 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { reqAxios } from "../../../helpers/helpers";
 import { alertSuccess } from "../../../helpers/alerts";
+import { statusCorrections } from "../typesCorrections";
 
 export const SendCorrectionAdmin = () => {
   const { id } = useParams();
@@ -14,9 +15,7 @@ export const SendCorrectionAdmin = () => {
   const [stateOfCorrection, setStateOfCorrection] = useState(0);
   const [details, setDetails] = useState("");
   const sendMail = 1;
-  const statusCorrections = [
-    { label: "Aceptado", target: { name: "correctionId", value: 1 } },
-  ];
+
   const handleNewCorrection = (e) => {
     if (e) {
       return setStateOfCorrection(e.target.value);

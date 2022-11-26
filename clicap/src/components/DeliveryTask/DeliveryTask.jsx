@@ -16,6 +16,7 @@ const DeliveryTask = () => {
     useContext(EntitiesContext);
 
   const [job, setJob] = useState(jobData);
+  const [putDisabled, setPutDisabled] = useState(false);
   const [members, setMembers] = useState({
     items: [],
     value: "",
@@ -55,6 +56,28 @@ const DeliveryTask = () => {
     await createNewJob();
     navigate("/myjobs");
   };
+
+  const checkFields = () => {
+    if (
+      job.areaId !== "" ||
+      job.members !== "" ||
+      job.urlFile !== "" ||
+      job.name !== "" ||
+      job.jobModalityId !== ""
+    ) {
+      setPutDisabled(false);
+    }
+  };
+  const disabled = () => {
+    return (
+      !!! job.areaId ||
+      !!!job.members ||
+      !!!job.urlFile ||
+      !!!job.name.trim() ||
+      !!!job.jobModalityId 
+    );
+  };
+
 
   useEffect(() => {
     if (id) {
@@ -204,7 +227,7 @@ const DeliveryTask = () => {
               </div>
             </div>
             <div className="mt-3 center-center">
-              <Button type="submit" variant="primary">
+              <Button disabled={putDisabled ? putDisabled : disabled()} type="submit" variant="primary">
                 Subir trabajo
               </Button>
             </div>

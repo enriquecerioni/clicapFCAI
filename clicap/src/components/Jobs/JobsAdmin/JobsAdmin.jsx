@@ -11,6 +11,7 @@ import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const userId = getDataUserByKey("id");
   const {
     allJobs,
     getAllJobs,
@@ -39,7 +40,7 @@ const JobsAdmin = () => {
     areaId: "",
     jobModalityId: "",
     status: "",
-    evaluatorId: "",
+    evaluatorId: roleId === 2 ? userId : "",
   };
   const toCorrectionOptions = [
     {

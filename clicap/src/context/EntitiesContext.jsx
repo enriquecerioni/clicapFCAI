@@ -60,7 +60,7 @@ const EntitiesProvider = ({ children }) => {
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
     jobId: "",
-    correctionId: "",
+    correctionId: 0,
     evaluatorId: userId,
     details: "",
     sendMail: 0,
