@@ -34,6 +34,23 @@ export const UserState = ({ children }) => {
     });
   };
 
+  const getAllUsers = async () => {
+    const getAllUser = await reqAxios("GET", "/user/getall", "", "");
+    /* setUsers(getAllUser.data.response); */
+    const array = [];
+    getAllUser.data.response.map((item, i) => {
+      array.push({
+        label: item.identifyNumber +' - '+item.name + " " + item.surname,
+        value: item.identifyNumber,
+        target: { name: "identifyNumber", value: item.identifyNumber },
+      });
+    });
+    dispatch({
+      type: "SET_USERS",
+      payload: { users: getAllUser.data.response, userSelector: array },
+    });
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -41,7 +58,8 @@ export const UserState = ({ children }) => {
         users: state.users,
         totalUsersPages: state.totalUsersPages,
         usersSelector: state.usersSelector,
-        getUserData
+        getUserData,
+        getAllUsers
       }}
     >
       {children}

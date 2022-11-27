@@ -7,10 +7,12 @@ import { Button } from "react-bootstrap";
 import Select from "react-select";
 import { PaginationCustom } from "../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
+import { UserContext } from "../../context/User/UserContext";
 
 const Users = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const { getAllUsers, usersSelector } = useContext(UserContext);
   const initialFilters = {
     name: "",
     roleId: "",
@@ -56,7 +58,9 @@ const Users = () => {
   };
   useEffect(() => {
     getUsersFiltered(page, filters);
+    getAllUsers();
   }, [page]);
+
   return (
     <>
       {showDeleteModal ? (
@@ -88,16 +92,22 @@ const Users = () => {
               className="center-filters"
               onSubmit={handleSubmit}
             >
-              <div className="me-3">
+              <div className="me-3" style={{ width: "350px" }}>
                 <label htmlFor="forName" className="form-label">
-                  Dni
+                  Nombre / Dni
                 </label>
-                <input
-                  type="text"
+                <Select
+                  options={usersSelector}
+                  placeholder={"seleccione.."}
                   name="identifyNumber"
-                  className="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="nombre"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
                   onChange={(e) => handleChangeFilter(e, "identifyNumber")}
                 />
               </div>

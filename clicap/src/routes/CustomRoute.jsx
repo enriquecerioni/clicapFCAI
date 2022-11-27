@@ -45,7 +45,7 @@ const CustomRoute = () => (
         <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
         <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
         <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
-        <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
+        <Route path="users" element={<PrivateAdminRoute><UserState><Users/></UserState></PrivateAdminRoute>} />
         <Route path="register" element={<Home><UserState><Register/></UserState></Home>} />
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
