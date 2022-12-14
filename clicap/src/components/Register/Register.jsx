@@ -94,7 +94,7 @@ const Register = () => {
 
   useEffect(() => {
     getAllRoles();
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
       getUserData(id);
     }
   }, []);
