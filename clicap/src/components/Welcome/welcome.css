@@ -1,3 +1,17 @@
 .title-top {
     margin-top: 30px;
 }
+
+.userTitle{
+    font-size: 20px;
+}
+
+.border {
+    border: 3px solid black;
+    padding: 30px;
+    margin: 30px;
+}
+
+.mButton{
+    margin-bottom: 1rem;
+}
