@@ -41,62 +41,154 @@ const Welcome = () => {
 
   return (
     <>
-      <div>
-        <h1 className="center-center title-top">Bienvenido {name} </h1>
-        {
-          roleId === 1 ?
-            <div class="alert alert-success w-25" role="alert">
-              Rol de Usuario: <strong>Admin</strong>
+      {
+        roleId == 1 ?
+          <div className="container mt-5">
+            <div className="row">
+              <h1 className="center-center title-top">Bienvenido {name} </h1>
             </div>
-            : roleId === 2 ?
-              <div class="alert alert-success w-25" role="alert">
-                Rol de Usuario: <strong>Evaluador</strong>
-              </div>
-              : roleId === 3 ?
-                <div class="alert alert-success w-25" role="alert">
-                  Rol de Usuario: <strong>Docente/Investigador</strong>
-                </div>
-                :
-                <div class="alert alert-success w-25" role="alert">
-                  Rol de Usuario: <strong>Alumno</strong>
-                </div>
-        }
-
-        {
-          roleId !== 1 ?
-            <div className="container">
-              <div class="row">
-                <div class="col text-center border">
-                  <h2 className="mb-5">Trabajos Completos</h2>
-                  <div>
-                    <button type="button" class="btn btn-outline-success w-75 mButton">Ingeniería y Ciencias de los Alimentos</button>
-                    <button type="button" class="btn btn-outline-primary w-75 mButton">Ingeniería Química y Ciencias Ambientales</button>
-                    <button type="button" class="btn btn-outline-danger w-75 mButton">Ingeniería Mecánica y Ciencias de la Computación</button>
-                    <button type="button" class="btn btn-outline-info w-75 mButton">Educación en Ciencias e Ingeniería</button>
+            <div className="row roleTitle">
+              {
+                roleId === 1 ?
+                  <div class="alert alert-success" role="alert">
+                    Rol de Usuario: <strong>Admin</strong>
                   </div>
-                  <button type="button" class="btn btn-secondary btn-lg btn-block">Ver todos ()</button>
+                  : roleId === 2 ?
+                    <div class="alert alert-success" role="alert">
+                      Rol de Usuario: <strong>Evaluador</strong>
+                    </div>
+                    : roleId === 3 ?
+                      <div class="alert alert-success" role="alert">
+                        Rol de Usuario: <strong>Docente/Investigador</strong>
+                      </div>
+                      :
+                      <div class="alert alert-success" role="alert">
+                        Rol de Usuario: <strong>Alumno</strong>
+                      </div>
+              }
+            </div>
+            <div class="row">
+              <div class="col text-center border">
+                <h2 className="mb-5">Trabajos Completos</h2>
+                <div>
+                  <button type="button" class="btn btn-outline-success w-75 mButton">Ingeniería y Ciencias de los Alimentos</button>
+                  <button type="button" class="btn btn-outline-primary w-75 mButton">Ingeniería Química y Ciencias Ambientales</button>
+                  <button type="button" class="btn btn-outline-danger w-75 mButton">Ingeniería Mecánica y Ciencias de la Computación</button>
+                  <button type="button" class="btn btn-outline-info w-75 mButton">Educación en Ciencias e Ingeniería</button>
                 </div>
-                <div class="col text-center border">
-                  <h2 className="mb-5">Resúmenes</h2>
-                  <div>
-                    <button type="button" class="btn btn-outline-success w-75 mButton">Ingeniería y Ciencias de los Alimentos</button>
-                    <button type="button" class="btn btn-outline-primary w-75 mButton">Ingeniería Química y Ciencias Ambientales</button>
-                    <button type="button" class="btn btn-outline-danger w-75 mButton">Ingeniería Mecánica y Ciencias de la Computación</button>
-                    <button type="button" class="btn btn-outline-info w-75 mButton">Educación en Ciencias e Ingeniería</button>
-                  </div>
-                  <button type="button" class="btn btn-secondary btn-lg btn-block">Ver todos ()</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block">Ver todos ()</button>
+              </div>
+              <div class="col text-center border">
+                <h2 className="mb-5">Resúmenes</h2>
+                <div>
+                  <button type="button" class="btn btn-outline-success w-75 mButton">Ingeniería y Ciencias de los Alimentos</button>
+                  <button type="button" class="btn btn-outline-primary w-75 mButton">Ingeniería Química y Ciencias Ambientales</button>
+                  <button type="button" class="btn btn-outline-danger w-75 mButton">Ingeniería Mecánica y Ciencias de la Computación</button>
+                  <button type="button" class="btn btn-outline-info w-75 mButton">Educación en Ciencias e Ingeniería</button>
                 </div>
+                <button type="button" class="btn btn-secondary btn-lg btn-block">Ver todos ()</button>
               </div>
             </div>
-            :
-            <div>
-              info usuario
+            <div className="row">
+
+              <div class="col mb-3 border">
+                <h2 className="text-center">Información del Sistema</h2>
+                <div class="card-body text-secondary">
+                  <h5 class="card-title text-success">Listado de Usuarios</h5>
+                  <ul>
+                    <li>
+                      <p class="card-text">
+                        En esta sección se podrá visualizar el listado de usuarios registrados en el sistema.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Filtrado por Nombre / DNI y por "Rol" de usuario.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Editar o Eliminar usuarios.
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="card-body text-secondary">
+                  <h5 class="card-title text-info">Listado de Trabajos</h5>
+                  <ul>
+                    <li>
+                      <p class="card-text">
+                        En esta sección se podrá visualizar el listado de trabajos completos y resúmenes en el sistema.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Filtrado por título, autor, área, modalidad, evaluador y estado del trabajo.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Asignación de evaluadores a un trabajo.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Corrección de evaluaciones hechas por Docentes / Investigadores.
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="card-body text-secondary">
+                  <h5 class="card-title text-warning">Listado de Pagos</h5>
+                  <ul>
+                    <li>
+                      <p class="card-text">
+                        En esta sección se podrá visualizar el listado de los pagos cargados por los usuarios del sistema.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Descargar comprobante de pago emitido por el usuario.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Subir factura correspondiente al pago emitido por el usuario.
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="card-body text-secondary">
+                  <h5 class="card-title text-danger">Listado de Constancias AR</h5>
+                  <ul>
+                    <li>
+                      <p class="card-text">
+                        En esta sección se podrá visualizar el listado de las constancias de alumno regular cargadas por los usuarios del sistema.
+                      </p>
+                    </li>
+                    <li>
+                      <p class="card-text">
+                        Descargar constancia de alumno regular (pdf).
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
             </div>
-        }
 
-        {/* <button onClick={() => donwloadCertificate()}>certificado</button> */}
+          </div>
+          :
+          <div>
+            info usuario
+          </div>
+      }
 
-      </div>
+      {/* <button onClick={() => donwloadCertificate()}>certificado</button> */}
     </>
   );
 };
