@@ -27,7 +27,6 @@ import { JobState } from '../context/Job/JobState';
 
 const CustomRoute = () => (
   <>
-  <br /><br />
     <Routes>
         <Route path="/" element={<Home><Start/></Home>} />
         <Route element={<Home />} />
