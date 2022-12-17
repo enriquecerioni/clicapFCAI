@@ -68,7 +68,7 @@ const Users = () => {
       ) : null}
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "5rem 5rem 0 5rem" }}>
+      <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button

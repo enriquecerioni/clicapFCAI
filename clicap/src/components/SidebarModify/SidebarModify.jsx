@@ -23,12 +23,20 @@ export const SidebarModify = () => {
     <>
       <div className="sidebar">
         <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
-          <p className="title">MAIN</p>
-          <li onClick={() => navigate("/home")}>
-            <span>Menú Principal</span>
+          <p className="m-0 section-sidebar">MENU</p>
+          <li
+            className="d-flex gap-2 align-items-center li-sidebar"
+            type="button"
+            onClick={() => navigate("/home")}
+          >
+            <div className="li-box-icon">
+            <i className="fa-solid fa-house"></i>
+            </div>
+            <div>
+              <span>Menú principal</span>
+            </div>
           </li>
-          <p className="title">LISTS</p>
-
+          <p className="m-0 section-sidebar">LISTAS</p>
           {roleId === 1 ? (
             <li
               className="d-flex gap-2 align-items-center li-sidebar"
@@ -88,14 +96,19 @@ export const SidebarModify = () => {
                 ? () => navigate("/certificates")
                 : () => navigate("/student")
             }
-            className="li-sidebar"
+            className="d-flex gap-2 align-items-center li-sidebar"
             type="button"
           >
-            {roleId === 1 ? (
-              <span>Listado de Constancias de AR</span>
-            ) : (
-              <span>Constancia de Alumno regular</span>
-            )}
+            <div className="li-box-icon">
+              <i className="fa-solid fa-list-check"></i>
+            </div>
+            <div>
+              {roleId === 1 ? (
+                <span>Listado de Constancias de AR</span>
+              ) : (
+                <span>Constancia de Alumno regular</span>
+              )}
+            </div>
           </li>
 
           <p className="m-0 section-sidebar">USUARIO</p>

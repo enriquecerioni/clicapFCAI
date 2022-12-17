@@ -17,7 +17,7 @@ const PayStudentList = ({ pay }) => {
         className={pay.active === 0 ? classInactive : classActive}
         // onClick={() => navigate(`/pay/get/${pay.id}`)}
       >
-        <Card.Body class="card p-5">
+        <Card.Body className="card p-5">
           <Card.Title className="mb-4">DETALLES DEL PAGO</Card.Title>
           <div className="">
             <div className="">
@@ -33,7 +33,7 @@ const PayStudentList = ({ pay }) => {
                 <button type="button" className="btn btn-success" onClick={() => downloadFile(pay.invoice, 'invoices')}>Descargar Factura</button>
               </div>
               :
-              <div class="alert alert-warning" role="alert">
+              <div className="alert alert-warning" role="alert">
               Pronto podrás descargar tu factura aquí.
               </div>}
             </div>

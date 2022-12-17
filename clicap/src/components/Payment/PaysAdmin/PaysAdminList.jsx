@@ -38,7 +38,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
             className="btn btn-primary"
             onClick={() => downloadFile(pay.urlFile, "payments")}
           >
-            Comprobante <i class="fa-solid fa-download"></i>
+            Comprobante <i className="fa-solid fa-download"></i>
           </Button>}
         </td>
         <td>
@@ -47,14 +47,14 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
               className="btn btn-success"
               onClick={() => downloadFile(pay.invoice, "invoices")}
             >
-              Factura <i class="fa-solid fa-download"></i> 
+              Factura <i className="fa-solid fa-download"></i> 
             </Button>
           ) : (
             <Button
               className="btn btn-primary"
               onClick={() => navigate(`/pay/edit/${pay.id}`)}
             >
-              Subir Factura <i class="fa-solid fa-upload"></i>
+              Subir Factura <i className="fa-solid fa-upload"></i>
             </Button>
           )}
         </td>

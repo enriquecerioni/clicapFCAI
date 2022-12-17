@@ -1,5 +1,6 @@
 .sidebar {
   background-color: #ffff;
+  padding-top: 10px;
 }
 .ulSidebar {
   display: flex;
@@ -12,14 +13,16 @@
   display: flex;
   justify-content: center;
   width: 25px;
+  color: #5f9df7;
 }
 .li-sidebar {
   padding: 12px 12px 12px 10px;
 }
 .li-sidebar:hover {
-  background-color: aquamarine;
+  background-color: #BAD7E9;
   border-radius: 5px;
 }
 .section-sidebar {
+  font-weight: bold;
   padding-left: 10px;
 }

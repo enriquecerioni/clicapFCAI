@@ -30,7 +30,7 @@ const UpdateInvoce = () => {
 
     return(
         <div className="container m-5 card p-5">
-            <h1 class="text-center mb-4">Datos del Pago</h1>
+            <h1 className="text-center mb-4">Datos del Pago</h1>
             <div className="mb-2"><strong>Autor</strong>: {author.name}</div>
             <div className="mb-2"><strong>CUIL/CUIT</strong>: {pay.cuitCuil.slice(0,2) + '-' + pay.cuitCuil.slice(2,10) + '-' + pay.cuitCuil.slice(10,11)}</div>
             <div className="mb-2"><strong>Monto</strong>: {pay.amount} - {pay.moneyType} </div>
