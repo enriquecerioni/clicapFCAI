@@ -33,7 +33,7 @@ const Home = ({ children }) => {
               ></i>
             </div>
             {showSidebar ? <Sidebar /> : null}
-            <div className="col-lg-10 col-md-6">{children}</div>
+            <div className="col-lg-10 col-md-6" style={{background:"lightblue"}}>{children}</div>
           </div>
         ) : (
           <div>{children}</div>
