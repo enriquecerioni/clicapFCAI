@@ -91,9 +91,7 @@ const JobsAdmin = () => {
 
   return (
     <>
-      {/*     CAMBIAR */}
-      {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div /* style={{ margin: "0 5rem 0 5rem" }} */>
+      <div className="ms-3 me-3">
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -127,7 +125,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "name")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forAuthorId" className="form-label">
                   Autor
                 </label>
@@ -146,7 +144,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "authorId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Area
                 </label>
@@ -165,7 +163,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "areaId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Modalidad
                 </label>
@@ -184,7 +182,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "jobModalityId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Evaluador
                 </label>
@@ -203,7 +201,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "evaluatorId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Estado
                 </label>

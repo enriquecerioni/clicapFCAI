@@ -59,7 +59,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
         <td>
           <Button
             className="btn btn-info"
-            disabled={job.status === null ? true : false}
+            /* disabled={job.status === null ? true : false} */
           >
             <i
               className="icon-size-table fa-solid fa-file-arrow-down"

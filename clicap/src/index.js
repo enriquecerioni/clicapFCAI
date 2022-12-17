@@ -23,7 +23,9 @@ root.render(
       <BrowserRouter>
         <CustomRoute />
       </BrowserRouter>
-      <ToastContainer />
+      <div className="toastify-container">
+        <ToastContainer />
+      </div>
     </EntitiesContext>
   </>
   /*   </React.StrictMode> */

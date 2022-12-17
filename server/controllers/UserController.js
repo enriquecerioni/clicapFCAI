@@ -104,6 +104,11 @@ exports.register = async (req, res) => {
           path: "./assets/clicap.png",
           cid: "logo", //my mistake was putting "cid:logo@cid" here!
         },
+        /*         {
+          filename: 'certif.pdf',
+          path: './assets/certif.pdf',
+          contentType: 'application/pdf'
+        } */
       ],
       context: {
         url: process.env.CLIENT_LOCALHOST + "/acount-activate/" + token,
@@ -225,25 +230,27 @@ exports.login = async (req, res) => {
     where: { identifyNumber: identifyNumber },
   });
 
-  jwt.verify(
-    user.password,
-    process.env.JWT_ACOUNT_ACTIVE,
-    async (err, decoded) => {
-      if (err) {
-        return res
-          .status(401)
-          .json({ msg: "Token incorrecto o el tiempo expiró." });
-      }
-      const passwordToken = decoded.password;
+  if (user) {
+    jwt.verify(
+      user.password,
+      process.env.JWT_ACOUNT_ACTIVE,
+      async (err, decoded) => {
+        if (err) {
+          return res
+            .status(401)
+            .json({ msg: "Token incorrecto o el tiempo expiró." });
+        }
+        const passwordToken = decoded.password;
 
-      if (user && password === passwordToken) {
-        delete user.password;
-        return res.status(200).json({ msg: "Usuario logado!", user: user });
-      } else {
-        return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+        if (user && password === passwordToken) {
+          delete user.password;
+          return res.status(200).json({ msg: "Usuario logado!", user: user });
+        } else {
+          return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+        }
       }
-    }
-  );
+    );
+  }
 };
 
 exports.updateById = async (req, res) => {
