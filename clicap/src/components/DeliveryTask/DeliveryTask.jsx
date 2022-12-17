@@ -71,7 +71,7 @@ const DeliveryTask = () => {
   const disabled = () => {
     return (
       !!! job.areaId ||
-      !!!job.members ||
+      /* !!!job.members || */
       !!!job.urlFile ||
       !!!job.name.trim() ||
       !!!job.jobModalityId 

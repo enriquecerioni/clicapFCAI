@@ -8,7 +8,7 @@ import Select from "react-select";
 import { PaginationCustom } from "../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
 import { UserContext } from "../../context/User/UserContext";
-
+import { ExtensiveList } from "../ExtensiveList/ExtensiveList";
 const Users = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
@@ -97,6 +97,7 @@ const Users = () => {
                   Nombre / Dni
                 </label>
                 <Select
+                  components={{ ExtensiveList }}
                   options={usersSelector}
                   placeholder={"seleccione.."}
                   name="identifyNumber"
