@@ -4,6 +4,7 @@ import { Button, Card } from "react-bootstrap";
 import axios from "axios";
 import { CorrectionModal } from "../Corrections/CorrectionModal";
 import { EntitiesContext } from "../../../context/EntitiesContext";
+import { downloadFile } from "../../../helpers/helpers";
 
 const JobStudentList = ({ job, setjobToDelete }) => {
   const navigate = useNavigate();
@@ -11,27 +12,6 @@ const JobStudentList = ({ job, setjobToDelete }) => {
   const classActive = "shadow card-inst border-b-success";
   const [showCorrecModal, setCorrecModal] = useState(false);
   const { getCorrectionByJob, correction } = useContext(EntitiesContext);
-
-  const downloadFile = async (nameFile) => {
-    try {
-      await axios({
-        url: `http://localhost:3000/api/clicap/job/downloadfile?nameFile=${nameFile}`, //your url
-        params: "",
-        method: "GET",
-        responseType: "blob", // important
-      }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `${nameFile}`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      });
-      return "Descargado";
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getCorrection = () => {
     getCorrectionByJob(job.id);
@@ -70,7 +50,8 @@ const JobStudentList = ({ job, setjobToDelete }) => {
         <td>
           <Button
             className="btn btn-success"
-            disabled={job.status === null ? true : false}
+            disabled={job.status === null || job.status === 1 ? true : false}
+            onClick={() => navigate(`/myjob/${job.id}`)}
           >
             <i className="fa-solid fa-file-arrow-up"></i>
           </Button>
@@ -78,12 +59,12 @@ const JobStudentList = ({ job, setjobToDelete }) => {
         <td>
           <Button
             className="btn btn-info"
-            disabled={job.status === null ? true : false}
+            /* disabled={job.status === null ? true : false} */
           >
             <i
               className="icon-size-table fa-solid fa-file-arrow-down"
               type="button"
-              onClick={() => downloadFile(job.urlFile)}
+              onClick={() => downloadFile(job.urlFile,'documents')}
             ></i>
           </Button>
         </td>

@@ -2,30 +2,112 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
-import { getDataUserByKey } from "../../helpers/helpers";
+import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
 import { EntitiesContext } from "../../context/EntitiesContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { MembersChips } from "./MembersChips";
+import { JobContext } from "../../context/Job/JobContext";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
-  const { job, handleChangeUpJob, createNewJob } = useContext(EntitiesContext);
+  const { id } = useParams();
+  const { jobData, getJobId } = useContext(JobContext);
   const { areas, getAllAreas, modalities, getAllModalities } =
     useContext(EntitiesContext);
 
-  const handleSubmit = (e) => {
+  const [job, setJob] = useState(jobData);
+  const [putDisabled, setPutDisabled] = useState(false);
+  const [members, setMembers] = useState({
+    items: [],
+    value: "",
+    error: null,
+  });
+  const handleChangeUpJob = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    if (e.target.name === "areaId") {
+      value = Number(value);
+    }
+    setJob({
+      ...job,
+      [e.target.name]: value,
+    });
+  };
+
+  const createNewJob = async () => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in job) {
+        bodyFormData.append(key, job[key]);
+      }
+      console.log(bodyFormData);
+      await formDataAxios("POST", `/job/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createNewJob();
+    await createNewJob();
     navigate("/myjobs");
   };
 
+  const checkFields = () => {
+    if (
+      job.areaId !== "" ||
+      job.members !== "" ||
+      job.urlFile !== "" ||
+      job.name !== "" ||
+      job.jobModalityId !== ""
+    ) {
+      setPutDisabled(false);
+    }
+  };
+  const disabled = () => {
+    return (
+      !!! job.areaId ||
+      /* !!!job.members || */
+      !!!job.urlFile ||
+      !!!job.name.trim() ||
+      !!!job.jobModalityId 
+    );
+  };
+
+
   useEffect(() => {
+    if (id) {
+      getJobId(id);
+    }
     getAllAreas();
     getAllModalities();
   }, []);
+
+  useEffect(() => {
+    setJob(jobData);
+    if (jobData.members !== "") {
+      setMembers({
+        ...members,
+        items: jobData.members,
+      });
+    }
+  }, [jobData]);
+
+  useEffect(() => {
+    setJob({
+      ...job,
+      members: members.items.join(","),
+    });
+  }, [members]);
+
   return (
     <>
       <div className="poderver  flex-column">
-        <h2>Entregar trabajo</h2>
+        <h2>Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
@@ -88,7 +170,7 @@ const DeliveryTask = () => {
                   <select
                     className="form-select"
                     name="jobModalityId"
-                    value={job.modality}
+                    value={job.jobModalityId}
                     onChange={handleChangeUpJob}
                   >
                     <option value={""}>Seleccione</option>
@@ -107,11 +189,15 @@ const DeliveryTask = () => {
             <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
-                className="form-label fw-bold"
+                className="form-label fw-bold pe-3"
               >
                 Autor/es del trabajo
               </label>
-              <div className="">
+              <MembersChips
+                membersToSend={members}
+                setMembersToSend={setMembers}
+              />
+              {/*               <div className="">
                 <input
                   type="text"
                   placeholder="Ivan castro;Enrique Cerioni;"
@@ -120,7 +206,7 @@ const DeliveryTask = () => {
                   value={job.members}
                   onChange={handleChangeUpJob}
                 />
-              </div>
+              </div> */}
             </div>
             {/* Archivo */}
             <div className="mt-2">
@@ -141,7 +227,7 @@ const DeliveryTask = () => {
               </div>
             </div>
             <div className="mt-3 center-center">
-              <Button type="submit" variant="primary">
+              <Button disabled={putDisabled ? putDisabled : disabled()} type="submit" variant="primary">
                 Subir trabajo
               </Button>
             </div>

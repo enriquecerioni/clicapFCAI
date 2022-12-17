@@ -12,18 +12,16 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { alertError, alertSuccess } from "../../helpers/alerts";
 import { useNavigate, useParams } from "react-router-dom";
 import { EntitiesContext } from "../../context/EntitiesContext";
+import { UserContext } from "../../context/User/UserContext";
 
 const Register = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    userRegister,
-    handleChangeRegister,
-    getAllRoles,
-    roles,
-    getDataUser,
-  } = useContext(EntitiesContext);
-
+  const { getAllRoles, roles, getDataUser } = useContext(EntitiesContext);
+  const roleId = getDataUserByKey("roleId");
+  const { userData, getUserData } = useContext(UserContext);
+  console.log(userData);
+  const [userRegister, setUserRegister] = useState(userData);
   const [putDisabled, setPutDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -31,6 +29,13 @@ const Register = () => {
   const isAdmin = getDataUserByKey("roleId");
   const idUser = userRegister.id ? userRegister.id : null;
   const isEditForm = window.location.pathname === `/user/edit/${id}`;
+
+  const handleChangeRegister = (e) => {
+    setUserRegister({
+      ...userRegister,
+      [e.target.name]: e.target.value,
+    });
+  };
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
     return pattern.test(userRegister.identifyNumber);
@@ -89,10 +94,14 @@ const Register = () => {
 
   useEffect(() => {
     getAllRoles();
-    if (isAuthenticated) {
-      getDataUser(id);
+    if (isAuthenticated()) {
+      getUserData(id);
     }
   }, []);
+  
+  useEffect(() => {
+    setUserRegister(userData);
+  }, [userData]);
 
   return (
     <>
@@ -123,7 +132,11 @@ const Register = () => {
                       >
                         <option value={""}>Seleccione</option>
                         {roles.map((rol) =>
-                          rol.id !== 1 && rol.id !== 2 ? (
+                          roleId === 1 ? (
+                            <option key={rol.id} value={rol.id}>
+                              {rol.name}
+                            </option>
+                          ) : rol.id !== 1 && rol.id !== 2 ? (
                             <option key={rol.id} value={rol.id}>
                               {rol.name}
                             </option>

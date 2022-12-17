@@ -1,9 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight&family=Montserrat&display=swap");
 
 html {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
 }
 :root {
   --color-clicap: #2c4580;
@@ -23,7 +29,7 @@ html {
   justify-content: space-between;
   padding: 3px;
 }
-.h-100{
+.h-100 {
   min-height: 100%;
 }
 .table thead th {

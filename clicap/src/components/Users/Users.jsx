@@ -7,10 +7,12 @@ import { Button } from "react-bootstrap";
 import Select from "react-select";
 import { PaginationCustom } from "../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
-
+import { UserContext } from "../../context/User/UserContext";
+import { ExtensiveList } from "../ExtensiveList/ExtensiveList";
 const Users = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const { getAllUsers, usersSelector } = useContext(UserContext);
   const initialFilters = {
     name: "",
     roleId: "",
@@ -56,7 +58,9 @@ const Users = () => {
   };
   useEffect(() => {
     getUsersFiltered(page, filters);
+    getAllUsers();
   }, [page]);
+
   return (
     <>
       {showDeleteModal ? (
@@ -64,7 +68,7 @@ const Users = () => {
       ) : null}
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "5rem 5rem 0 5rem" }}>
+      <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -88,16 +92,23 @@ const Users = () => {
               className="center-filters"
               onSubmit={handleSubmit}
             >
-              <div className="me-3">
+              <div className="me-3" style={{ width: "350px" }}>
                 <label htmlFor="forName" className="form-label">
-                  Dni
+                  Nombre / Dni
                 </label>
-                <input
-                  type="text"
+                <Select
+                  components={{ ExtensiveList }}
+                  options={usersSelector}
+                  placeholder={"seleccione.."}
                   name="identifyNumber"
-                  className="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="nombre"
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
                   onChange={(e) => handleChangeFilter(e, "identifyNumber")}
                 />
               </div>

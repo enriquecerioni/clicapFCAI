@@ -1,17 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import { FloatingLabel, Form, Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import { reqAxios } from "../../../helpers/helpers";
+import { statusCorrections } from "../typesCorrections";
 
 export const NewCorrections = () => {
   const { id } = useParams();
-  const correctionMod = [
-    { label: "Aceptado", target: { name: "correctionId", value: 1 } },
-  ];
+  const navigate = useNavigate();
   const { correction, setCorrection } = useContext(EntitiesContext);
+  const [putDisabled, setPutDisabled] = useState(false);
   //CORRECCIONES
   const handleNewCorrection = (e, name) => {
     if (e === null) {
@@ -26,14 +26,22 @@ export const NewCorrections = () => {
     });
   };
 
+  const disabled = () => {
+    return (
+      !!!correction.correctionId ||
+      !!!correction.details.trim() 
+    );
+  };
+
   const handleSubmitCorrection = async () => {
-    const upCorrection = await reqAxios(
+    await reqAxios(
       "POST",
       "/jobdetails/create",
       "",
       correction
     );
-    const setCorrection = await reqAxios("PUT", `/job/setcorrection/${id}`, "", "");
+    await reqAxios("PUT", `/job/setcorrection/${id}`, "", "");
+    navigate('/jobs');
   };
   useEffect(() => {
     setCorrection({
@@ -49,7 +57,7 @@ export const NewCorrections = () => {
       <div>
         <div style={{ width: "300px" }} className="">
           <Select
-            options={correctionMod}
+            options={statusCorrections}
             placeholder={"seleccione.."}
             name="correctionId"
             isClearable={true}
@@ -74,7 +82,7 @@ export const NewCorrections = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          <Button variant="success" onClick={handleSubmitCorrection}>
+          <Button variant="success" disabled={putDisabled ? putDisabled : disabled()} onClick={handleSubmitCorrection}>
             Guardar Corrección
           </Button>
         </div>

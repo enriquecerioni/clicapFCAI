@@ -7,11 +7,12 @@
 .card-login {
   width: 30rem;
   padding-bottom: 1rem;
+  border-radius: 10px !important;
 }
 .logo-login {
   display: flex;
   justify-content: center;
-  margin-top: 5px;
+  padding: 16px;
 }
 .imgLogin {
   width: 20rem;

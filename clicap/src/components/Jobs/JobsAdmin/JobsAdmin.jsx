@@ -6,11 +6,12 @@ import ModalDelete from "../../Modals/ModalDelete";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { PaginationCustom } from "../../Pagination/Pagination";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const userId = getDataUserByKey("id");
   const {
     allJobs,
     getAllJobs,
@@ -26,8 +27,12 @@ const JobsAdmin = () => {
   } = useContext(EntitiesContext);
 
   const modalities = [
-    { label: "Trabajo completo",value: 1, target: { name: "jobModalityId", value: 1 } },
-    { label: "Resumen",value: 2, target: { name: "jobModalityId", value: 2 } },
+    {
+      label: "Trabajo completo",
+      value: 1,
+      target: { name: "jobModalityId", value: 1 },
+    },
+    { label: "Resumen", value: 2, target: { name: "jobModalityId", value: 2 } },
   ];
   const initialFilters = {
     authorId: "",
@@ -35,7 +40,7 @@ const JobsAdmin = () => {
     areaId: "",
     jobModalityId: "",
     status: "",
-    evaluatorId: "",
+    evaluatorId: roleId === 2 ? userId : "",
   };
   const toCorrectionOptions = [
     {
@@ -73,6 +78,10 @@ const JobsAdmin = () => {
     getAllJobs(1, filters);
   };
 
+  const exportToExcel = async () => {
+    await reqAxiosDownload(`/job/export/jobs`, filters);
+  };
+
   useEffect(() => {
     getAllUsers();
     getAllAreas();
@@ -82,9 +91,7 @@ const JobsAdmin = () => {
 
   return (
     <>
-      {/*     CAMBIAR */}
-      {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div /* style={{ margin: "0 5rem 0 5rem" }} */>
+      <div className="ms-3 me-3">
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
           {/*           <Button
@@ -118,7 +125,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "name")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forAuthorId" className="form-label">
                   Autor
                 </label>
@@ -137,7 +144,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "authorId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Area
                 </label>
@@ -156,7 +163,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "areaId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Modalidad
                 </label>
@@ -175,7 +182,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "jobModalityId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Evaluador
                 </label>
@@ -194,7 +201,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "evaluatorId")}
                 />
               </div>
-              <div style={{ width: "200px" }} className="me-3">
+              <div  className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Estado
                 </label>
@@ -219,6 +226,11 @@ const JobsAdmin = () => {
             </form>
           </div>
         ) : null}
+        <div className="mt-2">
+          <Button variant="primary" onClick={exportToExcel}>
+            Exportar
+          </Button>
+        </div>
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3">

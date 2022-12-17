@@ -22,63 +22,63 @@ const Navbar = () => {
   };
 
   return (
-    <ul className="ulNav">
+    <div className="ulNav">
       <div>
         <img className="logoImg" src={logo} alt="logo" onClick={() => navigate("/")} />
       </div>
       <div>
-      <li className="liNav">
+      <div className="liNav">
         <div className="dropdown">
-          <li onClick={() => navigate('/')}><a href="">Inicio</a></li>
+          <div onClick={() => navigate('/')}><p type="button">Inicio</p></div>
           <div className="dropdown-content">
-            <a class="active" href="" onClick={() => navigate('/scientific_comittee')}>Comité Científico</a>
-            <a class="active" href="" onClick={() => navigate('/organizing_committee')}>Comité Organizador</a>
-            <a class="active" href="" onClick={() => navigate('/institutional_guarantees')}>Avales Institucionales</a>
-            <a class="active" href="" onClick={() => navigate('/sponsors')}>Auspiciantes</a>
+            <p className="active" href="" onClick={() => navigate('/scientific_comittee')}>Comité Científico</p>
+            <p className="active" href="" onClick={() => navigate('/organizing_committee')}>Comité Organizador</p>
+            <p className="active" href="" onClick={() => navigate('/institutional_guarantees')}>Avales Institucionales</p>
+            <p className="active" href="" onClick={() => navigate('/sponsors')}>Auspiciantes</p>
           </div>
         </div>
-      </li>
-      
-      <li className="liNav">
-        <div className="dropdown">
-          <li><a href="#news">Fechas Importantes</a></li>
-        </div>
-      </li>
-
-      <li className="liNav">
-        <div className="dropdown">
-          <li><a href="#news">Trabajos</a></li>
-          <div className="dropdown-content">
-            <a class="active" href="" onClick={() => navigate('/areas')}>Áreas</a>
-            <a class="active" href="" onClick={() => navigate('/modalities')}>Modalidad de Presentación</a>
-            <a class="active" href="" onClick={() => navigate('/exhibitions')}>Dinámica de exposiciones</a>
-          </div>
-        </div>
-      </li>
-
-      <li className="liNav">
-        <div className="dropdown">
-          <li><a href="#news">Inscripción</a></li>
-          <div className="dropdown-content">
-            <a class="active" href="" onClick={() => navigate('/register')}>Registro</a>
-            <a class="active" href="" onClick={() => navigate('/login')}>Acceso</a>
-          </div>
-        </div>
-      </li>
-
-      <li className="liNav">
-        <div className="dropdown">
-          <li><a href="" onClick={() => navigate('/news')}>Novedades</a></li>
-        </div>
-      </li>
-
-      <li className="liNav">
-        <div className="dropdown">
-          <li><a href="" onClick={() => navigate('/contact')}>Contacto</a></li>
-        </div>
-      </li>              
       </div>
-    </ul>
+      
+      <div className="liNav">
+        <div className="dropdown">
+          <div><p type="button">Fechas Importantes</p></div>
+        </div>
+      </div>
+
+      <div className="liNav">
+        <div className="dropdown">
+          <div><p type="button">Trabajos</p></div>
+          <div className="dropdown-content">
+            <p className="active" type="button" onClick={() => navigate('/areas')}>Áreas</p>
+            <p className="active" type="button" onClick={() => navigate('/modalities')}>Modalidad de Presentación</p>
+            <p className="active" type="button" onClick={() => navigate('/exhibitions')}>Dinámica de exposiciones</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="liNav">
+        <div className="dropdown">
+          <div><p type="button">Inscripción</p></div>
+          <div className="dropdown-content">
+            <p className="active" type="button" onClick={() => navigate('/register')}>Registro</p>
+            <p className="active" type="button" onClick={() => navigate('/login')}>Acceso</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="liNav">
+        <div className="dropdown">
+          <div><p type="button" onClick={() => navigate('/news')}>Novedades</p></div>
+        </div>
+      </div>
+
+      <div className="liNav">
+        <div className="dropdown">
+          <div><p type="button" onClick={() => navigate('/contact')}>Contacto</p></div>
+        </div>
+      </div>              
+      </div>
+    </div>
     // <NavbarBootstrap bg="light" expand="lg">
     //   <Container fluid>
     //     <NavbarBootstrap.Brand>

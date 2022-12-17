@@ -126,7 +126,7 @@ export const reqAxiosDownload = async (shortUrl, param) => {
       headers: {
         Accept: "application/JSON",
         "Content-Type": "application/json",
-        "auth-token": token,
+       /*  "auth-token": token, */
       },
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -139,13 +139,5 @@ export const reqAxiosDownload = async (shortUrl, param) => {
     return toast.update(load, loadSuccess("Datos descargados"));
   } catch (error) {
     console.log(error);
-    if (error.response.status === 401) {
-      alertError("La sesión expiró");
-      setTimeout(() => {
-        loggout();
-      }, 1000);
-    } else {
-      alertError("Error al descargar, fallo en el servidor");
-    }
   }
 };

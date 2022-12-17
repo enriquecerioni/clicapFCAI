@@ -104,6 +104,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     );
     setHaveCorrection(check.data.value);
   };
+  
   useEffect(() => {
     getAllEvaluators();
     checkCorrection();
@@ -118,7 +119,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   return (
     <>
       <tr>
-        <td>{work.author.name}</td>
+        <td>{work.author.name +' '+ work.author.surname}</td>
         <td>{work.name}</td>
         <td>
           {" "}
@@ -213,7 +214,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
                 <i
                   type="button"
                   className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-                  onClick={() => navigate(`/works/edit/${work.id}`)}
+                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
                 ></i>
               )}
             </td>
