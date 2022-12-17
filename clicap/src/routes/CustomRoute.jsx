@@ -38,6 +38,7 @@ const CustomRoute = () => (
         <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />
         <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
+        <Route path="jobs/job/edit/:id" element={<PrivateAdminRoute><JobState><DeliveryTask/></JobState></PrivateAdminRoute>} />
         <Route path="job/correctionstosend/:id" element={<PrivateAdminRoute><SendCorrectionAdmin/></PrivateAdminRoute>} />
         <Route path="job/:id" element={<PrivateRoute><JobInformation/></PrivateRoute>} />
         <Route path="job/corrections/:id" element={<PrivateRoute><Corrections/></PrivateRoute>} />
