@@ -30,7 +30,7 @@ export const SidebarModify = () => {
             onClick={() => navigate("/home")}
           >
             <div className="li-box-icon">
-            <i className="fa-solid fa-house"></i>
+              <i className="fa-solid fa-house"></i>
             </div>
             <div>
               <span>Menú principal</span>
@@ -108,6 +108,19 @@ export const SidebarModify = () => {
               ) : (
                 <span>Constancia de Alumno regular</span>
               )}
+            </div>
+          </li>
+
+          <li
+            onClick={() => navigate(`/mycertificates`)}
+            className="d-flex gap-2 align-items-center li-sidebar"
+            type="button"
+          >
+            <div className="li-box-icon">
+              <i className="fa-solid fa-user-graduate"></i>
+            </div>
+            <div>
+              <span>Mis certificados</span>
             </div>
           </li>
 
