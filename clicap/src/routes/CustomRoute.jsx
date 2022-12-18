@@ -25,6 +25,7 @@ import { SendCorrectionAdmin } from "../components/Jobs/SendCorrectionAdmin/Send
 import { UserState } from "../context/User/UserState";
 import { JobState } from '../context/Job/JobState';
 import CertificatesUser from "../components/CertificatesUser/CertificatesUser";
+import { News } from "../components/News/News";
 
 const CustomRoute = () => (
   <>
@@ -32,6 +33,7 @@ const CustomRoute = () => (
         <Route path="/" element={<Home><Start/></Home>} />
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
+        <Route path="news" element={<Home><News/></Home>} />
         <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />

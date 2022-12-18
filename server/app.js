@@ -6,6 +6,7 @@ const cors = require("cors");
 const db = require("./database/database");
 
 // Routes
+const NewRouter = require("./routes/NewRouter");
 const DateRouter = require("./routes/DateRouter");
 const AreaRouter = require("./routes/AreaRouter");
 const JobRouter = require("./routes/JobRouter");
@@ -22,6 +23,7 @@ const RoleModel = require("./models/RoleModel");
 const CorrectionModel = require("./models/CorrectionModel");
 
 // Models
+require("./models/NewModel");
 require("./models/DateModel");
 require("./models/UserModel");
 require("./models/JobModel");
@@ -50,6 +52,7 @@ app.listen(PORT, () => {
 });
 
 // URL Routes
+app.use("/api/clicap/new/", NewRouter);
 app.use("/api/clicap/date/", DateRouter);
 app.use("/api/clicap/area/", AreaRouter);
 app.use("/api/clicap/job/", JobRouter);
@@ -95,7 +98,7 @@ const insertData = async () => {
   return console.log("Database connected...");
 };
 //SYNC -> sync with the database, if the model matches the table.
-db.sync({ force: false })
+db.sync()
   .then(() => {
     /* insertData(); */
     console.log("Database connected...");

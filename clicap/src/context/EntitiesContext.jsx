@@ -52,6 +52,11 @@ const EntitiesProvider = ({ children }) => {
     authorId: userId,
   };
 
+  const initialStateNew = {
+    title: "",
+    content: ""
+  };
+
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
@@ -115,6 +120,9 @@ const EntitiesProvider = ({ children }) => {
   //TODOS LOS PAGOS
   const [pay, setPay] = useState(initialStatePay);
   const [allPays, setAllPays] = useState([]);
+  // NOVEDADES
+  const [news, setNews] = useState(initialStateNew);
+  const [allNews, setAllNews] = useState([]);
   //PAGO
   const [certificate, setCertificate] = useState(initialStateCertificate);
   //Modalidades
@@ -248,6 +256,22 @@ const EntitiesProvider = ({ children }) => {
     }
   };
 
+  const handleChangeNew = (e) => {
+    setNews({
+      ...news,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const createNewNew = async () => {
+    try {
+      await reqAxios("POST", `/new/create`, "", news);
+      setNews(initialStateNew);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const updatePayInvoice = async (id) => {
     try {
       const bodyFormData = new FormData();
@@ -319,6 +343,13 @@ const EntitiesProvider = ({ children }) => {
     const getAllPay = await reqAxios("GET", "/pay/getall", "", "");
     setAllPays(getAllPay.data.response);
   };
+
+  //Novedades
+  const getAllNews = async () => {
+    const getAllNew = await reqAxios("GET", "/new/getall", "", "");
+    setAllNews(getAllNew.data.response.reverse());
+  };
+
   //Mis Pagos
   const getMyPays = async (numPage, dataFilter) => {
     try {
@@ -471,6 +502,11 @@ const EntitiesProvider = ({ children }) => {
         getAllEvaluators,
         allEvaluators,
         allEvaluatorsSelector,
+        getAllNews,
+        createNewNew,
+        allNews,
+        news,
+        handleChangeNew
       }}
     >
       {children}
