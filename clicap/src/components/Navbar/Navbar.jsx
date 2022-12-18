@@ -4,14 +4,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/clicap.png";
 import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
 import * as React from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import NavbarBootstrap from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
 const Navbar = () => {
   const navigate = useNavigate();

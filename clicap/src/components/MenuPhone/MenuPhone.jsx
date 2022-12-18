@@ -1,0 +1,61 @@
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+import logo from "../../assets/clicap.png";
+import { isAuthenticated } from "../../helpers/helpers";
+import { NavbarPhone } from "./NavbarPhone/NavbarPhone";
+import { SidebarPhone } from "./sidebarPhone/SidebarPhone";
+
+export const MenuPhone = () => {
+  const [showSidebarPhone, setShowSidebarPhone] = useState(false);
+  const [showNavbarPhone, setShowNavbarPhone] = useState(false);
+
+  return (
+    <>
+      <div className="d-flex align-items-center justify-content-between">
+        {isAuthenticated() ? (
+          <div>
+            <Button
+              variant="primary"
+              onClick={() => setShowSidebarPhone(!showSidebarPhone)}
+            >
+              <i
+                className={`fa-solid ${
+                  !showSidebarPhone ? "fa-user-gear" : "fa-xmark"
+                }`}
+              ></i>
+            </Button>{" "}
+          </div>
+        ) : null}
+
+        <div>
+          <img className="logoImg" src={logo} alt="logo" />
+        </div>
+
+        <div>
+          <Button
+            variant="primary"
+            onClick={() => setShowNavbarPhone(!showNavbarPhone)}
+          >
+            <i
+              className={`fa-solid ${
+                !showNavbarPhone ? "fa-bars" : "fa-xmark"
+              } `}
+            ></i>
+          </Button>{" "}
+        </div>
+      </div>
+
+      {showSidebarPhone ? (
+        <div>
+          <SidebarPhone />
+        </div>
+      ) : null}
+
+      {showNavbarPhone ? (
+        <div>
+          <NavbarPhone />
+        </div>
+      ) : null}
+    </>
+  );
+};

@@ -5,11 +5,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import { SidebarModify } from "../SidebarModify/SidebarModify";
 import "./home.css";
 import "../../App.css";
+import { MenuPhone } from "../MenuPhone/MenuPhone";
 
 const Home = ({ children }) => {
   const [toogleSidebar, setToogleSidebar] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
-/* 
+  /* 
   const putSidebarRespons = () => {
     if (window.innerWidth < 760) {
       setToogleSidebar(true);
@@ -24,7 +25,11 @@ const Home = ({ children }) => {
   return (
     <>
       <div className="">
-        <Navbar />
+        <div>
+          <MenuPhone />
+        </div>
+        <div>{children}</div>
+        {/*         <Navbar />
         <Container className="h-100">
           <Row className="h-100">
             {isAuthenticated() ? (
@@ -38,7 +43,7 @@ const Home = ({ children }) => {
               <Col className="p-0">{children}</Col>
             )}
           </Row>
-        </Container>
+        </Container> */}
       </div>
     </>
   );
