@@ -8,7 +8,7 @@ import "./news.css"
 
 export const News = () => {
     const { news, getAllNews, createNewNew, handleChangeNew, allNews } = useContext(EntitiesContext);
-    const userId = getDataUserByKey('roleId');
+    const role = getDataUserByKey('roleId');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [NewToDelete, setNewToDelete] = useState(false);
 
@@ -31,7 +31,7 @@ export const News = () => {
                     <h2>Novedades</h2>
                     <p>Últimas publicaciones acerca del congreso</p>
                 </div>
-                {userId === 1 && <div className='boxAddNews boxCard'>
+                {role === 1 && <div className='boxAddNews boxCard'>
 
                     <form onSubmit={handleSubmit}>
                         <div className='mb-3'>
@@ -76,6 +76,7 @@ export const News = () => {
                                     showAlert={setShowDeleteModal} 
                                     setNewToDelete={setNewToDelete}
                                     key={news.id}
+                                    role={role}
                                     />
                                 </div>
                             ))
