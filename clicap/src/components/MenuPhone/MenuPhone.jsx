@@ -12,6 +12,7 @@ export const MenuPhone = () => {
   return (
     <>
       <div className="d-flex align-items-center justify-content-between p-1">
+        
         {isAuthenticated() ? (
           <div>
             <Button
