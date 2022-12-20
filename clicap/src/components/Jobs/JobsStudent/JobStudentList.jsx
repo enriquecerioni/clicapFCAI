@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { Button, Card } from "react-bootstrap";
-import axios from "axios";
+import { Button } from "react-bootstrap";
 import { CorrectionModal } from "../Corrections/CorrectionModal";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import { downloadFile } from "../../../helpers/helpers";
@@ -64,7 +63,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
             <i
               className="icon-size-table fa-solid fa-file-arrow-down"
               type="button"
-              onClick={() => downloadFile(job.urlFile,'documents')}
+              onClick={() => downloadFile(job.urlFile, "documents")}
             ></i>
           </Button>
         </td>
