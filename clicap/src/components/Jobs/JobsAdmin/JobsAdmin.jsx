@@ -233,7 +233,7 @@ const JobsAdmin = () => {
         </div>
         {allJobs.length > 0 ? (
           <>
-            <div className="mt-3">
+            <div className="mt-3 overflow-x">
               <table className="table table-hover">
                 <thead>
                   <tr>

@@ -44,7 +44,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
           <i
             type="button"
             className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-            onClick={""}
+            /* onClick={""} */
           ></i>
         </td>
         <td>

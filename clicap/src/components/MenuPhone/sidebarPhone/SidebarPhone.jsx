@@ -3,11 +3,12 @@ import "../menuPhone.css";
 import { useNavigate } from "react-router-dom";
 import { getDataUserByKey } from "../../../helpers/helpers";
 
-export const SidebarPhone = () => {
+export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
   const roleId = getDataUserByKey("roleId");
   const idUser = getDataUserByKey("id");
   const loggout = () => {
     sessionStorage.removeItem("user");
+    setShowSidebarPhone(!showSidebarPhone);
     navigate("/");
     // window.location.reload();
   };
@@ -15,8 +16,10 @@ export const SidebarPhone = () => {
 
   const redirectJobPage = () => {
     if (roleId === 1 || roleId === 2) {
+      setShowSidebarPhone(!showSidebarPhone);
       return navigate("/jobs");
     }
+    setShowSidebarPhone(!showSidebarPhone);
     navigate("/myjobs");
   };
   return (
@@ -28,7 +31,10 @@ export const SidebarPhone = () => {
             <li
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
-              onClick={() => navigate("/home")}
+              onClick={() => {
+                setShowSidebarPhone(!showSidebarPhone);
+                navigate("/home");
+              }}
             >
               <div className="li-box-icon">
                 <i className="fa-solid fa-house"></i>
@@ -42,7 +48,10 @@ export const SidebarPhone = () => {
               <li
                 className="d-flex gap-2 align-items-center li-sidebar"
                 type="button"
-                onClick={() => navigate("/users")}
+                onClick={() => {
+                  setShowSidebarPhone(!showSidebarPhone);
+                  navigate("/users");
+                }}
               >
                 <div className="li-box-icon">
                   <i className="fa-solid fa-users"></i>
@@ -75,8 +84,14 @@ export const SidebarPhone = () => {
             <li
               onClick={
                 roleId === 1
-                  ? () => navigate("/pays")
-                  : () => navigate("/mypays")
+                  ? () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/pays");
+                    }
+                  : () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/mypays");
+                    }
               }
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
@@ -96,8 +111,14 @@ export const SidebarPhone = () => {
             <li
               onClick={
                 roleId === 1
-                  ? () => navigate("/certificates")
-                  : () => navigate("/student")
+                  ? () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/certificates");
+                    }
+                  : () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/student");
+                    }
               }
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
@@ -115,7 +136,10 @@ export const SidebarPhone = () => {
             </li>
 
             <li
-              onClick={() => navigate(`/mycertificates`)}
+              onClick={() => {
+                setShowSidebarPhone(!showSidebarPhone);
+                navigate(`/mycertificates`);
+              }}
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
             >
@@ -129,7 +153,10 @@ export const SidebarPhone = () => {
 
             <p className="m-0 section-sidebar">USUARIO</p>
             <li
-              onClick={() => navigate(`/user/edit/${idUser}`)}
+              onClick={() => {
+                setShowSidebarPhone(!showSidebarPhone);
+                navigate(`/user/edit/${idUser}`);
+              }}
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
             >

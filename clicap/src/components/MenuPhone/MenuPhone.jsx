@@ -11,12 +11,15 @@ export const MenuPhone = () => {
 
   return (
     <>
-      <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center justify-content-between p-1">
         {isAuthenticated() ? (
           <div>
             <Button
               variant="primary"
-              onClick={() => setShowSidebarPhone(!showSidebarPhone)}
+              onClick={() => {
+                setShowNavbarPhone(false);
+                setShowSidebarPhone(!showSidebarPhone);
+              }}
             >
               <i
                 className={`fa-solid ${
@@ -34,7 +37,10 @@ export const MenuPhone = () => {
         <div>
           <Button
             variant="primary"
-            onClick={() => setShowNavbarPhone(!showNavbarPhone)}
+            onClick={() => {
+              setShowSidebarPhone(false);
+              setShowNavbarPhone(!showNavbarPhone);
+            }}
           >
             <i
               className={`fa-solid ${
@@ -47,13 +53,19 @@ export const MenuPhone = () => {
 
       {showSidebarPhone ? (
         <div>
-          <SidebarPhone />
+          <SidebarPhone
+            showSidebarPhone={showSidebarPhone}
+            setShowSidebarPhone={setShowSidebarPhone}
+          />
         </div>
       ) : null}
 
       {showNavbarPhone ? (
         <div>
-          <NavbarPhone />
+          <NavbarPhone
+            showNavbarPhone={showNavbarPhone}
+            setShowNavbarPhone={setShowNavbarPhone}
+          />
         </div>
       ) : null}
     </>

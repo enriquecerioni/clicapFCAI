@@ -53,3 +53,6 @@ body,
   justify-content: center;
   align-items: flex-end;
 }
+.overflow-x {
+  overflow-x: auto;
+}
