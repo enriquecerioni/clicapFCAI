@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
-const db = require('../database/database');
+const db = require("../database/database");
+const CertificateModel = require("./CertificateModel");
 const UserModel = require("./UserModel");
 
 const StudentCertificateModel = db.define("studentcertificate", {
@@ -10,23 +11,24 @@ const StudentCertificateModel = db.define("studentcertificate", {
     autoIncrement: true,
     allowNull: false,
   },
-  detail: {
-    type: DataTypes.STRING,
-  },
-  urlFile: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  authorId: {
+  certificateId: {
     type: DataTypes.INTEGER,
-    allowNull: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 });
 
-// PAY - AUTHOR
-StudentCertificateModel.belongsTo(UserModel, {foreignKey: 'authorId'});
+// STUDENTCERTIFICATE - CERTIFICATE
+StudentCertificateModel.belongsTo(CertificateModel, { foreignKey: "certificateId" });
+CertificateModel.hasMany(StudentCertificateModel, {
+  foreignKey: "certificateId",
+});
+// STUDENTCERTIFICATE - USER
+StudentCertificateModel.belongsTo(UserModel, { foreignKey: "userId" });
 UserModel.hasMany(StudentCertificateModel, {
-  foreignKey: "authorId",
+  foreignKey: "userId",
 });
 
 module.exports = StudentCertificateModel;

@@ -1,37 +1,37 @@
-const StudentCertificateModel = require("../models/StudentCertificateModel");
+const CertificateModel = require("../models/CertificateModel");
 
 exports.create = async (req, res) => {
-  const { certificateId, userId } = req.body;
-  const certificate = await StudentCertificateModel.create({
-    certificateId,
-    userId,
+  const { name, text } = req.body;
+  const certificate = await CertificateModel.create({
+    name: name,
+    text: text,
   });
   if (certificate) {
-    res.status(200).send("Certificado creado!");
+    res.status(200).json({ msg: "Nuevo certificado creado!" });
   } else {
-    res.status(500).json({ msg: "Error al crear el certificado." });
+    res.status(500).json({ msg: "Error al crear el certificado" });
   }
 };
 exports.updateById = async (req, res) => {
   const { id } = req.params;
-  const { certificateId, userId } = req.body;
+  const { name, text } = req.body;
 
-  const certificate = await StudentCertificateModel.update(
+  const certificate = await CertificateModel.update(
     {
-      certificateId,
-      userId,
+      name,
+      text,
     },
     { where: { id: id } }
   );
   if (certificate) {
-    res.status(200).json("Certificado editado!");
+    res.status(200).json("Certificado editado correctamente!");
   } else {
     res.status(500).json({ msg: "El certificado no existe!" });
   }
 };
 exports.getById = async (req, res) => {
   const { id } = req.params;
-  const certificate = await StudentCertificateModel.findByPk(id);
+  const certificate = await CertificateModel.findByPk(id);
 
   if (certificate) {
     res.status(200).json({ response: certificate });
@@ -40,21 +40,21 @@ exports.getById = async (req, res) => {
   }
 };
 exports.getAll = async (req, res) => {
-  const certificate = await StudentCertificateModel.findAll();
+  const certificate = await CertificateModel.findAll();
   if (certificate) {
     res.status(200).json({ response: certificate });
   } else {
-    res.status(500).json({ msg: "Error al obtener los pagos." });
+    res.status(500).json({ msg: "Error al obtener los certificados." });
   }
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
-  const cerificate = await StudentCertificateModel.destroy({
+  const certificate = await CertificateModel.destroy({
     where: { id: id },
   });
 
-  if (cerificate) {
-    res.status(200).send("Certificado eliminado!");
+  if (certificate) {
+    res.status(200).send("Certificado eliminado correctamente!");
   } else {
     res.status(500).json({ msg: "Error al eliminar el certificado." });
   }

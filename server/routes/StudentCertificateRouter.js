@@ -4,7 +4,6 @@ const StudentCertificateController = require('../controllers/StudentCertificateC
 router.post('/create',StudentCertificateController.create);
 router.put('/edit/:id',StudentCertificateController.updateById);
 router.get('/get/:id',StudentCertificateController.getById);
-router.get('/get/certificate/:page',StudentCertificateController.getAllPaginated);
 router.get('/getall',StudentCertificateController.getAll);
 router.delete('/delete/:id',StudentCertificateController.deleteById);
 
