@@ -136,10 +136,17 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
             </li>
 
             <li
-              onClick={() => {
-                setShowSidebarPhone(!showSidebarPhone);
-                navigate(`/mycertificates`);
-              }}
+              onClick={
+                roleId === 1
+                  ? () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/generate-certificate");
+                    }
+                  : () => {
+                      setShowSidebarPhone(!showSidebarPhone);
+                      navigate("/mycertificates");
+                    }
+              }
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
             >
@@ -147,7 +154,11 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
                 <i className="fa-solid fa-user-graduate"></i>
               </div>
               <div>
-                <span>Mis certificados</span>
+                {roleId === 1 ? (
+                  <span>Generar Certificado</span>
+                ) : (
+                  <span>Mis certificados</span>
+                )}
               </div>
             </li>
 
