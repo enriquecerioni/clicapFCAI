@@ -26,6 +26,8 @@ const ModalDelete = ({ entity, showAlert }) => {
         waitAndRefresh(`/news`, 1000);
       } else if(entity.entityType === 'area'){
         waitAndRefresh(`/configuration`, 1000);
+      } else if(entity.entityType === 'job'){
+        waitAndRefresh(`/jobs`, 1000);
       } else {
         waitAndRefresh(`/${entity.entityType}`, 1000);
       }

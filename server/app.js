@@ -90,9 +90,36 @@ const insertData = async () => {
       institution: "Universidad de Mendoza",
       phone: "2604626476",
       attendance: 0,
-    },
-    {
+    },{
       id: 2,
+      roleId: 2,
+      identifyType: "DNI",
+      identifyNumber: 123,
+      name: "Fabian",
+      surname: "Talio",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    },{
+      id: 3,
+      roleId: 2,
+      identifyType: "DNI",
+      identifyNumber: 321,
+      name: "Diego",
+      surname: "Liseno",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    }, {
+      id: 4,
       roleId: 4,
       identifyType: "DNI",
       identifyNumber: 40072123,
