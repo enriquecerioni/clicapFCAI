@@ -29,6 +29,7 @@ import CertificatesUser from "../components/CertificatesUser/CertificatesUser";
 import { News } from "../components/News/News";
 import { GenerateCertificate } from "../components/GenerateCertificate/GenerateCertificate";
 import { NewCertificate } from "../components/GenerateCertificate/NewCertificate/NewCertificate";
+import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
 
 const CustomRoute = () => (
   <>
@@ -65,7 +66,9 @@ const CustomRoute = () => (
 
         <Route path="mycertificates" element={<PrivateRoute><CertificatesUser/></PrivateRoute>} />
 
-        <Route path="generate-certificate" element={<PrivateAdminRoute><CertificateState><GenerateCertificate/></CertificateState></PrivateAdminRoute>} />
+        <Route path="generate-certificate" element={<PrivateAdminRoute><UserState><JobState><CertificateState><GenerateCertificate/></CertificateState></JobState></UserState></PrivateAdminRoute>} />
+        
+        <Route path="certificate-types" element={<PrivateAdminRoute><CertificateState><CertificateTypes/></CertificateState></PrivateAdminRoute>} />
         
         <Route path="new-certificate-type" element={<PrivateAdminRoute><CertificateState><NewCertificate/></CertificateState></PrivateAdminRoute>} />
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ModalDelete from "../Modals/ModalDelete";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { UsersList } from "./UsersList";
@@ -9,9 +9,13 @@ import { PaginationCustom } from "../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
 import { UserContext } from "../../context/User/UserContext";
 import { ExtensiveList } from "../ExtensiveList/ExtensiveList";
-const Users = () => {
+import "./users.css";
+
+const Users = ({ showModalCertificate }) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const location = useLocation();
+  const { pathname } = location;
   const { getAllUsers, usersSelector } = useContext(UserContext);
   const initialFilters = {
     name: "",
@@ -86,10 +90,10 @@ const Users = () => {
           />
         ) : null}
         {roleId === 1 ? (
-          <div className=" mt-2">
+          <div className="">
             <form
               method="get"
-              className="center-filters"
+              className="center-filter"
               onSubmit={handleSubmit}
             >
               <div className="me-3" style={{ width: "350px" }}>
@@ -135,16 +139,18 @@ const Users = () => {
               <Button variant="primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </Button>
+              {pathname !== "/generate-certificate" ? (
+                <Button variant="primary" onClick={exportToExcel}>
+                  Exportar
+                </Button>
+              ) : null}
             </form>
-            <Button variant="primary" onClick={exportToExcel}>
-              Exportar
-            </Button>
           </div>
         ) : null}
         {usersFiltered.length > 0 ? (
           <>
             <div style={{ overflowX: "auto" }}>
-              <table className="table">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -158,6 +164,7 @@ const Users = () => {
                 <tbody>
                   {usersFiltered.map((user) => (
                     <UsersList
+                      showModalCertificate={showModalCertificate}
                       user={user}
                       showAlert={setShowDeleteModal}
                       setUserToDelete={setUserToDelete}

@@ -20,9 +20,9 @@ export const News = () => {
         navigate("/news");
     };
 
-    useEffect(() => {
+    /* useEffect(() => {
         getAllNews();
-    }, [allNews])
+    }, [allNews]) */
 
     return (
         <section id="speakers" className="wow fadeInUp">

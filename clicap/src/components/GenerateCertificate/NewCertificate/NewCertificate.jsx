@@ -22,14 +22,17 @@ export const NewCertificate = () => {
     });
   };
 
+  const disabled = () => {
+    return !!!certificate.name || !!!certificate.text;
+  };
   const handleSubmit = async () => {
     await reqAxios("POST", `/certificate/create`, "", certificate);
     navigate("/generate-certificate");
   };
   return (
     <>
-      <h1 className="center-center">Nuevo tipo de certificado</h1>
-      <div className="p-3">
+      <h1 className="center-center mt-3 mb-3">Nuevo tipo de certificado</h1>
+      <div className="boxAddNews boxCard">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Nombre del certificado</Form.Label>
           <Form.Control
@@ -55,12 +58,13 @@ export const NewCertificate = () => {
         <div className="center-center mt-3">
           <Button
             variant="success"
-            /*  disabled={putDisabled ? putDisabled : disabled()} */
+            disabled={putDisabled ? putDisabled : disabled()}
             onClick={handleSubmit}
           >
-            Guardar Corrección
+            Crear certificado
           </Button>
         </div>
+        {/* <input type="date" className="form-date-input" onChange={handleTime} /> */}
       </div>
     </>
   );

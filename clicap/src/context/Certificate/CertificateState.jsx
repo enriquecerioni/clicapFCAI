@@ -11,6 +11,8 @@ export const CertificateState = ({ children }) => {
       text: "",
     },
     certificates: [],
+    userIdToCertificate: "",
+    nameToCertificate: "",
     totalCertificatesPages: 0,
     certificateSelector: [],
   };
@@ -24,10 +26,19 @@ export const CertificateState = ({ children }) => {
         type: "GET_CERTIFICATE",
         payload: certificates.data.response,
       });
-
     } catch (error) {
       console.log(error);
     }
+  };
+  const setUserIdToCertificate = async (id, name, surname) => {
+    const fullName = `${name} ${surname}`;
+    dispatch({
+      type: "SET_USER_ID_TO_CERTIFICATE",
+      payload: {
+        id,
+        fullName,
+      },
+    });
   };
 
   return (
@@ -35,9 +46,12 @@ export const CertificateState = ({ children }) => {
       value={{
         certificateData: state.certificateData,
         certificates: state.certificates,
+        userIdToCertificate: state.userIdToCertificate,
+        nameToCertificate: state.nameToCertificate,
         totalCertificatesPages: state.totalCertificatesPages,
         certificateSelector: state.certificateSelector,
         getAllCertificates,
+        setUserIdToCertificate,
       }}
     >
       {children}
