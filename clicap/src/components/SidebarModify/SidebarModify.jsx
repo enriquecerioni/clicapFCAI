@@ -123,6 +123,21 @@ export const SidebarModify = () => {
               <span>Mis certificados</span>
             </div>
           </li>
+          
+          { roleId === 1 &&
+          (<li
+            onClick={() => navigate("/configuration")}          
+            className="d-flex gap-2 align-items-center li-sidebar"
+            type="button"
+          >
+            <div className="li-box-icon">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            <div>
+              <span>Configuración</span>
+            </div>
+          </li>)
+          }
 
           <p className="m-0 section-sidebar">USUARIO</p>
           <li
