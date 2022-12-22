@@ -23,8 +23,6 @@ import Certificate from "../components/UploadStudentCertificate/Certificate";
 import UpdateInvoce from "../components/Payment/PaysAdmin/UpdateInvoice";
 import { SendCorrectionAdmin } from "../components/Jobs/SendCorrectionAdmin/SendCorrectionAdmin";
 import { UserState } from "../context/User/UserState";
-import { CertificateState } from "../context/Certificate/CertificateState";
-import { JobState } from '../context/Job/JobState';
 import CertificatesUser from "../components/CertificatesUser/CertificatesUser";
 import { News } from "../components/News/News";
 import { GenerateCertificate } from "../components/GenerateCertificate/GenerateCertificate";
@@ -42,9 +40,9 @@ const CustomRoute = () => (
 
         <Route path="news" element={<Home><News/></Home>} />
 
-        <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
+        <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
 
-        <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
+        <Route path="myjob/:id" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
 
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
 
@@ -54,7 +52,7 @@ const CustomRoute = () => (
 
         <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
 
-        <Route path="jobs/job/edit/:id" element={<PrivateAdminRoute><JobState><DeliveryTask/></JobState></PrivateAdminRoute>} />
+        <Route path="jobs/job/edit/:id" element={<PrivateAdminRoute><DeliveryTask/></PrivateAdminRoute>} />
 
         <Route path="job/correctionstosend/:id" element={<PrivateAdminRoute><SendCorrectionAdmin/></PrivateAdminRoute>} />
 
@@ -66,11 +64,11 @@ const CustomRoute = () => (
 
         <Route path="mycertificates" element={<PrivateRoute><CertificatesUser/></PrivateRoute>} />
 
-        <Route path="generate-certificate" element={<PrivateAdminRoute><UserState><JobState><CertificateState><GenerateCertificate/></CertificateState></JobState></UserState></PrivateAdminRoute>} />
+        <Route path="generate-certificate" element={<PrivateAdminRoute><GenerateCertificate/></PrivateAdminRoute>} />
         
-        <Route path="certificate-types" element={<PrivateAdminRoute><CertificateState><CertificateTypes/></CertificateState></PrivateAdminRoute>} />
+        <Route path="certificate-types" element={<PrivateAdminRoute><CertificateTypes/></PrivateAdminRoute>} />
         
-        <Route path="new-certificate-type" element={<PrivateAdminRoute><CertificateState><NewCertificate/></CertificateState></PrivateAdminRoute>} />
+        <Route path="new-certificate-type" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
 
         <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
 
@@ -78,7 +76,7 @@ const CustomRoute = () => (
 
         <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
 
-        <Route path="users" element={<PrivateAdminRoute><UserState><Users/></UserState></PrivateAdminRoute>} />
+        <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
 
         <Route path="register" element={<Home><UserState><Register/></UserState></Home>} />
 
@@ -86,7 +84,7 @@ const CustomRoute = () => (
 
         <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
 
-        <Route path="user/edit/:id" element={<PrivateRoute><UserState><Register/></UserState></PrivateRoute>} />
+        <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
 
         {/* <Route path="users">
           <Route index element={<ListUser />} />

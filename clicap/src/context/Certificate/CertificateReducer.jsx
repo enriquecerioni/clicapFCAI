@@ -2,6 +2,8 @@ import {
   GET_CERTIFICATE,
   SET_CERTIFICATES_SELECTOR,
   SET_USER_ID_TO_CERTIFICATE,
+  GET_CERTIFICATES_BY_USER,
+  GET_LOGO
 } from "./types";
 
 export default (state, action) => {
@@ -23,6 +25,16 @@ export default (state, action) => {
         ...state,
         userIdToCertificate: payload.id,
         nameToCertificate: payload.fullName,
+      };
+    case GET_CERTIFICATES_BY_USER:
+      return {
+        ...state,
+        userCertificates: payload,
+      };
+    case GET_LOGO:
+      return {
+        ...state,
+        certificateLogo: payload,
       };
 
     default:
