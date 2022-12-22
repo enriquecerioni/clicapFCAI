@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { EntitiesContext } from '../../context/EntitiesContext';
-import { getDataUserByKey } from '../../helpers/helpers';
+import { getDataUserByKey, waitAndRefresh } from '../../helpers/helpers';
 import ModalDelete from '../Modals/ModalDelete';
 import { CardNew } from './CardNew'
 import "./news.css"
@@ -17,12 +17,13 @@ export const News = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         createNewNew();
-        navigate("/news");
+        waitAndRefresh('/news', 500);
+        // navigate("/news");
     };
 
     useEffect(() => {
         getAllNews();
-    }, [allNews])
+    }, [])
 
     return (
         <section id="speakers" className="wow fadeInUp">

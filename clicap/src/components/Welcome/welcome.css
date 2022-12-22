@@ -61,8 +61,8 @@
 }
 
 .flexCard {
-   flex-wrap: wrap;
-   justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 @media(max-width:450px) {
@@ -98,7 +98,7 @@
     -moz-box-shadow: 9px 9px 30px 1px rgba(0, 0, 0, 0.2);
 }
 
-@media(max-width:450px){
+@media(max-width:450px) {
     .cardBodyHome {
         padding: 10px;
         margin: 10px;
@@ -141,15 +141,19 @@
     transition: all 0.3s ease-in-out;
     border: 1px solid black;
     box-shadow: 0 0 0 0 black;
-  }
-  
+}
+
 .btnViewAll:hover {
     transform: translateY(-4px) translateX(-2px);
     box-shadow: 2px 5px 0 0 black;
-  };
-  
+}
+
 .btnViewAll:active {
     transform: translateY(2px) translateX(1px);
     box-shadow: 0 0 0 0 black;
-};
+}
 
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}

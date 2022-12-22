@@ -24,7 +24,9 @@ const ModalDelete = ({ entity, showAlert }) => {
       console.log("entro");
       if(entity.entityType === 'new'){
         waitAndRefresh(`/news`, 1000);
-      }else {
+      } else if(entity.entityType === 'area'){
+        waitAndRefresh(`/configuration`, 1000);
+      } else {
         waitAndRefresh(`/${entity.entityType}`, 1000);
       }
     }

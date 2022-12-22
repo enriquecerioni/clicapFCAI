@@ -57,6 +57,10 @@ const EntitiesProvider = ({ children }) => {
     content: ""
   };
 
+  const initialStateArea = {
+    name: ""
+  };
+
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
@@ -109,6 +113,7 @@ const EntitiesProvider = ({ children }) => {
   const [allEvaluatorsSelector, setAllEvaluatorsSelector] = useState([]);
 
   //Areas
+  const [area, setArea] = useState([]);
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
   //CORRECCIONES
@@ -263,10 +268,26 @@ const EntitiesProvider = ({ children }) => {
     });
   };
 
+  const handleChangeArea = (e) => {
+    setArea({
+      ...area,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const createNewNew = async () => {
     try {
       await reqAxios("POST", `/new/create`, "", news);
       setNews(initialStateNew);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const createNewArea = async () => {
+    try {
+      await reqAxios("POST", `/area/create`, "", area);
+      setArea(initialStateArea);
     } catch (e) {
       console.log(e);
     }
@@ -506,7 +527,10 @@ const EntitiesProvider = ({ children }) => {
         createNewNew,
         allNews,
         news,
-        handleChangeNew
+        handleChangeNew,
+        createNewArea,
+        handleChangeArea,
+        area
       }}
     >
       {children}

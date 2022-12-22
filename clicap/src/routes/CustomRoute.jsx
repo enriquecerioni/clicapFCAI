@@ -26,6 +26,7 @@ import { UserState } from "../context/User/UserState";
 import { JobState } from '../context/Job/JobState';
 import CertificatesUser from "../components/CertificatesUser/CertificatesUser";
 import { News } from "../components/News/News";
+import { Configuration } from "../components/Configuration/Configuration";
 
 const CustomRoute = () => (
   <>
@@ -34,6 +35,7 @@ const CustomRoute = () => (
         <Route element={<Home />} />
         <Route path="login" element={<Home><Login/></Home>} />
         <Route path="news" element={<Home><News/></Home>} />
+        <Route path="configuration" element={<PrivateAdminRoute><Configuration/></PrivateAdminRoute>} />
         <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} />
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />

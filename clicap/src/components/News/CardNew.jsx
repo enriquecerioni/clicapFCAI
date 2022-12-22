@@ -16,6 +16,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
             <h4>{news.title}</h4>
             <hr />
             <p>{news.content}</p>
+            <div className='iconPosition'>
             {role === 1 &&
                 <i
                     type="button"
@@ -24,6 +25,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
                     style={{ display: "flexbox", alignItems: "flex-end" }}
                 ></i>
             }
+            </div>
         </div>
     )
 }

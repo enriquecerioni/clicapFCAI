@@ -7,7 +7,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
   const navigate = useNavigate();
   /*  const startDate = work.startDate.split('-') */
   const user = users.find((user) => user.id === pay.authorId).name;
-  const deleteJob = () => {
+  const deletePay = () => {
     showAlert(true);
     setPayToDelete({
       id: pay.id,
@@ -30,7 +30,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
           <i
             type="button"
             className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-            onClick={deleteJob}
+            onClick={deletePay}
           ></i>
         </td>
         <td>
