@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../database/database");
 const CertificateModel = require("./CertificateModel");
 const UserModel = require("./UserModel");
+const JobModel = require("./JobModel");
 
 const StudentCertificateModel = db.define("studentcertificate", {
   id: {
@@ -18,6 +19,10 @@ const StudentCertificateModel = db.define("studentcertificate", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  jobId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });
 
 // STUDENTCERTIFICATE - CERTIFICATE
@@ -29,6 +34,11 @@ CertificateModel.hasMany(StudentCertificateModel, {
 StudentCertificateModel.belongsTo(UserModel, { foreignKey: "userId" });
 UserModel.hasMany(StudentCertificateModel, {
   foreignKey: "userId",
+});
+// STUDENTCERTIFICATE - JOB
+StudentCertificateModel.belongsTo(JobModel, { foreignKey: "jobId" });
+JobModel.hasMany(StudentCertificateModel, {
+  foreignKey: "jobId",
 });
 
 module.exports = StudentCertificateModel;
