@@ -189,7 +189,7 @@ const Welcome = () => {
             <div className="row roleTitle">
               {roleId === 2 ? (
                 <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Admin</strong>
+                  Rol de Usuario: <strong>Evaluador</strong>
                 </div>
               ) : roleId === 3 ? (
                 <div className="alert alert-info" role="alert">
