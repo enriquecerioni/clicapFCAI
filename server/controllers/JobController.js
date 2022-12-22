@@ -15,6 +15,7 @@ const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const uuid = require("uuid");
+const JobDetailModel = require("../models/JobDetailModel");
 
 var jobUUID;
 
@@ -250,6 +251,10 @@ exports.getAll = async (req, res) => {
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
+
+  const corrections = await JobDetailModel.destroy({
+    where: { jobId: id }
+  });
   
   const doc = await JobModel.destroy({
     where: { id: id },

@@ -16,12 +16,11 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const roleId = getDataUserByKey("roleId");
   const userId = getDataUserByKey("id");
   const {
-    job,
-    setJob,
-    getAllJobs,
+    corrections,
     allJobs,
     allEvaluatorsSelector,
     getAllEvaluators,
+    getCorrectionsByJob,
   } = useContext(EntitiesContext);
   console.log(allJobs);
   const [assignEvaluator, setAssignEvaluator] = useState(false);
@@ -33,7 +32,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     setJobToDelete({
       id: work.id,
       entityName: work.name,
-      entityType: "jobs",
+      entityType: "job",
       job: work.urlFile
     });
   };
@@ -44,7 +43,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
   const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => { };
   /*   const getAllEvaluators = async () => {
     const allEvaluators = await reqAxios(
       "GET",
@@ -104,8 +103,9 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     );
     setHaveCorrection(check.data.value);
   };
-  
+
   useEffect(() => {
+    getCorrectionsByJob();
     getAllEvaluators();
     checkCorrection();
   }, []);
@@ -119,7 +119,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   return (
     <>
       <tr>
-        <td>{work.author.name +' '+ work.author.surname}</td>
+        <td>{work.author.name + ' ' + work.author.surname}</td>
         <td>{work.name}</td>
         <td>
           {" "}
@@ -242,17 +242,19 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
               </Button>
             </td>
           </>
-        ) : (
+        ) : roleId === 2 ? (
           <td>
             <Button
               className="btn btn-success"
               onClick={() => navigate(`/job/corrections/${work.id}`)}
               disabled={haveCorrection !== 0 ? true : false}
             >
-              Corregir
+              Evaluar
             </Button>
           </td>
-        )}
+        )
+          : null
+        }
       </tr>
     </>
   );
