@@ -13,11 +13,12 @@ export const GenerateCertificateModal = ({ showModal }) => {
     certificates,
     userIdToCertificate,
     nameToCertificate,
+    certificateTypesOpt
   } = useContext(CertificateContext);
   const { jobs, getAllJobs } = useContext(JobContext);
 
   const initialState = {
-    type: 1,
+    type: "",
     certificateId: "",
     userId: userIdToCertificate,
     jobId: "",
@@ -26,11 +27,6 @@ export const GenerateCertificateModal = ({ showModal }) => {
   const closeModal = () => showModal(false);
   const [certificateData, setCertificateData] = useState(initialState);
   const [putDisabled, setPutDisabled] = useState(false);
-
-  const certificateOpt = [
-    { value: 1, label: "Personal", target: { value: 1, name: "type" } },
-    { value: 2, label: "Por trabajo", target: { value: 2, name: "type" } },
-  ];
 
   const allCertificates = certificates.map((certificate) => ({
     value: certificate.id,
@@ -89,10 +85,10 @@ export const GenerateCertificateModal = ({ showModal }) => {
                 Certificado
               </label>
               <Select
-                options={certificateOpt}
+                options={certificateTypesOpt}
                 placeholder={"seleccione.."}
                 name="type"
-                value={certificateOpt.filter(
+                value={certificateTypesOpt.filter(
                   (op) => certificateData.type === op.value
                 )}
                 isClearable={true}

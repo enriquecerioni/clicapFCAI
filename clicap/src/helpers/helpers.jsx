@@ -12,6 +12,10 @@ export const getDataUserByKey = (key) => {
       return dataUser ? dataUser.roleId : null;
     case "name":
       return dataUser ? dataUser.name : null;
+    case "surname":
+      return dataUser ? dataUser.surname : null;
+    case "identifyNumber":
+      return dataUser ? dataUser.identifyNumber : null;
     default:
       return null;
   }

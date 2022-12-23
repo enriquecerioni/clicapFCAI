@@ -7,9 +7,16 @@ export const CertificateState = ({ children }) => {
   const userId = getDataUserByKey("id");
   const initialState = {
     certificateData: {
+      type: 1,
       name: "",
+      introtext: "",
+      jobtext:"",
       text: "",
     },
+    certificateTypesOpt: [
+      { value: 1, label: "Personal", target: { value: 1, name: "type" } },
+      { value: 2, label: "Por trabajo", target: { value: 2, name: "type" } },
+    ],
     certificates: [],
     certificateLogo: "",
     userCertificates: [],
@@ -26,6 +33,23 @@ export const CertificateState = ({ children }) => {
 
       dispatch({
         type: "GET_CERTIFICATE",
+        payload: certificates.data.response,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCertificateById = async (id) => {
+    try {
+      const certificates = await reqAxios(
+        "GET",
+        `/certificate/get/${id}`,
+        "",
+        ""
+      );
+
+      dispatch({
+        type: "GET_CERTIFICATE_BY_ID",
         payload: certificates.data.response,
       });
     } catch (error) {
@@ -84,6 +108,7 @@ export const CertificateState = ({ children }) => {
         certificates: state.certificates,
         userCertificates: state.userCertificates,
         certificateLogo: state.certificateLogo,
+        certificateTypesOpt: state.certificateTypesOpt,
         userIdToCertificate: state.userIdToCertificate,
         nameToCertificate: state.nameToCertificate,
         totalCertificatesPages: state.totalCertificatesPages,
@@ -92,6 +117,7 @@ export const CertificateState = ({ children }) => {
         setUserIdToCertificate,
         getAllCertificatesByUser,
         getCertificatesLogo,
+        getCertificateById,
       }}
     >
       {children}

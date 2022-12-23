@@ -69,6 +69,8 @@ const CustomRoute = () => (
         <Route path="certificate-types" element={<PrivateAdminRoute><CertificateTypes/></PrivateAdminRoute>} />
         
         <Route path="new-certificate-type" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
+        
+        <Route path="edit-certificate-type/:certificateId" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
 
         <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
 

@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-export const CertificatesList = ({ certificate,setCertificateToDelete,showAlert }) => {
+export const CertificatesList = ({
+  certificate,
+  setCertificateToDelete,
+  showAlert,
+}) => {
   const navigate = useNavigate();
   const deleteUser = () => {
     showAlert(true);
@@ -20,7 +24,7 @@ export const CertificatesList = ({ certificate,setCertificateToDelete,showAlert 
           <i
             type="button"
             className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-            onClick={() => navigate(`/certificate/edit/${certificate.id}`)}
+            onClick={() => navigate(`/edit-certificate-type/${certificate.id}`)}
           ></i>
         </td>
         <td>
