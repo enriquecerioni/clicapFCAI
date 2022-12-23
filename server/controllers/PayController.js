@@ -6,11 +6,16 @@ const UserModel = require("../models/UserModel");
 const { log } = require("console");
 const { PAGE_LIMIT } = process.env;
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
+const uuid = require("uuid");
+
+var jobUUID;
+
 // Multer Config Pay
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/payments"),
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    jobUUID = uuid.v4() + path.extname(file.originalname);
+    cb(null, jobUUID);
   },
 });
 const createPayment = multer({
@@ -22,7 +27,8 @@ const createPayment = multer({
 const storageInvoice = multer.diskStorage({
   destination: path.join(__dirname, "../public/invoices"),
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    jobUUID = uuid.v4() + path.extname(file.originalname);
+    cb(null, jobUUID);
   },
 });
 const createInvoice = multer({
@@ -43,7 +49,6 @@ exports.create = async (req, res) => {
       cuitCuil,
       iva,
       detail,
-      urlFile,
       authorId,
     } = req.body;
     const pay = await PayModel.create({
@@ -53,11 +58,11 @@ exports.create = async (req, res) => {
       cuitCuil: cuitCuil,
       iva: iva,
       detail: detail,
-      urlFile: req.file.filename,
+      urlFile: jobUUID,
       authorId: authorId,
     });
     if (pay) {
-      res.status(200).json({msg:"Pago creado!"});
+      res.status(200).json({ msg: "Pago creado!" });
     } else {
       res.status(500).json({ msg: "Error al crear el pago." });
     }
@@ -73,12 +78,12 @@ exports.updateInvoice = async (req, res) => {
     const { id } = req.params;
     const pay = await PayModel.update(
       {
-        invoice: req.file.filename
+        invoice: jobUUID
       },
       { where: { id: id } }
     );
     if (pay) {
-      res.status(200).json({msg:"Pago facturado correctamente!"});
+      res.status(200).json({ msg: "Pago facturado correctamente!" });
     } else {
       res.status(500).json({ msg: "Error al generar la factura!" });
     }

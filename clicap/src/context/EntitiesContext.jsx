@@ -54,7 +54,8 @@ const EntitiesProvider = ({ children }) => {
 
   const initialStateNew = {
     title: "",
-    content: ""
+    content: "",
+    urlFile: ""
   };
 
   const initialStateArea = {
@@ -262,9 +263,15 @@ const EntitiesProvider = ({ children }) => {
   };
 
   const handleChangeNew = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
     setNews({
       ...news,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
@@ -277,7 +284,11 @@ const EntitiesProvider = ({ children }) => {
 
   const createNewNew = async () => {
     try {
-      await reqAxios("POST", `/new/create`, "", news);
+      const bodyFormData = new FormData();
+      for (const key in news) {
+        bodyFormData.append(key, news[key]);
+      }
+      await formDataAxios("POST", `/new/create`, "", bodyFormData);
       setNews(initialStateNew);
     } catch (e) {
       console.log(e);
