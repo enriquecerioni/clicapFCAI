@@ -8,6 +8,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
             id: news.id,
             entityName: `la novedad "${news.title}"`,
             entityType: "new",
+            image: news.urlFile
         });
     };
 
@@ -15,6 +16,8 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
         <div className='boxCard'>
             <h4>{news.title}</h4>
             <hr />
+            {/* poner imagen news.urlFile */}
+            <img src="" alt="" />
             <p>{news.content}</p>
             <div className='iconPosition'>
             {role === 1 &&

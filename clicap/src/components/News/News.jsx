@@ -55,6 +55,14 @@ export const News = () => {
                                 onChange={handleChangeNew}
                             />
                         </div>
+                        <div className='mb-3'>
+                            <input
+                                type="file"
+                                className="form-control"
+                                name="urlFile"
+                                onChange={handleChangeNew}
+                            />
+                        </div>
                         <div className='mb-3 text-center'>
                             <button type="submit" className='buttonAddNew'>Crear Novedad</button>
                         </div>

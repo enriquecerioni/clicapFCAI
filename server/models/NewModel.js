@@ -17,6 +17,10 @@ const NewModel = db.define("new", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  urlFile: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = NewModel
