@@ -14,11 +14,13 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
 
     return (
         <div className='boxCard'>
+            <div className='boxImg'>
+                <img className='imgNews ' src={`data:image/png;base64,${news.imgbase64}`} alt="" />
+            </div>
             <h4>{news.title}</h4>
             <hr />
-            {/* poner imagen news.urlFile */}
-            <img src="" alt="" />
             <p>{news.content}</p>
+            
             <div className='iconPosition'>
             {role === 1 &&
                 <i
