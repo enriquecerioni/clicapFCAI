@@ -10,10 +10,13 @@ function base64_encode(file) {
   return new Buffer(bitmap).toString("base64");
 }
 exports.create = async (req, res) => {
-  const { name, text } = req.body;
+  const { type, name, jobtext, text, introtext } = req.body;
   const certificate = await CertificateModel.create({
-    name: name,
-    text: text,
+    type,
+    name,
+    jobtext,
+    text,
+    introtext,
   });
   if (certificate) {
     res.status(200).json({ msg: "Nuevo certificado creado!" });
@@ -23,12 +26,15 @@ exports.create = async (req, res) => {
 };
 exports.updateById = async (req, res) => {
   const { id } = req.params;
-  const { name, text } = req.body;
+  const { type, name, jobtext, text, introtext } = req.body;
 
   const certificate = await CertificateModel.update(
     {
+      type,
       name,
+      jobtext,
       text,
+      introtext,
     },
     { where: { id: id } }
   );

@@ -3,8 +3,13 @@ const JobModel = require("../models/JobModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
 
 exports.create = async (req, res) => {
-  const { certificateId, userId, jobId } = req.body;
-  console.log(req.body);
+  const { certificateId, userId } = req.body;
+  let { jobId } = req.body;
+
+  if (jobId === "") {
+    jobId = null;
+  }
+
   const certificate = await StudentCertificateModel.create({
     certificateId,
     userId,
@@ -18,7 +23,12 @@ exports.create = async (req, res) => {
 };
 exports.updateById = async (req, res) => {
   const { id } = req.params;
-  const { certificateId, userId, jobId } = req.body;
+  const { certificateId, userId } = req.body;
+  let { jobId } = req.body;
+
+  if (jobId === "") {
+    jobId = null;
+  }
 
   const certificate = await StudentCertificateModel.update(
     {
@@ -57,10 +67,7 @@ exports.getAllByUser = async (req, res) => {
   console.log(userId);
   let options = {
     where: { userId: userId },
-    include: [
-      { model: JobModel },
-      { model: CertificateModel },
-    ],
+    include: [{ model: JobModel }, { model: CertificateModel }],
   };
   const certificate = await StudentCertificateModel.findAll(options);
   if (certificate) {
