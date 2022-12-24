@@ -1,4 +1,5 @@
 const CertificateModel = require("../models/CertificateModel");
+const StudentCertificateModel = require("../models/StudentCertificateModel");
 const path = require("path");
 const fs = require("fs");
 
@@ -75,13 +76,19 @@ exports.getCertificateLogo = async (req, res) => {
 
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
-  const certificate = await CertificateModel.destroy({
-    where: { id: id },
+  const studentCertificate = await StudentCertificateModel.destroy({
+    where: { certificateId: id },
   });
+  
+  if (studentCertificate) {
+    const certificate = await CertificateModel.destroy({
+      where: { id: id },
+    });
 
-  if (certificate) {
-    res.status(200).send("Certificado eliminado correctamente!");
-  } else {
-    res.status(500).json({ msg: "Error al eliminar el certificado." });
+    if (certificate) {
+      res.status(200).send("Certificado eliminado correctamente!");
+    } else {
+      res.status(500).json({ msg: "Error al eliminar el certificado." });
+    }
   }
 };

@@ -190,7 +190,8 @@ exports.updateById = async (req, res) => {
             },
           ],
           context: {
-            evaluatorName: user[i].name,
+            evaluatorName: user[i].name + user[i].surname,
+            jobName: doc.name
           },
         };
         transporter.sendMail(mailOptions, (error, info) => {

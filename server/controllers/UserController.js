@@ -1,4 +1,8 @@
 const UserModel = require("../models/UserModel");
+const JobModel = require("../models/JobModel");
+const JobDetailModel = require("../models/JobDetailModel");
+const StudentCertificateModel = require("../models/StudentCertificateModel");
+const PayModel = require("../models/PayModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
@@ -390,6 +394,36 @@ exports.getAllEvaluators = async (req, res) => {
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
+
+  //search jobs by userId
+  const jobs = await JobModel.findAll({
+    where: { authorId: id },
+  });
+
+  if (jobs.length > 0) {
+    //delete job details by jobId
+    jobs.forEach(async (job) => {
+      await JobDetailModel.destroy({
+        where: { jobId: job.id },
+      });
+    });
+
+    //delete jobs
+    await JobModel.destroy({
+      where: { authorId: id },
+    });
+  }
+
+  //delete studentCertificates
+  await StudentCertificateModel.destroy({
+    where: { userId: id },
+  });
+
+  //delete Pays
+  await PayModel.destroy({
+    where: { authorId: id },
+  });
+
   const user = await UserModel.destroy({
     where: { id: id },
   });
