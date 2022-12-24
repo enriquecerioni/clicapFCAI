@@ -33,6 +33,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
       id: work.id,
       entityName: work.name,
       entityType: "job",
+      navigate: "/jobs",
       job: work.urlFile
     });
   };

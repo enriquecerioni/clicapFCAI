@@ -10,7 +10,7 @@ export const CertificateState = ({ children }) => {
       type: 1,
       name: "",
       introtext: "",
-      jobtext:"",
+      jobtext: "",
       text: "",
     },
     certificateTypesOpt: [
@@ -87,7 +87,7 @@ export const CertificateState = ({ children }) => {
     try {
       const certificatesLogo = await reqAxios(
         "GET",
-        `/certificate/getcertificatelogo`,
+        `/certificate/getcertificatelogo/certificateLogo`,
         "",
         ""
       );

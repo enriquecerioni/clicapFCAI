@@ -8,6 +8,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
             id: news.id,
             entityName: `la novedad "${news.title}"`,
             entityType: "new",
+            navigate: "/news",
             image: news.urlFile
         });
     };

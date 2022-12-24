@@ -8,6 +8,7 @@ export const AreaRow = ({ area, showAlert, setAreaToDelete }) => {
       id: area.id,
       entityName: area.name,
       entityType: "area",
+      navigate: "/configuration",
     });
   };
 
