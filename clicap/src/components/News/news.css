@@ -1,4 +1,4 @@
-.flexNews{
+.flexNews {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,13 +19,18 @@
     margin-bottom: 1.5rem;
 }
 
-@media(max-width:500px){
+@media(max-width:500px) {
     .boxCard {
         width: 90%;
     }
 }
 
-.boxAddNews{
+.iconPosition {
+    display: block;
+    text-align: end;
+}
+
+.boxAddNews {
     margin-left: 20%;
     margin-right: 20%;
     width: 60%;
@@ -42,14 +47,28 @@
     transition: all 0.3s ease-in-out;
     border: 1px solid black;
     box-shadow: 0 0 0 0 black;
-  }
-  
+}
+
 .buttonAddNew:hover {
     transform: translateY(-4px) translateX(-2px);
     box-shadow: 2px 5px 0 0 black;
-  };
-  
+}
+
 .buttonAddNew:active {
     transform: translateY(2px) translateX(1px);
     box-shadow: 0 0 0 0 black;
-};
+}
+
+.boxImg {
+    display: flex;
+    justify-content: center;
+    width: 300px;
+    height: 300px;
+}
+
+@media(max-width:480px){
+    .imgNews{
+        width: 90%;
+        height: 90%;
+    }
+}

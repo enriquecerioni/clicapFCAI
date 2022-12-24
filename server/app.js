@@ -22,6 +22,7 @@ const AreaModel = require("./models/AreaModel");
 const RoleModel = require("./models/RoleModel");
 const CorrectionModel = require("./models/CorrectionModel");
 const CertificateRouter = require("./routes/CertificateRouter");
+const UserModel = require("./models/UserModel");
 
 // Models
 require("./models/NewModel");
@@ -71,12 +72,70 @@ const insertData = async () => {
   const areas = ["Alimentos", "Química"];
   const roles = ["Admin", "Evaluador", "Docente Investigador", "Alumno"];
   const modality = ["Trabajo Completo", "Resumen"];
-  const users = ["Trabajo Completo", "Resumen"];
   const corrections = [
     "Aceptado",
     "Aceptado con modificaciones Menores",
     "Aceptado con modificaciones mayores",
     "No aceptado",
+  ];
+  const users = [
+    {
+      id: 1,
+      roleId: 1,
+      identifyType: "DNI",
+      identifyNumber: 39601123,
+      name: "Enrique",
+      surname: "Cerioni",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    },{
+      id: 2,
+      roleId: 2,
+      identifyType: "DNI",
+      identifyNumber: 123,
+      name: "Fabian",
+      surname: "Talio",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    },{
+      id: 3,
+      roleId: 2,
+      identifyType: "DNI",
+      identifyNumber: 321,
+      name: "Diego",
+      surname: "Liseno",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    }, {
+      id: 4,
+      roleId: 4,
+      identifyType: "DNI",
+      identifyNumber: 40072123,
+      name: "Ivan",
+      surname: "Castro",
+      email: "enriquecerioni39@gmail.com",
+      password:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
+      address: "Las Heras 953",
+      institution: "Universidad de Mendoza",
+      phone: "2604626476",
+      attendance: 0,
+    },
   ];
   areas.forEach(async (item) => {
     await AreaModel.create({
@@ -98,12 +157,30 @@ const insertData = async () => {
       name: item,
     });
   });
+
+  users.forEach(async (item) => {
+    await UserModel.create({
+      id: item.id,
+      roleId: item.roleId,
+      identifyType: item.identifyType,
+      identifyNumber: item.identifyNumber,
+      name: item.name,
+      surname: item.surname,
+      email: item.email,
+      password: item.password,
+      address: item.address,
+      institution: item.institution,
+      phone: item.phone,
+      attendance: item.attendance,
+    });
+  });
   return console.log("Database connected...");
 };
+
 //SYNC -> sync with the database, if the model matches the table.
 db.sync()
   .then(() => {
-    /* insertData(); */
+    // insertData();
     console.log("Database connected...");
   })
   .catch((error) => {

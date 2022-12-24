@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import imgCertificate from "../../assets/certificate/certificate.jpg";
@@ -8,7 +9,7 @@ import "./welcome.css";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const { allJobs, myPays } = useContext(EntitiesContext);
+  const { allJobs, myPays, getAllAreas, areas } = useContext(EntitiesContext);
 
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
@@ -25,6 +26,10 @@ const Welcome = () => {
       };
     });
   };
+
+  useEffect(() => {
+    getAllAreas();
+  }, [])
 
   return (
     <>
@@ -43,19 +48,14 @@ const Welcome = () => {
             <div className="row">
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Trabajos Completos</h2>
-                <div>
-                  <button type="button" className="btnAreas">
-                    Ingeniería y Ciencias de los Alimentos
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Ingeniería Química y Ciencias Ambientales
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Ingeniería Mecánica y Ciencias de la Computación
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Educación en Ciencias e Ingeniería
-                  </button>
+                <div className="flexColumn">
+                  {
+                    areas.map(area => {
+                      return (<button type="button" className="btnAreas">
+                        {area.name}
+                      </button>)
+                    })
+                  }
                 </div>
                 <button type="button" className="btnViewAll">
                   Ver todos ()
@@ -63,19 +63,14 @@ const Welcome = () => {
               </div>
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Resúmenes</h2>
-                <div>
-                  <button type="button" className="btnAreas">
-                    Ingeniería y Ciencias de los Alimentos
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Ingeniería Química y Ciencias Ambientales
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Ingeniería Mecánica y Ciencias de la Computación
-                  </button>
-                  <button type="button" className="btnAreas">
-                    Educación en Ciencias e Ingeniería
-                  </button>
+                <div className="flexColumn">
+                  {
+                    areas.map(area => {
+                      return (<button type="button" className="btnAreas">
+                        {area.name}
+                      </button>)
+                    })
+                  }
                 </div>
                 <button type="button" className="btnViewAll">
                   Ver todos ()
@@ -194,7 +189,7 @@ const Welcome = () => {
             <div className="row roleTitle">
               {roleId === 2 ? (
                 <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Admin</strong>
+                  Rol de Usuario: <strong>Evaluador</strong>
                 </div>
               ) : roleId === 3 ? (
                 <div className="alert alert-info" role="alert">

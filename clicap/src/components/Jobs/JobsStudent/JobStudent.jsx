@@ -82,7 +82,7 @@ const JobStudent = () => {
             </tr>
           </thead>
           <tbody>
-            {allJobs.map((job, i) => (
+            {allJobs && allJobs.map((job, i) => (
               <JobStudentList job={job} key={job.id} />
             ))}
           </tbody>

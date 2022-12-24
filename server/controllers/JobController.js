@@ -14,6 +14,10 @@ const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 //NODEMAILER
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
+const uuid = require("uuid");
+const JobDetailModel = require("../models/JobDetailModel");
+
+var jobUUID;
 
 var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -42,7 +46,8 @@ transporter.use(
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/documents"),
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    jobUUID = uuid.v4() + path.extname(file.originalname);
+    cb(null, jobUUID);
   },
 });
 const uploadJob = multer({
@@ -76,7 +81,7 @@ exports.upload = async (req, res) => {
       members: members,
       authorId: Number(authorId),
       status: null,
-      urlFile: req.file.filename,
+      urlFile: jobUUID,
       evaluatorId1,
       evaluatorId2,
       approve: 0,
@@ -247,6 +252,11 @@ exports.getAll = async (req, res) => {
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
+
+  const corrections = await JobDetailModel.destroy({
+    where: { jobId: id }
+  });
+  
   const doc = await JobModel.destroy({
     where: { id: id },
   });
@@ -451,11 +461,17 @@ exports.downloadFilter = async (req, res) => {
   // Looping through User data
   rows.forEach((job) => {
     job.author = job.author.name + " " + job.author.surname;
-    job.evaluator1 = job.evaluatorId1 != null? job.evaluator1.name + " " + job.evaluator1.surname: null;
-    job.evaluator2 = job.evaluatorId2 != null ? job.evaluator2.name + " " + job.evaluator2.surname : '';
+    job.evaluator1 =
+      job.evaluatorId1 != null
+        ? job.evaluator1.name + " " + job.evaluator1.surname
+        : null;
+    job.evaluator2 =
+      job.evaluatorId2 != null
+        ? job.evaluator2.name + " " + job.evaluator2.surname
+        : "";
     job.area = job.area.name;
     job.modality = job.jobmodality.name;
-    job.status = job.status != null? job.jobStatus.name:null;
+    job.status = job.status != null ? job.jobStatus.name : null;
     worksheet.addRow(job); // Add data in worksheet
   });
   // put styles

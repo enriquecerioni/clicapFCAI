@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { EntitiesContext } from '../../context/EntitiesContext';
-import { getDataUserByKey } from '../../helpers/helpers';
+import { getDataUserByKey, waitAndRefresh } from '../../helpers/helpers';
 import ModalDelete from '../Modals/ModalDelete';
 import { CardNew } from './CardNew'
 import "./news.css"
@@ -17,12 +17,15 @@ export const News = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         createNewNew();
-        navigate("/news");
+        waitAndRefresh('/news', 500);
+        // navigate("/news");
     };
 
     /* useEffect(() => {
         getAllNews();
-    }, [allNews]) */
+    }, [allNews]) 
+    }, [])
+    */
 
     return (
         <section id="speakers" className="wow fadeInUp">
@@ -51,6 +54,14 @@ export const News = () => {
                                 className="form-control"
                                 name="content"
                                 value={news.content}
+                                onChange={handleChangeNew}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <input
+                                type="file"
+                                className="form-control"
+                                name="urlFile"
                                 onChange={handleChangeNew}
                             />
                         </div>

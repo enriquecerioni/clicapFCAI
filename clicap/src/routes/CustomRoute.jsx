@@ -28,6 +28,7 @@ import { News } from "../components/News/News";
 import { GenerateCertificate } from "../components/GenerateCertificate/GenerateCertificate";
 import { NewCertificate } from "../components/GenerateCertificate/NewCertificate/NewCertificate";
 import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
+import { Configuration } from "../components/Configuration/Configuration";
 
 const CustomRoute = () => (
   <>
@@ -44,6 +45,9 @@ const CustomRoute = () => (
 
         <Route path="myjob/:id" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
 
+        <Route path="configuration" element={<PrivateAdminRoute><Configuration/></PrivateAdminRoute>} />
+        {/* <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} /> */}
+{/*         <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} /> */}
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
 
         <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />

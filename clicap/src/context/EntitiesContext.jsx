@@ -54,7 +54,12 @@ const EntitiesProvider = ({ children }) => {
 
   const initialStateNew = {
     title: "",
-    content: ""
+    content: "",
+    urlFile: ""
+  };
+
+  const initialStateArea = {
+    name: ""
   };
 
   const initialStateCertificate = {
@@ -109,6 +114,7 @@ const EntitiesProvider = ({ children }) => {
   const [allEvaluatorsSelector, setAllEvaluatorsSelector] = useState([]);
 
   //Areas
+  const [area, setArea] = useState([]);
   const [areas, setAreas] = useState([]);
   const [areasSelector, setAreasSelector] = useState([]);
   //CORRECCIONES
@@ -257,16 +263,42 @@ const EntitiesProvider = ({ children }) => {
   };
 
   const handleChangeNew = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
     setNews({
       ...news,
+      [e.target.name]: value,
+    });
+  };
+
+  const handleChangeArea = (e) => {
+    setArea({
+      ...area,
       [e.target.name]: e.target.value,
     });
   };
 
   const createNewNew = async () => {
     try {
-      await reqAxios("POST", `/new/create`, "", news);
+      const bodyFormData = new FormData();
+      for (const key in news) {
+        bodyFormData.append(key, news[key]);
+      }
+      await formDataAxios("POST", `/new/create`, "", bodyFormData);
       setNews(initialStateNew);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const createNewArea = async () => {
+    try {
+      await reqAxios("POST", `/area/create`, "", area);
+      setArea(initialStateArea);
     } catch (e) {
       console.log(e);
     }
@@ -506,7 +538,10 @@ const EntitiesProvider = ({ children }) => {
         createNewNew,
         allNews,
         news,
-        handleChangeNew
+        handleChangeNew,
+        createNewArea,
+        handleChangeArea,
+        area
       }}
     >
       {children}
