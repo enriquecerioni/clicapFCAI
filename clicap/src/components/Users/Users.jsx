@@ -70,8 +70,7 @@ const Users = ({ showModalCertificate }) => {
       {showDeleteModal ? (
         <ModalDelete entity={userToDelete} showAlert={setShowDeleteModal} />
       ) : null}
-      {/*     CAMBIAR */}
-      {/* style={{ margin: "0 5rem 0 5rem" }} */}
+
       <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
         <div className="d-flex justify-content-end">
@@ -82,13 +81,7 @@ const Users = ({ showModalCertificate }) => {
             <i className="fa-solid fa-plus"></i> Subir trabajo
           </Button> */}
         </div>
-        {showDeleteModal ? (
-          <ModalDelete
-            /* entity={customerToDelete} */
-            showAlert={setShowDeleteModal}
-            /* getCallback={() => getusers(page)} */
-          />
-        ) : null}
+
         {roleId === 1 ? (
           <div className="">
             <form

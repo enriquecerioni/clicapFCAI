@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 
@@ -10,14 +10,18 @@ export const UsersList = ({
   showModalCertificate,
 }) => {
   const navigate = useNavigate();
-  /*  const startDate = user.startDate.split('-') */
+  const location = useLocation();
+  const { pathname } = location;
   const { setUserIdToCertificate } = useContext(CertificateContext);
+  /*  const startDate = user.startDate.split('-') */
+
   const deleteUser = () => {
     showAlert(true);
     setUserToDelete({
       id: user.id,
       entityName: user.name,
-      entityType: "users",
+      entityType: "user",
+      navigate: pathname,
     });
   };
   return (
@@ -63,7 +67,7 @@ export const UsersList = ({
               type="button"
               className="fa-solid fa-id-card icon-size-table btn-certificate-table"
               onClick={() => {
-                setUserIdToCertificate(user.id, user.name,user.surname);
+                setUserIdToCertificate(user.id, user.name, user.surname);
                 showModalCertificate(true);
               }}
             ></i>

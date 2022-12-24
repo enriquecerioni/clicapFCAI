@@ -8,7 +8,7 @@ export default function CertificateTypes() {
   const navigate = useNavigate();
   const { getAllCertificates, certificates } = useContext(CertificateContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [certificateToDelete, setCertificateToDelete] = useState(false);
+  const [certificateToDelete, setCertificateToDelete] = useState({});
 
   useEffect(() => {
     getAllCertificates();
@@ -22,14 +22,6 @@ export default function CertificateTypes() {
         />
       ) : null}
 
-      {showDeleteModal ? (
-        <ModalDelete
-          /* entity={customerToDelete} */
-          showAlert={setShowDeleteModal}
-          /* getCallback={() => getusers(page)} */
-        />
-      ) : null}
-
       <div>
         <h1 className="center-center">Certificados</h1>
 
@@ -40,7 +32,7 @@ export default function CertificateTypes() {
               onClick={() => navigate("/new-certificate-type")}
               className="btn btn-success"
             >
-              <i class="fa-solid fa-plus me-2"></i>
+              <i className="fa-solid fa-plus me-2"></i>
               Crear Certificado
             </button>
           </div>
@@ -62,7 +54,9 @@ export default function CertificateTypes() {
                   {certificates.map((certificate) => (
                     <CertificatesList
                       certificate={certificate}
-                      /*                       showAlert={setShowDeleteModal}
+                      showAlert={setShowDeleteModal}
+                      setCertificateToDelete={setCertificateToDelete}
+                      /*                
                       setUserToDelete={setUserToDelete} */
                       /*     setCustomerToDelete={handleDelete} */
                       key={certificate.id}
