@@ -30,6 +30,7 @@ import { NewCertificate } from "../components/GenerateCertificate/NewCertificate
 import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
 import { Configuration } from "../components/Configuration/Configuration";
 import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
+import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
 
 const CustomRoute = () => (
   <>
@@ -76,7 +77,7 @@ const CustomRoute = () => (
         
         <Route path="edit-certificate-type/:certificateId" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
 
-        <Route path="certificates" element={<PrivateAdminRoute><StudentCertificateList/></PrivateAdminRoute>} />
+        <Route path="certificates" element={<PrivateAdminRoute><StudentCertificateAdmin/></PrivateAdminRoute>} />
 
         <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
 

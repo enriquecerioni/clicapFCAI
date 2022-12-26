@@ -23,14 +23,15 @@ const StudentCertificate = () => {
   return (
     <>
       <h2 className="text-center">Mis Certificados</h2>
-      <div className="box-add-instance">
-        <div className="">
+
+      <div className="box-add-instance ">
+        <div className="text-end me-5">
           <button
             type="button"
             onClick={() => navigate("/newcertificate")}
             className="btn btn-success"
           >
-            <i className="fa-solid fa-plus"></i> Subir un Certificado
+            <i className="fa-solid fa-plus"></i>  Subir un Certificado
           </button>
         </div>
       </div>

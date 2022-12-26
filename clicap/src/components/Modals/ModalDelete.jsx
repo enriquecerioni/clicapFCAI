@@ -13,6 +13,8 @@ const ModalDelete = ({ entity, showAlert }) => {
     deleteFile(entity.job, 'documents');
   } else if(entity.entityType === 'new'){
     deleteFile(entity.image, 'news');
+  } else if(entity.entityType === 'regular-certificates'){
+    deleteFile(entity.certificate, 'regularcertificates');
   }
 
   const deleteEntity = async () => {

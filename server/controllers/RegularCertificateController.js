@@ -31,6 +31,7 @@ exports.create = async (req, res) => {
         return res.send(err);
       }
       const { detail, authorId } = req.body;
+      console.log("authorID: " + authorId)
       const certificate = await RegularCertificate.create({
         detail: detail,
         urlFile: jobUUID,
@@ -118,6 +119,9 @@ exports.getAllPaginated = async (req, res) => {
   const offsetIns = calcNumOffset(page);
   let options = {
     where: {},
+    include: [
+      { model: UserModel },
+    ],
     offset: offsetIns,
     limit: Number(PAGE_LIMIT),
   };

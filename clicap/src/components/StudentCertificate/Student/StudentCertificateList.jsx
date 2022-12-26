@@ -12,17 +12,16 @@ const StudentCertificateList = ({ certificate }) => {
     <>
       <Card
         type="button"
-        style={{ width: "60rem" }}
+        style={{ width: "60rem", marginBottom: "1.5rem" }}
         className={certificate.active === 0 ? classInactive : classActive}
-        onClick={() => navigate(`/certificate/get/${certificate.id}`)}
       >
         <Card.Body>
           <Card.Title className="text-center mb-2">CERTIFICADO DE ALUMNO REGULAR</Card.Title>
           <div className="cardbody-job">
             <div className="">
-              <div className="text-center mb-2">{certificate.detail}</div>
-              <div>
-                <button className="btn btn-primary">Descargar Comprobante</button>
+              <div className="text-center mb-2"><strong>Descripción:</strong> {certificate.detail}</div>
+              <div className="text-center">
+                <button className="btn btn-primary">Descargar Certificado (AR)</button>
               </div>
             </div>
           </div>
