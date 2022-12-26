@@ -50,7 +50,7 @@ exports.create = async (req, res) => {
   if (Number(sendMail) === 1) {
     const doc = await JobModel.findOne({
       where: { id: jobId },
-      include: [{ model: UserModel, as: "author", attributes: ["email"] }],
+      include: [{ model: UserModel, as: "author", attributes: ["name","surname","email"] }],
     });
     //approve in 0 because correction is approved
     await JobModel.update(
@@ -71,6 +71,7 @@ exports.create = async (req, res) => {
         },
       ],
       context: {
+        evaluatorName: doc.user.name +" "+ doc.user.surname,
         titleTp: doc.name,
       },
     };

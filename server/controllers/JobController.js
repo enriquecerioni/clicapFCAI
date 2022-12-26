@@ -173,7 +173,7 @@ exports.updateById = async (req, res) => {
   );
   let options = {
     where: {},
-    attributes: ["name", "email"],
+    attributes: ["name","surname", "email"],
   };
 
   if (doc) {
@@ -183,7 +183,7 @@ exports.updateById = async (req, res) => {
       };
       //search user email
       const user = await UserModel.findAll(options);
-
+      console.log(user);
       //send email with your configuration
       user.forEach((evaluator, i) => {
         var mailOptions = {
@@ -199,7 +199,7 @@ exports.updateById = async (req, res) => {
             },
           ],
           context: {
-            evaluatorName: user[i].name + user[i].surname,
+            evaluatorName: user[i].name +" "+ user[i].surname,
             jobName: doc.name,
           },
         };
