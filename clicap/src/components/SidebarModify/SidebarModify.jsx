@@ -112,15 +112,24 @@ export const SidebarModify = () => {
           </li>
 
           <li
-            onClick={() => navigate(`/mycertificates`)}
+            onClick={
+              roleId === 1
+                ? () => navigate("/generate-certificate")
+                : () => navigate("/mycertificates")
+            }
             className="d-flex gap-2 align-items-center li-sidebar"
             type="button"
           >
             <div className="li-box-icon">
               <i className="fa-solid fa-user-graduate"></i>
             </div>
+
             <div>
-              <span>Mis certificados</span>
+              {roleId === 1 ? (
+                <span>Generar Certificado</span>
+              ) : (
+                <span>Mis certificados</span>
+              )}
             </div>
           </li>
           

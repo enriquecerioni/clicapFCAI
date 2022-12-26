@@ -7,6 +7,7 @@ import { EntitiesContext } from "../../context/EntitiesContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
 import { JobContext } from "../../context/Job/JobContext";
+import { alertError } from "../../helpers/alerts";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
@@ -53,6 +54,12 @@ const DeliveryTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (job.name.length > 150) {
+      return alertError("El nombre debe tener como máximo 150 caracteres.");
+    }
+    if (job.members.length > 200) {
+      return alertError("Autor/Autores: Máximo 200 caracteres.");
+    }
     await createNewJob();
     navigate("/myjobs");
   };
@@ -70,14 +77,13 @@ const DeliveryTask = () => {
   };
   const disabled = () => {
     return (
-      !!! job.areaId ||
+      !!!job.areaId ||
       /* !!!job.members || */
       !!!job.urlFile ||
       !!!job.name.trim() ||
-      !!!job.jobModalityId 
+      !!!job.jobModalityId
     );
   };
-
 
   useEffect(() => {
     if (id) {
@@ -227,7 +233,11 @@ const DeliveryTask = () => {
               </div>
             </div>
             <div className="mt-3 center-center">
-              <Button disabled={putDisabled ? putDisabled : disabled()} type="submit" variant="primary">
+              <Button
+                disabled={putDisabled ? putDisabled : disabled()}
+                type="submit"
+                variant="primary"
+              >
                 Subir trabajo
               </Button>
             </div>

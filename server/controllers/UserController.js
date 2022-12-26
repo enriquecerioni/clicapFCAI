@@ -1,4 +1,8 @@
 const UserModel = require("../models/UserModel");
+const JobModel = require("../models/JobModel");
+const JobDetailModel = require("../models/JobDetailModel");
+const StudentCertificateModel = require("../models/StudentCertificateModel");
+const PayModel = require("../models/PayModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
@@ -100,8 +104,8 @@ exports.register = async (req, res) => {
       template: "mailRegister",
       attachments: [
         {
-          filename: "clicap.png",
-          path: "./assets/clicap.png",
+          filename: "appLogo.jpg",
+          path: "./public/logos/appLogo.jpg",
           cid: "logo", //my mistake was putting "cid:logo@cid" here!
         },
         /*         {
@@ -193,8 +197,8 @@ exports.acountActivate = async (req, res) => {
           template: "mailCredentials",
           attachments: [
             {
-              filename: "clicap.png",
-              path: "./assets/clicap.png",
+              ffilename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
               cid: "logo",
             },
           ],
@@ -250,6 +254,10 @@ exports.login = async (req, res) => {
         }
       }
     );
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "No existe ningún usuario con ese ID." });
   }
 };
 
@@ -267,7 +275,7 @@ exports.updateById = async (req, res) => {
     phone,
     password,
   } = req.body;
-  const userDB = await UserModel.findByPk(id);
+
   //encripta la contraseña
   let encryptedPassword = jwt.sign({ password }, process.env.JWT_ACOUNT_ACTIVE);
   const user = await UserModel.update(
@@ -285,31 +293,31 @@ exports.updateById = async (req, res) => {
     },
     { where: { id: id } }
   );
-  var mailOptions = {
-    from: process.env.EMAIL_APP,
-    to: email,
-    subject: "Usuario editado - credenciales",
-    template: "mailCredentials",
-    attachments: [
-      {
-        filename: "clicap.png",
-        path: "./assets/clicap.png",
-        cid: "logo",
-      },
-    ],
-    context: { id: identifyNumber, password: password },
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).json({ msg: error.message });
-    } else {
-      console.log("Email enviado!");
-      res.end();
-    }
-  });
 
   if (user) {
+    var mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: email,
+      subject: "Usuario editado - credenciales",
+      template: "mailCredentials",
+      attachments: [
+        {
+          filename: "appLogo.jpg",
+          path: "./public/logos/appLogo.jpg",
+          cid: "logo",
+        },
+      ],
+      context: { id: identifyNumber, password: password },
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
     return res.status(200).json({ response: "Usuario editado correctamente!" });
   } else {
     res.status(500).json({ msg: "El usuario no existe!" });
@@ -326,8 +334,8 @@ exports.updateById = async (req, res) => {
       template: "mailCredentials",
       attachments: [
         {
-          filename: "clicap.png",
-          path: "./assets/clicap.png",
+          filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
           cid: "logo",
         },
       ],
@@ -347,23 +355,27 @@ exports.updateById = async (req, res) => {
 exports.getById = async (req, res) => {
   const { id } = req.params;
   const user = await UserModel.findByPk(id);
-  jwt.verify(
-    user.password,
-    process.env.JWT_ACOUNT_ACTIVE,
-    async (err, decoded) => {
-      if (err) {
-        return res
-          .status(401)
-          .json({ msg: "Token incorrecto o el tiempo expiró." });
+  if (user) {
+    jwt.verify(
+      user.password,
+      process.env.JWT_ACOUNT_ACTIVE,
+      async (err, decoded) => {
+        if (err) {
+          return res
+            .status(401)
+            .json({ msg: "Token incorrecto o el tiempo expiró." });
+        }
+        user.password = decoded.password;
+        if (user) {
+          res.status(200).json({ response: user });
+        } else {
+          res.status(500).json({ msg: "Error al obtener el usuario." });
+        }
       }
-      user.password = decoded.password;
-      if (user) {
-        res.status(200).json({ response: user });
-      } else {
-        res.status(500).json({ msg: "Error al obtener el usuario." });
-      }
-    }
-  );
+    );
+  } else {
+    res.status(400).json({ msg: "No existe el usuario." });
+  }
 };
 exports.getAll = async (req, res) => {
   const user = await UserModel.findAll({
@@ -390,6 +402,40 @@ exports.getAllEvaluators = async (req, res) => {
 };
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
+
+  //search jobs by userId
+  const jobs = await JobModel.findAll({
+    where: { authorId: id },
+  });
+
+  if (jobs && jobs.length > 0) {
+    //delete job details by jobId
+    jobs.forEach(async (job) => {
+      await JobDetailModel.destroy({
+        where: { jobId: job.id },
+      });
+    });
+
+    //delete jobs
+    await JobModel.destroy({
+      where: { authorId: id },
+    });
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "No existe el usuario que desea eliminar." });
+  }
+
+  //delete studentCertificates
+  await StudentCertificateModel.destroy({
+    where: { userId: id },
+  });
+
+  //delete Pays
+  await PayModel.destroy({
+    where: { authorId: id },
+  });
+
   const user = await UserModel.destroy({
     where: { id: id },
   });
@@ -433,7 +479,7 @@ exports.getAllPaginated = async (req, res) => {
   if (rows) {
     res.status(200).json({ pages: cantPages, response: rows });
   } else {
-    res.status(500).json({ msg: "La instancia no existe." });
+    res.status(500).json({ msg: "Los usuarios no existen." });
   }
 };
 

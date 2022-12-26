@@ -39,14 +39,20 @@ body,
   font-size: 1.2rem;
 }
 .btn-edit-table:hover {
-  color: blue;
+  color: #3a4f7a;
 }
 
 .btn-delete-table:hover {
-  color: red;
+  color: #eb455f;
+}
+.btn-certificate-table:hover {
+  color: #439A97;
 }
 .modal-50w {
   min-width: 50%;
+}
+.modal-80w {
+  min-width: 80%;
 }
 .center-filters {
   display: flex;

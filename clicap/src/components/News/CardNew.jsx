@@ -1,5 +1,5 @@
-import React from 'react'
-import "./news.css"
+import React from "react";
+import "./news.css";
 
 export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
     const deleteNew = () => {
@@ -8,6 +8,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
             id: news.id,
             entityName: `la novedad "${news.title}"`,
             entityType: "new",
+            navigate: "/news",
             image: news.urlFile
         });
     };

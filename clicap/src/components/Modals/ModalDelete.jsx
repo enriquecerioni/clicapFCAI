@@ -16,23 +16,13 @@ const ModalDelete = ({ entity, showAlert }) => {
   }
 
   const deleteEntity = async () => {
-
     const entityDeleted = await deleteAxios(
       `/${entity.entityType}/delete/${entity.id}`
     );
-    console.log("----" + entityDeleted);
+
     showAlert(false);
     if (entityDeleted.status === 200) {
-      console.log("entro");
-      if(entity.entityType === 'new'){
-        waitAndRefresh(`/news`, 1000);
-      } else if(entity.entityType === 'area'){
-        waitAndRefresh(`/configuration`, 1000);
-      } else if(entity.entityType === 'job'){
-        waitAndRefresh(`/jobs`, 1000);
-      } else {
-        waitAndRefresh(`/${entity.entityType}`, 1000);
-      }
+      waitAndRefresh(entity.navigate, 1000);
     }
   };
 

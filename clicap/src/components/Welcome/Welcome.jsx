@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import imgCertificate from "../../assets/certificate/certificate.jpg";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey } from "../../helpers/helpers";
 import "./welcome.css";

@@ -96,14 +96,18 @@ exports.upload = async (req, res) => {
 exports.downloadFile = (req, res) => {
   console.log("Descargo el archivo");
   const { nameFile, folder } = req.query;
-  const ruta = path.join(__dirname, `../public/${folder}/${nameFile}`);
-  const file = fs.createReadStream(ruta);
-  const filename = new Date().toISOString();
-  res.setHeader(
-    "Content-Disposition",
-    'attachment: filename="' + filename + '"'
-  );
-  file.pipe(res);
+  try {
+    const ruta = path.join(__dirname, `../public/${folder}/${nameFile}`);
+    const file = fs.createReadStream(ruta);
+    const filename = new Date().toISOString();
+    res.setHeader(
+      "Content-Disposition",
+      'attachment: filename="' + filename + '"'
+    );
+    file.pipe(res);
+  } catch (error) {
+    return res.status(500).json({ msg: "Error al descargar el archivo." });
+  }
 };
 
 exports.create = async (req, res) => {
@@ -189,13 +193,14 @@ exports.updateById = async (req, res) => {
           template: "mailAssignToJob",
           attachments: [
             {
-              filename: "clicap.png",
-              path: "./assets/clicap.png",
+              filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
               cid: "logo", //my mistake was putting "cid:logo@cid" here!
             },
           ],
           context: {
-            evaluatorName: user[i].name,
+            evaluatorName: user[i].name + user[i].surname,
+            jobName: doc.name,
           },
         };
         transporter.sendMail(mailOptions, (error, info) => {
@@ -253,9 +258,9 @@ exports.deleteById = async (req, res) => {
   const { id } = req.params;
 
   const corrections = await JobDetailModel.destroy({
-    where: { jobId: id }
+    where: { jobId: id },
   });
-  
+
   const doc = await JobModel.destroy({
     where: { id: id },
   });

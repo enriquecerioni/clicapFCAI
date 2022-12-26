@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ModalDelete from "../Modals/ModalDelete";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { UsersList } from "./UsersList";
@@ -9,9 +9,13 @@ import { PaginationCustom } from "../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
 import { UserContext } from "../../context/User/UserContext";
 import { ExtensiveList } from "../ExtensiveList/ExtensiveList";
-const Users = () => {
+import "./users.css";
+
+const Users = ({ showModalCertificate }) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const location = useLocation();
+  const { pathname } = location;
   const { getAllUsers, usersSelector } = useContext(UserContext);
   const initialFilters = {
     name: "",
@@ -66,8 +70,7 @@ const Users = () => {
       {showDeleteModal ? (
         <ModalDelete entity={userToDelete} showAlert={setShowDeleteModal} />
       ) : null}
-      {/*     CAMBIAR */}
-      {/* style={{ margin: "0 5rem 0 5rem" }} */}
+
       <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
         <div className="d-flex justify-content-end">
@@ -78,18 +81,12 @@ const Users = () => {
             <i className="fa-solid fa-plus"></i> Subir trabajo
           </Button> */}
         </div>
-        {showDeleteModal ? (
-          <ModalDelete
-            /* entity={customerToDelete} */
-            showAlert={setShowDeleteModal}
-            /* getCallback={() => getusers(page)} */
-          />
-        ) : null}
+
         {roleId === 1 ? (
-          <div className=" mt-2">
+          <div className="">
             <form
               method="get"
-              className="center-filters"
+              className="center-filter"
               onSubmit={handleSubmit}
             >
               <div className="me-3" style={{ width: "350px" }}>
@@ -135,16 +132,18 @@ const Users = () => {
               <Button variant="primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </Button>
+              {pathname !== "/generate-certificate" ? (
+                <Button variant="primary" onClick={exportToExcel}>
+                  Exportar
+                </Button>
+              ) : null}
             </form>
-            <Button variant="primary" onClick={exportToExcel}>
-              Exportar
-            </Button>
           </div>
         ) : null}
         {usersFiltered.length > 0 ? (
           <>
             <div style={{ overflowX: "auto" }}>
-              <table className="table">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th>Nombre</th>
@@ -158,6 +157,7 @@ const Users = () => {
                 <tbody>
                   {usersFiltered.map((user) => (
                     <UsersList
+                      showModalCertificate={showModalCertificate}
                       user={user}
                       showAlert={setShowDeleteModal}
                       setUserToDelete={setUserToDelete}

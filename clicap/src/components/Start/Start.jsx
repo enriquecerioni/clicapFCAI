@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState} from "react";
+import React, { useEffect, useContext, useState } from "react";
 import firstSpeaker from "../../assets/authorities/1.jpg";
 import secondSpeaker from "../../assets/authorities/2.jpg";
 import thirdSpeaker from "../../assets/authorities/3.jpg";
@@ -24,33 +24,57 @@ import CountdownTimer from "../CounterdownTimer/CountdownTimer";
 import "./start.scss";
 import "./button.css";
 import { EntitiesContext } from "../../context/EntitiesContext";
-import { getDataUserByKey } from "../../helpers/helpers";
-
+import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 
 const Start = () => {
-  const {time, setTime, getDate, handleTime} = useContext(EntitiesContext);
-  const userId = getDataUserByKey('roleId');
-  
+  const { time, setTime, getDate, handleTime } = useContext(EntitiesContext);
+  const userId = getDataUserByKey("roleId");
+  const [logoApp, setLogoApp] = useState("");
+
+  const loadAppLogo = async () => {
+    const AppLogo = await reqAxios(
+      "GET",
+      `/certificate/getcertificatelogo/applogo`,
+      "",
+      ""
+    );
+    setLogoApp(AppLogo.data.response);
+  };
+
   useEffect(() => {
     getDate();
-  },[time])
+    loadAppLogo();
+  }, [time]);
 
   return (
     <>
-      <section id="intro" className="animate__animated animate__fadeInDown sectionIntro">
+      <section
+        id="intro"
+        className="animate__animated animate__fadeInDown sectionIntro"
+      >
         <div className="introSection">
           <div className="divIntro">
             <h1 className="mb-4 pb-0">
-              <img src={clicap} alt="Image not found" className="clicapLogo" />
+              <img
+                src={`data:image/png;base64,${logoApp}`}
+                alt="Image not found"
+                className="clicapLogo"
+              />
             </h1>
           </div>
-          { userId === 1 && <div>
-            <input type="date" className="form-date-input" onChange={handleTime} />
-          </div>}
-    
+          {userId === 1 && (
+            <div>
+              <input
+                type="date"
+                className="form-date-input"
+                onChange={handleTime}
+              />
+            </div>
+          )}
+
           <div id="count" className="divIntro">
             {/* <h1>counter</h1> */}
-            <CountdownTimer countdownTimestampMs={time}/>
+            <CountdownTimer countdownTimestampMs={time} />
           </div>
 
           <div className="divIntro">
@@ -63,8 +87,6 @@ const Start = () => {
             </a>
           </div>
         </div>
-          
-          
 
         {/* <div className="intro-container wow fadeIn">
           <h1 className="mb-4 pb-0">
@@ -90,7 +112,7 @@ const Start = () => {
           </a>
         </div> */}
       </section>
-      
+
       <section id="about">
         <div className="container">
           <div className="row">
@@ -211,7 +233,7 @@ const Start = () => {
           </div>
         </div>
       </section>
-      
+
       <section id="gallery" className="section-with-bg wow fadeInUp">
         <div className="container">
           <div className="section-header">

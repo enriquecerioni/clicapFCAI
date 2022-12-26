@@ -12,6 +12,10 @@ export const getDataUserByKey = (key) => {
       return dataUser ? dataUser.roleId : null;
     case "name":
       return dataUser ? dataUser.name : null;
+    case "surname":
+      return dataUser ? dataUser.surname : null;
+    case "identifyNumber":
+      return dataUser ? dataUser.identifyNumber : null;
     default:
       return null;
   }
@@ -28,7 +32,7 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       }, */
     });
     console.log(res);
-    if (method != "get") {
+    if (method !== "get") {
       alertSuccess(res.data.msg);
     }
     return res;
@@ -126,7 +130,7 @@ export const reqAxiosDownload = async (shortUrl, param) => {
       headers: {
         Accept: "application/JSON",
         "Content-Type": "application/json",
-       /*  "auth-token": token, */
+        /*  "auth-token": token, */
       },
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));

@@ -1,6 +1,8 @@
 const { DataTypes } = require("sequelize");
-const db = require('../database/database');
+const db = require("../database/database");
+const CertificateModel = require("./CertificateModel");
 const UserModel = require("./UserModel");
+const JobModel = require("./JobModel");
 
 const StudentCertificateModel = db.define("studentcertificate", {
   id: {
@@ -10,23 +12,33 @@ const StudentCertificateModel = db.define("studentcertificate", {
     autoIncrement: true,
     allowNull: false,
   },
-  detail: {
-    type: DataTypes.STRING,
-  },
-  urlFile: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  authorId: {
+  certificateId: {
     type: DataTypes.INTEGER,
-    allowNull: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  jobId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
 });
 
-// PAY - AUTHOR
-StudentCertificateModel.belongsTo(UserModel, {foreignKey: 'authorId'});
+// STUDENTCERTIFICATE - CERTIFICATE
+StudentCertificateModel.belongsTo(CertificateModel, { foreignKey: "certificateId" });
+CertificateModel.hasMany(StudentCertificateModel, {
+  foreignKey: "certificateId",
+});
+// STUDENTCERTIFICATE - USER
+StudentCertificateModel.belongsTo(UserModel, { foreignKey: "userId" });
 UserModel.hasMany(StudentCertificateModel, {
-  foreignKey: "authorId",
+  foreignKey: "userId",
+});
+// STUDENTCERTIFICATE - JOB
+StudentCertificateModel.belongsTo(JobModel, { foreignKey: "jobId" });
+JobModel.hasMany(StudentCertificateModel, {
+  foreignKey: "jobId",
 });
 
 module.exports = StudentCertificateModel;
