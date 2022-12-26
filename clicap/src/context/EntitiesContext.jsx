@@ -65,7 +65,7 @@ const EntitiesProvider = ({ children }) => {
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: getDataUserByKey("id")
   };
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
@@ -336,7 +336,7 @@ const EntitiesProvider = ({ children }) => {
       for (const key in certificate) {
         bodyFormData.append(key, certificate[key]);
       }
-      await formDataAxios("POST", `/student/create`, "", bodyFormData);
+      await formDataAxios("POST", `/regular-certificates/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
     }
@@ -401,7 +401,7 @@ const EntitiesProvider = ({ children }) => {
     try {
       const dataMyCertificates = await reqAxios(
         "GET",
-        `/student/get/certificate/${numPage}`,
+        `/regular-certificates/get/certificate/${numPage}`,
         dataFilter,
         ""
       );

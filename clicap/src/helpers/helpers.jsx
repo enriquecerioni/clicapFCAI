@@ -87,7 +87,7 @@ export const waitAndRefresh = (path, time) => {
 export const downloadFile = async (nameFile, folder) => {
   try {
     await axios({
-      url: `http://localhost:3000/api/clicap/job/downloadfile?nameFile=${nameFile}&folder=${folder}`, //your url
+      url: `${API_URL}/job/downloadfile?nameFile=${nameFile}&folder=${folder}`, //your url
       params: "",
       method: "GET",
       responseType: "blob", // important
@@ -108,7 +108,7 @@ export const downloadFile = async (nameFile, folder) => {
 export const deleteFile = async (nameFile, folder) => {
   try {
     await axios({
-      url: `http://localhost:3000/api/clicap/file/delete-file?nameFile=${nameFile}&folder=${folder}`, //your url
+      url: `${API_URL}/file/delete-file?nameFile=${nameFile}&folder=${folder}`, //your url
       params: "",
       method: "GET",
       responseType: "blob", // important
