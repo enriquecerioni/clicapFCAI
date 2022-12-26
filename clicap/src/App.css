@@ -62,3 +62,10 @@ body,
 .overflow-x {
   overflow-x: auto;
 }
+
+
+@media(max-width: 480px){
+  .overflow-x {
+    overflow-x: auto;
+  }
+}
