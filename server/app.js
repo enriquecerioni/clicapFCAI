@@ -178,9 +178,9 @@ const insertData = async () => {
 };
 
 //SYNC -> sync with the database, if the model matches the table.
-db.sync()
+db.sync({force:true})
   .then(() => {
-    // insertData();
+    insertData();
     console.log("Database connected...");
   })
   .catch((error) => {
