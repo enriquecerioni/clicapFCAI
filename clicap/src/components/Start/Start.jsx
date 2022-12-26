@@ -68,6 +68,7 @@ const Start = () => {
                 type="date"
                 className="form-date-input"
                 onChange={handleTime}
+                value={time}
               />
             </div>
           )}

@@ -65,7 +65,7 @@ const EntitiesProvider = ({ children }) => {
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: getDataUserByKey("id")
   };
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
@@ -110,6 +110,9 @@ const EntitiesProvider = ({ children }) => {
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
   const [totalPages, setTotalPages] = useState("");
+  //TODOS LOS TRABAJOS
+  const [allRegularCertificates, setAllRegularCertificates] = useState([]);
+  const [totalPagesCertificate, setTotalPagesCertificate] = useState("");
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
   //UN TRABAJO
@@ -235,6 +238,19 @@ const EntitiesProvider = ({ children }) => {
     setAllJobs(getAllJob.data.response);
     setTotalPages(getAllJob.data.pages);
   };
+
+  //Certificados Alumno Regular
+  const getAllRegularCertificates = async (page, params) => {
+    const getAllRegularCertificate = await reqAxios(
+      "GET",
+      `/regular-certificates/get/certificate/${page}`,
+      params,
+      ""
+    );
+    setAllRegularCertificates(getAllRegularCertificate.data.response);
+    setTotalPagesCertificate(getAllRegularCertificate.data.pages);
+  };
+
   //Mis Trabajos / LOS TRABAJOS
   const getMyJobs = async (numPage, dataFilter) => {
     try {
@@ -360,7 +376,7 @@ const EntitiesProvider = ({ children }) => {
       for (const key in certificate) {
         bodyFormData.append(key, certificate[key]);
       }
-      await formDataAxios("POST", `/student/create`, "", bodyFormData);
+      await formDataAxios("POST", `/regular-certificates/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
     }
@@ -425,10 +441,11 @@ const EntitiesProvider = ({ children }) => {
     try {
       const dataMyCertificates = await reqAxios(
         "GET",
-        `/student/get/certificate/${numPage}`,
+        `/regular-certificates/get/certificate/${numPage}`,
         dataFilter,
         ""
       );
+      console.log(dataMyCertificates)
       setMyCertificates(dataMyCertificates.data.response);
     } catch (e) {
       console.log(e);
@@ -568,7 +585,9 @@ const EntitiesProvider = ({ children }) => {
         area,
         filtersGlobal,
         setFiltersGlobal,
-        handleChangeFilterGlobal
+        handleChangeFilterGlobal,
+        getAllRegularCertificates,
+        allRegularCertificates
       }}
     >
       {children}
