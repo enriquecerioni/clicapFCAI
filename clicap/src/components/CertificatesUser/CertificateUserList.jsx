@@ -1,7 +1,6 @@
 import React from "react";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import jsPDF from "jspdf";
-import imgCertificate from "../../assets/certificate/certificate.jpg";
 import { getDataUserByKey } from "../../helpers/helpers";
 
 export const CertificateUserList = ({ userCertificate, certificateLogo }) => {

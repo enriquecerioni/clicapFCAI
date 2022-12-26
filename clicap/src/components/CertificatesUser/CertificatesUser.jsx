@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import CardCertificate from "./CardCertificate";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { CertificateUserList } from "./CertificateUserList";
 import { getDataUserByKey } from "../../helpers/helpers";
-import { Loader } from "../Loader/Loader";
 
 export default function CertificatesUser() {
   const {
@@ -18,7 +15,6 @@ export default function CertificatesUser() {
   useEffect(() => {
     getAllCertificatesByUser(userId);
     getCertificatesLogo();
-    /* setLoading(false); */
   }, []);
   return (
     <>
