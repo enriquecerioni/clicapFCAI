@@ -34,7 +34,7 @@ const Start = () => {
   const loadAppLogo = async () => {
     const AppLogo = await reqAxios(
       "GET",
-      `/certificate/getcertificatelogo/applogo`,
+      `/certificate/getcertificatelogo/appLogo`,
       "",
       ""
     );

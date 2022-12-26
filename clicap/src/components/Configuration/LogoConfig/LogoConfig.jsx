@@ -60,7 +60,7 @@ export const LogoConfig = () => {
     );
     const AppLogo = await reqAxios(
       "GET",
-      `/certificate/getcertificatelogo/applogo`,
+      `/certificate/getcertificatelogo/appLogo`,
       "",
       ""
     );
