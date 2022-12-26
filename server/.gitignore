@@ -3,4 +3,5 @@
 /public/invoices
 /public/news
 /public/payments
+/public/student-certificates
 .env

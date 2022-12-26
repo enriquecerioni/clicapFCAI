@@ -29,6 +29,8 @@ import { GenerateCertificate } from "../components/GenerateCertificate/GenerateC
 import { NewCertificate } from "../components/GenerateCertificate/NewCertificate/NewCertificate";
 import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
 import { Configuration } from "../components/Configuration/Configuration";
+import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
+import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
 
 const CustomRoute = () => (
   <>
@@ -46,8 +48,7 @@ const CustomRoute = () => (
         <Route path="myjob/:id" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
 
         <Route path="configuration" element={<PrivateAdminRoute><Configuration/></PrivateAdminRoute>} />
-        {/* <Route path="newjob" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} /> */}
-{/*         <Route path="myjob/:id" element={<PrivateRoute><JobState><DeliveryTask/></JobState></PrivateRoute>} /> */}
+      
         <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
 
         <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />
@@ -76,6 +77,8 @@ const CustomRoute = () => (
         
         <Route path="edit-certificate-type/:certificateId" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
 
+        <Route path="certificates" element={<PrivateAdminRoute><StudentCertificateAdmin/></PrivateAdminRoute>} />
+
         <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
 
         <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
@@ -92,11 +95,6 @@ const CustomRoute = () => (
 
         <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
 
-        {/* <Route path="users">
-          <Route index element={<ListUser />} />
-          <Route path=":userId" element={<SingleUser />} />
-          <Route path="new" element={<NewUser />} />
-        </Route> */}
     </Routes>
   </>
 );
