@@ -93,22 +93,16 @@ const JobsAdmin = () => {
 
   return (
     <>
-      <div className="ms-3 me-3">
+      <div className="">
         <h2 className="text-center">Trabajos</h2>
         <div className="d-flex justify-content-end">
-          {/*           <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
-          >
-            <i className="fa-solid fa-plus"></i> Subir trabajo
-          </Button> */}
         </div>
         {showDeleteModal ? (
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
         ) : null}
 
         {roleId === 1 ? (
-          <div className=" mt-2">
+          <div className=" mt-2 overflow-x">
             <form
               method="get"
               className="center-filters"
@@ -154,6 +148,9 @@ const JobsAdmin = () => {
                   options={areasSelector}
                   placeholder={"seleccione.."}
                   name="areaId"
+                  value={areasSelector.filter(
+                    (area) => filtersGlobal.areaId === area.value
+                  )}
                   isClearable={true}
                   theme={(theme) => ({
                     ...theme,
@@ -171,6 +168,9 @@ const JobsAdmin = () => {
                 </label>
                 <Select
                   options={modalities}
+                  value={modalities.filter(
+                    (mod) => filtersGlobal.jobModalityId === mod.value
+                  )}
                   placeholder={"seleccione.."}
                   name="jobModalityId"
                   isClearable={true}
@@ -228,7 +228,7 @@ const JobsAdmin = () => {
             </form>
           </div>
         ) : null}
-        <div className="mt-2">
+        <div className="mt-2 ms-3">
           <Button variant="primary" onClick={exportToExcel}>
             Exportar
           </Button>
