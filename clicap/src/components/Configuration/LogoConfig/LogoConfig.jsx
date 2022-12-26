@@ -96,10 +96,10 @@ export const LogoConfig = () => {
           </Button>{" "}
         </div>
         <div className="mt-3 mb-3 text-center">
-          <p className="fw-bold">Fondo:</p>
+          <p className="fw-bold">Logo:</p>
           {imgLoaded.appLogoImg !== "" ? (
             <img
-              className="showImg"
+              className="showImgLogo"
               src={`data:image/png;base64,${imgLoaded.appLogoImg}`}
               alt=""
             />
@@ -107,6 +107,7 @@ export const LogoConfig = () => {
             "No hay Logo"
           )}
         </div>
+        <div className="p-3"><hr /></div>
         <Form.Label className="fw-bold">Fondo del certificado</Form.Label>
         <div className="">
           <input
