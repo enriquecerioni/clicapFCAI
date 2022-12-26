@@ -1,1 +1,1 @@
-export const API_URL = "clicapfcai.up.railway.app";
+export const API_URL = process.env.REACT_APP_API || "clicapfcai.up.railway.app";
