@@ -1,31 +1,8 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import Select from "react-select";
-import { useEffect } from "react";
-import {
-    downloadFile,
-    getDataUserByKey,
-    reqAxios,
-    waitAndRefresh,
-} from "../../../helpers/helpers";
-import { EntitiesContext } from "../../../context/EntitiesContext";
-import { alertError } from "../../../helpers/alerts";
+import React from "react";
+import { Button } from "react-bootstrap";
+import { downloadFile } from "../../../helpers/helpers";
 
 export const StudentCertificateList = ({ regularCertificate, showAlert, setCertificateToDelete }) => {
-    const navigate = useNavigate();
-    const roleId = getDataUserByKey("roleId");
-    const userId = getDataUserByKey("id");
-    const {
-        corrections,
-        allJobs,
-        allEvaluatorsSelector,
-        getAllEvaluators,
-        getCorrectionsByJob,
-    } = useContext(EntitiesContext);
-    console.log(allJobs);
-    const [assignEvaluator, setAssignEvaluator] = useState(false);
-    const [haveCorrection, setHaveCorrection] = useState(false);
 
     const deleteRegularCertificate = () => {
         showAlert(true);
@@ -38,16 +15,9 @@ export const StudentCertificateList = ({ regularCertificate, showAlert, setCerti
         });
     };
 
-    useEffect(() => {
-        getCorrectionsByJob();
-        getAllEvaluators();
-    }, []);
-
     return (
         <>
             <tr>
-                {/* <td>{regularCertificate.author.name + ' ' + regularCertificate.author.surname}</td> */}
-                {/* <td>{regularCertificate.name}</td> */}
                 <td>{regularCertificate.user.name + " " + regularCertificate.user.surname}</td>
                 <td>{regularCertificate.detail}</td>
                 <td>
