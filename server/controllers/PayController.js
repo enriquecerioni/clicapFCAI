@@ -1,31 +1,123 @@
 const PayModel = require("../models/PayModel");
+const multer = require("multer");
+const path = require("path");
+const Sequelize = require("sequelize");
+const UserModel = require("../models/UserModel");
+const { log } = require("console");
+const { PAGE_LIMIT } = process.env;
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
+const uuid = require("uuid");
+
+var jobUUID;
+
+// Multer Config Pay
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../public/payments"),
+  filename: (req, file, cb) => {
+    jobUUID = uuid.v4() + path.extname(file.originalname);
+    cb(null, jobUUID);
+  },
+});
+const createPayment = multer({
+  storage,
+  limits: { fileSize: 1000000 },
+}).single("urlFile");
+
+// Multer Config Invoice
+const storageInvoice = multer.diskStorage({
+  destination: path.join(__dirname, "../public/invoices"),
+  filename: (req, file, cb) => {
+    jobUUID = uuid.v4() + path.extname(file.originalname);
+    cb(null, jobUUID);
+  },
+});
+const createInvoice = multer({
+  storage: storageInvoice,
+  limits: { fileSize: 1000000 },
+}).single("invoice");
+
 exports.create = async (req, res) => {
-  const {
-    amount,
-    moneyType,
-    payType,
-    cuitCuil,
-    iva,
-    detail,
-    urlFile,
-    authorId,
-  } = req.body;
-  const pay = await PayModel.create({
-    amount: amount,
-    moneyType: moneyType,
-    payType: payType,
-    cuitCuil: cuitCuil,
-    iva: iva,
-    detail: detail,
-    urlFile: urlFile,
-    authorId: authorId,
+  createPayment(req, res, async (err) => {
+    if (err) {
+      err.message = "The file is so heavy for my service";
+      return res.send(err);
+    }
+    const {
+      amount,
+      moneyType,
+      payType,
+      cuitCuil,
+      iva,
+      detail,
+      authorId,
+    } = req.body;
+    const pay = await PayModel.create({
+      amount: amount,
+      moneyType: moneyType,
+      payType: payType,
+      cuitCuil: cuitCuil,
+      iva: iva,
+      detail: detail,
+      urlFile: jobUUID,
+      authorId: authorId,
+    });
+    if (pay) {
+      res.status(200).json({ msg: "Pago creado!" });
+    } else {
+      res.status(500).json({ msg: "Error al crear el pago." });
+    }
   });
-  if (pay) {
-    res.status(200).send("Pago creado!");
-  } else {
-    res.status(500).json({ msg: "Error al crear el pago." });
-  }
 };
+
+exports.updateInvoice = async (req, res) => {
+  createInvoice(req, res, async (err) => {
+    if (err) {
+      err.message = "The file is so heavy for my service";
+      return res.send(err);
+    }
+    const { id } = req.params;
+    const pay = await PayModel.update(
+      {
+        invoice: jobUUID
+      },
+      { where: { id: id } }
+    );
+    if (pay) {
+      res.status(200).json({ msg: "Pago facturado correctamente!" });
+    } else {
+      res.status(500).json({ msg: "Error al generar la factura!" });
+    }
+  });
+};
+
+// exports.create = async (req, res) => {
+//   const {
+//     amount,
+//     moneyType,
+//     payType,
+//     cuitCuil,
+//     iva,
+//     detail,
+//     urlFile,
+//     authorId,
+//   } = req.body;
+//   const pay = await PayModel.create({
+//     amount: amount,
+//     moneyType: moneyType,
+//     payType: payType,
+//     cuitCuil: cuitCuil,
+//     iva: iva,
+//     detail: detail,
+//     urlFile: urlFile,
+//     authorId: authorId,
+//   });
+//   if (pay) {
+//     res.status(200).send("Pago creado!");
+//   } else {
+//     res.status(500).json({ msg: "Error al crear el pago." });
+//   }
+// };
+
 exports.updateById = async (req, res) => {
   const { id } = req.params;
   const {
@@ -86,5 +178,60 @@ exports.deleteById = async (req, res) => {
     res.status(200).send("Pago eliminado!");
   } else {
     res.status(500).json({ msg: "Error al eliminar el pago." });
+  }
+};
+
+exports.getAllPaginated = async (req, res) => {
+  const { authorId, name, surname, areaId } = req.query;
+  console.log(req.query);
+  const { page } = req.params;
+
+  const Op = Sequelize.Op;
+  const offsetIns = calcNumOffset(page);
+  let options = {
+    where: {},
+    include: [{ model: UserModel }],
+    offset: offsetIns,
+    limit: Number(PAGE_LIMIT),
+  };
+
+  // if (name) {
+  //   options.where.name = {
+  //     [Op.like]: `%${name}%`,
+  //   };
+  // }
+  // if (surname) {
+  //   options.where.surname = {
+  //     [Op.like]: `%${surname}%`,
+  //   };
+  // }
+  if (authorId) {
+    options.where.authorId = authorId;
+  }
+  // if (areaId) {
+  //   options.where.areaId = areaId;
+  // }
+  /* options.where = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${name}%` } },
+        { "$partner.name$": { [Op.like]: `%${name}%` } },
+      ],
+    }; */
+  /*   if (sinceDateStart && untilDateStart) {
+    options.where.startDate = {
+      [Op.between]: [sinceDateStart, untilDateStart],
+    };
+  }
+  if (sinceDateEnd && untilDateEnd) {
+    options.where.endDate = { [Op.between]: [sinceDateEnd, untilDateEnd] };
+  } */
+
+  const { count, rows } = await PayModel.findAndCountAll(options);
+  const cantPages = calcTotalPages(count);
+
+  if (rows) {
+    res.status(200).json({ pages: cantPages, response: rows });
+  } else {
+    res.status(500).json({ msg: "La instancia no existe." });
   }
 };

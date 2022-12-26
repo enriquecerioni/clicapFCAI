@@ -1,0 +1,51 @@
+.login-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+}
+.card-login {
+  width: 30rem;
+  padding-bottom: 1rem;
+  border-radius: 10px !important;
+}
+.logo-login {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.imgLogin {
+  width: 20rem;
+}
+/* .form-control:focus{
+    color: #212529;
+    background-color: #fff;
+    border-color: var(--color-clicap) !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem var(--color-clicap-focus);
+} */
+
+.btn-login {
+  width: 100%;
+  background-color: var(--color-clicap) !important;
+  border-color: var(--color-clicap) !important;
+  color: white !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+.btn-login:hover {
+  background-color: var(--color-clicap-hover);
+  border-color: var(--color-clicap-hover);
+  color: white;
+}
+.btn-register {
+  width: 100%;
+  margin-top: 5px;
+}

@@ -1,0 +1,20 @@
+.sidebarPhone-box {
+  background-color: #fff;
+  height: 100vh;
+}
+
+.show-menu-phone {
+  display: block;
+}
+.show-menu-desktop {
+  display: none;
+}
+
+@media screen and (min-width: 480px) {
+  .show-menu-phone {
+    display: none;
+  }
+  .show-menu-desktop {
+    display: block;
+  }
+}

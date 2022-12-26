@@ -1,2 +1,6 @@
 /node_modules
+/public/documents
+/public/invoices
+/public/news
+/public/payments
 .env

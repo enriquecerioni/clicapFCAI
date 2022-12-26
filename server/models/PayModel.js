@@ -41,6 +41,9 @@ const PayModel = db.define("pay", {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  invoice:{
+    type: DataTypes.STRING,
+  }
 });
 
 // PAY - AUTHOR

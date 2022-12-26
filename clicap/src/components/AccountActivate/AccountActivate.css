@@ -1,0 +1,15 @@
+.account-activate {
+  height: 100vh;
+}
+.activated {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.icon-success {
+  color: #2fb917;
+}
+
+.icon-error {
+  color: red;
+}

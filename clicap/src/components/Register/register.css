@@ -1,0 +1,25 @@
+.tooltip > div.tooltip-inner {
+  background-color: var(--color-clicap) !important;
+  color: white !important;
+}
+
+.tooltip.show {
+  opacity: 1 !important;
+}
+
+.tooltip > div.arrow::before {
+  border-bottom-color: red !important;
+  color: teal !important;
+}
+
+@media screen and (max-width: 480px) {
+  .form-regis-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}
+
+.card-top{
+  margin-top:2rem;
+}

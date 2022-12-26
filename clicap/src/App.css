@@ -1,38 +1,64 @@
-.App {
-  text-align: center;
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight&family=Montserrat&display=swap");
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+:root {
+  --color-clicap: #2c4580;
+  --color-clicap-grey: #bdbdbd;
+  --color-clicap-greylight: #bdbdbd21;
+  --color-clicap-hover: #a45701;
+  --color-clicap-focus: rgb(200 106 2 / 50%);
+}
+.center-center {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+}
+.left-right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 3px;
+}
+.h-100 {
+  min-height: 100%;
+}
+.table thead th {
+  border-bottom: 2px solid var(--color-clicap);
+}
+.icon-size-table {
+  font-size: 1.2rem;
+}
+.btn-edit-table:hover {
+  color: #3a4f7a;
 }
 
-.App-link {
-  color: #61dafb;
+.btn-delete-table:hover {
+  color: #eb455f;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-certificate-table:hover {
+  color: #439A97;
+}
+.modal-50w {
+  min-width: 50%;
+}
+.modal-80w {
+  min-width: 80%;
+}
+.center-filters {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.overflow-x {
+  overflow-x: auto;
 }
