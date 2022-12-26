@@ -65,8 +65,8 @@ exports.create = async (req, res) => {
       template: "mailNewCorrection",
       attachments: [
         {
-          filename: "clicap.png",
-          path: "./assets/clicap.png",
+          filename: "appLogo.jpg",
+          path: "./public/logos/appLogo.jpg",
           cid: "logo", //my mistake was putting "cid:logo@cid" here!
         },
       ],
