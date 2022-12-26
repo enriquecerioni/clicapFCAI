@@ -23,8 +23,10 @@ const RoleModel = require("./models/RoleModel");
 const CorrectionModel = require("./models/CorrectionModel");
 const CertificateRouter = require("./routes/CertificateRouter");
 const UserModel = require("./models/UserModel");
+const RegularCertificateRouter = require("./routes/RegularCertificateRouter");
 
 // Models
+require("./models/RegularCertificateModel");
 require("./models/NewModel");
 require("./models/DateModel");
 require("./models/UserModel");
@@ -55,6 +57,7 @@ app.listen(PORT, () => {
 });
 
 // URL Routes
+app.use("/api/clicap/regular-certificates/", RegularCertificateRouter);
 app.use("/api/clicap/new/", NewRouter);
 app.use("/api/clicap/date/", DateRouter);
 app.use("/api/clicap/area/", AreaRouter);
