@@ -8,7 +8,14 @@ import "./welcome.css";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const { allJobs, myPays, getAllAreas, areas } = useContext(EntitiesContext);
+  const {
+    allJobs,
+    myPays,
+    getAllAreas,
+    areas,
+    setFiltersGlobal,
+    filtersGlobal,
+  } = useContext(EntitiesContext);
 
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
@@ -26,9 +33,18 @@ const Welcome = () => {
     });
   };
 
+  const goAndFiltered = (numArea, numModality) => {
+    setFiltersGlobal({
+      ...filtersGlobal,
+      ["areaId"]: numArea,
+      ["jobModalityId"]: numModality,
+    });
+    navigate("/jobs");
+  };
+
   useEffect(() => {
     getAllAreas();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -48,30 +64,34 @@ const Welcome = () => {
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Trabajos Completos</h2>
                 <div className="flexColumn">
-                  {
-                    areas.map(area => {
-                      return (<button type="button" className="btnAreas">
+                  {areas.map((area) => {
+                    return (
+                      <button
+                        type="button"
+                        className="btnAreas"
+                        onClick={() => goAndFiltered(area.id, 1)}
+                      >
                         {area.name}
-                      </button>)
-                    })
-                  }
+                      </button>
+                    );
+                  })}
                 </div>
-                <button type="button" className="btnViewAll">
+                <button type="button" className="btnViewAll"  onClick={() => goAndFiltered("", 1)}>
                   Ver todos ()
                 </button>
               </div>
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Resúmenes</h2>
                 <div className="flexColumn">
-                  {
-                    areas.map(area => {
-                      return (<button type="button" className="btnAreas">
+                  {areas.map((area) => {
+                    return (
+                      <button type="button" className="btnAreas" onClick={() => goAndFiltered(area.id, 2)}>
                         {area.name}
-                      </button>)
-                    })
-                  }
+                      </button>
+                    );
+                  })}
                 </div>
-                <button type="button" className="btnViewAll">
+                <button type="button" className="btnViewAll" onClick={() => goAndFiltered("", 2)}>
                   Ver todos ()
                 </button>
               </div>

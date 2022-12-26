@@ -55,11 +55,11 @@ const EntitiesProvider = ({ children }) => {
   const initialStateNew = {
     title: "",
     content: "",
-    urlFile: ""
+    urlFile: "",
   };
 
   const initialStateArea = {
-    name: ""
+    name: "",
   };
 
   const initialStateCertificate = {
@@ -89,8 +89,18 @@ const EntitiesProvider = ({ children }) => {
     },
     { label: "No aceptado", value: 4, target: { name: "status", value: 4 } },
   ];
+  const initialFilters = {
+    authorId: "",
+    name: "",
+    areaId: "",
+    jobModalityId: "",
+    status: "",
+    evaluatorId: roleId === 2 ? userId : "",
+  };
   //--------------------------------------------------------------
   //ESTADOS
+  //REGISTRO
+  const [filtersGlobal, setFiltersGlobal] = useState(initialFilters);
   //REGISTRO
   const [userRegister, setUserRegister] = useState(initialStateRegister);
   //ROLES
@@ -135,6 +145,21 @@ const EntitiesProvider = ({ children }) => {
   const [modalities, setModalities] = useState([]);
 
   // -----------------------------------------------------------------
+
+  const handleChangeFilterGlobal = (e, name) => {
+    if (e) {
+      setFiltersGlobal({
+        ...filtersGlobal,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setFiltersGlobal({
+        ...filtersGlobal,
+        [name]: "",
+      });
+    }
+  };
+
   // Fecha - Obtener Fecha
   const getDate = async () => {
     const obj = await reqAxios("GET", "/date/get", "", "");
@@ -189,7 +214,6 @@ const EntitiesProvider = ({ children }) => {
 
   const createNewJob = async () => {
     try {
-
       const bodyFormData = new FormData();
       for (const key in job) {
         bodyFormData.append(key, job[key]);
@@ -541,7 +565,10 @@ const EntitiesProvider = ({ children }) => {
         handleChangeNew,
         createNewArea,
         handleChangeArea,
-        area
+        area,
+        filtersGlobal,
+        setFiltersGlobal,
+        handleChangeFilterGlobal
       }}
     >
       {children}
