@@ -106,7 +106,7 @@ const DeliveryTask = () => {
   useEffect(() => {
     setJob({
       ...job,
-      members: members.items.join(","),
+      members: members.items.join(", "),
     });
   }, [members]);
 
