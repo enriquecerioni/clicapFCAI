@@ -31,6 +31,7 @@ import CertificateTypes from "../components/GenerateCertificate/CertificateTypes
 import { Configuration } from "../components/Configuration/Configuration";
 import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
 import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
+import { PageInProcess } from "../components/PageInProcess/PageInProcess";
 
 const CustomRoute = () => (
   <>
@@ -88,6 +89,8 @@ const CustomRoute = () => (
         <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
 
         <Route path="register" element={<Home><UserState><Register/></UserState></Home>} />
+        
+        <Route path="page-in-process" element={<Home><PageInProcess/></Home>} />
 
         <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
 

@@ -95,8 +95,7 @@ const JobsAdmin = () => {
     <>
       <div className="">
         <h2 className="text-center">Trabajos</h2>
-        <div className="d-flex justify-content-end">
-        </div>
+        <div className="d-flex justify-content-end"></div>
         {showDeleteModal ? (
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
         ) : null}
@@ -228,11 +227,14 @@ const JobsAdmin = () => {
             </form>
           </div>
         ) : null}
-        <div className="mt-2 ms-3">
-          <Button variant="primary" onClick={exportToExcel}>
-            Exportar
-          </Button>
-        </div>
+        {roleId === 1 ? (
+          <div className="mt-2 ms-3">
+            <Button variant="primary" onClick={exportToExcel}>
+              Exportar
+            </Button>
+          </div>
+        ) : null}
+
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3 overflow-x">
