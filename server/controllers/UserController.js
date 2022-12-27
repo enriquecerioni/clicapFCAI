@@ -138,344 +138,354 @@ exports.register = async (req, res) => {
   }
 };
 exports.acountActivate = async (req, res) => {
-  const token = req.params.token;
-  if (token) {
-    //verifica el token
-    jwt.verify(token, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
-      if (err) {
-        return res
-          .status(401)
-          .json({ msg: "Token incorrecto o el tiempo expiró." });
-      }
-      console.log("se verifico correctamente el token");
-      const {
-        name,
-        surname,
-        email,
-        roleId,
-        identifyType,
-        identifyNumber,
-        address,
-        institution,
-        phone,
-        password,
-      } = decoded;
-
-      //encripta la contraseña
-      /* let encryptedPassword = bcrypt.hashSync(password, 10); */
-      let encryptedPassword = jwt.sign(
-        { password },
-        process.env.JWT_ACOUNT_ACTIVE
-      );
-
-      //verifica que el usuario no exista
-      const oldUser = await UserModel.findOne({
-        where: { identifyNumber: identifyNumber },
-      });
-
-      if (oldUser) {
-        return res.status(409).json({ msg: "El usuario ya existe." });
-      }
-      //registra al usuario en la base de datos
-      const user = await UserModel.create({
-        name: name,
-        surname: surname,
-        password: encryptedPassword,
-        email: email,
-        address: address,
-        roleId: roleId,
-        identifyType: identifyType,
-        identifyNumber: identifyNumber,
-        institution: institution,
-        phone: phone,
-      });
-      if (user) {
-        var mailOptions = {
-          from: process.env.EMAIL_APP,
-          to: email,
-          subject: "Cuenta activada - credenciales",
-          template: "mailCredentials",
-          attachments: [
-            {
-              ffilename: "appLogo.jpg",
-              path: "./public/logos/appLogo.jpg",
-              cid: "logo",
-            },
-          ],
-          context: { id: identifyNumber, password: password },
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return res.status(500).json({ msg: error.message });
-          } else {
-            console.log("Email enviado!");
-            res.end();
-          }
-        });
-        return res.status(200).json({ response: "Usuario registrado!" });
-      } else {
-        return res.status(500).json({ msg: "Error al registrar el usuario" });
-      }
-    });
-  }
-};
-exports.login = async (req, res) => {
-  const { identifyNumber, password } = req.body;
-
-  // Validate user input
-  if (!(identifyNumber && password)) {
-    return res
-      .status(400)
-      .json({ msg: "La identificación numérica y constraseña son requeridos" });
-  }
-  // Validate if user exist in our database
-  const user = await UserModel.findOne({
-    where: { identifyNumber: identifyNumber },
-  });
-
-  if (user) {
-    jwt.verify(
-      user.password,
-      process.env.JWT_ACOUNT_ACTIVE,
-      async (err, decoded) => {
+  try {
+    const token = req.params.token;
+    if (token) {
+      //verifica el token
+      jwt.verify(token, process.env.JWT_ACOUNT_ACTIVE, async (err, decoded) => {
         if (err) {
           return res
             .status(401)
             .json({ msg: "Token incorrecto o el tiempo expiró." });
         }
-        const passwordToken = decoded.password;
+        console.log("se verifico correctamente el token");
+        const {
+          name,
+          surname,
+          email,
+          roleId,
+          identifyType,
+          identifyNumber,
+          address,
+          institution,
+          phone,
+          password,
+        } = decoded;
 
-        if (user && password === passwordToken) {
-          delete user.password;
-          return res.status(200).json({ msg: "Usuario logado!", user: user });
-        } else {
-          return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+        //encripta la contraseña
+        /* let encryptedPassword = bcrypt.hashSync(password, 10); */
+        let encryptedPassword = jwt.sign(
+          { password },
+          process.env.JWT_ACOUNT_ACTIVE
+        );
+
+        //verifica que el usuario no exista
+        const oldUser = await UserModel.findOne({
+          where: { identifyNumber: identifyNumber },
+        });
+
+        if (oldUser) {
+          return res.status(409).json({ msg: "El usuario ya existe." });
         }
-      }
-    );
-  } else {
-    return res
-      .status(400)
-      .json({ msg: "No existe ningún usuario con ese ID." });
+        //registra al usuario en la base de datos
+        const user = await UserModel.create({
+          name: name,
+          surname: surname,
+          password: encryptedPassword,
+          email: email,
+          address: address,
+          roleId: roleId,
+          identifyType: identifyType,
+          identifyNumber: identifyNumber,
+          institution: institution,
+          phone: phone,
+        });
+        if (user) {
+          var mailOptions = {
+            from: process.env.EMAIL_APP,
+            to: email,
+            subject: "Cuenta activada - credenciales",
+            template: "mailCredentials",
+            attachments: [
+              {
+                ffilename: "appLogo.jpg",
+                path: "./public/logos/appLogo.jpg",
+                cid: "logo",
+              },
+            ],
+            context: { id: identifyNumber, password: password },
+          };
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return res.status(500).json({ msg: error.message });
+            } else {
+              console.log("Email enviado!");
+              res.end();
+            }
+          });
+          return res.status(200).json({ response: "Usuario registrado!" });
+        } else {
+          return res.status(500).json({ msg: "Error al registrar el usuario" });
+        }
+      });
+    }
+  } catch (error) {
+    console.log("Error al registrar el usuario");
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { identifyNumber, password } = req.body;
+    // Validate user input
+    if (!(identifyNumber && password)) {
+      return res.status(400).json({
+        msg: "La identificación numérica y constraseña son requeridos",
+      });
+    }
+    // Validate if user exist in our database
+    const user = await UserModel.findOne({
+      where: { identifyNumber: identifyNumber },
+    });
+
+    if (user) {
+      jwt.verify(
+        user.password,
+        process.env.JWT_ACOUNT_ACTIVE,
+        async (err, decoded) => {
+          if (err) {
+            return res
+              .status(401)
+              .json({ msg: "Token incorrecto o el tiempo expiró." });
+          }
+          const passwordToken = decoded.password;
+
+          if (user && password === passwordToken) {
+            delete user.password;
+            return res.status(200).json({ msg: "Usuario logado!", user: user });
+          } else {
+            return res.status(401).json({ msg: "Id o contraseña incorrecta" });
+          }
+        }
+      );
+    } else {
+      return res
+        .status(400)
+        .json({ msg: "No existe ningún usuario con ese ID." });
+    }
+  } catch (error) {
+    console.log("No existe ningún usuario con ese ID." + error);
   }
 };
 
 exports.updateById = async (req, res) => {
-  const { id } = req.params;
-  const {
-    name,
-    surname,
-    email,
-    roleId,
-    identifyType,
-    identifyNumber,
-    address,
-    institution,
-    phone,
-    password,
-  } = req.body;
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      surname,
+      email,
+      roleId,
+      identifyType,
+      identifyNumber,
+      address,
+      institution,
+      phone,
+      password,
+    } = req.body;
 
-  //encripta la contraseña
-  let encryptedPassword = jwt.sign({ password }, process.env.JWT_ACOUNT_ACTIVE);
-  const user = await UserModel.update(
-    {
-      name: name,
-      surname: surname,
-      email: email,
-      roleId: roleId,
-      identifyType: identifyType,
-      identifyNumber: identifyNumber,
-      address: address,
-      institution: institution,
-      phone: phone,
-      password: encryptedPassword,
-    },
-    { where: { id: id } }
-  );
-
-  if (user) {
-    var mailOptions = {
-      from: process.env.EMAIL_APP,
-      to: email,
-      subject: "Usuario editado - credenciales",
-      template: "mailCredentials",
-      attachments: [
-        {
-          filename: "appLogo.jpg",
-          path: "./public/logos/appLogo.jpg",
-          cid: "logo",
-        },
-      ],
-      context: { id: identifyNumber, password: password },
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(500).json({ msg: error.message });
-      } else {
-        console.log("Email enviado!");
-        res.end();
-      }
-    });
-    return res.status(200).json({ response: "Usuario editado correctamente!" });
-  } else {
-    res.status(500).json({ msg: "El usuario no existe!" });
-  }
-  /*   if (
-    userDB.identifyNumber != identifyNumber ||
-    !(await bcrypt.compare(password, userDB.password)) ||
-    userDB.email != email
-  ) {
-    var mailOptions = {
-      from: process.env.EMAIL_APP,
-      to: email,
-      subject: "Usuario editado - credenciales",
-      template: "mailCredentials",
-      attachments: [
-        {
-          filename: "appLogo.jpg",
-              path: "./public/logos/appLogo.jpg",
-          cid: "logo",
-        },
-      ],
-      context: { id: identifyNumber, password: password },
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(500).json({ msg: error.message });
-      } else {
-        console.log("Email enviado!");
-        res.end();
-      }
-    });
-  } */
-};
-exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const user = await UserModel.findByPk(id);
-  if (user) {
-    jwt.verify(
-      user.password,
-      process.env.JWT_ACOUNT_ACTIVE,
-      async (err, decoded) => {
-        if (err) {
-          return res
-            .status(401)
-            .json({ msg: "Token incorrecto o el tiempo expiró." });
-        }
-        user.password = decoded.password;
-        if (user) {
-          res.status(200).json({ response: user });
-        } else {
-          res.status(500).json({ msg: "Error al obtener el usuario." });
-        }
-      }
+    //encripta la contraseña
+    let encryptedPassword = jwt.sign(
+      { password },
+      process.env.JWT_ACOUNT_ACTIVE
     );
-  } else {
-    res.status(400).json({ msg: "No existe el usuario." });
-  }
-};
-exports.getAll = async (req, res) => {
-  const user = await UserModel.findAll({
-    include: [{ model: RoleModel }],
-  });
-  if (user) {
-    res.status(200).json({ response: user });
-  } else {
-    res.status(500).json({ msg: "Error al obtener los usuarios." });
-  }
-};
-exports.getAllEvaluators = async (req, res) => {
-  /*   let evaluatorsFormat = []; */
-  const evaluators = await UserModel.findAll({
-    where: { roleId: 2 },
-    attributes: ["id", "name", "surname"],
-  });
+    const user = await UserModel.update(
+      {
+        name: name,
+        surname: surname,
+        email: email,
+        roleId: roleId,
+        identifyType: identifyType,
+        identifyNumber: identifyNumber,
+        address: address,
+        institution: institution,
+        phone: phone,
+        password: encryptedPassword,
+      },
+      { where: { id: id } }
+    );
 
-  if (evaluators) {
-    res.status(200).json({ response: evaluators });
-  } else {
-    res.status(500).json({ msg: "Error al obtener los evaluadores." });
-  }
-};
-exports.deleteById = async (req, res) => {
-  const { id } = req.params;
+    if (user) {
+      var mailOptions = {
+        from: process.env.EMAIL_APP,
+        to: email,
+        subject: "Usuario editado - credenciales",
+        template: "mailCredentials",
+        attachments: [
+          {
+            filename: "appLogo.jpg",
+            path: "./public/logos/appLogo.jpg",
+            cid: "logo",
+          },
+        ],
+        context: { id: identifyNumber, password: password },
+      };
 
-  //search jobs by userId
-  const jobs = await JobModel.findAll({
-    where: { authorId: id },
-  });
-
-  if (jobs && jobs.length > 0) {
-    //delete job details by jobId
-    jobs.forEach(async (job) => {
-      await JobDetailModel.destroy({
-        where: { jobId: job.id },
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ msg: error.message });
+        } else {
+          console.log("Email enviado!");
+          res.end();
+        }
       });
+      return res
+        .status(200)
+        .json({ response: "Usuario editado correctamente!" });
+    } else {
+      res.status(500).json({ msg: "El usuario no existe!" });
+    }
+  } catch (error) {
+    console.log("El usuario no existe!" + error);
+  }
+};
+
+exports.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findByPk(id);
+    if (user) {
+      jwt.verify(
+        user.password,
+        process.env.JWT_ACOUNT_ACTIVE,
+        async (err, decoded) => {
+          if (err) {
+            return res
+              .status(401)
+              .json({ msg: "Token incorrecto o el tiempo expiró." });
+          }
+          user.password = decoded.password;
+          if (user) {
+            res.status(200).json({ response: user });
+          } else {
+            res.status(500).json({ msg: "Error al obtener el usuario." });
+          }
+        }
+      );
+    } else {
+      res.status(400).json({ msg: "No existe el usuario." });
+    }
+  } catch (error) {
+    console.log("No existe el usuario.");
+  }
+};
+
+exports.getAll = async (req, res) => {
+  try {
+    const user = await UserModel.findAll({
+      include: [{ model: RoleModel }],
+    });
+    if (user) {
+      res.status(200).json({ response: user });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los usuarios." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los usuarios.");
+  }
+};
+
+exports.getAllEvaluators = async (req, res) => {
+  try {
+    const evaluators = await UserModel.findAll({
+      where: { roleId: 2 },
+      attributes: ["id", "name", "surname"],
     });
 
-    //delete jobs
-    await JobModel.destroy({
+    if (evaluators) {
+      res.status(200).json({ response: evaluators });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los evaluadores." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los evaluadores.");
+  }
+};
+
+exports.deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    //search jobs by userId
+    const jobs = await JobModel.findAll({
       where: { authorId: id },
     });
-  }
 
-  //delete studentCertificates
-  await StudentCertificateModel.destroy({
-    where: { userId: id },
-  });
+    if (jobs && jobs.length > 0) {
+      //delete job details by jobId
+      jobs.forEach(async (job) => {
+        await JobDetailModel.destroy({
+          where: { jobId: job.id },
+        });
+      });
+      //delete jobs
+      await JobModel.destroy({
+        where: { authorId: id },
+      });
+    }
 
-  //delete Pays
-  await PayModel.destroy({
-    where: { authorId: id },
-  });
+    //delete studentCertificates
+    await StudentCertificateModel.destroy({
+      where: { userId: id },
+    });
 
-  const user = await UserModel.destroy({
-    where: { id: id },
-  });
+    //delete Pays
+    await PayModel.destroy({
+      where: { authorId: id },
+    });
 
-  if (user) {
-    res.status(200).json({ msg: "Usuario eliminado correctamente!" });
-  } else {
-    res.status(500).json({ msg: "Error al eliminar el usuario." });
+    const user = await UserModel.destroy({
+      where: { id: id },
+    });
+
+    if (user) {
+      res.status(200).json({ msg: "Usuario eliminado correctamente!" });
+    } else {
+      res.status(500).json({ msg: "Error al eliminar el usuario." });
+    }
+  } catch (error) {
+    console.log("Error al eliminar el usuario." + error);
   }
 };
 
 exports.getAllPaginated = async (req, res) => {
-  const { name, identifyNumber, roleId } = req.query;
-  console.log(req.query);
-  const { page } = req.params;
-  const Op = Sequelize.Op;
-  const offsetIns = calcNumOffset(page);
-  let options = {
-    where: {},
-    include: [{ model: RoleModel }],
-    offset: offsetIns,
-    limit: Number(PAGE_LIMIT),
-  };
-
-  if (name) {
-    options.where.name = {
-      [Op.like]: `%${name}%`,
+  try {
+    const { name, identifyNumber, roleId } = req.query;
+    console.log(req.query);
+    const { page } = req.params;
+    const Op = Sequelize.Op;
+    const offsetIns = calcNumOffset(page);
+    let options = {
+      where: {},
+      include: [{ model: RoleModel }],
+      offset: offsetIns,
+      limit: Number(PAGE_LIMIT),
     };
-  }
 
-  if (identifyNumber) {
-    options.where.identifyNumber = identifyNumber;
-  }
-  if (roleId) {
-    options.where.roleId = roleId;
-  }
+    if (name) {
+      options.where.name = {
+        [Op.like]: `%${name}%`,
+      };
+    }
 
-  const { count, rows } = await UserModel.findAndCountAll(options);
-  const cantPages = calcTotalPages(count);
+    if (identifyNumber) {
+      options.where.identifyNumber = identifyNumber;
+    }
+    if (roleId) {
+      options.where.roleId = roleId;
+    }
 
-  if (rows) {
-    res.status(200).json({ pages: cantPages, response: rows });
-  } else {
-    res.status(500).json({ msg: "Los usuarios no existen." });
+    const { count, rows } = await UserModel.findAndCountAll(options);
+    const cantPages = calcTotalPages(count);
+
+    if (rows) {
+      res.status(200).json({ pages: cantPages, response: rows });
+    } else {
+      res.status(500).json({ msg: "Los usuarios no existen." });
+    }
+  } catch (error) {
+    console.log("Los usuarios no existen." + error);
   }
 };
 

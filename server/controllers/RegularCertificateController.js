@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
         return res.send(err);
       }
       const { detail, authorId } = req.body;
-      console.log("authorID: " + authorId)
+      console.log("authorID: " + authorId);
       const certificate = await RegularCertificate.create({
         detail: detail,
         urlFile: jobUUID,
@@ -52,90 +52,79 @@ exports.create = async (req, res) => {
   }
 };
 
-// exports.updateById = async (req, res) => {
-//   const { id } = req.params;
-//   const {
-//     detail,
-//     urlFile,
-//     authorId,
-//   } = req.body;
-
-//   const pay = await RegularCertificate.update(
-//     {
-//       amount: amount,
-//       moneyType: moneyType,
-//       payType: payType,
-//       cuitCuil: cuitCuil,
-//       iva: iva,
-//       detail: detail,
-//       urlFile: urlFile,
-//       authorId: authorId,
-//     },
-//     { where: { id: id } }
-//   );
-//   if (pay) {
-//     res.status(200).json("Pago editado!");
-//   } else {
-//     res.status(500).json({ msg: "El pago no existe!" });
-//   }
-// };
 exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const certificate = await RegularCertificate.findByPk(id);
+  try {
+    const { id } = req.params;
+    const certificate = await RegularCertificate.findByPk(id);
 
-  if (certificate) {
-    res.status(200).json({ response: certificate });
-  } else {
-    res.status(500).json({ msg: "Error al obtener el certificado." });
+    if (certificate) {
+      res.status(200).json({ response: certificate });
+    } else {
+      res.status(500).json({ msg: "Error al obtener el certificado." });
+    }
+  } catch (error) {
+    console.log("Error al obtener el certificado.");
   }
 };
+
 exports.getAll = async (req, res) => {
-  const certificate = await RegularCertificate.findAll();
-  if (certificate) {
-    res.status(200).json({ response: certificate });
-  } else {
-    res.status(500).json({ msg: "Error al obtener los certificados." });
+  try {
+    const certificate = await RegularCertificate.findAll();
+    if (certificate) {
+      res.status(200).json({ response: certificate });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los certificados." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los certificados.");
   }
 };
-exports.deleteById = async (req, res) => {
-  const { id } = req.params;
-  const certificate = await RegularCertificate.destroy({
-    where: { id: id },
-  });
 
-  if (certificate) {
-    res.status(200).send("Certificado eliminado!");
-  } else {
-    res.status(500).json({ msg: "Error al eliminar el certificado." });
+exports.deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const certificate = await RegularCertificate.destroy({
+      where: { id: id },
+    });
+
+    if (certificate) {
+      res.status(200).send("Certificado eliminado!");
+    } else {
+      res.status(500).json({ msg: "Error al eliminar el certificado." });
+    }
+  } catch (error) {
+    console.log("Error al eliminar el certificado.");
   }
 };
 
 exports.getAllPaginated = async (req, res) => {
-  const {
-    authorId,
-  } = req.query;
-  const { page } = req.params;
-  const Op = Sequelize.Op;
-  const offsetIns = calcNumOffset(page);
-  let options = {
-    where: {},
-    include: [
-      { model: UserModel },
-    ],
-    offset: offsetIns,
-    limit: Number(PAGE_LIMIT),
-  };
+  try {
+    const { authorId } = req.query;
+    const { page } = req.params;
+    const Op = Sequelize.Op;
+    const offsetIns = calcNumOffset(page);
+    let options = {
+      where: {},
+      include: [{ model: UserModel }],
+      offset: offsetIns,
+      limit: Number(PAGE_LIMIT),
+    };
 
-  if (authorId) {
-    options.where.authorId = authorId;
-  }
+    if (authorId) {
+      options.where.authorId = authorId;
+    }
 
-  const { count, rows } = await RegularCertificateModel.findAndCountAll(options);
-  const cantPages = calcTotalPages(count);
+    const { count, rows } = await RegularCertificateModel.findAndCountAll(
+      options
+    );
+    const cantPages = calcTotalPages(count);
 
-  if (rows) {
-    res.status(200).json({ pages: cantPages, response: rows });
-  } else {
-    res.status(500).json({ msg: "La instancia no existe." });
+    if (rows) {
+      res.status(200).json({ pages: cantPages, response: rows });
+    } else {
+      res.status(500).json({ msg: "La instancia no existe." });
+    }
+  } catch (error) {
+    console.log("La instancia no existe.")
   }
 };

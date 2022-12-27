@@ -65,7 +65,7 @@ const EntitiesProvider = ({ children }) => {
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
-    authorId: getDataUserByKey("id")
+    authorId: ""
   };
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
@@ -169,8 +169,8 @@ const EntitiesProvider = ({ children }) => {
     setTime(await obj.data.response.date);
   };
 
-  const handleTime = async (event) => {
-    let date = event.target.value;
+  const handleTime = async (date) => {
+    // let date = event.target.value;
     await reqAxios("PUT", `/date/edit/${date}`, "", "");
     window.location.reload();
     // console.log(date);
@@ -367,6 +367,7 @@ const EntitiesProvider = ({ children }) => {
         : e.target.value;
     setCertificate({
       ...certificate,
+      ['authorId']: userId,
       [e.target.name]: value,
     });
   };

@@ -28,65 +28,71 @@ const createNews = multer({
 }).single("urlFile");
 
 exports.create = async (req, res) => {
-  createNews(req, res, async (err) => {
-    if (err) {
-      err.message = "The file is so heavy for my service";
-      return res.send(err);
-    }
-    const imgbase64 = base64_encode(
+  try {
+    createNews(req, res, async (err) => {
+      if (err) {
+        err.message = "The file is so heavy for my service";
+        return res.send(err);
+      }
+      const imgbase64 = base64_encode(
         path.join(__dirname, `../public/news/${jobUUID}`)
       );
-    const { title, content } = req.body;
-    const news = await NewModel.create({
-      title,
-      content,
-      urlFile: jobUUID,
-      imgbase64: imgbase64
+      const { title, content } = req.body;
+      const news = await NewModel.create({
+        title,
+        content,
+        urlFile: jobUUID,
+        imgbase64: imgbase64,
+      });
+      if (news) {
+        res.status(200).send("Nueva novedad creada!");
+      } else {
+        res.status(500).json({ msg: "Error al crear la novedad" });
+      }
     });
-    if (news) {
-      res.status(200).send("Nueva novedad creada!");
-    } else {
-      res.status(500).json({ msg: "Error al crear la novedad" });
-    }
-  });
+  } catch (error) {
+    console.log("Error al crear la novedad" + error);
+  }
 };
 
 exports.getAllNews = async (req, res) => {
-  const news = await NewModel.findAll();
-//   news.forEach((n) => {
-//     if (n.urlFile) {
-//       const imgbase64 = base64_encode(
-//         path.join(__dirname, `../public/news/${n.urlFile}`)
-//       );
-//       n.imgFile = imgbase64;
-//     }
-//   });
+  try {
+    const news = await NewModel.findAll();
 
-  console.log(news);
-
-  if (news) {
-    res.status(200).json({ response: news });
-  } else {
-    res.status(500).json({ msg: "Error al obtener la fecha." });
+    if (news) {
+      res.status(200).json({ response: news });
+    } else {
+      res.status(500).json({ msg: "Error al obtener las novedades." });
+    }
+  } catch (error) {
+    console.log("Error al obtener las novedades." + error);
   }
 };
 
 exports.delete = async (req, res) => {
-  const { id } = req.params;
-  const newDeleted = await NewModel.destroy({
-    where: { id: id },
-  });
+  try {
+    const { id } = req.params;
+    const newDeleted = await NewModel.destroy({
+      where: { id: id },
+    });
 
-  if (newDeleted) {
-    res.status(200).send("Novedad eliminada correctamente!");
-  } else {
-    res.status(500).json({ msg: "Error al eliminar la novedad." });
+    if (newDeleted) {
+      res.status(200).send("Novedad eliminada correctamente!");
+    } else {
+      res.status(500).json({ msg: "Error al eliminar la novedad." });
+    }
+  } catch (error) {
+    console.log("Error al eliminar la novedad.");
   }
 };
 
 exports.getImage = async (req, res) => {
-  const { id } = req.params;
-  const imgbase64 = base64_encode(
-    path.join(__dirname, `../assets/news/${urlFile}`)
-  );
+  try {
+    const { id } = req.params;
+    const imgbase64 = base64_encode(
+      path.join(__dirname, `../assets/news/${urlFile}`)
+    );
+  } catch (error) {
+    console.log(error)
+  }
 };
