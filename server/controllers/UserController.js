@@ -423,10 +423,6 @@ exports.deleteById = async (req, res) => {
       await JobModel.destroy({
         where: { authorId: id },
       });
-    } else {
-      return res
-        .status(400)
-        .json({ msg: "No existe el usuario que desea eliminar." });
     }
 
     //delete studentCertificates
@@ -444,7 +440,7 @@ exports.deleteById = async (req, res) => {
     });
 
     if (user) {
-      res.status(200).send("Usuario eliminado correctamente!");
+      res.status(200).json({ msg: "Usuario eliminado correctamente!" });
     } else {
       res.status(500).json({ msg: "Error al eliminar el usuario." });
     }
@@ -489,7 +485,7 @@ exports.getAllPaginated = async (req, res) => {
       res.status(500).json({ msg: "Los usuarios no existen." });
     }
   } catch (error) {
-    console.log("Los usuarios no existen." + error)
+    console.log("Los usuarios no existen." + error);
   }
 };
 
