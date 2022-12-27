@@ -74,9 +74,7 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
   return (
     <tr>
       <td>{userCertificate.certificate.name}</td>
-
       <td>{userCertificate.job ? userCertificate.job.name : "-"}</td>
-
       <td className="">
         <Button
           className="btn btn-info"
