@@ -26,7 +26,7 @@ const CertificateModel = db.define("certificate", {
     allowNull: false,
   },
   text: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(512),
     allowNull: false,
   },
 });
