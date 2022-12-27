@@ -173,7 +173,7 @@ exports.updateById = async (req, res) => {
   );
   let options = {
     where: {},
-    attributes: ["name","surname", "email"],
+    attributes: ["name", "surname", "email"],
   };
 
   if (doc) {
@@ -199,7 +199,7 @@ exports.updateById = async (req, res) => {
             },
           ],
           context: {
-            evaluatorName: user[i].name +" "+ user[i].surname,
+            evaluatorName: user[i].name + " " + user[i].surname,
             jobName: doc.name,
           },
         };
@@ -363,10 +363,11 @@ exports.getAllPaginated = async (req, res) => {
 
 exports.setStatusJob = async (req, res) => {
   const { id } = req.params;
-  const status = 1;
+  const { status } = req.body;
+
   const doc = await JobModel.update(
     {
-      status,
+      status: Number(status),
     },
     { where: { id: id } }
   );
