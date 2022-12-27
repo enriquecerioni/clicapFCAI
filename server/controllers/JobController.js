@@ -115,30 +115,6 @@ exports.downloadFile = (req, res) => {
   }
 };
 
-exports.create = async (req, res) => {
-  try {
-    const { name, areaId, authorId, members, evaluatorId1, evaluatorId2 } =
-      req.body;
-    const doc = await JobModel.create({
-      name: name,
-      areaId: areaId,
-      members: members,
-      authorId: authorId,
-      urlFile: req.file.filename,
-      evaluatorId1: evaluatorId1,
-      evaluatorId2: evaluatorId2,
-    });
-    console.log(members);
-    if (doc) {
-      res.status(200).send("Trabajo creado!");
-    } else {
-      res.status(500).json({ msg: "Error al crear el Trabajo." });
-    }
-  } catch (error) {
-    console.log("Error al crear el Trabajo." + error);
-  }
-};
-
 exports.updateById = async (req, res) => {
   try {
     const Op = Sequelize.Op;
@@ -383,10 +359,11 @@ exports.getAllPaginated = async (req, res) => {
 exports.setStatusJob = async (req, res) => {
   try {
     const { id } = req.params;
-    const status = 1;
+    const { status } = req.body;
+
     const doc = await JobModel.update(
       {
-        status,
+        status: Number(status),
       },
       { where: { id: id } }
     );
@@ -567,6 +544,6 @@ exports.downloadFilter = async (req, res) => {
       res.send("Error al descargar");
     }
   } catch (error) {
-    console.log("Error al descargar" + error)
+    console.log("Error al descargar" + error);
   }
 };

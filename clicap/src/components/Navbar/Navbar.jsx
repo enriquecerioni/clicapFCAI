@@ -51,29 +51,25 @@ const Navbar = () => {
             <div className="dropdown-content">
               <p
                 className="active"
-                href=""
-                onClick={() => navigate("/scientific_comittee")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Comité Científico
               </p>
               <p
                 className="active"
-                href=""
-                onClick={() => navigate("/organizing_committee")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Comité Organizador
               </p>
               <p
                 className="active"
-                href=""
-                onClick={() => navigate("/institutional_guarantees")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Avales Institucionales
               </p>
               <p
                 className="active"
-                href=""
-                onClick={() => navigate("/sponsors")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Auspiciantes
               </p>
@@ -98,21 +94,21 @@ const Navbar = () => {
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/areas")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Áreas
               </p>
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/modalities")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Modalidad de Presentación
               </p>
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/exhibitions")}
+                onClick={() => navigate("/page-in-process")}
               >
                 Dinámica de exposiciones
               </p>
@@ -157,7 +153,7 @@ const Navbar = () => {
         <div className="liNav">
           <div className="dropdown">
             <div>
-              <p type="button" onClick={() => navigate("/contact")}>
+              <p type="button" onClick={() => navigate("/page-in-process")}>
                 Contacto
               </p>
             </div>

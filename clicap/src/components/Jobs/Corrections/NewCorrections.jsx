@@ -4,7 +4,7 @@ import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { EntitiesContext } from "../../../context/EntitiesContext";
-import { reqAxios } from "../../../helpers/helpers";
+import { reqAxios, waitAndRefresh } from "../../../helpers/helpers";
 import { statusCorrections } from "../typesCorrections";
 
 export const NewCorrections = () => {
@@ -27,21 +27,16 @@ export const NewCorrections = () => {
   };
 
   const disabled = () => {
-    return (
-      !!!correction.correctionId ||
-      !!!correction.details.trim() 
-    );
+    return !!!correction.correctionId || !!!correction.details.trim();
   };
 
   const handleSubmitCorrection = async () => {
-    await reqAxios(
-      "POST",
-      "/jobdetails/create",
-      "",
-      correction
-    );
-    await reqAxios("PUT", `/job/setcorrection/${id}`, "", "");
-    navigate('/jobs');
+    await reqAxios("POST", "/jobdetails/create", "", correction);
+    await reqAxios("PUT", `/job/setcorrection/${id}`, "", {
+      status: correction.correctionId,
+    });
+    /*     navigate('/jobs'); */
+    waitAndRefresh("jobs", 1000);
   };
   useEffect(() => {
     setCorrection({
@@ -54,8 +49,9 @@ export const NewCorrections = () => {
       <div className="center-center">
         <h3>Nueva corrección</h3>
       </div>
-      <div>
+      <div className="m-3">
         <div style={{ width: "300px" }} className="">
+          <Form.Label className="fw-bold">Estado del trabajo</Form.Label>
           <Select
             options={statusCorrections}
             placeholder={"seleccione.."}
@@ -82,7 +78,11 @@ export const NewCorrections = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          <Button variant="success" disabled={putDisabled ? putDisabled : disabled()} onClick={handleSubmitCorrection}>
+          <Button
+            variant="success"
+            disabled={putDisabled ? putDisabled : disabled()}
+            onClick={handleSubmitCorrection}
+          >
             Guardar Corrección
           </Button>
         </div>
