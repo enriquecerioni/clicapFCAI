@@ -30,6 +30,7 @@ const Start = () => {
   const { time, setTime, getDate, handleTime } = useContext(EntitiesContext);
   const userId = getDataUserByKey("roleId");
   const [logoApp, setLogoApp] = useState("");
+  const [date, setDate] = useState(time);
 
   const loadAppLogo = async () => {
     const AppLogo = await reqAxios(
@@ -67,8 +68,10 @@ const Start = () => {
               <input
                 type="date"
                 className="form-date-input"
-                onChange={handleTime}
+                onChange={(e) => setDate(e.target.value)}
+                value={date}
               />
+              <button className="btn btn-primary ms-3" onClick={() => handleTime(date)}>Guardar Fecha</button>
             </div>
           )}
 

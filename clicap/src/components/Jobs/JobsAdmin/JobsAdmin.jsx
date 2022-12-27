@@ -24,6 +24,8 @@ const JobsAdmin = () => {
     allStatusJob,
     getAllEvaluators,
     allEvaluatorsSelector,
+    setFiltersGlobal,
+    filtersGlobal,
   } = useContext(EntitiesContext);
 
   const modalities = [
@@ -34,14 +36,14 @@ const JobsAdmin = () => {
     },
     { label: "Resumen", value: 2, target: { name: "jobModalityId", value: 2 } },
   ];
-  const initialFilters = {
+  /*   const initialFilters = {
     authorId: "",
     name: "",
     areaId: "",
     jobModalityId: "",
     status: "",
     evaluatorId: roleId === 2 ? userId : "",
-  };
+  }; */
   const toCorrectionOptions = [
     {
       value: 1,
@@ -54,20 +56,20 @@ const JobsAdmin = () => {
       target: { name: "approve", value: 0 },
     },
   ];
-  const [filters, setFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState(filtersGlobal);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
   const [page, setPage] = useState(1);
 
   const handleChangeFilter = (e, name) => {
     if (e) {
-      setFilters({
-        ...filters,
+      setFiltersGlobal({
+        ...filtersGlobal,
         [e.target.name]: e.target.value,
       });
     } else {
-      setFilters({
-        ...filters,
+      setFiltersGlobal({
+        ...filtersGlobal,
         [name]: "",
       });
     }
@@ -75,38 +77,31 @@ const JobsAdmin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getAllJobs(1, filters);
+    getAllJobs(1, filtersGlobal);
   };
 
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/job/export/jobs`, filters);
+    await reqAxiosDownload(`/job/export/jobs`, filtersGlobal);
   };
 
   useEffect(() => {
     getAllUsers();
     getAllAreas();
     getAllEvaluators();
-    getAllJobs(page, filters);
+    getAllJobs(page, filtersGlobal);
   }, [page]);
 
   return (
     <>
-      <div className="ms-3 me-3">
+      <div className="">
         <h2 className="text-center">Trabajos</h2>
-        <div className="d-flex justify-content-end">
-          {/*           <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
-          >
-            <i className="fa-solid fa-plus"></i> Subir trabajo
-          </Button> */}
-        </div>
+        <div className="d-flex justify-content-end"></div>
         {showDeleteModal ? (
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
         ) : null}
 
         {roleId === 1 ? (
-          <div className=" mt-2">
+          <div className=" mt-2 overflow-x">
             <form
               method="get"
               className="center-filters"
@@ -125,7 +120,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "name")}
                 />
               </div>
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forAuthorId" className="form-label">
                   Autor
                 </label>
@@ -144,7 +139,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "authorId")}
                 />
               </div>
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Area
                 </label>
@@ -152,6 +147,9 @@ const JobsAdmin = () => {
                   options={areasSelector}
                   placeholder={"seleccione.."}
                   name="areaId"
+                  value={areasSelector.filter(
+                    (area) => filtersGlobal.areaId === area.value
+                  )}
                   isClearable={true}
                   theme={(theme) => ({
                     ...theme,
@@ -163,12 +161,15 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "areaId")}
                 />
               </div>
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Modalidad
                 </label>
                 <Select
                   options={modalities}
+                  value={modalities.filter(
+                    (mod) => filtersGlobal.jobModalityId === mod.value
+                  )}
                   placeholder={"seleccione.."}
                   name="jobModalityId"
                   isClearable={true}
@@ -182,7 +183,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "jobModalityId")}
                 />
               </div>
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Evaluador
                 </label>
@@ -201,7 +202,7 @@ const JobsAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "evaluatorId")}
                 />
               </div>
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forArea" className="form-label">
                   Estado
                 </label>
@@ -226,11 +227,14 @@ const JobsAdmin = () => {
             </form>
           </div>
         ) : null}
-        <div className="mt-2">
-          <Button variant="primary" onClick={exportToExcel}>
-            Exportar
-          </Button>
-        </div>
+        {roleId === 1 ? (
+          <div className="mt-2 ms-3">
+            <Button variant="primary" onClick={exportToExcel}>
+              Exportar
+            </Button>
+          </div>
+        ) : null}
+
         {allJobs.length > 0 ? (
           <>
             <div className="mt-3 overflow-x">

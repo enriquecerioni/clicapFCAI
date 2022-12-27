@@ -8,8 +8,10 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
   const surname = getDataUserByKey("surname");
   const identifyNumber = getDataUserByKey("identifyNumber");
   const fullNameAndNumber = `${name} ${surname}, ${identifyNumber}`;
-
+  const fullName = `${name} ${surname}`;
+  
   const donwloadCertificate = async (type, certificate, job) => {
+    const members = job.members === "" ? name : `${fullName}, ${job.members}`;
     const doc = new jsPDF("l", "mm", "a4", true);
     var lMargin = 15; //left margin in mm
     var rMargin = 15; //right margin in mm
@@ -25,10 +27,14 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
     doc.text("Certificamos que:", 10, 80);
 
     if (certificate.type === 2) {
-      doc.setFontSize(20);
-      doc.text(job.members, width / 2, 90, {
-        align: "center",
-      }); //centrar
+      doc.setLineWidth(0.5);
+      doc.setFontSize(16);
+      var lines = doc.splitTextToSize(
+        members,
+        pdfInMM - lMargin - rMargin
+      );
+      doc.text(lMargin, 90, lines);
+  
     } else {
       doc.setFontSize(20);
       doc.text(fullNameAndNumber, width / 2, 90, {
@@ -41,11 +47,11 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
       certificate.introtext,
       pdfInMM - lMargin - rMargin
     );
-    doc.text(lMargin, 105, lines);
+    doc.text(lMargin, 110, lines);
 
     if (certificate.type === 2) {
       doc.setFontSize(16);
-      doc.text(job.name, width / 2, 120, {
+      doc.text(job.name, width / 2, 125, {
         align: "center",
       }); //centrar
     } else {
@@ -68,6 +74,8 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
   return (
     <tr>
       <td>{userCertificate.certificate.name}</td>
+
+      <td>{userCertificate.job.name}</td>
 
       <td className="">
         <Button

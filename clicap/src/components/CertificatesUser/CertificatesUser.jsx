@@ -26,7 +26,8 @@ export default function CertificatesUser() {
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
+                    <th>Nombre del certificado</th>
+                    <th>Nombre del trabajo</th>
                     <th>Descargar</th>
                   </tr>
                 </thead>

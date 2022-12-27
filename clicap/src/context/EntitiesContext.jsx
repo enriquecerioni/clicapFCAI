@@ -55,17 +55,17 @@ const EntitiesProvider = ({ children }) => {
   const initialStateNew = {
     title: "",
     content: "",
-    urlFile: ""
+    urlFile: "",
   };
 
   const initialStateArea = {
-    name: ""
+    name: "",
   };
 
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
-    authorId: userId,
+    authorId: ""
   };
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
@@ -89,8 +89,18 @@ const EntitiesProvider = ({ children }) => {
     },
     { label: "No aceptado", value: 4, target: { name: "status", value: 4 } },
   ];
+  const initialFilters = {
+    authorId: "",
+    name: "",
+    areaId: "",
+    jobModalityId: "",
+    status: "",
+    evaluatorId: roleId === 2 ? userId : "",
+  };
   //--------------------------------------------------------------
   //ESTADOS
+  //REGISTRO
+  const [filtersGlobal, setFiltersGlobal] = useState(initialFilters);
   //REGISTRO
   const [userRegister, setUserRegister] = useState(initialStateRegister);
   //ROLES
@@ -100,6 +110,9 @@ const EntitiesProvider = ({ children }) => {
   //TODOS LOS TRABAJOS
   const [allJobs, setAllJobs] = useState([]);
   const [totalPages, setTotalPages] = useState("");
+  //TODOS LOS TRABAJOS
+  const [allRegularCertificates, setAllRegularCertificates] = useState([]);
+  const [totalPagesCertificate, setTotalPagesCertificate] = useState("");
   //MIS TRABAJOS
   const [myJobs, setMyJobs] = useState([]);
   //UN TRABAJO
@@ -135,14 +148,29 @@ const EntitiesProvider = ({ children }) => {
   const [modalities, setModalities] = useState([]);
 
   // -----------------------------------------------------------------
+
+  const handleChangeFilterGlobal = (e, name) => {
+    if (e) {
+      setFiltersGlobal({
+        ...filtersGlobal,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setFiltersGlobal({
+        ...filtersGlobal,
+        [name]: "",
+      });
+    }
+  };
+
   // Fecha - Obtener Fecha
   const getDate = async () => {
     const obj = await reqAxios("GET", "/date/get", "", "");
     setTime(await obj.data.response.date);
   };
 
-  const handleTime = async (event) => {
-    let date = event.target.value;
+  const handleTime = async (date) => {
+    // let date = event.target.value;
     await reqAxios("PUT", `/date/edit/${date}`, "", "");
     window.location.reload();
     // console.log(date);
@@ -189,7 +217,6 @@ const EntitiesProvider = ({ children }) => {
 
   const createNewJob = async () => {
     try {
-
       const bodyFormData = new FormData();
       for (const key in job) {
         bodyFormData.append(key, job[key]);
@@ -211,6 +238,19 @@ const EntitiesProvider = ({ children }) => {
     setAllJobs(getAllJob.data.response);
     setTotalPages(getAllJob.data.pages);
   };
+
+  //Certificados Alumno Regular
+  const getAllRegularCertificates = async (page, params) => {
+    const getAllRegularCertificate = await reqAxios(
+      "GET",
+      `/regular-certificates/get/certificate/${page}`,
+      params,
+      ""
+    );
+    setAllRegularCertificates(getAllRegularCertificate.data.response);
+    setTotalPagesCertificate(getAllRegularCertificate.data.pages);
+  };
+
   //Mis Trabajos / LOS TRABAJOS
   const getMyJobs = async (numPage, dataFilter) => {
     try {
@@ -327,6 +367,7 @@ const EntitiesProvider = ({ children }) => {
         : e.target.value;
     setCertificate({
       ...certificate,
+      ['authorId']: userId,
       [e.target.name]: value,
     });
   };
@@ -336,7 +377,7 @@ const EntitiesProvider = ({ children }) => {
       for (const key in certificate) {
         bodyFormData.append(key, certificate[key]);
       }
-      await formDataAxios("POST", `/student/create`, "", bodyFormData);
+      await formDataAxios("POST", `/regular-certificates/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
     }
@@ -401,10 +442,11 @@ const EntitiesProvider = ({ children }) => {
     try {
       const dataMyCertificates = await reqAxios(
         "GET",
-        `/student/get/certificate/${numPage}`,
+        `/regular-certificates/get/certificate/${numPage}`,
         dataFilter,
         ""
       );
+      console.log(dataMyCertificates)
       setMyCertificates(dataMyCertificates.data.response);
     } catch (e) {
       console.log(e);
@@ -541,7 +583,12 @@ const EntitiesProvider = ({ children }) => {
         handleChangeNew,
         createNewArea,
         handleChangeArea,
-        area
+        area,
+        filtersGlobal,
+        setFiltersGlobal,
+        handleChangeFilterGlobal,
+        getAllRegularCertificates,
+        allRegularCertificates
       }}
     >
       {children}

@@ -106,14 +106,14 @@ const DeliveryTask = () => {
   useEffect(() => {
     setJob({
       ...job,
-      members: members.items.join(","),
+      members: members.items.join(", "),
     });
   }, [members]);
 
   return (
     <>
-      <div className="poderver  flex-column">
-        <h2>Cargar trabajo</h2>
+      <div className="poderver flex-column p-2">
+        <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">

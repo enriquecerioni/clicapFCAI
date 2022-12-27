@@ -163,7 +163,7 @@ const Register = () => {
                         onChange={handleChangeRegister}
                       >
                         <option value={""}>Seleccione</option>
-                        <option value={"Dni"}>Dni</option>
+                        <option value={"DNI"}>DNI</option>
                         <option value={"Pasaporte"}>Pasaporte</option>
                       </select>
                     </div>

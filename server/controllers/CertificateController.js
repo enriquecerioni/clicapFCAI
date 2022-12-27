@@ -28,58 +28,78 @@ const saveLogo = multer({
 }).single("urlFile");
 
 exports.create = async (req, res) => {
-  const { type, name, jobtext, text, introtext } = req.body;
-  const certificate = await CertificateModel.create({
-    type,
-    name,
-    jobtext,
-    text,
-    introtext,
-  });
-  if (certificate) {
-    res.status(200).json({ msg: "Nuevo certificado creado!" });
-  } else {
-    res.status(500).json({ msg: "Error al crear el certificado" });
-  }
-};
-exports.updateById = async (req, res) => {
-  const { id } = req.params;
-  const { type, name, jobtext, text, introtext } = req.body;
-
-  const certificate = await CertificateModel.update(
-    {
+  try {
+    const { type, name, jobtext, text, introtext } = req.body;
+    const certificate = await CertificateModel.create({
       type,
       name,
       jobtext,
       text,
       introtext,
-    },
-    { where: { id: id } }
-  );
-  if (certificate) {
-    res.status(200).json("Certificado editado correctamente!");
-  } else {
-    res.status(500).json({ msg: "El certificado no existe!" });
+    });
+    if (certificate) {
+      res.status(200).json({ msg: "Nuevo certificado creado!" });
+    } else {
+      res.status(500).json({ msg: "Error al crear el certificado" });
+    }
+  } catch (error) {
+    console.log("Error al crear el certificado.");
   }
 };
-exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const certificate = await CertificateModel.findByPk(id);
 
-  if (certificate) {
-    res.status(200).json({ response: certificate });
-  } else {
-    res.status(500).json({ msg: "Error al obtener el certificado." });
+exports.updateById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type, name, jobtext, text, introtext } = req.body;
+
+    const certificate = await CertificateModel.update(
+      {
+        type,
+        name,
+        jobtext,
+        text,
+        introtext,
+      },
+      { where: { id: id } }
+    );
+    if (certificate) {
+      res.status(200).json("Certificado editado correctamente!");
+    } else {
+      res.status(500).json({ msg: "El certificado no existe!" });
+    }
+  } catch (error) {
+    console.log("El certificado no existe!");
   }
 };
+
+exports.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const certificate = await CertificateModel.findByPk(id);
+
+    if (certificate) {
+      res.status(200).json({ response: certificate });
+    } else {
+      res.status(500).json({ msg: "Error al obtener el certificado." });
+    }
+  } catch (error) {
+    console.log("Error al obtener el certificado.");
+  }
+};
+
 exports.getAll = async (req, res) => {
-  const certificate = await CertificateModel.findAll();
-  if (certificate) {
-    res.status(200).json({ response: certificate });
-  } else {
-    res.status(500).json({ msg: "Error al obtener los certificados." });
+  try {
+    const certificate = await CertificateModel.findAll();
+    if (certificate) {
+      res.status(200).json({ response: certificate });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los certificados." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los certificados.");
   }
 };
+
 exports.getCertificateLogo = async (req, res) => {
   const { name } = req.params;
   try {
@@ -94,29 +114,38 @@ exports.getCertificateLogo = async (req, res) => {
   }
 };
 exports.deleteById = async (req, res) => {
-  const { id } = req.params;
-  const studentCertificate = await StudentCertificateModel.destroy({
-    where: { certificateId: id },
-  });
-
-  if (studentCertificate) {
-    const certificate = await CertificateModel.destroy({
-      where: { id: id },
+  try {
+    const { id } = req.params;
+    const studentCertificate = await StudentCertificateModel.destroy({
+      where: { certificateId: id },
     });
 
-    if (certificate) {
-      res.status(200).send("Certificado eliminado correctamente!");
-    } else {
-      res.status(500).json({ msg: "Error al eliminar el certificado." });
+    if (studentCertificate) {
+      const certificate = await CertificateModel.destroy({
+        where: { id: id },
+      });
+
+      if (certificate) {
+        res.status(200).send("Certificado eliminado correctamente!");
+      } else {
+        res.status(500).json({ msg: "Error al eliminar el certificado." });
+      }
     }
+  } catch (error) {
+    console.log("Error al eliminar el certificado.")
   }
 };
+
 exports.saveLogosApp = async (req, res) => {
-  saveLogo(req, res, async (err) => {
-    if (err) {
-      err.message = "The file is so heavy for my service";
-      return res.send(err);
-    }
-    res.status(200).json({ msg: "Imagen guarda!" });
-  });
+  try {
+    saveLogo(req, res, async (err) => {
+      if (err) {
+        err.message = "The file is so heavy for my service";
+        return res.send(err);
+      }
+      res.status(200).json({ msg: "Imagen guarda!" });
+    });
+  } catch (error) {
+    console.log("Error al guardar la imagen.")
+  }
 };
