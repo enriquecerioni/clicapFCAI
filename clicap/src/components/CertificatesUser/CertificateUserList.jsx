@@ -87,7 +87,6 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
               userCertificate.job ? userCertificate.job : ""
             )
           }
-          /* disabled={job.status === null ? true : false} */
         >
           <i className="fa-solid fa-file-arrow-down icon-size-table"></i>
         </Button>
