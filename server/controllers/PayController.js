@@ -37,11 +37,63 @@ const createInvoice = multer({
 }).single("invoice");
 
 exports.create = async (req, res) => {
-  createPayment(req, res, async (err) => {
-    if (err) {
-      err.message = "The file is so heavy for my service";
-      return res.send(err);
-    }
+  try {
+    createPayment(req, res, async (err) => {
+      if (err) {
+        err.message = "The file is so heavy for my service";
+        return res.send(err);
+      }
+      const { amount, moneyType, payType, cuitCuil, iva, detail, authorId } =
+        req.body;
+      const pay = await PayModel.create({
+        amount: amount,
+        moneyType: moneyType,
+        payType: payType,
+        cuitCuil: cuitCuil,
+        iva: iva,
+        detail: detail,
+        urlFile: jobUUID,
+        authorId: authorId,
+      });
+      if (pay) {
+        res.status(200).json({ msg: "Pago creado!" });
+      } else {
+        res.status(500).json({ msg: "Error al crear el pago." });
+      }
+    });
+  } catch (error) {
+    console.log("Error al crear el pago." + error);
+  }
+};
+
+exports.updateInvoice = async (req, res) => {
+  try {
+    createInvoice(req, res, async (err) => {
+      if (err) {
+        err.message = "The file is so heavy for my service";
+        return res.send(err);
+      }
+      const { id } = req.params;
+      const pay = await PayModel.update(
+        {
+          invoice: jobUUID,
+        },
+        { where: { id: id } }
+      );
+      if (pay) {
+        res.status(200).json({ msg: "Pago facturado correctamente!" });
+      } else {
+        res.status(500).json({ msg: "Error al generar la factura!" });
+      }
+    });
+  } catch (error) {
+    console.log("Error al generar la factura!" + error);
+  }
+};
+
+exports.updateById = async (req, res) => {
+  try {
+    const { id } = req.params;
     const {
       amount,
       moneyType,
@@ -49,189 +101,106 @@ exports.create = async (req, res) => {
       cuitCuil,
       iva,
       detail,
+      urlFile,
       authorId,
     } = req.body;
-    const pay = await PayModel.create({
-      amount: amount,
-      moneyType: moneyType,
-      payType: payType,
-      cuitCuil: cuitCuil,
-      iva: iva,
-      detail: detail,
-      urlFile: jobUUID,
-      authorId: authorId,
-    });
-    if (pay) {
-      res.status(200).json({ msg: "Pago creado!" });
-    } else {
-      res.status(500).json({ msg: "Error al crear el pago." });
-    }
-  });
-};
 
-exports.updateInvoice = async (req, res) => {
-  createInvoice(req, res, async (err) => {
-    if (err) {
-      err.message = "The file is so heavy for my service";
-      return res.send(err);
-    }
-    const { id } = req.params;
     const pay = await PayModel.update(
       {
-        invoice: jobUUID
+        amount: amount,
+        moneyType: moneyType,
+        payType: payType,
+        cuitCuil: cuitCuil,
+        iva: iva,
+        detail: detail,
+        urlFile: urlFile,
+        authorId: authorId,
       },
       { where: { id: id } }
     );
     if (pay) {
-      res.status(200).json({ msg: "Pago facturado correctamente!" });
+      res.status(200).json("Pago editado!");
     } else {
-      res.status(500).json({ msg: "Error al generar la factura!" });
+      res.status(500).json({ msg: "El pago no existe!" });
     }
-  });
-};
-
-// exports.create = async (req, res) => {
-//   const {
-//     amount,
-//     moneyType,
-//     payType,
-//     cuitCuil,
-//     iva,
-//     detail,
-//     urlFile,
-//     authorId,
-//   } = req.body;
-//   const pay = await PayModel.create({
-//     amount: amount,
-//     moneyType: moneyType,
-//     payType: payType,
-//     cuitCuil: cuitCuil,
-//     iva: iva,
-//     detail: detail,
-//     urlFile: urlFile,
-//     authorId: authorId,
-//   });
-//   if (pay) {
-//     res.status(200).send("Pago creado!");
-//   } else {
-//     res.status(500).json({ msg: "Error al crear el pago." });
-//   }
-// };
-
-exports.updateById = async (req, res) => {
-  const { id } = req.params;
-  const {
-    amount,
-    moneyType,
-    payType,
-    cuitCuil,
-    iva,
-    detail,
-    urlFile,
-    authorId,
-  } = req.body;
-
-  const pay = await PayModel.update(
-    {
-      amount: amount,
-      moneyType: moneyType,
-      payType: payType,
-      cuitCuil: cuitCuil,
-      iva: iva,
-      detail: detail,
-      urlFile: urlFile,
-      authorId: authorId,
-    },
-    { where: { id: id } }
-  );
-  if (pay) {
-    res.status(200).json("Pago editado!");
-  } else {
-    res.status(500).json({ msg: "El pago no existe!" });
+  } catch (error) {
+    console.log("El pago no existe!" + error);
   }
 };
+
 exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const pay = await PayModel.findByPk(id);
+  try {
+    const { id } = req.params;
+    const pay = await PayModel.findByPk(id);
 
-  if (pay) {
-    res.status(200).json({ response: pay });
-  } else {
-    res.status(500).json({ msg: "Error al obtener el pago." });
+    if (pay) {
+      res.status(200).json({ response: pay });
+    } else {
+      res.status(500).json({ msg: "Error al obtener el pago." });
+    }
+  } catch (error) {
+    console.log("Error al obtener el pago." + error);
   }
 };
+
 exports.getAll = async (req, res) => {
-  const pay = await PayModel.findAll();
-  if (pay) {
-    res.status(200).json({ response: pay });
-  } else {
-    res.status(500).json({ msg: "Error al obtener los pagos." });
+  try {
+    const pay = await PayModel.findAll();
+    if (pay) {
+      res.status(200).json({ response: pay });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los pagos." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los pagos." + error);
   }
 };
-exports.deleteById = async (req, res) => {
-  const { id } = req.params;
-  const pay = await PayModel.destroy({
-    where: { id: id },
-  });
 
-  if (pay) {
-    res.status(200).send("Pago eliminado!");
-  } else {
-    res.status(500).json({ msg: "Error al eliminar el pago." });
+exports.deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pay = await PayModel.destroy({
+      where: { id: id },
+    });
+
+    if (pay) {
+      res.status(200).send("Pago eliminado!");
+    } else {
+      res.status(500).json({ msg: "Error al eliminar el pago." });
+    }
+  } catch (error) {
+    console.log("Error al eliminar el pago." + error);
   }
 };
 
 exports.getAllPaginated = async (req, res) => {
-  const { authorId, name, surname, areaId } = req.query;
-  console.log(req.query);
-  const { page } = req.params;
+  try {
+    const { authorId, name, surname, areaId } = req.query;
+    console.log(req.query);
+    const { page } = req.params;
 
-  const Op = Sequelize.Op;
-  const offsetIns = calcNumOffset(page);
-  let options = {
-    where: {},
-    include: [{ model: UserModel }],
-    offset: offsetIns,
-    limit: Number(PAGE_LIMIT),
-  };
-
-  // if (name) {
-  //   options.where.name = {
-  //     [Op.like]: `%${name}%`,
-  //   };
-  // }
-  // if (surname) {
-  //   options.where.surname = {
-  //     [Op.like]: `%${surname}%`,
-  //   };
-  // }
-  if (authorId) {
-    options.where.authorId = authorId;
-  }
-  // if (areaId) {
-  //   options.where.areaId = areaId;
-  // }
-  /* options.where = {
-      [Op.or]: [
-        { name: { [Op.like]: `%${name}%` } },
-        { "$partner.name$": { [Op.like]: `%${name}%` } },
-      ],
-    }; */
-  /*   if (sinceDateStart && untilDateStart) {
-    options.where.startDate = {
-      [Op.between]: [sinceDateStart, untilDateStart],
+    const Op = Sequelize.Op;
+    const offsetIns = calcNumOffset(page);
+    let options = {
+      where: {},
+      include: [{ model: UserModel }],
+      offset: offsetIns,
+      limit: Number(PAGE_LIMIT),
     };
-  }
-  if (sinceDateEnd && untilDateEnd) {
-    options.where.endDate = { [Op.between]: [sinceDateEnd, untilDateEnd] };
-  } */
 
-  const { count, rows } = await PayModel.findAndCountAll(options);
-  const cantPages = calcTotalPages(count);
+    if (authorId) {
+      options.where.authorId = authorId;
+    }
 
-  if (rows) {
-    res.status(200).json({ pages: cantPages, response: rows });
-  } else {
-    res.status(500).json({ msg: "La instancia no existe." });
+    const { count, rows } = await PayModel.findAndCountAll(options);
+    const cantPages = calcTotalPages(count);
+
+    if (rows) {
+      res.status(200).json({ pages: cantPages, response: rows });
+    } else {
+      res.status(500).json({ msg: "La instancia no existe." });
+    }
+  } catch (error) {
+    console.log("La instancia no existe.")
   }
 };

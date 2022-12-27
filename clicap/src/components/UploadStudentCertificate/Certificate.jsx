@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 // import "../upload-receipt.css";
 import { Button } from "react-bootstrap";
-import { getDataUserByKey } from "../../helpers/helpers";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
+import { waitAndRefresh } from "../../helpers/helpers";
 
 const Certificate = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Certificate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewCertificate();
-    navigate("/student");
+    waitAndRefresh("/student")
   };
 
   return (
