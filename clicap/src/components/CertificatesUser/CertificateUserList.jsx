@@ -75,7 +75,7 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
     <tr>
       <td>{userCertificate.certificate.name}</td>
 
-      <td>{userCertificate.job.name}</td>
+      <td>{userCertificate.job ? userCertificate.job.name : "-"}</td>
 
       <td className="">
         <Button
@@ -84,7 +84,7 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
             donwloadCertificate(
               "",
               userCertificate.certificate,
-              userCertificate.job
+              userCertificate.job ? userCertificate.job : ""
             )
           }
           /* disabled={job.status === null ? true : false} */
