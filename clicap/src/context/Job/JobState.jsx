@@ -18,6 +18,7 @@ export const JobState = ({ children }) => {
       evaluatorId2: "",
     },
     jobs: [],
+    isFetching: true,
     totalJobsPages: 0,
     usersSelector: [],
   };
@@ -64,10 +65,11 @@ export const JobState = ({ children }) => {
       value={{
         jobData: state.jobData,
         jobs: state.jobs,
+        isFetching: state.isFetching,
         totalJobsPages: state.totalJobsPages,
         usersSelector: state.usersSelector,
         getJobId,
-        getAllJobs
+        getAllJobs,
       }}
     >
       {children}
