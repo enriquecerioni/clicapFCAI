@@ -53,7 +53,7 @@ const Users = ({ showModalCertificate }) => {
     }
   };
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/user/export/users`, filters);
+    await reqAxiosDownload(`/user/export/users`, filters, "Usuarios");
   };
 
   const handleSubmit = (e) => {
@@ -62,7 +62,7 @@ const Users = ({ showModalCertificate }) => {
   };
   useEffect(() => {
     getUsersFiltered(page, filters);
-    getAllUsers();
+    getAllUsers("identifyNumber", "identifyNumber");
   }, [page]);
 
   return (

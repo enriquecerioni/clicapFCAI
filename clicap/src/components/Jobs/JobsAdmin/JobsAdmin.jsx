@@ -81,7 +81,7 @@ const JobsAdmin = () => {
   };
 
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/job/export/jobs`, filtersGlobal);
+    await reqAxiosDownload(`/job/export/jobs`, filtersGlobal,'Trabajos');
   };
 
   useEffect(() => {
