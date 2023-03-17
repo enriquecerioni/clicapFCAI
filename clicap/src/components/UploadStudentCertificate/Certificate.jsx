@@ -27,7 +27,7 @@ const Certificate = () => {
   };
 
   return (
-    <>
+    <div className="boxCard centerBox">
       <div className="poderver flex-column p-5">
         <h2 className="text-center">Certificado de Alumno Regular</h2>
         <div className="mt-4 centerUpdateJob">
@@ -84,7 +84,7 @@ const Certificate = () => {
           </Button> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default Certificate;

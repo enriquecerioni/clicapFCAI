@@ -49,6 +49,12 @@
     box-shadow: 0 0 0 0 black;
 }
 
+.buttonAddNewPositon {
+    display: flex;
+    justify-content: center;
+    padding: 1em 0em;
+}
+
 .buttonAddNew:hover {
     transform: translateY(-4px) translateX(-2px);
     box-shadow: 2px 5px 0 0 black;

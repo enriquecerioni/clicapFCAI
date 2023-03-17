@@ -224,16 +224,18 @@ const JobsAdmin = () => {
               <Button variant="primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </Button>
+
+              {roleId === 1 ? (
+                <div className="mt-2 ms-3">
+                  <Button variant="primary" onClick={exportToExcel}>
+                    Exportar
+                  </Button>
+                </div>
+              ) : null}
             </form>
           </div>
         ) : null}
-        {roleId === 1 ? (
-          <div className="mt-2 ms-3">
-            <Button variant="primary" onClick={exportToExcel}>
-              Exportar
-            </Button>
-          </div>
-        ) : null}
+        
 
         {allJobs.length > 0 ? (
           <>

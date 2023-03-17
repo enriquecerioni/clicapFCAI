@@ -23,8 +23,9 @@ const PayStudent = () => {
   return (
     <>
       <h2 className="text-center">Mis Pagos</h2>
-      <div className="box-add-instance">
-        <div className="">
+
+      <div className="box-add-instance ">
+        <div className="text-end me-5">
           <button
             type="button"
             onClick={() => navigate("/newpay")}
@@ -34,6 +35,7 @@ const PayStudent = () => {
           </button>
         </div>
       </div>
+
       {/* <div className="box-InsanceFilter">
         <InstanceFilter filterQuery={filterQuery} setFilterQuery={setFilterQuery} partners={partners} />
       </div> */}

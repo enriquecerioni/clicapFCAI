@@ -24,3 +24,8 @@
   -moz-box-shadow: 9px 9px 30px 1px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5rem;
 }
+
+.centerBox {
+  margin: auto;
+  margin-top: 10vh;
+}

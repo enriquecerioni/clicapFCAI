@@ -17,8 +17,8 @@ const PayReceipt = () => {
   };
 
   return (
-    <>
-      <div className="poderver flex-column container card p-5 ">
+    <div className="boxCard centerBox">
+      <div className="poderver flex-column container p-3">
         <h2 className="text-center">Subir Comprobante de Pago</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
@@ -176,7 +176,7 @@ const PayReceipt = () => {
           </Button> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default PayReceipt;
