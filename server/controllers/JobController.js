@@ -254,6 +254,39 @@ exports.getAll = async (req, res) => {
     console.log("Error al obtener los Trabajos.");
   }
 };
+exports.getAmountJobs = async (req, res) => {
+  try {
+    const summaries = [],completeWorks = [];
+    
+    const allAreas = await AreaModel.findAll();
+    const doc = await JobModel.findAll();
+
+    allAreas.forEach((area) => {
+      const areaAndCompleteWorks = doc.filter(
+        (job) => job.areaId === area.id && job.jobModalityId === 1
+      );
+      const areaAndSummaries = doc.filter(
+        (job) => job.areaId === area.id && job.jobModalityId === 2
+      );
+      completeWorks.push({
+        areaName: area.name,
+        amount: areaAndCompleteWorks.length,
+      });
+      summaries.push({
+        areaName: area.name,
+        amount: areaAndSummaries.length,
+      });
+    });
+
+    if (doc && allAreas) {
+      res.status(200).json({ response: { completeWorks, summaries } });
+    } else {
+      res.status(500).json({ msg: "Error al obtener los Trabajos." });
+    }
+  } catch (error) {
+    console.log("Error al obtener los Trabajos.");
+  }
+};
 
 exports.deleteById = async (req, res) => {
   try {
