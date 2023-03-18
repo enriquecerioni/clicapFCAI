@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { waitAndRefresh } from "../../helpers/helpers";
-import { Tabs, Tab, Form } from "react-bootstrap";
+import { Tabs, Tab, Form, Button } from "react-bootstrap";
 import ModalDelete from "../Modals/ModalDelete";
 import { AreaRow } from "./AreaRow";
 import "./configuration.css";
@@ -65,9 +65,9 @@ export const Configuration = () => {
                       />
                     </div>
                     <div className="mb-3 text-end">
-                      <button type="submit" className="buttonAddNew">
-                        Crear Area
-                      </button>
+                      <Button type="submit" variant="success">
+                        Crear Novedad
+                      </Button>
                     </div>
                   </form>
                 </div>

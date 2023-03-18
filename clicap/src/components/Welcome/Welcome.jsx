@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey } from "../../helpers/helpers";
 import "./welcome.css";
@@ -16,6 +17,9 @@ const Welcome = () => {
     setFiltersGlobal,
     filtersGlobal,
   } = useContext(EntitiesContext);
+
+  const { getAllCertificatesByUser, userCertificates } = useContext(CertificateContext);
+  const userId = getDataUserByKey("id");
 
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
@@ -44,6 +48,7 @@ const Welcome = () => {
 
   useEffect(() => {
     getAllAreas();
+    getAllCertificatesByUser(userId);
   }, []);
 
   return (
@@ -297,10 +302,17 @@ const Welcome = () => {
                     role="alert"
                   >
                     <p>
-                      No tienes ningun certificado otorgado aún{" "}
+                      {userCertificates.length > 0 ? 
+                      'Ya tienes un certificado '
+                      : 'No tienes ningun certificado otorgado aún '
+                    }
                       <i className="fas fa-info-circle"></i>
                     </p>
-                    <button className="btn btn-info" disabled={true}>
+                    <button 
+                      className="btn btn-info"
+                      onClick={() => navigate("/mycertificates")} 
+                      disabled={userCertificates.length > 0 ? false : true}
+                    >
                       Descargar Certificados
                     </button>
                   </div>
