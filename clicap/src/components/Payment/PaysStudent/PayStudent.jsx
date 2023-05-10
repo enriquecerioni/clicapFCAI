@@ -34,13 +34,6 @@ const PayStudent = () => {
           </button>
         </div>
       </div>
-<<<<<<< HEAD
-
-      {/* <div className="box-InsanceFilter">
-        <InstanceFilter filterQuery={filterQuery} setFilterQuery={setFilterQuery} partners={partners} />
-      </div> */}
-=======
->>>>>>> bbf4253b38b9f5deca501b2e5652f21d8592e659
 
       {/* TABLA */}
       {pays.length > 0 ? (
