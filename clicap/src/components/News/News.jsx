@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, waitAndRefresh } from "../../helpers/helpers";
@@ -63,11 +64,16 @@ export const News = () => {
                   onChange={handleChangeNew}
                 />
               </div>
-              <div className="mb-3 text-center">
+              <div className="buttonAddNewPositon">
+                <Button type="submit" variant="success">
+                  Crear Novedad
+                </Button>
+              </div>
+              {/* <div className="mb-3 text-center">
                 <button type="submit" className="buttonAddNew">
                   Crear Novedad
                 </button>
-              </div>
+              </div> */}
             </form>
             {/* <input type="date" className="form-date-input" onChange={handleTime} /> */}
           </div>

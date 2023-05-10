@@ -53,7 +53,7 @@ export default function CertificatesUser() {
             </div>
           </>
         ) : (
-          <p className="text-center">No hay registros</p>
+          <p className="text-center">No tienes certificados asignados aún...</p>
         )}
       </div>
     </>

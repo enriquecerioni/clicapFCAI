@@ -111,8 +111,8 @@ const DeliveryTask = () => {
   }, [members]);
 
   return (
-    <>
-      <div className="poderver flex-column p-2">
+    <div className="boxCard centerBox">
+      <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
@@ -247,7 +247,7 @@ const DeliveryTask = () => {
           </Button> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default DeliveryTask;
