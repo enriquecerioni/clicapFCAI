@@ -4,7 +4,7 @@ import {
   SET_USER_ID_TO_CERTIFICATE,
   GET_CERTIFICATES_BY_USER,
   GET_LOGO,
-  GET_CERTIFICATE_BY_ID
+  GET_CERTIFICATE_BY_ID,
 } from "./types";
 
 export default (state, action) => {
@@ -15,11 +15,13 @@ export default (state, action) => {
       return {
         ...state,
         certificates: payload,
+        isFetching: false,
       };
     case GET_CERTIFICATE_BY_ID:
       return {
         ...state,
         certificateData: payload,
+        isFetching: false,
       };
     case SET_CERTIFICATES_SELECTOR:
       return {
@@ -36,11 +38,13 @@ export default (state, action) => {
       return {
         ...state,
         userCertificates: payload,
+        isFetching: false,
       };
     case GET_LOGO:
       return {
         ...state,
         certificateLogo: payload,
+        isFetching: false,
       };
 
     default:

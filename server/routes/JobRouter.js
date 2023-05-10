@@ -9,6 +9,7 @@ router.get("/get/:id", JobController.getById);
 router.get("/export/jobs", JobController.downloadFilter);
 router.get("/get/jobs/:page", JobController.getAllPaginated);
 router.get("/getall", JobController.getAll);
+router.get("/getamountjobs", JobController.getAmountJobs);
 router.delete("/delete/:id", JobController.deleteById);
 router.get("/downloadfile", JobController.downloadFile);
 

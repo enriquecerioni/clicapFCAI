@@ -9,17 +9,13 @@ import JobStudentList from "./JobStudentList";
 import Select from "react-select";
 import { Button } from "react-bootstrap";
 import { PaginationCustom } from "../../Pagination/Pagination";
+import { Loader } from "../../Loader/Loader";
+import { JobContext } from "../../../context/Job/JobContext";
 
 const JobStudent = () => {
   const navigate = useNavigate();
-  const {
-    myJobs,
-    allJobs,
-    getAllJobs,
-    getAllAreas,
-    areasSelector,
-    totalPages,
-  } = useContext(EntitiesContext);
+  const { getAllAreas } = useContext(EntitiesContext);
+  const { isFetching, jobs, getAllJobs, totalJobsPages } = useContext(JobContext);
   const idUser = getDataUserByKey("id");
   const initialFilters = {
     authorId: idUser,
@@ -82,32 +78,23 @@ const JobStudent = () => {
             </tr>
           </thead>
           <tbody>
-            {allJobs && allJobs.map((job, i) => (
-              <JobStudentList job={job} key={job.id} />
-            ))}
+            {jobs &&
+              jobs.map((job, i) => <JobStudentList job={job} key={job.id} />)}
           </tbody>
         </table>
       </div>
 
-      {/* <div className="box-InsanceFilter">
-        <InstanceFilter filterQuery={filterQuery} setFilterQuery={setFilterQuery} partners={partners} />
-      </div> */}
+      {isFetching ? (
+        <div className="center-center">
+          <Loader />
+        </div>
+      ) : null}
 
-      {/* TABLA */}
-      {allJobs.length > 0 ? (
+      {jobs.length > 0 ? (
         <>
-          {/*   <div className="box-cardJob">
-            {allJobs.map((job, i) => (
-              <JobStudentList
-                job={job}
-             
-                key={job.id}
-              />
-            ))}
-          </div> */}
           <PaginationCustom
             currentPage={page}
-            totalPages={totalPages}
+            totalPages={totalJobsPages}
             paginate={setPage}
           />
         </>

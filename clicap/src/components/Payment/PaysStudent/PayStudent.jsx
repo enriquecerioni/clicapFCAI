@@ -5,27 +5,26 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 /* import { PaginationCustom } from "../PaginationCustom/PaginationCustom"; */
 import { getDataUserByKey } from "../../../helpers/helpers";
 import PayStudentList from "./PayStudentList";
+import { PayContext } from "../../../context/Pay/PayContext";
 
 const PayStudent = () => {
   const navigate = useNavigate();
-  const { myPays, getMyPays } = useContext(EntitiesContext);
-
-  /* const [filterQuery, setFilterQuery] = useState({ name: "" }); */
+  const { pays, getAllPays } = useContext(PayContext);
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };
+  
   useEffect(() => {
     /*     getmyJobsPaginated(page, filterQuery); */
-    getMyPays(page, filterToAuthor);
+    getAllPays(page, filterToAuthor);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   return (
     <>
       <h2 className="text-center">Mis Pagos</h2>
-
-      <div className="box-add-instance ">
-        <div className="text-end me-5">
+      <div className="box-add-instance">
+        <div className="text-end me-3 mb-3">
           <button
             type="button"
             onClick={() => navigate("/newpay")}
@@ -35,16 +34,19 @@ const PayStudent = () => {
           </button>
         </div>
       </div>
+<<<<<<< HEAD
 
       {/* <div className="box-InsanceFilter">
         <InstanceFilter filterQuery={filterQuery} setFilterQuery={setFilterQuery} partners={partners} />
       </div> */}
+=======
+>>>>>>> bbf4253b38b9f5deca501b2e5652f21d8592e659
 
       {/* TABLA */}
-      {myPays.length > 0 ? (
+      {pays.length > 0 ? (
         <>
           <div className="box-cardPay col d-flex justify-content-center">
-            {myPays.map((pay, i) => (
+            {pays.map((pay, i) => (
               <PayStudentList
                 pay={pay}
                 /* setInstanceToDelete={handleDelete} */

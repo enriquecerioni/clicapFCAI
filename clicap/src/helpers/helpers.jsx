@@ -119,7 +119,7 @@ export const deleteFile = async (nameFile, folder) => {
   }
 };
 //Export in excel
-export const reqAxiosDownload = async (shortUrl, param) => {
+export const reqAxiosDownload = async (shortUrl, param, nameFile) => {
   const load = toast.loading("Espere unos segundos...");
   try {
     await axios({
@@ -136,7 +136,7 @@ export const reqAxiosDownload = async (shortUrl, param) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "reporte.xlsx"); //or any other extension
+      link.setAttribute("download", `${nameFile}.xlsx`); //or any other extension
       document.body.appendChild(link);
       link.click();
     });
