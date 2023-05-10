@@ -256,8 +256,9 @@ exports.getAll = async (req, res) => {
 };
 exports.getAmountJobs = async (req, res) => {
   try {
-    const summaries = [],completeWorks = [];
-    
+    const summaries = [],
+      completeWorks = [];
+
     const allAreas = await AreaModel.findAll();
     const doc = await JobModel.findAll();
 
@@ -269,10 +270,12 @@ exports.getAmountJobs = async (req, res) => {
         (job) => job.areaId === area.id && job.jobModalityId === 2
       );
       completeWorks.push({
+        id: area.id,
         areaName: area.name,
         amount: areaAndCompleteWorks.length,
       });
       summaries.push({
+        id: area.id,
         areaName: area.name,
         amount: areaAndSummaries.length,
       });
