@@ -63,7 +63,7 @@
 }
 
 #intro h1 span {
-  color: #3985CB;
+  color: #3985cb;
 }
 
 @media (max-width: 991px) {
@@ -87,7 +87,7 @@
 #intro .play-btn {
   width: 94px;
   height: 94px;
-  background: radial-gradient(#3985CB 50%, rgba(101, 111, 150, 0.15) 52%);
+  background: radial-gradient(#3985cb 50%, rgba(101, 111, 150, 0.15) 52%);
   border-radius: 50%;
   display: block;
   position: relative;
@@ -133,7 +133,7 @@
 }
 
 #intro .play-btn:hover::after {
-  border-left: 15px solid #3985CB;
+  border-left: 15px solid #3985cb;
   transform: scale(20);
 }
 
@@ -169,11 +169,11 @@
   color: #fff;
   -webkit-animation-delay: 0.8s;
   animation-delay: 0.8s;
-  border: 2px solid #3985CB;
+  border: 2px solid #3985cb;
 }
 
 #intro .about-btn:hover {
-  background: #3985CB;
+  background: #3985cb;
   color: #fff;
 }
 
@@ -245,7 +245,6 @@
   color: #fff;
 }
 
-
 #speakers {
   padding: 10px 0 30px 0;
 }
@@ -290,7 +289,7 @@
 }
 
 #speakers .speaker .details a:hover {
-  color: #3985CB;
+  color: #3985cb;
 }
 
 #speakers .speaker:hover .details {
@@ -325,7 +324,7 @@
 }
 
 #speakers-details .details .social a:hover {
-  background: #3985CB;
+  background: #3985cb;
   color: #fff;
 }
 
@@ -347,12 +346,12 @@
 }
 
 .section-header::before {
-  content: '';
+  content: "";
   position: absolute;
   display: block;
   width: 60px;
   height: 5px;
-  background: #3985CB;
+  background: #3985cb;
   bottom: 0;
   left: calc(50% - 25px);
 }
@@ -379,11 +378,40 @@
 }
 
 #gallery {
-  padding: 60px;
+  padding: 60px 350px 60px 350px;
   overflow: hidden;
 }
 
-#gallery .owl-nav, #gallery .owl-dots {
+@media (max-width: 1350px) {
+  #gallery {
+    padding: 60px 170px 60px 170px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1200px) {
+  #gallery {
+    padding: 60px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1000px) {
+  #gallery {
+    padding: 40px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 450px) {
+  #gallery {
+    padding: 60px 10px 60px 10px;
+    overflow: hidden;
+  }
+}
+
+#gallery .owl-nav,
+#gallery .owl-dots {
   margin-top: 25px;
   text-align: center;
 }
@@ -595,27 +623,27 @@
   color: #ddd;
 }
 
-.clicapLogo{
+.clicapLogo {
   width: 60rem;
   height: 15rem;
 }
 
-@media (max-width:1200px){
-  .clicapLogo{
+@media (max-width: 1200px) {
+  .clicapLogo {
     width: 40rem;
     height: 10rem;
   }
 }
 
-@media (max-width:900px){
-  .clicapLogo{
+@media (max-width: 900px) {
+  .clicapLogo {
     width: 28rem;
     height: 7rem;
   }
 }
 
-@media (max-width:480px){
-  .clicapLogo{
+@media (max-width: 480px) {
+  .clicapLogo {
     width: 20rem;
     height: 5rem;
   }
@@ -634,32 +662,32 @@
 
 *,
 *:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
-input[type="date"]{
-    background-color: #0080ff;
-    padding: 15px;
-    color: #ffffff;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
+input[type="date"] {
+  background-color: #0080ff;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
 }
-::-webkit-calendar-picker-indicator{
-    background-color: #ffffff;
-    padding: 5px;
-    cursor: pointer;
-    border-radius: 3px;
+::-webkit-calendar-picker-indicator {
+  background-color: #ffffff;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
 .divIntro {
   height: 33.33vh;
 }
 
-@media(max-width:480px){
+@media (max-width: 480px) {
   .divIntro {
     height: auto;
     margin-bottom: 30px;
