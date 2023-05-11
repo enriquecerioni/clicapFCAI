@@ -2,14 +2,6 @@ import React, { useEffect, useContext, useState } from "react";
 import firstSpeaker from "../../assets/authorities/1.jpg";
 import secondSpeaker from "../../assets/authorities/2.jpg";
 import thirdSpeaker from "../../assets/authorities/3.jpg";
-import gallery1 from "../../assets/gallery/1.jpg";
-import gallery2 from "../../assets/gallery/2.jpg";
-import gallery3 from "../../assets/gallery/3.jpg";
-import gallery4 from "../../assets/gallery/4.jpg";
-import gallery5 from "../../assets/gallery/5.jpg";
-import gallery6 from "../../assets/gallery/6.jpg";
-import gallery7 from "../../assets/gallery/7.jpg";
-import gallery8 from "../../assets/gallery/8.jpg";
 import logo1 from "../../assets/endorsements/logo-1.png";
 import logo2 from "../../assets/endorsements/logo-2.png";
 import logo3 from "../../assets/endorsements/logo-3.png";
@@ -18,13 +10,13 @@ import logo5 from "../../assets/endorsements/logo-5.png";
 import logo6 from "../../assets/endorsements/logo-6.png";
 import logo7 from "../../assets/endorsements/logo-7.jpg";
 import logo8 from "../../assets/endorsements/logo-8.jpg";
-import clicap from "../../assets/clicap.png";
 import CountdownTimer from "../CounterdownTimer/CountdownTimer";
 
 import "./start.scss";
 import "./button.css";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import Carousel from "../Carousel/Carousel";
 
 const Start = () => {
   const { time, setTime, getDate, handleTime } = useContext(EntitiesContext);
@@ -71,7 +63,12 @@ const Start = () => {
                 onChange={(e) => setDate(e.target.value)}
                 value={date}
               />
-              <button className="btn btn-primary ms-3" onClick={() => handleTime(date)}>Guardar Fecha</button>
+              <button
+                className="btn btn-primary ms-3"
+                onClick={() => handleTime(date)}
+              >
+                Guardar Fecha
+              </button>
             </div>
           )}
 
@@ -245,7 +242,8 @@ const Start = () => {
           </div>
         </div>
 
-        <div className="row">
+        <Carousel />
+        {/* <div className="row">
           <div className="col-lg-4 col-md-6">
             <div className="speaker">
               <img src={gallery1} alt="" className="img-fluid" />
@@ -261,7 +259,7 @@ const Start = () => {
               <img src={gallery3} alt="" className="img-fluid" />
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section id="clients" className="clients section-with-bg wow fadeInUp">
