@@ -32,72 +32,319 @@ import { Configuration } from "../components/Configuration/Configuration";
 import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
 import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
 import { PageInProcess } from "../components/PageInProcess/PageInProcess";
+import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommittee";
+import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
+import { Institutional } from "../views/Institutional/Institutional";
+import { Sponsors } from "../views/Sponsors/Sponsors";
 
 const CustomRoute = () => (
   <>
     <Routes>
-        <Route path="/" element={<Home><Start/></Home>} />
+      <Route
+        path="/"
+        element={
+          <Home>
+            <Start />
+          </Home>
+        }
+      />
 
-        <Route element={<Home />} />
+      <Route element={<Home />} />
 
-        <Route path="login" element={<Home><Login/></Home>} />
+      <Route
+        path="login"
+        element={
+          <Home>
+            <Login />
+          </Home>
+        }
+      />
 
-        <Route path="news" element={<Home><News/></Home>} />
+      <Route
+        path="news"
+        element={
+          <Home>
+            <News />
+          </Home>
+        }
+      />
 
-        <Route path="newjob" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
+      <Route
+        path="scientific-committee"
+        element={
+          <Home>
+            <ScientificCommitte />
+          </Home>
+        }
+      />
 
-        <Route path="myjob/:id" element={<PrivateRoute><DeliveryTask/></PrivateRoute>} />
+      <Route
+        path="organizing-committee"
+        element={
+          <Home>
+            <OrganizingCommittee />
+          </Home>
+        }
+      />
 
-        <Route path="configuration" element={<PrivateAdminRoute><Configuration/></PrivateAdminRoute>} />
-      
-        <Route path="newpay" element={<PrivateRoute><PayReceipt/></PrivateRoute>} />
+      <Route
+        path="institutional"
+        element={
+          <Home>
+            <Institutional />
+          </Home>
+        }
+      />
 
-        <Route path="pay/edit/:id" element={<PrivateRoute><UpdateInvoce/></PrivateRoute>} />
+      <Route
+        path="sponsors"
+        element={
+          <Home>
+            <Sponsors />
+          </Home>
+        }
+      />
 
-        <Route path="newcertificate" element={<PrivateRoute><Certificate/></PrivateRoute>} />
+      <Route
+        path="newjob"
+        element={
+          <PrivateRoute>
+            <DeliveryTask />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="jobs" element={<PrivateAdminRoute><JobsAdmin/></PrivateAdminRoute>} />
+      <Route
+        path="myjob/:id"
+        element={
+          <PrivateRoute>
+            <DeliveryTask />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="jobs/job/edit/:id" element={<PrivateAdminRoute><DeliveryTask/></PrivateAdminRoute>} />
+      <Route
+        path="configuration"
+        element={
+          <PrivateAdminRoute>
+            <Configuration />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="job/correctionstosend/:id" element={<PrivateAdminRoute><SendCorrectionAdmin/></PrivateAdminRoute>} />
+      <Route
+        path="newpay"
+        element={
+          <PrivateRoute>
+            <PayReceipt />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="job/:id" element={<PrivateRoute><JobInformation/></PrivateRoute>} />
+      <Route
+        path="pay/edit/:id"
+        element={
+          <PrivateRoute>
+            <UpdateInvoce />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="job/corrections/:id" element={<PrivateRoute><Corrections/></PrivateRoute>} />
+      <Route
+        path="newcertificate"
+        element={
+          <PrivateRoute>
+            <Certificate />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="myjobs" element={<PrivateRoute><JobStudent/></PrivateRoute>} />
+      <Route
+        path="jobs"
+        element={
+          <PrivateAdminRoute>
+            <JobsAdmin />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="mycertificates" element={<PrivateRoute><CertificatesUser/></PrivateRoute>} />
+      <Route
+        path="jobs/job/edit/:id"
+        element={
+          <PrivateAdminRoute>
+            <DeliveryTask />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="generate-certificate" element={<PrivateAdminRoute><GenerateCertificate/></PrivateAdminRoute>} />
-        
-        <Route path="certificate-types" element={<PrivateAdminRoute><CertificateTypes/></PrivateAdminRoute>} />
-        
-        <Route path="new-certificate-type" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
-        
-        <Route path="edit-certificate-type/:certificateId" element={<PrivateAdminRoute><NewCertificate/></PrivateAdminRoute>} />
+      <Route
+        path="job/correctionstosend/:id"
+        element={
+          <PrivateAdminRoute>
+            <SendCorrectionAdmin />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="certificates" element={<PrivateAdminRoute><StudentCertificateAdmin/></PrivateAdminRoute>} />
+      <Route
+        path="job/:id"
+        element={
+          <PrivateRoute>
+            <JobInformation />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="student" element={<PrivateRoute><StudentCertificate/></PrivateRoute>} />
+      <Route
+        path="job/corrections/:id"
+        element={
+          <PrivateRoute>
+            <Corrections />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="pays" element={<PrivateAdminRoute><PaysAdmin/></PrivateAdminRoute>} />
+      <Route
+        path="myjobs"
+        element={
+          <PrivateRoute>
+            <JobStudent />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="mypays" element={<PrivateRoute><PayStudent/></PrivateRoute>} />
+      <Route
+        path="mycertificates"
+        element={
+          <PrivateRoute>
+            <CertificatesUser />
+          </PrivateRoute>
+        }
+      />
 
-        <Route path="users" element={<PrivateAdminRoute><Users/></PrivateAdminRoute>} />
+      <Route
+        path="generate-certificate"
+        element={
+          <PrivateAdminRoute>
+            <GenerateCertificate />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="register" element={<Home><UserState><Register/></UserState></Home>} />
-        
-        <Route path="page-in-process" element={<Home><PageInProcess/></Home>} />
+      <Route
+        path="certificate-types"
+        element={
+          <PrivateAdminRoute>
+            <CertificateTypes />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="api/clicap/user/acount-activate/:token" element={<AccountActivate />} />
+      <Route
+        path="new-certificate-type"
+        element={
+          <PrivateAdminRoute>
+            <NewCertificate />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="home" element={<PrivateRoute><Welcome/></PrivateRoute>} />
+      <Route
+        path="edit-certificate-type/:certificateId"
+        element={
+          <PrivateAdminRoute>
+            <NewCertificate />
+          </PrivateAdminRoute>
+        }
+      />
 
-        <Route path="user/edit/:id" element={<PrivateRoute><Register/></PrivateRoute>} />
+      <Route
+        path="certificates"
+        element={
+          <PrivateAdminRoute>
+            <StudentCertificateAdmin />
+          </PrivateAdminRoute>
+        }
+      />
 
+      <Route
+        path="student"
+        element={
+          <PrivateRoute>
+            <StudentCertificate />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="pays"
+        element={
+          <PrivateAdminRoute>
+            <PaysAdmin />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="mypays"
+        element={
+          <PrivateRoute>
+            <PayStudent />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="users"
+        element={
+          <PrivateAdminRoute>
+            <Users />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="register"
+        element={
+          <Home>
+            <UserState>
+              <Register />
+            </UserState>
+          </Home>
+        }
+      />
+
+      <Route
+        path="page-in-process"
+        element={
+          <Home>
+            <PageInProcess />
+          </Home>
+        }
+      />
+
+      <Route
+        path="api/clicap/user/acount-activate/:token"
+        element={<AccountActivate />}
+      />
+
+      <Route
+        path="home"
+        element={
+          <PrivateRoute>
+            <Welcome />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="user/edit/:id"
+        element={
+          <PrivateRoute>
+            <Register />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   </>
 );
