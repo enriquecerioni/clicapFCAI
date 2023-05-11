@@ -165,7 +165,7 @@ export const SidebarModify = () => {
               type="button"
             >
               <div className="li-box-icon">
-                <i class="fa-solid fa-gear"></i>
+                <i className="fa-solid fa-gear"></i>
               </div>
               <div>
                 <span>Configuración</span>
