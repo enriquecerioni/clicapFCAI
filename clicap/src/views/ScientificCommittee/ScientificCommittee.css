@@ -1,0 +1,16 @@
+.listStyle {
+  font-size: 1.3rem;
+  width: 100%;
+  padding: 0.15em;
+}
+
+.centerBoxView {
+  margin: 0 auto;
+  width: 50%;
+}
+
+@media (max-width: 960px) {
+  .centerBoxView {
+    width: 80%;
+  }
+}

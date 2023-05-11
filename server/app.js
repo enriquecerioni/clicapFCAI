@@ -96,7 +96,8 @@ const insertData = async () => {
       institution: "Universidad de Mendoza",
       phone: "2604626476",
       attendance: 0,
-    },{
+    },
+    {
       id: 2,
       roleId: 2,
       identifyType: "DNI",
@@ -110,7 +111,8 @@ const insertData = async () => {
       institution: "Universidad de Mendoza",
       phone: "2604626476",
       attendance: 0,
-    },{
+    },
+    {
       id: 3,
       roleId: 2,
       identifyType: "DNI",
@@ -124,7 +126,8 @@ const insertData = async () => {
       institution: "Universidad de Mendoza",
       phone: "2604626476",
       attendance: 0,
-    }, {
+    },
+    {
       id: 4,
       roleId: 4,
       identifyType: "DNI",
