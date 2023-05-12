@@ -5,6 +5,8 @@ import JobReducer from "./JobReducer";
 
 export const JobState = ({ children }) => {
   const userId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
+  
   const initialState = {
     jobData: {
       name: "",
@@ -18,6 +20,14 @@ export const JobState = ({ children }) => {
       evaluatorId2: "",
     },
     jobs: [],
+    jobsFilter: {
+      authorId: "",
+      name: "",
+      areaId: "",
+      jobModalityId: "",
+      status: "",
+      evaluatorId: roleId === 2 ? userId : "",
+    },
     isFetching: true,
     totalJobsPages: 0,
     usersSelector: [],
@@ -40,7 +50,7 @@ export const JobState = ({ children }) => {
       console.log(error);
     }
   };
-  const getAllJobs = async (page, params) => {
+  const getJobsFiltered = async (page, params) => {
     try {
       const getAllJob = await reqAxios(
         "GET",
@@ -63,13 +73,9 @@ export const JobState = ({ children }) => {
   return (
     <JobContext.Provider
       value={{
-        jobData: state.jobData,
-        jobs: state.jobs,
-        isFetching: state.isFetching,
-        totalJobsPages: state.totalJobsPages,
-        usersSelector: state.usersSelector,
+        jobState: state,
         getJobId,
-        getAllJobs,
+        getJobsFiltered,
       }}
     >
       {children}

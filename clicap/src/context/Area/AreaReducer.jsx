@@ -8,8 +8,9 @@ export default (state, action) => {
       return {
         ...state,
         isFetching: false,
-        jobs: payload.allJobs,
-        totalJobsPages: payload.totalPages,
+        areas: payload.allAreas,
+        totalAreasPages: payload.areaTotalPages,
+        areasSelector: payload.areasSelector,
       };
 
     default:

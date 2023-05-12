@@ -4,24 +4,22 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { getDataUserByKey } from "../../../helpers/helpers";
 import "./jobsFilters.css";
+import { UserContext } from "../../../context/User/UserContext";
+import { AreaContext } from "../../../context/Area/AreaContext";
 
-export const JobsFilters = ({ setShowModalFilters }) => {
-  const roleId = getDataUserByKey("roleId");
-  const {
-    allJobs,
-    getAllJobs,
-    users,
-    getAllUsers,
-    getAllAreas,
-    usersSelector,
-    areasSelector,
-    totalPages,
-    allStatusJob,
-    getAllEvaluators,
-    allEvaluatorsSelector,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
+export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
+  const { getAllJobs, allEvaluatorsSelector } = useContext(EntitiesContext);
+
+  const { userState } = useContext(UserContext);
+  const { usersSelector,evaluatorsSelector } = userState;
+
+  const { areaState } = useContext(AreaContext);
+  const { areasSelector } = areaState;
+
+  const authorSelector = usersSelector.map((author) => {
+    author.target.name = "authorId";
+    return author;
+  });
 
   const modalities = [
     {
@@ -47,19 +45,19 @@ export const JobsFilters = ({ setShowModalFilters }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getAllJobs(1, filtersGlobal);
+    getAllJobs(1, filters);
     setShowModalFilters(false);
   };
 
   const handleChangeFilter = (e, name) => {
     if (e) {
-      setFiltersGlobal({
-        ...filtersGlobal,
+      setFilters({
+        ...filters,
         [e.target.name]: e.target.value,
       });
     } else {
-      setFiltersGlobal({
-        ...filtersGlobal,
+      setFilters({
+        ...filters,
         [name]: "",
       });
     }
@@ -88,7 +86,7 @@ export const JobsFilters = ({ setShowModalFilters }) => {
                 Autor
               </label>
               <Select
-                options={usersSelector}
+                options={authorSelector}
                 placeholder={"seleccione.."}
                 name="authorId"
                 isClearable={true}
@@ -111,7 +109,7 @@ export const JobsFilters = ({ setShowModalFilters }) => {
                 placeholder={"seleccione.."}
                 name="areaId"
                 value={areasSelector.filter(
-                  (area) => filtersGlobal.areaId === area.value
+                  (area) => filters.areaId === area.value
                 )}
                 isClearable={true}
                 theme={(theme) => ({
@@ -134,7 +132,7 @@ export const JobsFilters = ({ setShowModalFilters }) => {
               <Select
                 options={modalities}
                 value={modalities.filter(
-                  (mod) => filtersGlobal.jobModalityId === mod.value
+                  (mod) => filters.jobModalityId === mod.value
                 )}
                 placeholder={"seleccione.."}
                 name="jobModalityId"
@@ -154,7 +152,7 @@ export const JobsFilters = ({ setShowModalFilters }) => {
                 Evaluador
               </label>
               <Select
-                options={allEvaluatorsSelector}
+                options={evaluatorsSelector}
                 placeholder={"seleccione.."}
                 name="evaluatorId"
                 isClearable={true}

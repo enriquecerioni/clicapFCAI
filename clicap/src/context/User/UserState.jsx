@@ -22,6 +22,8 @@ export const UserState = ({ children }) => {
     usersFiltered: [],
     totalUsersPages: 0,
     usersSelector: [],
+    evaluators: [],
+    evaluatorsSelector: [],
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
@@ -48,7 +50,11 @@ export const UserState = ({ children }) => {
 
     dispatch({
       type: "SET_USERS",
-      payload: { users: getAllUser.data.response, userSelector: userSelector },
+      payload: {
+        users: getAllUser.data.response,
+        totalUsersPages: getAllUser.data.pages,
+        userSelector: userSelector,
+      },
     });
   };
 
@@ -85,6 +91,34 @@ export const UserState = ({ children }) => {
     });
   };
 
+  const getAllEvaluators = async () => {
+    try {
+      const allEvaluators = await reqAxios(
+        "GET",
+        "/user/getallevaluators",
+        "",
+        ""
+      );
+      const EvaluatorSelector = allEvaluators.data.response.map((item) => {
+        return {
+          label: item.name + " " + item.surname,
+          value: item.id,
+          target: { name: "evaluatorId", value: item.id },
+        };
+      });
+
+      dispatch({
+        type: "SET_EVALUATORS",
+        payload: {
+          evaluators: allEvaluators.data.response,
+          evaluatorsSelector: EvaluatorSelector,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -92,6 +126,7 @@ export const UserState = ({ children }) => {
         getUserData,
         getAllUsers,
         getUsersFiltered,
+        getAllEvaluators
       }}
     >
       {children}

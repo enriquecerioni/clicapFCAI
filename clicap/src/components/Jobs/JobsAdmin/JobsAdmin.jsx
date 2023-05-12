@@ -8,51 +8,44 @@ import { PaginationCustom } from "../../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
 import { CustomModal } from "../../CustomModal/CustomModal";
 import { JobsFilters } from "../JobsFilters/JobsFilters";
+import { JobContext } from "../../../context/Job/JobContext";
+import { UserContext } from "../../../context/User/UserContext";
+import { AreaContext } from "../../../context/Area/AreaContext";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
-  const userId = getDataUserByKey("id");
-  const {
-    allJobs,
-    getAllJobs,
-    users,
-    getAllUsers,
-    getAllAreas,
-    usersSelector,
-    areasSelector,
-    totalPages,
-    allStatusJob,
-    getAllEvaluators,
-    allEvaluatorsSelector,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
 
-  /*   const initialFilters = {
-    authorId: "",
-    name: "",
-    areaId: "",
-    jobModalityId: "",
-    status: "",
-    evaluatorId: roleId === 2 ? userId : "",
-  }; */
+  const { allJobs, getAllJobs, totalPages } = useContext(EntitiesContext);
 
-  const [filters, setFilters] = useState(filtersGlobal);
+  const { jobState } = useContext(JobContext);
+  const { jobsFilter } = jobState;
+
+  const { userState, getAllUsers, getAllEvaluators } = useContext(UserContext);
+  const { users } = userState;
+
+  const { areaState, getAllAreas } = useContext(AreaContext);
+  const { areas } = areaState;
+
+  const [filters, setFilters] = useState(jobsFilter);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
   const [page, setPage] = useState(1);
 
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/job/export/jobs`, filtersGlobal, "Trabajos");
+    await reqAxiosDownload(`/job/export/jobs`, filters, "Trabajos");
   };
 
   useEffect(() => {
-    getAllUsers();
-    getAllAreas();
-    getAllEvaluators();
-    getAllJobs(page, filtersGlobal);
+    if (users.length === 0) {
+      getAllUsers();
+      getAllEvaluators();
+    }
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+    getAllJobs(page, filters);
   }, [page]);
 
   return (
@@ -67,7 +60,11 @@ const JobsAdmin = () => {
             showModal={showModalFilters}
             setShowModal={setShowModalFilters}
           >
-            <JobsFilters setShowModalFilters={setShowModalFilters} />
+            <JobsFilters
+              filters={filters}
+              setFilters={setFilters}
+              setShowModalFilters={setShowModalFilters}
+            />
           </CustomModal>
         ) : null}
 
