@@ -11,7 +11,6 @@ import DeliveryTask from "../components/DeliveryTask/DeliveryTask";
 import JobsAdmin from "../components/Jobs/JobsAdmin/JobsAdmin";
 import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
-import Sidebar from "../components/Sidebar/SideBar";
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import { JobInformation } from "../components/Jobs/JobInformation/JobInformation";
 import { Corrections } from "../components/Jobs/Corrections/Corrections";
@@ -29,7 +28,6 @@ import { GenerateCertificate } from "../components/GenerateCertificate/GenerateC
 import { NewCertificate } from "../components/GenerateCertificate/NewCertificate/NewCertificate";
 import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
 import { Configuration } from "../components/Configuration/Configuration";
-import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
 import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
 import { PageInProcess } from "../components/PageInProcess/PageInProcess";
 import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommittee";
