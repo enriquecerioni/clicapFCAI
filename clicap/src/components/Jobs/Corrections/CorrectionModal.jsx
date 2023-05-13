@@ -3,7 +3,7 @@ import React from "react";
 //components
 import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 
-export const CorrectionModal = ({ showModal, description }) => {
+export const CorrectionModal = ({jobName, showModal, description }) => {
   const closeModal = () => showModal(false);
 
   return (
@@ -16,7 +16,7 @@ export const CorrectionModal = ({ showModal, description }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            Corrección
+            {jobName} - Corrección
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="">{description}</Modal.Body>

@@ -16,10 +16,8 @@ const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
 
-  const { allJobs, getAllJobs, totalPages } = useContext(EntitiesContext);
-
-  const { jobState } = useContext(JobContext);
-  const { jobsFilter } = jobState;
+  const { jobState, getJobsFiltered } = useContext(JobContext);
+  const { jobsFilter,jobs,totalJobsPages } = jobState;
 
   const { userState, getAllUsers, getAllEvaluators } = useContext(UserContext);
   const { users } = userState;
@@ -45,7 +43,7 @@ const JobsAdmin = () => {
     if (areas.length === 0) {
       getAllAreas();
     }
-    getAllJobs(page, filters);
+    getJobsFiltered(page, filters);
   }, [page]);
 
   return (
@@ -95,7 +93,7 @@ const JobsAdmin = () => {
           </div>
         ) : null}
 
-        {allJobs.length > 0 ? (
+        {jobs.length > 0 ? (
           <>
             <div className="mt-3 overflow-x">
               <table className="table table-hover">
@@ -115,7 +113,7 @@ const JobsAdmin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allJobs.map((work) => (
+                  {jobs.map((work) => (
                     <JobsAdminList
                       work={work}
                       showAlert={setShowDeleteModal}
@@ -128,7 +126,7 @@ const JobsAdmin = () => {
             </div>
             <PaginationCustom
               currentPage={page}
-              totalPages={totalPages}
+              totalJobsPages={totalJobsPages}
               paginate={setPage}
             />
           </>

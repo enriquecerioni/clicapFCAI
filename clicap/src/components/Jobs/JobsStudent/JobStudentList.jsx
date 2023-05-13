@@ -4,16 +4,21 @@ import { Button } from "react-bootstrap";
 import { CorrectionModal } from "../Corrections/CorrectionModal";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import { downloadFile } from "../../../helpers/helpers";
+import { JobContext } from "../../../context/Job/JobContext";
 
 const JobStudentList = ({ job, setjobToDelete }) => {
   const navigate = useNavigate();
   const classInactive = "shadow card-inst border-b-danger";
   const classActive = "shadow card-inst border-b-success";
   const [showCorrecModal, setCorrecModal] = useState(false);
-  const { getCorrectionByJob, correction } = useContext(EntitiesContext);
 
-  const getCorrection = () => {
-    getCorrectionByJob(job.id);
+  const { getCorrectionByJob } = useContext(JobContext);
+
+  const [correction, setCorrection] = useState({});
+
+  const getCorrection = async () => {
+    const correct = await getCorrectionByJob(job.id);
+    setCorrection(correct);
     setCorrecModal(true);
   };
 
@@ -21,6 +26,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
     <>
       {showCorrecModal ? (
         <CorrectionModal
+          jobName={job.name}
           description={correction.details}
           showModal={setCorrecModal}
         />

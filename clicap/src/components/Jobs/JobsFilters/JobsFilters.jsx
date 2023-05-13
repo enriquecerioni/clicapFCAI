@@ -6,12 +6,13 @@ import { getDataUserByKey } from "../../../helpers/helpers";
 import "./jobsFilters.css";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";
+import { JobContext } from "../../../context/Job/JobContext";
 
 export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
-  const { getAllJobs, allEvaluatorsSelector } = useContext(EntitiesContext);
+  const { getJobsFiltered } = useContext(JobContext);
 
   const { userState } = useContext(UserContext);
-  const { usersSelector,evaluatorsSelector } = userState;
+  const { usersSelector, evaluatorsSelector } = userState;
 
   const { areaState } = useContext(AreaContext);
   const { areasSelector } = areaState;
@@ -45,7 +46,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getAllJobs(1, filters);
+    getJobsFiltered(1, filters);
     setShowModalFilters(false);
   };
 

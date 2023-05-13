@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Button, Card, Col, Row, FloatingLabel, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { reqAxios } from "../../../helpers/helpers";
 import { alertSuccess } from "../../../helpers/alerts";
 import { statusCorrections } from "../typesCorrections";
+import { JobContext } from "../../../context/Job/JobContext";
 
 export const SendCorrectionAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { corrections, getCorrectionsByJob } = useContext(EntitiesContext);
+
+  const { getCorrectionsByJob } = useContext(JobContext);
+
   const [stateOfCorrection, setStateOfCorrection] = useState(0);
+  const [corrections, setCorrections] = useState([]);
   const [details, setDetails] = useState("");
   const sendMail = 1;
 
@@ -40,9 +43,15 @@ export const SendCorrectionAdmin = () => {
     alertSuccess("Copiado!");
   };
 
+  const getAndSetCorrections = async () => {
+    const allCorrections = await getCorrectionsByJob(id);
+    setCorrections(allCorrections);
+  };
+
   useEffect(() => {
-    getCorrectionsByJob(id);
+    getAndSetCorrections();
   }, []);
+
   return (
     <>
       <h3 className="text-center mt-1">

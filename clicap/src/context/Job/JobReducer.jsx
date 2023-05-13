@@ -14,8 +14,8 @@ export default (state, action) => {
       return {
         ...state,
         isFetching: false,
-        jobs: payload.allJobs,
-        totalJobsPages: payload.totalPages,
+        jobs: payload.jobs,
+        totalJobsPages: payload.totalJobsPages,
       };
 
     default:
