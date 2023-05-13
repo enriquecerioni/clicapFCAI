@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { CorrectionModal } from "../Corrections/CorrectionModal";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { downloadFile } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 

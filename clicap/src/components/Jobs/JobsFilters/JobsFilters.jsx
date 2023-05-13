@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
-import { getDataUserByKey } from "../../../helpers/helpers";
 import "./jobsFilters.css";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";

@@ -8,47 +8,36 @@ import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";
+import { JobContext } from "../../context/Job/JobContext";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const {
-    allJobs,
-    myPays,
-    getAllAreas,
-    areas,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
-
-  const { getNumberOfJobs } = useContext(AreaContext);
-
-  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
-  const { getAllCertificatesByUser, userCertificates } = useContext(CertificateContext);
   const userId = getDataUserByKey("id");
-
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
 
-  const getBase64FromUrl = async (url) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
-  };
+  const { myPays } = useContext(EntitiesContext);
+
+  const { jobState, setJobFilters } = useContext(JobContext);
+  const { jobsFilter, jobs } = jobState;
+
+  const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
+  const { areas } = areaState;
+
+  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
+  const { getAllCertificatesByUser, userCertificates } =
+    useContext(CertificateContext);
+
+  const [filters, setFilters] = useState(jobsFilter);
+  const [goToJobFiltered, setGoToJobFiltered] = useState(false);
 
   const goAndFiltered = (numArea, numModality) => {
-    setFiltersGlobal({
-      ...filtersGlobal,
+    setGoToJobFiltered(!goToJobFiltered);
+    setFilters({
+      ...filters,
       ["areaId"]: numArea,
       ["jobModalityId"]: numModality,
     });
-    navigate("/jobs");
   };
 
   const getAndSetNumberOfJobs = async () => {
@@ -88,10 +77,21 @@ const Welcome = () => {
   };
 
   useEffect(() => {
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+    if (roleId !== 1) {
+      getAllCertificatesByUser(userId);
+    }
     getAndSetNumberOfJobs();
-    getAllAreas();
-    getAllCertificatesByUser(userId);
   }, []);
+
+  useEffect(() => {
+    if (goToJobFiltered) {
+      setJobFilters(filters);
+      navigate("/jobs");
+    }
+  }, [filters]);
 
   return (
     <>
@@ -159,7 +159,7 @@ const Welcome = () => {
                   className="btnViewAll"
                   onClick={() => goAndFiltered("", 2)}
                 >
-                   {`Ver todos (${completeJobsTotal().summariesTotal})`}
+                  {`Ver todos (${completeJobsTotal().summariesTotal})`}
                 </button>
               </div>
             </div>
@@ -291,7 +291,7 @@ const Welcome = () => {
             <div className="row">
               <div className="col border dashboard-card flex flexCard">
                 <div className="col mb-3 flex">
-                  {allJobs.length > 0 ? (
+                  {jobs.length > 0 ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
@@ -364,15 +364,14 @@ const Welcome = () => {
                     role="alert"
                   >
                     <p>
-                      {userCertificates.length > 0 ? 
-                      'Ya tienes un certificado '
-                      : 'No tienes ningun certificado otorgado aún '
-                    }
+                      {userCertificates.length > 0
+                        ? "Ya tienes un certificado "
+                        : "No tienes ningun certificado otorgado aún "}
                       <i className="fas fa-info-circle"></i>
                     </p>
-                    <button 
+                    <button
                       className="btn btn-info"
-                      onClick={() => navigate("/mycertificates")} 
+                      onClick={() => navigate("/mycertificates")}
                       disabled={userCertificates.length > 0 ? false : true}
                     >
                       Descargar Certificados

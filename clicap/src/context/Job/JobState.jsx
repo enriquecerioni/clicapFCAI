@@ -28,6 +28,7 @@ export const JobState = ({ children }) => {
       status: "",
       evaluatorId: roleId === 2 ? userId : "",
     },
+    prefiltered: false,
     isFetching: true,
     totalJobsPages: 0,
     usersSelector: [],
@@ -115,6 +116,13 @@ export const JobState = ({ children }) => {
     }
   };
 
+  const setJobFilters=(filters)=>{
+    dispatch({
+      type: "SET_JOBS_FILTERS",
+      payload: filters,
+    });
+  }
+
   return (
     <JobContext.Provider
       value={{
@@ -124,6 +132,7 @@ export const JobState = ({ children }) => {
         getCorrectionsByJob,
         checkCorrection,
         getCorrectionByJob,
+        setJobFilters
       }}
     >
       {children}
