@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
       name: name,
     });
     if (area) {
-      res.status(200).send("Nueva área creada!");
+      res.status(200).json({ msg: "Nueva área creada!" });
     } else {
       res.status(500).json({ msg: "Error al crear el área" });
     }
