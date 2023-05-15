@@ -8,10 +8,12 @@ export default (state, action) => {
       return {
         ...state,
         jobData: payload,
+        isFetching: false,
       };
     case GET_ALL_JOBS:
       return {
         ...state,
+        isFetching: false,
         jobs: payload.allJobs,
         totalJobsPages: payload.totalPages,
       };

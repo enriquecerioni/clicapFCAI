@@ -19,9 +19,14 @@
   padding: 12px 12px 12px 10px;
 }
 .li-sidebar:hover {
-  background-color: #BAD7E9;
+  background-color: #bad7e9;
   border-radius: 5px;
 }
+
+.sidebar-activate {
+  background-color: #bad7e9;
+}
+
 .section-sidebar {
   font-weight: bold;
   padding-left: 10px;

@@ -37,7 +37,7 @@ export const NewCertificate = () => {
 
   const handleSubmitEdit = async () => {
     await reqAxios(
-      "POST",
+      "PUT",
       `/certificate/edit/${certificateId}`,
       "",
       certificate

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getDataUserByKey } from "../../helpers/helpers";
 import "./sidebar.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SidebarModify = () => {
   const roleId = getDataUserByKey("roleId");
@@ -12,6 +12,8 @@ export const SidebarModify = () => {
     // window.location.reload();
   };
   const navigate = useNavigate();
+  const location = useLocation();
+  const [url, setUrl] = useState(null);
 
   const redirectJobPage = () => {
     if (roleId === 1 || roleId === 2) {
@@ -19,13 +21,20 @@ export const SidebarModify = () => {
     }
     navigate("/myjobs");
   };
+
+  useEffect(() => {
+    setUrl(location.pathname);
+  }, [location]);
+
   return (
     <>
       <div className="sidebar">
         <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
           <p className="m-0 section-sidebar">MENU</p>
           <li
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/home" ? "sidebar-activate" : ""
+            }`}
             type="button"
             onClick={() => navigate("/home")}
           >
@@ -39,7 +48,9 @@ export const SidebarModify = () => {
           <p className="m-0 section-sidebar">LISTAS</p>
           {roleId === 1 ? (
             <li
-              className="d-flex gap-2 align-items-center li-sidebar"
+              className={`d-flex gap-2 align-items-center li-sidebar ${
+                url === "/users" ? "sidebar-activate" : ""
+              }`}
               type="button"
               onClick={() => navigate("/users")}
             >
@@ -54,7 +65,9 @@ export const SidebarModify = () => {
 
           <li
             onClick={() => redirectJobPage()}
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/myjobs" || url === "/jobs" ? "sidebar-activate" : ""
+            }`}
             type="button"
           >
             <div className="li-box-icon">
@@ -75,7 +88,9 @@ export const SidebarModify = () => {
             onClick={
               roleId === 1 ? () => navigate("/pays") : () => navigate("/mypays")
             }
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/pays" || url === "/mypays" ? "sidebar-activate" : ""
+            }`}
             type="button"
           >
             <div className="li-box-icon">
@@ -96,7 +111,11 @@ export const SidebarModify = () => {
                 ? () => navigate("/certificates")
                 : () => navigate("/student")
             }
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/certificates" || url === "/student"
+                ? "sidebar-activate"
+                : ""
+            }`}
             type="button"
           >
             <div className="li-box-icon">
@@ -117,7 +136,11 @@ export const SidebarModify = () => {
                 ? () => navigate("/generate-certificate")
                 : () => navigate("/mycertificates")
             }
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/generate-certificate" || url === "/mycertificates"
+                ? "sidebar-activate"
+                : ""
+            }`}
             type="button"
           >
             <div className="li-box-icon">
@@ -132,26 +155,30 @@ export const SidebarModify = () => {
               )}
             </div>
           </li>
-          
-          { roleId === 1 &&
-          (<li
-            onClick={() => navigate("/configuration")}          
-            className="d-flex gap-2 align-items-center li-sidebar"
-            type="button"
-          >
-            <div className="li-box-icon">
-              <i class="fa-solid fa-gear"></i>
-            </div>
-            <div>
-              <span>Configuración</span>
-            </div>
-          </li>)
-          }
+
+          {roleId === 1 && (
+            <li
+              onClick={() => navigate("/configuration")}
+              className={`d-flex gap-2 align-items-center li-sidebar ${
+                url === "/configuration" ? "sidebar-activate" : ""
+              }`}
+              type="button"
+            >
+              <div className="li-box-icon">
+                <i className="fa-solid fa-gear"></i>
+              </div>
+              <div>
+                <span>Configuración</span>
+              </div>
+            </li>
+          )}
 
           <p className="m-0 section-sidebar">USUARIO</p>
           <li
             onClick={() => navigate(`/user/edit/${idUser}`)}
-            className="d-flex gap-2 align-items-center li-sidebar"
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === `/user/edit/${idUser}` ? "sidebar-activate" : ""
+            }`}
             type="button"
           >
             <div className="li-box-icon">

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { EntitiesContext } from "../../context/EntitiesContext";
-import { getDataUserByKey } from "../../helpers/helpers";
+import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
+import { AreaContext } from "../../context/Area/AreaContext";
+import { Loader } from "../Loader/Loader";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -16,6 +19,12 @@ const Welcome = () => {
     setFiltersGlobal,
     filtersGlobal,
   } = useContext(EntitiesContext);
+
+  const { getNumberOfJobs } = useContext(AreaContext);
+
+  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
+  const { getAllCertificatesByUser, userCertificates } = useContext(CertificateContext);
+  const userId = getDataUserByKey("id");
 
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
@@ -42,8 +51,46 @@ const Welcome = () => {
     navigate("/jobs");
   };
 
+  const getAndSetNumberOfJobs = async () => {
+    const prueba = await getNumberOfJobs();
+    setAmountJobsAndSum(prueba);
+  };
+
+  const getAmountByJobComplete = (areaId) => {
+    if (amountJobsAndSum.completeWorks) {
+      return amountJobsAndSum.completeWorks.find((item) => item.id === areaId)
+        .amount;
+    }
+  };
+  const getAmountByJobSummaries = (areaId) => {
+    if (amountJobsAndSum.completeWorks) {
+      return amountJobsAndSum.summaries.find((item) => item.id === areaId)
+        .amount;
+    }
+  };
+  const completeJobsTotal = () => {
+    let completes = 0,
+      summariesTotal = 0;
+    if (Object.keys(amountJobsAndSum).length > 0) {
+      const { completeWorks, summaries } = amountJobsAndSum;
+      if (completeWorks.length > 0) {
+        completeWorks.forEach((el) => {
+          completes = el.amount + completes;
+        });
+      }
+      if (summaries.length > 0) {
+        summaries.forEach((el) => {
+          summariesTotal = el.amount + summariesTotal;
+        });
+      }
+    }
+    return { completes, summariesTotal };
+  };
+
   useEffect(() => {
+    getAndSetNumberOfJobs();
     getAllAreas();
+    getAllCertificatesByUser(userId);
   }, []);
 
   return (
@@ -64,35 +111,55 @@ const Welcome = () => {
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Trabajos Completos</h2>
                 <div className="flexColumn">
-                  {areas.map((area) => {
-                    return (
-                      <button
-                        type="button"
-                        className="btnAreas"
-                        onClick={() => goAndFiltered(area.id, 1)}
-                      >
-                        {area.name}
-                      </button>
-                    );
-                  })}
+                  {areas.length > 0 ? (
+                    areas.map((area) => {
+                      return (
+                        <button
+                          type="button"
+                          className="btnAreas"
+                          onClick={() => goAndFiltered(area.id, 1)}
+                        >
+                          {area.name + ` (${getAmountByJobComplete(area.id)})`}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <Loader />
+                  )}
                 </div>
-                <button type="button" className="btnViewAll"  onClick={() => goAndFiltered("", 1)}>
-                  Ver todos ()
+                <button
+                  type="button"
+                  className="btnViewAll"
+                  onClick={() => goAndFiltered("", 1)}
+                >
+                  {`Ver todos (${completeJobsTotal().completes})`}
                 </button>
               </div>
               <div className="col text-center border dashboard-card">
                 <h2 className="mb-5">Resúmenes</h2>
                 <div className="flexColumn">
-                  {areas.map((area) => {
-                    return (
-                      <button type="button" className="btnAreas" onClick={() => goAndFiltered(area.id, 2)}>
-                        {area.name}
-                      </button>
-                    );
-                  })}
+                  {areas.length > 0 ? (
+                    areas.map((area) => {
+                      return (
+                        <button
+                          type="button"
+                          className="btnAreas"
+                          onClick={() => goAndFiltered(area.id, 2)}
+                        >
+                          {area.name + `(${getAmountByJobSummaries(area.id)})`}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <Loader />
+                  )}
                 </div>
-                <button type="button" className="btnViewAll" onClick={() => goAndFiltered("", 2)}>
-                  Ver todos ()
+                <button
+                  type="button"
+                  className="btnViewAll"
+                  onClick={() => goAndFiltered("", 2)}
+                >
+                   {`Ver todos (${completeJobsTotal().summariesTotal})`}
                 </button>
               </div>
             </div>
@@ -297,10 +364,17 @@ const Welcome = () => {
                     role="alert"
                   >
                     <p>
-                      No tienes ningun certificado otorgado aún{" "}
+                      {userCertificates.length > 0 ? 
+                      'Ya tienes un certificado '
+                      : 'No tienes ningun certificado otorgado aún '
+                    }
                       <i className="fas fa-info-circle"></i>
                     </p>
-                    <button className="btn btn-info" disabled={true}>
+                    <button 
+                      className="btn btn-info"
+                      onClick={() => navigate("/mycertificates")} 
+                      disabled={userCertificates.length > 0 ? false : true}
+                    >
                       Descargar Certificados
                     </button>
                   </div>

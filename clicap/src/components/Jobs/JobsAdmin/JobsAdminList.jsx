@@ -22,7 +22,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     getAllEvaluators,
     getCorrectionsByJob,
   } = useContext(EntitiesContext);
-  console.log(allJobs);
+
   const [assignEvaluator, setAssignEvaluator] = useState(false);
   const [haveCorrection, setHaveCorrection] = useState(false);
 
@@ -44,7 +44,6 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
   const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
 
-  const handleSubmit = () => { };
   /*   const getAllEvaluators = async () => {
     const allEvaluators = await reqAxios(
       "GET",
@@ -106,7 +105,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   };
 
   useEffect(() => {
-    getCorrectionsByJob();
+    getCorrectionsByJob(work.id);
     getAllEvaluators();
     checkCorrection();
   }, []);

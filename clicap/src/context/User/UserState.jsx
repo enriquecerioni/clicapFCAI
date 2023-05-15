@@ -34,15 +34,15 @@ export const UserState = ({ children }) => {
     });
   };
 
-  const getAllUsers = async () => {
+  const getAllUsers = async (nameOpt, valueOpt) => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
     /* setUsers(getAllUser.data.response); */
     const array = [];
     getAllUser.data.response.map((item, i) => {
       array.push({
-        label: item.identifyNumber +' - '+item.name + " " + item.surname,
-        value: item.identifyNumber,
-        target: { name: "identifyNumber", value: item.identifyNumber },
+        label: item[`${nameOpt}`] + " - " + item.name + " " + item.surname,
+        value: item[`${valueOpt}`],
+        target: { name: nameOpt, value: item[`${valueOpt}`] },
       });
     });
     dispatch({
@@ -59,7 +59,7 @@ export const UserState = ({ children }) => {
         totalUsersPages: state.totalUsersPages,
         usersSelector: state.usersSelector,
         getUserData,
-        getAllUsers
+        getAllUsers,
       }}
     >
       {children}

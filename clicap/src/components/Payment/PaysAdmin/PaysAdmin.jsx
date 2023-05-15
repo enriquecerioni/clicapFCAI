@@ -2,41 +2,106 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import ModalDelete from "../../Modals/ModalDelete";
+import { ExtensiveList } from "../../ExtensiveList/ExtensiveList";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import { PaysAdminList } from "./PaysAdminList";
+import { PayContext } from "../../../context/Pay/PayContext";
+import { UserContext } from "../../../context/User/UserContext";
+import Select from "react-select";
+import { Loader } from "../../Loader/Loader";
+import { reqAxiosDownload } from "../../../helpers/helpers";
 
 const PaysAdmin = () => {
   const navigate = useNavigate();
-  const { allPays, getAllPays, users, getAllUsers } =
-    useContext(EntitiesContext);
+  const initialFilters = {
+    authorId: "",
+  };
+
+  const { getAllUsers, usersSelector, users } = useContext(UserContext);
+  const { pays, getPaysFiltered, isFetching } = useContext(PayContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [PayToDelete, setPayToDelete] = useState(false);
+  const [filters, setFilters] = useState(initialFilters);
+
+  const handleChangeFilter = (e, name) => {
+    if (e) {
+      setFilters({
+        ...filters,
+        [name]: e.target.value,
+      });
+    } else {
+      setFilters({
+        ...filters,
+        [name]: "",
+      });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getPaysFiltered(1, filters);
+  };
+
+  const exportToExcel = async () => {
+    await reqAxiosDownload(`/pay/export/pays`, filters,'Pagos');
+  };
 
   useEffect(() => {
-    getAllUsers();
-    getAllPays();
+    getAllUsers("identifyNumber", "id");
+    getPaysFiltered(1, filters);
   }, []);
   return (
     <>
       {/*     CAMBIAR */}
       {/* style={{ margin: "0 5rem 0 5rem" }} */}
-      <div style={{ margin: "5rem" }}>
+      <div className="p-2">
         <h2 className="text-center">Pagos</h2>
-        <div className="d-flex justify-content-end">
-          {/*           <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
-          >
-            <i className="fa-solid fa-plus"></i> Subir trabajo
-          </Button> */}
-        </div>
+        <div className="d-flex justify-content-end"></div>
+
         {showDeleteModal ? (
-          <ModalDelete
-            entity={PayToDelete}
-            showAlert={setShowDeleteModal}
-          />
+          <ModalDelete entity={PayToDelete} showAlert={setShowDeleteModal} />
         ) : null}
-        {allPays.length > 0 ? (
+
+        <div className="">
+          <form method="get" className="center-filter" onSubmit={handleSubmit}>
+            <div className="me-3" style={{ width: "350px" }}>
+              <label htmlFor="forName" className="form-label">
+                Nombre / Dni
+              </label>
+              <Select
+                components={{ ExtensiveList }}
+                options={usersSelector}
+                placeholder={"seleccione.."}
+                name="authorId"
+                isClearable={true}
+                theme={(theme) => ({
+                  ...theme,
+                  colors: {
+                    ...theme.colors,
+                    primary: "#3D84A8",
+                  },
+                })}
+                onChange={(e) => handleChangeFilter(e, "authorId")}
+              />
+            </div>
+
+            <Button variant="primary" type="submit">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </Button>
+
+            <Button variant="primary" onClick={exportToExcel}>
+              Exportar
+            </Button>
+          </form>
+        </div>
+
+        {isFetching ? (
+          <div className="center-center">
+            <Loader />
+          </div>
+        ) : null}
+
+        {pays.length > 0 ? (
           <>
             <div style={{ overflowX: "auto" }}>
               <table className="table">
@@ -54,7 +119,7 @@ const PaysAdmin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allPays.map((pay) => (
+                  {pays.map((pay) => (
                     <PaysAdminList
                       pay={pay}
                       users={users}
@@ -73,7 +138,7 @@ const PaysAdmin = () => {
             /> */}
           </>
         ) : (
-          <p className="text-center">No hay Trabajos</p>
+          <p className="text-center">No hay Pagos</p>
         )}
       </div>
     </>

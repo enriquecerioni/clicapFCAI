@@ -4,21 +4,40 @@ import "../upload-receipt.css";
 import { Button } from "react-bootstrap";
 import { getDataUserByKey } from "../../../helpers/helpers";
 import { EntitiesContext } from "../../../context/EntitiesContext";
+import { PayContext } from "../../../context/Pay/PayContext";
 import { useNavigate } from "react-router-dom";
 
 const PayReceipt = () => {
   const navigate = useNavigate();
-  const { pay, handleChangePay, createNewPay } = useContext(EntitiesContext);
+  const { payData, createNewPay } = useContext(PayContext);
+  const [pay, setPay] = useState(payData);
+
+  useEffect(() => {
+    setPay(payData);
+  }, [payData]);
+
+  const handleChangePay = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setPay({
+      ...pay,
+      [e.target.name]: value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createNewPay();
+    createNewPay(pay);
     navigate("/mypays");
   };
 
   return (
-    <>
-      <div className="poderver flex-column container card p-5 ">
+    <div className="boxCard centerBox">
+      <div className="poderver flex-column container p-3">
         <h2 className="text-center">Subir Comprobante de Pago</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
@@ -106,7 +125,7 @@ const PayReceipt = () => {
                 />
               </div>
             </div>
-             {/* IVA */}
+            {/* IVA */}
             <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
@@ -115,21 +134,23 @@ const PayReceipt = () => {
                 Condición Frente al IVA
               </label>
               <div className="">
-              <select
-                    className="form-select"
-                    name="iva"
-                    value={pay.iva}
-                    onChange={handleChangePay}
-                  >
-                    <option value={""}>Seleccione</option>
-                    <option value={"IVA Exento"}>IVA Exento</option>
-                    <option value={"Responsable Inscripto"}>Responsable Inscripto</option>
-                    <option value={"Monotributista"}>Monotributista</option>
-                  </select>
+                <select
+                  className="form-select"
+                  name="iva"
+                  value={pay.iva}
+                  onChange={handleChangePay}
+                >
+                  <option value={""}>Seleccione</option>
+                  <option value={"IVA Exento"}>IVA Exento</option>
+                  <option value={"Responsable Inscripto"}>
+                    Responsable Inscripto
+                  </option>
+                  <option value={"Monotributista"}>Monotributista</option>
+                </select>
               </div>
             </div>
-             {/* Detalle */}
-             <div className="mt-2">
+            {/* Detalle */}
+            <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold"
@@ -176,7 +197,7 @@ const PayReceipt = () => {
           </Button> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default PayReceipt;
