@@ -36,6 +36,7 @@ import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommi
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
 import { Institutional } from "../views/Institutional/Institutional";
 import { Sponsors } from "../views/Sponsors/Sponsors";
+import { Contact } from "../views/Contact/Contact";
 
 const CustomRoute = () => (
   <>
@@ -101,6 +102,15 @@ const CustomRoute = () => (
         element={
           <Home>
             <Sponsors />
+          </Home>
+        }
+      />
+
+      <Route
+        path="contact"
+        element={
+          <Home>
+            <Contact />
           </Home>
         }
       />
