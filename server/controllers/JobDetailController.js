@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.EMAIL_APP,
-    pass: "ifctzypbifginnzc",
+    pass: "ktsrrsbzpcjnyhgy",
   },
 });
 
@@ -224,6 +224,6 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar la correción." });
     }
   } catch (error) {
-    console.log("Error al eliminar la correción." + error)
+    console.log("Error al eliminar la correción." + error);
   }
 };
