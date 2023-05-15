@@ -23,7 +23,7 @@ var transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.EMAIL_APP,
-    pass: "ifctzypbifginnzc",
+    pass: "ktsrrsbzpcjnyhgy",
   },
 });
 
@@ -121,7 +121,7 @@ exports.register = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.status(500).json({ msg: error.message });
+        return res.status(500).json({ msg: error });
       } else {
         console.log("Email enviado!");
         res.end();

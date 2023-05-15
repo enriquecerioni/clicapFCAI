@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: process.env.EMAIL_APP,
-    pass: "ifctzypbifginnzc",
+    pass: "ktsrrsbzpcjnyhgy",
   },
 });
 
