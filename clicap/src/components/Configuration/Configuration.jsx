@@ -1,29 +1,42 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { waitAndRefresh } from "../../helpers/helpers";
 import { Tabs, Tab, Form, Button } from "react-bootstrap";
 import ModalDelete from "../Modals/ModalDelete";
 import { AreaRow } from "./AreaRow";
 import "./configuration.css";
 import { LogoConfig } from "./LogoConfig/LogoConfig";
+import { AreaContext } from "../../context/Area/AreaContext";
 
 export const Configuration = () => {
-  const { getAllAreas, areas, createNewArea, area, handleChangeArea } =
-    useContext(EntitiesContext);
+
+  const { getAllAreas,createNewArea, areaState } = useContext(AreaContext);
+  const { areas } = areaState;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [areaToDelete, setAreaToDelete] = useState(false);
+  const [area, setArea] = useState({
+    name: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createNewArea();
+    createNewArea(area);
     waitAndRefresh("/configuration", 500);
   };
 
+  const handleChangeArea = (e) => {
+    setArea({
+      ...area,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   useEffect(() => {
-    getAllAreas();
+    if (areas.length === 0) {
+      getAllAreas();
+    }
   }, []);
 
   return (
@@ -82,7 +95,7 @@ export const Configuration = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {areas.length &&
+                      {areas.length > 0 &&
                         areas.map((area, i) => (
                           <AreaRow
                             area={area}

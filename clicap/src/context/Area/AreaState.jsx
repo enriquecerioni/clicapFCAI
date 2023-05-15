@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import { AreaContext } from "./AreaContext";
 import AreaReducer from "./AreaReducer";
+import { alertSuccess } from "../../helpers/alerts";
 
 export const AreaState = ({ children }) => {
   const userId = getDataUserByKey("id");
@@ -15,6 +16,15 @@ export const AreaState = ({ children }) => {
     areasSelector: [],
   };
   const [state, dispatch] = useReducer(AreaReducer, initialState);
+
+  const createNewArea = async (area) => {
+    try {
+      const data = await reqAxios("POST", `/area/create`, "", area);
+      alertSuccess(data.data.msg);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getNumberOfJobs = async () => {
     const jobsAndSummaries = await reqAxios(
@@ -55,6 +65,7 @@ export const AreaState = ({ children }) => {
     <AreaContext.Provider
       value={{
         areaState: state,
+        createNewArea,
         getNumberOfJobs,
         getAllAreas,
       }}
