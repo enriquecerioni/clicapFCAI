@@ -7,7 +7,7 @@ import "../../App.css";
 import { MenuPhone } from "../MenuPhone/MenuPhone";
 
 const Home = ({ children }) => {
-/*   const putSidebarRespons = () => {
+  /*   const putSidebarRespons = () => {
     if (window.innerWidth < 760) {
       setShowMenuPhone(true);
     } else {

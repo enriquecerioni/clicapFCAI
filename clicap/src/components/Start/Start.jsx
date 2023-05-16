@@ -87,30 +87,6 @@ const Start = () => {
             </a>
           </div>
         </div>
-
-        {/* <div className="intro-container wow fadeIn">
-          <h1 className="mb-4 pb-0">
-            <img src={clicap} alt="Image not found" className="clicapLogo"/>
-          </h1>
-          <p className="mb-4 pb-0">
-            10-12 Abril, Facultad de Ciencias Aplicadas a la Industria, San
-            Rafalel (Mendoza)
-          </p>
-          <a
-            href="https://www.youtube.com/watch?v=K4lYCtmJVvk&ab_channel=MediaMendoza"
-            className="venobox play-btn mb-4"
-            data-vbtype="video"
-            data-autoplay="true"
-            target="blank"
-          ></a>
-          <a
-            href="#about"
-            className="about-btn scrollto"
-            style={{ textDecoration: "none" }}
-          >
-            Acerca del Congreso
-          </a>
-        </div> */}
       </section>
 
       <section id="about">
@@ -241,25 +217,7 @@ const Start = () => {
             <p>Algunas imágenes del último congreso CLICAP 2022.</p>
           </div>
         </div>
-
         <Carousel />
-        {/* <div className="row">
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery1} alt="" className="img-fluid" />
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery2} alt="" className="img-fluid" />
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery3} alt="" className="img-fluid" />
-            </div>
-          </div>
-        </div> */}
       </section>
 
       <section id="clients" className="clients section-with-bg wow fadeInUp">

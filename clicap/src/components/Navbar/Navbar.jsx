@@ -147,7 +147,7 @@ const Navbar = () => {
         <div className="liNav">
           <div className="dropdown">
             <div>
-              <p type="button" onClick={() => navigate("/page-in-process")}>
+              <p type="button" onClick={() => navigate("/contact")}>
                 Contacto
               </p>
             </div>

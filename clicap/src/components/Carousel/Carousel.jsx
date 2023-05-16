@@ -33,7 +33,7 @@ const Carousel = () => {
   };
 
   return (
-    <div>
+    <>
       <Slider {...settings}>
         {photos.map((photo, index) => (
           <div key={index}>
@@ -45,7 +45,7 @@ const Carousel = () => {
           </div>
         ))}
       </Slider>
-    </div>
+    </>
   );
 };
 
