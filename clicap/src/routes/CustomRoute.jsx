@@ -36,10 +36,7 @@ import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommi
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
 import { Institutional } from "../views/Institutional/Institutional";
 import { Sponsors } from "../views/Sponsors/Sponsors";
-<<<<<<< HEAD
 import { Contact } from "../views/Contact/Contact";
-=======
->>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
 
 const CustomRoute = () => (
   <>
