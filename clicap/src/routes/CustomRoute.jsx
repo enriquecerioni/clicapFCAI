@@ -36,7 +36,10 @@ import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommi
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
 import { Institutional } from "../views/Institutional/Institutional";
 import { Sponsors } from "../views/Sponsors/Sponsors";
+<<<<<<< HEAD
 import { Contact } from "../views/Contact/Contact";
+=======
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
 
 const CustomRoute = () => (
   <>
@@ -107,160 +110,270 @@ const CustomRoute = () => (
       />
 
       <Route
+<<<<<<< HEAD
         path="contact"
         element={
           <Home>
             <Contact />
           </Home>
-        }
-      />
-
-      <Route
+=======
         path="newjob"
         element={
           <PrivateRoute>
             <DeliveryTask />
           </PrivateRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="newjob"
+=======
+        path="myjob/:id"
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
+        element={
+          <PrivateRoute>
+            <DeliveryTask />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+<<<<<<< HEAD
         path="myjob/:id"
         element={
           <PrivateRoute>
             <DeliveryTask />
           </PrivateRoute>
-        }
-      />
-
-      <Route
+=======
         path="configuration"
         element={
           <PrivateAdminRoute>
             <Configuration />
           </PrivateAdminRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="configuration"
+        element={
+          <PrivateAdminRoute>
+            <Configuration />
+          </PrivateAdminRoute>
+=======
         path="newpay"
         element={
           <PrivateRoute>
             <PayReceipt />
           </PrivateRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="newpay"
+        element={
+          <PrivateRoute>
+            <PayReceipt />
+=======
         path="pay/edit/:id"
         element={
           <PrivateRoute>
             <UpdateInvoce />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="pay/edit/:id"
+        element={
+          <PrivateRoute>
+            <UpdateInvoce />
+=======
+        path="newcertificate"
+        element={
+          <PrivateRoute>
+            <Certificate />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+<<<<<<< HEAD
         path="newcertificate"
         element={
           <PrivateRoute>
             <Certificate />
           </PrivateRoute>
-        }
-      />
-
-      <Route
+=======
         path="jobs"
         element={
           <PrivateAdminRoute>
             <JobsAdmin />
           </PrivateAdminRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="jobs"
+        element={
+          <PrivateAdminRoute>
+            <JobsAdmin />
+=======
         path="jobs/job/edit/:id"
         element={
           <PrivateAdminRoute>
             <DeliveryTask />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateAdminRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="jobs/job/edit/:id"
+        element={
+          <PrivateAdminRoute>
+            <DeliveryTask />
+=======
+        path="job/correctionstosend/:id"
+        element={
+          <PrivateAdminRoute>
+            <SendCorrectionAdmin />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+<<<<<<< HEAD
         path="job/correctionstosend/:id"
         element={
           <PrivateAdminRoute>
             <SendCorrectionAdmin />
           </PrivateAdminRoute>
-        }
-      />
-
-      <Route
+=======
         path="job/:id"
         element={
           <PrivateRoute>
             <JobInformation />
           </PrivateRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="job/:id"
+        element={
+          <PrivateRoute>
+            <JobInformation />
+=======
         path="job/corrections/:id"
         element={
           <PrivateRoute>
             <Corrections />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="job/corrections/:id"
+        element={
+          <PrivateRoute>
+            <Corrections />
+=======
         path="myjobs"
         element={
           <PrivateRoute>
             <JobStudent />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="myjobs"
+        element={
+          <PrivateRoute>
+            <JobStudent />
+=======
+        path="mycertificates"
+        element={
+          <PrivateRoute>
+            <CertificatesUser />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+<<<<<<< HEAD
         path="mycertificates"
         element={
           <PrivateRoute>
             <CertificatesUser />
           </PrivateRoute>
-        }
-      />
-
-      <Route
+=======
         path="generate-certificate"
         element={
           <PrivateAdminRoute>
             <GenerateCertificate />
           </PrivateAdminRoute>
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="generate-certificate"
+        element={
+          <PrivateAdminRoute>
+            <GenerateCertificate />
+=======
         path="certificate-types"
         element={
           <PrivateAdminRoute>
             <CertificateTypes />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateAdminRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="certificate-types"
+        element={
+          <PrivateAdminRoute>
+            <CertificateTypes />
+=======
         path="new-certificate-type"
         element={
           <PrivateAdminRoute>
             <NewCertificate />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
           </PrivateAdminRoute>
         }
       />
 
       <Route
+<<<<<<< HEAD
+        path="new-certificate-type"
+=======
         path="edit-certificate-type/:certificateId"
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         element={
           <PrivateAdminRoute>
             <NewCertificate />
@@ -269,6 +382,23 @@ const CustomRoute = () => (
       />
 
       <Route
+<<<<<<< HEAD
+        path="edit-certificate-type/:certificateId"
+        element={
+          <PrivateAdminRoute>
+            <NewCertificate />
+=======
+        path="certificates"
+        element={
+          <PrivateAdminRoute>
+            <StudentCertificateAdmin />
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+<<<<<<< HEAD
         path="certificates"
         element={
           <PrivateAdminRoute>
@@ -278,6 +408,8 @@ const CustomRoute = () => (
       />
 
       <Route
+=======
+>>>>>>> adf0e73d075fabf730d65622986b51fc888980a3
         path="student"
         element={
           <PrivateRoute>
