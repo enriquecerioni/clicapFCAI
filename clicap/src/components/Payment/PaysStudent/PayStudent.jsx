@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../pays.css";
 import { useNavigate } from "react-router";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 /* import { PaginationCustom } from "../PaginationCustom/PaginationCustom"; */
 import { getDataUserByKey } from "../../../helpers/helpers";
 import PayStudentList from "./PayStudentList";

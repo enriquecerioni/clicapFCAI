@@ -1,25 +1,41 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, waitAndRefresh } from "../../helpers/helpers";
 import ModalDelete from "../Modals/ModalDelete";
 import { CardNew } from "./CardNew";
 import "./news.css";
+import { NewsContext } from "../../context/News/NewsContext";
 
 export const News = () => {
-  const { news, getAllNews, createNewNew, handleChangeNew, allNews } =
-    useContext(EntitiesContext);
+  const { newsState, getAllNews, createNewNew } = useContext(NewsContext);
+  const { newInitial, news } = newsState;
+
   const role = getDataUserByKey("roleId");
+  const [newToCreate, setNewToCreate] = useState(newInitial);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [NewToDelete, setNewToDelete] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createNewNew();
+    await createNewNew(newToCreate);
     waitAndRefresh("/news", 500);
+  };
+
+  const handleChangeNew = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+
+    setNewToCreate({
+      ...newToCreate,
+      [e.target.name]: value,
+    });
   };
 
   useEffect(() => {
@@ -42,7 +58,7 @@ export const News = () => {
                   placeholder="Título"
                   className="form-control"
                   name="title"
-                  value={news.title}
+                  value={newToCreate.title}
                   onChange={handleChangeNew}
                 />
               </div>
@@ -52,7 +68,7 @@ export const News = () => {
                   placeholder="Contenido de la novedad"
                   className="form-control"
                   name="content"
-                  value={news.content}
+                  value={newToCreate.content}
                   onChange={handleChangeNew}
                 />
               </div>
@@ -82,14 +98,14 @@ export const News = () => {
           {showDeleteModal ? (
             <ModalDelete entity={NewToDelete} showAlert={setShowDeleteModal} />
           ) : null}
-          {allNews.length > 0 ? (
-            allNews.map((news) => (
+          {news.length > 0 ? (
+            news.map((item) => (
               <div className="flexNews">
                 <CardNew
-                  news={news}
+                  news={item}
                   showAlert={setShowDeleteModal}
                   setNewToDelete={setNewToDelete}
-                  key={news.id}
+                  key={item.id}
                   role={role}
                 />
               </div>

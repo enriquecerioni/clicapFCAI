@@ -6,19 +6,22 @@ import { PayState } from "./Pay/PayState";
 import { AreaState } from "./Area/AreaState";
 import { RegisterState } from "./Register/RegisterState";
 import { ModalitiesState } from "./Modalities/ModalitiesState";
+import { NewsState } from "./News/NewsState";
 
 export const StateContext = ({ children }) => {
   return (
     <RegisterState>
       <UserState>
         <ModalitiesState>
-          <JobState>
-            <CertificateState>
-              <AreaState>
-                <PayState>{children}</PayState>
-              </AreaState>
-            </CertificateState>
-          </JobState>
+          <NewsState>
+            <JobState>
+              <CertificateState>
+                <AreaState>
+                  <PayState>{children}</PayState>
+                </AreaState>
+              </CertificateState>
+            </JobState>
+          </NewsState>
         </ModalitiesState>
       </UserState>
     </RegisterState>
