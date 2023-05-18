@@ -23,7 +23,7 @@ const Home = ({ children }) => {
     <>
       <div className="">
         {!showMenuPhone ? (
-          <div className="show-menu-desktop">
+          <div className="show-menu-desktop h-100">
             <Navbar />
             <Container className="h-100">
               <Row className="h-100">
@@ -40,7 +40,7 @@ const Home = ({ children }) => {
                     >
                       <SidebarModify />
                     </Col>
-                    <Col className="p-0">{children}</Col>
+                    <Col className="p-0" style={{backgroundColor:'#D2E9E9'}}>{children}</Col>
                   </>
                 ) : (
                   <Col className="p-0">{children}</Col>

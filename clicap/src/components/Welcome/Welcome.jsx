@@ -111,9 +111,7 @@ const Welcome = () => {
               <div className="col text-center border dashboard-card">
                 <h2 className="">Trabajos Completos</h2>
                 <div className="center-center">
-                  <hr
-                    style={{ border: "1px solid grey", width: "100px" }}
-                  ></hr>
+                  <hr style={{ border: "1px solid grey", width: "100px" }}></hr>
                 </div>
                 <div className="flexColumn">
                   {areas.length > 0 ? (
@@ -124,7 +122,20 @@ const Welcome = () => {
                           className="btnAreas"
                           onClick={() => goAndFiltered(area.id, 1)}
                         >
-                          {area.name + ` (${getAmountByJobComplete(area.id)})`}
+                          <div className="d-flex justify-content-between">
+                            <p className="m-0 title-modality-welcome">{area.name}</p>
+                            <div
+                              className="amount-worksbymodality-box center-center"
+                              style={{
+                                backgroundColor: "#B0DAFF",
+                                border: "1px solid #19A7CE",
+                              }}
+                            >
+                              <p className="m-0 ">{`${getAmountByJobComplete(
+                                area.id
+                              )}`}</p>
+                            </div>
+                          </div>
                         </button>
                       );
                     })
@@ -137,7 +148,8 @@ const Welcome = () => {
                   className="btnViewAll"
                   onClick={() => goAndFiltered("", 1)}
                 >
-                  {`Ver todos (${completeJobsTotal().completes})`}
+                  {/* {`Ver todos (${completeJobsTotal().completes})`} */}
+                  {`Ver todos`}
                 </button>
               </div>
               <div className="col text-center border dashboard-card">
