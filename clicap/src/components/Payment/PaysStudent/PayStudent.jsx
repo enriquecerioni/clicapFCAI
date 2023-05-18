@@ -8,11 +8,13 @@ import { PayContext } from "../../../context/Pay/PayContext";
 
 const PayStudent = () => {
   const navigate = useNavigate();
-  const { pays, getAllPays } = useContext(PayContext);
+  const { payState, getAllPays } = useContext(PayContext);
+  const { pays } = payState;
+  
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };
-  
+
   useEffect(() => {
     /*     getmyJobsPaginated(page, filterQuery); */
     getAllPays(page, filterToAuthor);

@@ -79,9 +79,7 @@ export const PayState = ({ children }) => {
   return (
     <PayContext.Provider
       value={{
-        payData: state.payData,
-        pays: state.pays,
-        isFetching: state.isFetching,
+        payState: state,
         createNewPay,
         getAllPays,
         getAllPaysToAdmin,

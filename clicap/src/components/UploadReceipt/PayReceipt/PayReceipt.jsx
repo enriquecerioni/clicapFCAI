@@ -7,7 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 const PayReceipt = () => {
   const navigate = useNavigate();
-  const { payData, createNewPay } = useContext(PayContext);
+  const { payState, createNewPay } = useContext(PayContext);
+  const { payData } = payState;
+
   const [pay, setPay] = useState(payData);
 
   useEffect(() => {

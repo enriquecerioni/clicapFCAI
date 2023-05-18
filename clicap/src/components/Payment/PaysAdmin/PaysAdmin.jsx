@@ -11,14 +11,16 @@ import { Loader } from "../../Loader/Loader";
 import { reqAxiosDownload } from "../../../helpers/helpers";
 
 const PaysAdmin = () => {
-
   const initialFilters = {
     authorId: "",
   };
 
   const { getAllUsers, userState } = useContext(UserContext);
   const { usersSelector, users } = userState;
-  const { pays, getPaysFiltered, isFetching } = useContext(PayContext);
+
+  const { getPaysFiltered, payState } = useContext(PayContext);
+  const { pays, isFetching } = payState;
+  
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [PayToDelete, setPayToDelete] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
