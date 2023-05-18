@@ -117,13 +117,16 @@
     padding: 0.7em 1.7em;
     font-size: 18px;
     border-radius: 0.5em;
-    background: #e8e8e8;
-    border: 1px solid #e8e8e8;
+    background: #AFD3E2;
+    border: 1px solid #AFD3E2;
     transition: all .3s;
     box-shadow: 2px 2px 6px #c5c5c5,
         -2px -2px 6px #ffffff;
 }
 
+.btnAreas:hover {
+    background-color: #4b7df6;
+}
 .btnAreas:active {
     color: #666;
     box-shadow: inset 2px 2px 6px #c5c5c5,
@@ -131,26 +134,18 @@
 }
 
 .btnViewAll {
-    background-color: white;
+    background-color: #19A7CE;
     color: black;
     border-radius: 10em;
     font-size: 17px;
     font-weight: 600;
     padding: 1em 2em;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    border: 1px solid black;
-    box-shadow: 0 0 0 0 black;
+    border: 1px solid #19A7CE;
+   /*  box-shadow: 0 0 0 0 black; */
 }
 
 .btnViewAll:hover {
-    transform: translateY(-4px) translateX(-2px);
-    box-shadow: 2px 5px 0 0 black;
-}
-
-.btnViewAll:active {
-    transform: translateY(2px) translateX(1px);
-    box-shadow: 0 0 0 0 black;
+background-color: #4b7df6;
 }
 
 .flexColumn {

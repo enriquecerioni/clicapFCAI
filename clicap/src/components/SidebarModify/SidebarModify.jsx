@@ -30,7 +30,6 @@ export const SidebarModify = () => {
     <>
       <div className="sidebar">
         <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
-          <p className="m-0 section-sidebar">MENU</p>
           <li
             className={`d-flex gap-2 align-items-center li-sidebar ${
               url === "/home" ? "sidebar-activate" : ""
@@ -45,7 +44,10 @@ export const SidebarModify = () => {
               <span>Menú principal</span>
             </div>
           </li>
-          <p className="m-0 section-sidebar">LISTAS</p>
+          <div className="center-center">
+            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
+          </div>
+          <p className="m-0 section-sidebar">Listas</p>
           {roleId === 1 ? (
             <li
               className={`d-flex gap-2 align-items-center li-sidebar ${
@@ -173,7 +175,11 @@ export const SidebarModify = () => {
             </li>
           )}
 
-          <p className="m-0 section-sidebar">USUARIO</p>
+          <div className="center-center">
+            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
+          </div>
+
+          <p className="m-0 section-sidebar">Usuario</p>
           <li
             onClick={() => navigate(`/user/edit/${idUser}`)}
             className={`d-flex gap-2 align-items-center li-sidebar ${

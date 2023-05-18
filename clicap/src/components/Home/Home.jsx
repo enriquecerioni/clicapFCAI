@@ -29,7 +29,15 @@ const Home = ({ children }) => {
               <Row className="h-100">
                 {isAuthenticated() ? (
                   <>
-                    <Col sm={2} className="col-sidebar p-0">
+                    <Col
+                      sm={2}
+                      className="col-sidebar p-0"
+                      style={{
+                        borderRightColor: "#ffff",
+                        backgroundColor: "#2864f6",
+                        borderTopRightRadius:'10px'
+                      }}
+                    >
                       <SidebarModify />
                     </Col>
                     <Col className="p-0">{children}</Col>

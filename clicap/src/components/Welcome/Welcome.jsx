@@ -109,7 +109,12 @@ const Welcome = () => {
             </div>
             <div className="row">
               <div className="col text-center border dashboard-card">
-                <h2 className="mb-5">Trabajos Completos</h2>
+                <h2 className="">Trabajos Completos</h2>
+                <div className="center-center">
+                  <hr
+                    style={{ border: "1px solid grey", width: "100px" }}
+                  ></hr>
+                </div>
                 <div className="flexColumn">
                   {areas.length > 0 ? (
                     areas.map((area) => {
