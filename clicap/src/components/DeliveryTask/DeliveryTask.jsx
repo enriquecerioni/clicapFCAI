@@ -2,41 +2,61 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
-import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
-import { EntitiesContext } from "../../context/EntitiesContext";
+import { formDataAxios } from "../../helpers/helpers";
+import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
 import { JobContext } from "../../context/Job/JobContext";
 import { alertError } from "../../helpers/alerts";
+import { AreaContext } from "../../context/Area/AreaContext";
+import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { jobData, getJobId } = useContext(JobContext);
-  const { areas, getAllAreas, modalities, getAllModalities } =
-    useContext(EntitiesContext);
+
+  const { jobState, getJobId } = useContext(JobContext);
+  const { jobData } = jobState;
+
+  const { areaState, getAllAreas } = useContext(AreaContext);
+  const { areas, areasSelector } = areaState;
+
+  const { modalitiesState, getAllModalities } = useContext(ModalitiesContext);
+
+  const { modalities, modalitiesSelector } = modalitiesState;
 
   const [job, setJob] = useState(jobData);
   const [putDisabled, setPutDisabled] = useState(false);
+
   const [members, setMembers] = useState({
     items: [],
     value: "",
     error: null,
   });
-  const handleChangeUpJob = (e) => {
+
+  const handleChangeUpJob = (e, name) => {
     let value =
       e.target.type === "file"
         ? e.target.value === ""
           ? ""
           : e.target.files[0]
         : e.target.value;
-    if (e.target.name === "areaId") {
+
+    /*     if (name === "areaId") {
       value = Number(value);
+    } */
+
+    if (e) {
+      setJob({
+        ...job,
+        [e.target.name]: value,
+      });
+    } else {
+      setJob({
+        ...job,
+        [name]: "",
+      });
     }
-    setJob({
-      ...job,
-      [e.target.name]: value,
-    });
   };
 
   const createNewJob = async () => {
@@ -89,8 +109,14 @@ const DeliveryTask = () => {
     if (id) {
       getJobId(id);
     }
-    getAllAreas();
-    getAllModalities();
+
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+
+    if (modalities.length === 0) {
+      getAllModalities();
+    }
   }, []);
 
   useEffect(() => {
@@ -131,8 +157,7 @@ const DeliveryTask = () => {
                     placeholder="Nombre"
                     className="form-control"
                     name="name"
-                    value={job.name}
-                    onChange={handleChangeUpJob}
+                    onChange={(e) => handleChangeUpJob(e, "name")}
                   />
                 </div>
               </div>
@@ -145,23 +170,23 @@ const DeliveryTask = () => {
                 >
                   Area
                 </label>
-                <div className="">
-                  <select
-                    className="form-select"
-                    name="areaId"
-                    value={job.areaId}
-                    onChange={handleChangeUpJob}
-                  >
-                    <option value={""}>Seleccione</option>
-                    {areas.length > 0
-                      ? areas.map((area) => (
-                          <option key={area.id} value={area.id}>
-                            {area.name}
-                          </option>
-                        ))
-                      : null}
-                  </select>
-                </div>
+                <Select
+                  options={areasSelector}
+                  placeholder={"seleccione.."}
+                  name="areaId"
+                  value={areasSelector.filter(
+                    (area) => job.areaId === area.value
+                  )}
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeUpJob(e, "areaId")}
+                />
               </div>
 
               {/* MODALIDAD */}
@@ -172,23 +197,23 @@ const DeliveryTask = () => {
                 >
                   Modalidad
                 </label>
-                <div className="">
-                  <select
-                    className="form-select"
-                    name="jobModalityId"
-                    value={job.jobModalityId}
-                    onChange={handleChangeUpJob}
-                  >
-                    <option value={""}>Seleccione</option>
-                    {modalities.length > 0
-                      ? modalities.map((modality) => (
-                          <option key={modality.id} value={modality.id}>
-                            {modality.name}
-                          </option>
-                        ))
-                      : null}
-                  </select>
-                </div>
+                <Select
+                  options={modalitiesSelector}
+                  placeholder={"seleccione.."}
+                  name="jobModalityId"
+                  value={modalitiesSelector.filter(
+                    (modality) => job.jobModalityId === modality.value
+                  )}
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeUpJob(e, "jobModalityId")}
+                />
               </div>
             </div>
             {/* Miembros */}
@@ -203,16 +228,6 @@ const DeliveryTask = () => {
                 membersToSend={members}
                 setMembersToSend={setMembers}
               />
-              {/*               <div className="">
-                <input
-                  type="text"
-                  placeholder="Ivan castro;Enrique Cerioni;"
-                  className="form-control"
-                  name="members"
-                  value={job.members}
-                  onChange={handleChangeUpJob}
-                />
-              </div> */}
             </div>
             {/* Archivo */}
             <div className="mt-2">
@@ -228,7 +243,7 @@ const DeliveryTask = () => {
                   placeholder="Seleccione..."
                   className="form-control"
                   name="urlFile"
-                  onChange={handleChangeUpJob}
+                  onChange={(e) => handleChangeUpJob(e, "urlFile")}
                 />
               </div>
             </div>

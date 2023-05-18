@@ -6,12 +6,13 @@ import { downloadFile } from "../../../helpers/helpers";
 export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
   const navigate = useNavigate();
   /*  const startDate = work.startDate.split('-') */
-  const user = users.find((user) => user.id === pay.authorId).name;
+  const userName = users.length > 0 ? users.find((user) => user.id === pay.authorId).name : '-';
+
   const deletePay = () => {
     showAlert(true);
     setPayToDelete({
       id: pay.id,
-      entityName: "el pago de " + user,
+      entityName: "el pago de " + userName,
       entityType: "pay",
       receipt: pay.urlFile,
       invoice: pay.invoice
@@ -20,7 +21,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
   return (
     <>
       <tr>
-        <td>{users.find((user) => user.id === pay.authorId).name}</td>
+        <td>{userName}</td>
         <td>{pay.cuitCuil}</td>
         <td>{pay.iva}</td>
         <td>{pay.amount + " " + pay.moneyType}</td>
