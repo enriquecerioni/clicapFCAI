@@ -22,14 +22,14 @@ export const CertificatesList = ({certificate,setCertificateToDelete,showAlert})
         <td className="">
           <i
             type="button"
-            className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+            className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
             onClick={() => navigate(`/edit-certificate-type/${certificate.id}`)}
           ></i>
         </td>
         <td>
           <i
             type="button"
-            className="fa-solid fa-trash-can icon-size-table btn-delete-table"
+            className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
             onClick={deleteCertificate}
           ></i>
         </td>

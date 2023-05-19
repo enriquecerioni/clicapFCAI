@@ -36,7 +36,7 @@ export const StudentCertificateList = ({ regularCertificate, showAlert, setCerti
                 <td>
                     <i
                         type="button"
-                        className="fa-solid fa-trash-can icon-size-table btn-delete-table"
+                        className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
                         onClick={deleteRegularCertificate}
                     ></i>
                 </td>

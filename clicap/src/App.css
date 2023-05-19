@@ -17,6 +17,7 @@ body,
   --color-clicap-greylight: #bdbdbd21;
   --color-clicap-hover: #a45701;
   --color-clicap-focus: rgb(200 106 2 / 50%);
+  --color-icon-error: #ed2b2a;
 }
 .center-center {
   display: flex;
@@ -33,7 +34,8 @@ body,
   min-height: 100%;
 }
 .table thead th {
-  border-bottom: 2px solid var(--color-clicap);
+  /* border-bottom: 2px solid var(--color-clicap); */
+  border-bottom: 2px solid #2864f6;
 }
 .icon-size-table {
   font-size: 1.2rem;
@@ -46,7 +48,7 @@ body,
   color: #eb455f;
 }
 .btn-certificate-table:hover {
-  color: #439A97;
+  color: #439a97;
 }
 .modal-50w {
   min-width: 50%;
@@ -63,8 +65,14 @@ body,
   overflow-x: auto;
 }
 
+.color-icon-error{
+  color: var(--color-icon-error);
+}
+.color-icon-edit{
+  color: #146C94;
+}
 
-@media(max-width: 480px){
+@media (max-width: 480px) {
   .overflow-x {
     overflow-x: auto;
   }

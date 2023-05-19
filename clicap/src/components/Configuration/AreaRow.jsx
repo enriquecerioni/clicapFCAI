@@ -17,7 +17,7 @@ export const AreaRow = ({ area, showAlert, setAreaToDelete }) => {
       <td>{area.name}</td>
       <td><i
         type="button"
-        className="fa-solid fa-trash-can icon-size-table btn-delete-table"
+        className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
         onClick={deleteArea}
       ></i></td>
     </tr>

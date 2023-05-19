@@ -32,37 +32,12 @@ export const UsersList = ({
         <td>{user.identifyNumber}</td>
         <td>{user.email}</td>
         <td>{user.role.name}</td>
-        <OverlayTrigger
-          placement={"top"}
-          overlay={<Tooltip>Editar usuario</Tooltip>}
-        >
-          <td className="">
-            <i
-              type="button"
-              className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-              onClick={() => navigate(`/user/edit/${user.id}`)}
-            ></i>
-          </td>
-        </OverlayTrigger>
 
-        <OverlayTrigger
-          placement={"top"}
-          overlay={<Tooltip>Eliminar usuario</Tooltip>}
-        >
-          <td>
-            <i
-              type="button"
-              className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-              onClick={deleteUser}
-            ></i>
-          </td>
-        </OverlayTrigger>
-
-        <OverlayTrigger
-          placement={"top"}
-          overlay={<Tooltip>Generar certificado</Tooltip>}
-        >
-          <td>
+        <td>
+          <OverlayTrigger
+            placement={"top"}
+            overlay={<Tooltip>Generar certificado</Tooltip>}
+          >
             <i
               type="button"
               className="fa-solid fa-id-card icon-size-table btn-certificate-table"
@@ -71,8 +46,34 @@ export const UsersList = ({
                 showModalCertificate(true);
               }}
             ></i>
-          </td>
-        </OverlayTrigger>
+          </OverlayTrigger>
+        </td>
+
+        <td className="">
+          <OverlayTrigger
+            placement={"top"}
+            overlay={<Tooltip>Editar usuario</Tooltip>}
+          >
+            <i
+              type="button"
+              className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+              onClick={() => navigate(`/user/edit/${user.id}`)}
+            ></i>
+          </OverlayTrigger>
+        </td>
+
+        <td>
+          <OverlayTrigger
+            placement={"top"}
+            overlay={<Tooltip>Eliminar usuario</Tooltip>}
+          >
+            <i
+              type="button"
+              className="fa-solid fa-trash-can color-icon-error icon-size-table btn-delete-table"
+              onClick={deleteUser}
+            ></i>
+          </OverlayTrigger>
+        </td>
       </tr>
     </>
   );

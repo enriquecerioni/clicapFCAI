@@ -30,7 +30,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
         <td>
           <i
             type="button"
-            className="fa-solid fa-trash-can icon-size-table btn-delete-table"
+            className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
             onClick={deletePay}
           ></i>
         </td>

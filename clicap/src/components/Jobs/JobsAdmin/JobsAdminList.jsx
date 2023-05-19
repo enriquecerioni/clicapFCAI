@@ -3,7 +3,11 @@ import { useNavigate } from "react-router";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Select from "react-select";
 import { useEffect } from "react";
-import {getDataUserByKey,reqAxios,waitAndRefresh} from "../../../helpers/helpers";
+import {
+  getDataUserByKey,
+  reqAxios,
+  waitAndRefresh,
+} from "../../../helpers/helpers";
 
 import { alertError } from "../../../helpers/alerts";
 import { JobContext } from "../../../context/Job/JobContext";
@@ -60,7 +64,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     setEvaluatorOptions1(evaluatorsSelector);
     setEvaluatorOptions2(evaluatorsSelector);
   };
-  
+
   const addEvaluators = async (id) => {
     if (evaluatorSelected1 === evaluatorSelected2) {
       return alertError("No se puede asignar el mismo evaluador!");
@@ -166,37 +170,15 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
         {roleId === 1 ? (
           <>
             <td>
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-danger"
-                  onClick={() => setAssignEvaluator(!assignEvaluator)}
-                >
-                  <i className="fa-solid fa-xmark"></i>
-                </Button>
-              ) : (
-                <i
-                  type="button"
-                  className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-                  onClick={deleteJob}
-                ></i>
-              )}
+              <Button
+                className="btn btn-success"
+                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
+                disabled={work.approve === 1 ? false : true}
+              >
+                Evaluaciones
+              </Button>
             </td>
-            <td className="">
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-success"
-                  onClick={() => addEvaluators(work.id)}
-                >
-                  <i className="fa-solid fa-check"></i>
-                </Button>
-              ) : (
-                <i
-                  type="button"
-                  className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
-                ></i>
-              )}
-            </td>
+
             <td>
               {!assignEvaluator ? (
                 <OverlayTrigger
@@ -211,14 +193,39 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
                 </OverlayTrigger>
               ) : null}
             </td>
+
+            <td className="">
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-success"
+                  onClick={() => addEvaluators(work.id)}
+                >
+                  <i className="fa-solid fa-check"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
+                ></i>
+              )}
+            </td>
+
             <td>
-              <Button
-                className="btn btn-success"
-                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
-                disabled={work.approve === 1 ? false : true}
-              >
-                Evaluaciones
-              </Button>
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-danger"
+                  onClick={() => setAssignEvaluator(!assignEvaluator)}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
+                  onClick={deleteJob}
+                ></i>
+              )}
             </td>
           </>
         ) : roleId === 2 ? (
