@@ -7,27 +7,16 @@ const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
+const { transporter } = require("../utils/utils");
 const CorrectionModel = require("../models/CorrectionModel");
 const excelJS = require("exceljs");
 const EXCEL_CELL_WIDTH = 12;
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
-//NODEMAILER
-const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const uuid = require("uuid");
 const JobDetailModel = require("../models/JobDetailModel");
 
 var jobUUID;
-
-var transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_APP,
-    pass: "ifctzypbifginnzc",
-  },
-});
 
 transporter.use(
   "compile",

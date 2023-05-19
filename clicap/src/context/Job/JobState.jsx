@@ -5,6 +5,8 @@ import JobReducer from "./JobReducer";
 
 export const JobState = ({ children }) => {
   const userId = getDataUserByKey("id");
+  const roleId = getDataUserByKey("roleId");
+
   const initialState = {
     jobData: {
       name: "",
@@ -18,6 +20,15 @@ export const JobState = ({ children }) => {
       evaluatorId2: "",
     },
     jobs: [],
+    jobsFilter: {
+      authorId: "",
+      name: "",
+      areaId: "",
+      jobModalityId: "",
+      status: "",
+      evaluatorId: roleId === 2 ? userId : "",
+    },
+    prefiltered: false,
     isFetching: true,
     totalJobsPages: 0,
     usersSelector: [],
@@ -40,7 +51,8 @@ export const JobState = ({ children }) => {
       console.log(error);
     }
   };
-  const getAllJobs = async (page, params) => {
+
+  const getJobsFiltered = async (page, params) => {
     try {
       const getAllJob = await reqAxios(
         "GET",
@@ -48,11 +60,12 @@ export const JobState = ({ children }) => {
         params,
         ""
       );
+      console.log(getAllJob.data);
       dispatch({
         type: "GET_ALL_JOBS",
         payload: {
-          allJobs: getAllJob.data.response,
-          totalPages: getAllJob.data.pages,
+          jobs: getAllJob.data.response,
+          totalJobsPages: getAllJob.data.pages,
         },
       });
     } catch (error) {
@@ -60,16 +73,66 @@ export const JobState = ({ children }) => {
     }
   };
 
+  //Buscar las correciones de un trabajo
+  const getCorrectionsByJob = async (id) => {
+    const params = { roleId, evaluatorId: userId };
+    try {
+      const corrections = await reqAxios(
+        "GET",
+        `/jobdetails/get/${id}`,
+        params,
+        ""
+      );
+      return corrections.data.response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Chequea si ya tiene una correccion
+  const checkCorrection = async (workId, userId) => {
+    const check = await reqAxios(
+      "get",
+      `/jobdetails/check/${workId}/${userId}`,
+      "",
+      ""
+    );
+    return check.data.value;
+  };
+
+  //Buscar la correcion para el trabajo como usuario
+  const getCorrectionByJob = async (id) => {
+    const params = { roleId, evaluatorId: null };
+    try {
+      const corrections = await reqAxios(
+        "GET",
+        `/jobdetails/get/${id}`,
+        params,
+        ""
+      );
+      return corrections.data.response[0];
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setJobFilters=(filters)=>{
+    dispatch({
+      type: "SET_JOBS_FILTERS",
+      payload: filters,
+    });
+  }
+
   return (
     <JobContext.Provider
       value={{
-        jobData: state.jobData,
-        jobs: state.jobs,
-        isFetching: state.isFetching,
-        totalJobsPages: state.totalJobsPages,
-        usersSelector: state.usersSelector,
+        jobState: state,
         getJobId,
-        getAllJobs,
+        getJobsFiltered,
+        getCorrectionsByJob,
+        checkCorrection,
+        getCorrectionByJob,
+        setJobFilters
       }}
     >
       {children}

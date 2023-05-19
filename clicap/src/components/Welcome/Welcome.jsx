@@ -8,47 +8,37 @@ import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";
+import { JobContext } from "../../context/Job/JobContext";
+import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const {
-    allJobs,
-    myPays,
-    getAllAreas,
-    areas,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
-
-  const { getNumberOfJobs } = useContext(AreaContext);
-
-  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
-  const { getAllCertificatesByUser, userCertificates } = useContext(CertificateContext);
   const userId = getDataUserByKey("id");
-
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
 
-  const getBase64FromUrl = async (url) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
-  };
+  const { myPays } = useContext(EntitiesContext);
+
+  const { jobState, setJobFilters } = useContext(JobContext);
+  const { jobsFilter, jobs } = jobState;
+
+  const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
+  const { areas } = areaState;
+
+  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
+  const { getAllCertificatesByUser, userCertificates } =
+    useContext(CertificateContext);
+
+  const [filters, setFilters] = useState(jobsFilter);
+  const [goToJobFiltered, setGoToJobFiltered] = useState(false);
 
   const goAndFiltered = (numArea, numModality) => {
-    setFiltersGlobal({
-      ...filtersGlobal,
+    setGoToJobFiltered(!goToJobFiltered);
+    setFilters({
+      ...filters,
       ["areaId"]: numArea,
       ["jobModalityId"]: numModality,
     });
-    navigate("/jobs");
   };
 
   const getAndSetNumberOfJobs = async () => {
@@ -63,7 +53,7 @@ const Welcome = () => {
     }
   };
   const getAmountByJobSummaries = (areaId) => {
-    if (amountJobsAndSum.completeWorks) {
+    if (amountJobsAndSum.summaries) {
       return amountJobsAndSum.summaries.find((item) => item.id === areaId)
         .amount;
     }
@@ -88,10 +78,21 @@ const Welcome = () => {
   };
 
   useEffect(() => {
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+    if (roleId !== 1) {
+      getAllCertificatesByUser(userId);
+    }
     getAndSetNumberOfJobs();
-    getAllAreas();
-    getAllCertificatesByUser(userId);
   }, []);
+
+  useEffect(() => {
+    if (goToJobFiltered) {
+      setJobFilters(filters);
+      navigate("/jobs");
+    }
+  }, [filters]);
 
   return (
     <>
@@ -108,59 +109,104 @@ const Welcome = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col text-center border dashboard-card">
-                <h2 className="mb-5">Trabajos Completos</h2>
-                <div className="flexColumn">
-                  {areas.length > 0 ? (
-                    areas.map((area) => {
-                      return (
-                        <button
-                          type="button"
-                          className="btnAreas"
-                          onClick={() => goAndFiltered(area.id, 1)}
-                        >
-                          {area.name + ` (${getAmountByJobComplete(area.id)})`}
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <Loader />
-                  )}
+              <div className="col">
+                <div className="text-center border dashboard-card">
+                  <h2 className="">Trabajos Completos</h2>
+                  <div className="center-center">
+                    <hr
+                      style={{ border: "1px solid grey", width: "100px" }}
+                    ></hr>
+                  </div>
+                  <div className="flexColumn">
+                    {areas.length > 0 ? (
+                      areas.map((area) => {
+                        return (
+                          <button
+                            type="button"
+                            className="btnAreas"
+                            onClick={() => goAndFiltered(area.id, 1)}
+                          >
+                            <div className="d-flex justify-content-between">
+                              <p className="m-0 title-modality-welcome">
+                                {area.name}
+                              </p>
+                              <div
+                                className="amount-worksbymodality-box center-center"
+                                style={{
+                                  backgroundColor: "#B0DAFF",
+                                  border: "1px solid #19A7CE",
+                                }}
+                              >
+                                <p className="m-0 ">{`${getAmountByJobComplete(
+                                  area.id
+                                )}`}</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <Loader />
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btnViewAll"
+                    onClick={() => goAndFiltered("", 1)}
+                  >
+                    {/* {`Ver todos (${completeJobsTotal().completes})`} */}
+                    {`Ver todos`}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btnViewAll"
-                  onClick={() => goAndFiltered("", 1)}
-                >
-                  {`Ver todos (${completeJobsTotal().completes})`}
-                </button>
               </div>
-              <div className="col text-center border dashboard-card">
-                <h2 className="mb-5">Resúmenes</h2>
-                <div className="flexColumn">
-                  {areas.length > 0 ? (
-                    areas.map((area) => {
-                      return (
-                        <button
-                          type="button"
-                          className="btnAreas"
-                          onClick={() => goAndFiltered(area.id, 2)}
-                        >
-                          {area.name + `(${getAmountByJobSummaries(area.id)})`}
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <Loader />
-                  )}
+              <div className="col">
+                <div className=" text-center border dashboard-card">
+                  <h2 className="">Resúmenes</h2>
+                  <div className="center-center">
+                    <hr
+                      style={{ border: "1px solid grey", width: "100px" }}
+                    ></hr>
+                  </div>
+                  <div className="flexColumn">
+                    {areas.length > 0 ? (
+                      areas.map((area) => {
+                        return (
+                          <button
+                            type="button"
+                            className="btnAreas"
+                            onClick={() => goAndFiltered(area.id, 2)}
+                          >
+                            <div className="d-flex justify-content-between">
+                              <p className="m-0 title-modality-welcome">
+                                {area.name}
+                              </p>
+                              <div
+                                className="amount-worksbymodality-box center-center"
+                                style={{
+                                  backgroundColor: "#B0DAFF",
+                                  border: "1px solid #19A7CE",
+                                }}
+                              >
+                                <p className="m-0 ">{`${getAmountByJobSummaries(
+                                  area.id
+                                )}`}</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <Loader />
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btnViewAll"
+                    onClick={() => goAndFiltered("", 2)}
+                  >
+                    {`Ver todos (${completeJobsTotal().summariesTotal})`}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btnViewAll"
-                  onClick={() => goAndFiltered("", 2)}
-                >
-                   {`Ver todos (${completeJobsTotal().summariesTotal})`}
-                </button>
               </div>
             </div>
             <div className="row">
@@ -291,7 +337,7 @@ const Welcome = () => {
             <div className="row">
               <div className="col border dashboard-card flex flexCard">
                 <div className="col mb-3 flex">
-                  {allJobs.length > 0 ? (
+                  {jobs.length > 0 ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
@@ -364,15 +410,14 @@ const Welcome = () => {
                     role="alert"
                   >
                     <p>
-                      {userCertificates.length > 0 ? 
-                      'Ya tienes un certificado '
-                      : 'No tienes ningun certificado otorgado aún '
-                    }
+                      {userCertificates.length > 0
+                        ? "Ya tienes un certificado "
+                        : "No tienes ningun certificado otorgado aún "}
                       <i className="fas fa-info-circle"></i>
                     </p>
-                    <button 
+                    <button
                       className="btn btn-info"
-                      onClick={() => navigate("/mycertificates")} 
+                      onClick={() => navigate("/mycertificates")}
                       disabled={userCertificates.length > 0 ? false : true}
                     >
                       Descargar Certificados

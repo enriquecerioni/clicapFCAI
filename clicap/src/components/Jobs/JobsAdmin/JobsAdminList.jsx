@@ -8,20 +8,21 @@ import {
   reqAxios,
   waitAndRefresh,
 } from "../../../helpers/helpers";
-import { EntitiesContext } from "../../../context/EntitiesContext";
+
 import { alertError } from "../../../helpers/alerts";
+import { JobContext } from "../../../context/Job/JobContext";
+import { UserContext } from "../../../context/User/UserContext";
 
 export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const userId = getDataUserByKey("id");
-  const {
-    corrections,
-    allJobs,
-    allEvaluatorsSelector,
-    getAllEvaluators,
-    getCorrectionsByJob,
-  } = useContext(EntitiesContext);
+
+  const { checkCorrection, jobState } = useContext(JobContext);
+  const { jobs } = jobState;
+
+  const { getAllEvaluators, userState } = useContext(UserContext);
+  const { evaluatorsSelector, evaluators } = userState;
 
   const [assignEvaluator, setAssignEvaluator] = useState(false);
   const [haveCorrection, setHaveCorrection] = useState(false);
@@ -34,7 +35,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
       entityName: work.name,
       entityType: "job",
       navigate: "/jobs",
-      job: work.urlFile
+      job: work.urlFile,
     });
   };
 
@@ -43,22 +44,6 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const [evaluatorsOptions2, setEvaluatorOptions2] = useState([]);
   const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
   const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
-
-  /*   const getAllEvaluators = async () => {
-    const allEvaluators = await reqAxios(
-      "GET",
-      "/user/getallevaluators",
-      "",
-      ""
-    );
-    let arrayMod = allEvaluators.data.response;
-    arrayMod.map((item, i) => {
-      arrayMod[i].target = { value: item.value };
-    });
-
-    setEvaluatorOptions1(arrayMod);
-    setEvaluatorOptions2(arrayMod);
-  }; */
 
   const handleChangeEvaluator = (e, name) => {
     if (e) {
@@ -76,14 +61,15 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   };
 
   const setEvaluatorsOptions = () => {
-    setEvaluatorOptions1(allEvaluatorsSelector);
-    setEvaluatorOptions2(allEvaluatorsSelector);
+    setEvaluatorOptions1(evaluatorsSelector);
+    setEvaluatorOptions2(evaluatorsSelector);
   };
+
   const addEvaluators = async (id) => {
     if (evaluatorSelected1 === evaluatorSelected2) {
       return alertError("No se puede asignar el mismo evaluador!");
     }
-    const jobSelected = allJobs.find((item) => item.id === id);
+    const jobSelected = jobs.find((item) => item.id === id);
     const jobEdited = {
       ...jobSelected,
       evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : "",
@@ -94,32 +80,29 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     waitAndRefresh(`/jobs`, 1000);
   };
 
-  const checkCorrection = async () => {
-    const check = await reqAxios(
-      "get",
-      `/jobdetails/check/${work.id}/${userId}`,
-      "",
-      ""
-    );
-    setHaveCorrection(check.data.value);
+  const checkToCorrection = async () => {
+    const correction = await checkCorrection(work.id, userId);
+    setHaveCorrection(correction);
   };
 
   useEffect(() => {
-    getCorrectionsByJob(work.id);
-    getAllEvaluators();
-    checkCorrection();
+    /* getCorrectionsByJob(work.id); */
+    if (evaluators.length === 0) {
+      getAllEvaluators();
+    }
+    checkToCorrection();
   }, []);
 
   useEffect(() => {
     setEvaluatorsOptions();
     setEvaluatorSelected1(work.evaluatorId1);
     setEvaluatorSelected2(work.evaluatorId2);
-  }, [allEvaluatorsSelector]);
+  }, [evaluatorsSelector]);
 
   return (
     <>
       <tr>
-        <td>{work.author.name + ' ' + work.author.surname}</td>
+        <td>{work.author.name + " " + work.author.surname}</td>
         <td>{work.name}</td>
         <td>
           {" "}
@@ -187,37 +170,15 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
         {roleId === 1 ? (
           <>
             <td>
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-danger"
-                  onClick={() => setAssignEvaluator(!assignEvaluator)}
-                >
-                  <i className="fa-solid fa-xmark"></i>
-                </Button>
-              ) : (
-                <i
-                  type="button"
-                  className="fa-solid fa-trash-can icon-size-table btn-delete-table"
-                  onClick={deleteJob}
-                ></i>
-              )}
+              <Button
+                className="btn btn-success"
+                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
+                disabled={work.approve === 1 ? false : true}
+              >
+                Evaluaciones
+              </Button>
             </td>
-            <td className="">
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-success"
-                  onClick={() => addEvaluators(work.id)}
-                >
-                  <i className="fa-solid fa-check"></i>
-                </Button>
-              ) : (
-                <i
-                  type="button"
-                  className="fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
-                ></i>
-              )}
-            </td>
+
             <td>
               {!assignEvaluator ? (
                 <OverlayTrigger
@@ -232,14 +193,39 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
                 </OverlayTrigger>
               ) : null}
             </td>
+
+            <td className="">
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-success"
+                  onClick={() => addEvaluators(work.id)}
+                >
+                  <i className="fa-solid fa-check"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
+                ></i>
+              )}
+            </td>
+
             <td>
-              <Button
-                className="btn btn-success"
-                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
-                disabled={work.approve === 1 ? false : true}
-              >
-                Evaluaciones
-              </Button>
+              {assignEvaluator ? (
+                <Button
+                  className="btn btn-danger"
+                  onClick={() => setAssignEvaluator(!assignEvaluator)}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </Button>
+              ) : (
+                <i
+                  type="button"
+                  className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
+                  onClick={deleteJob}
+                ></i>
+              )}
             </td>
           </>
         ) : roleId === 2 ? (
@@ -252,9 +238,7 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
               Evaluar
             </Button>
           </td>
-        )
-          : null
-        }
+        ) : null}
       </tr>
     </>
   );

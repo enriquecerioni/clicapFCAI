@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "../jobs.css";
 import { useNavigate } from "react-router";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 //components
 import { useContext } from "react";
 import { getDataUserByKey } from "../../../helpers/helpers";
 import JobStudentList from "./JobStudentList";
-import Select from "react-select";
-import { Button } from "react-bootstrap";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { Loader } from "../../Loader/Loader";
 import { JobContext } from "../../../context/Job/JobContext";
 
 const JobStudent = () => {
   const navigate = useNavigate();
-  const { getAllAreas } = useContext(EntitiesContext);
-  const { isFetching, jobs, getAllJobs, totalJobsPages } = useContext(JobContext);
+
+  const { getJobsFiltered, jobState } = useContext(JobContext);
+  const { isFetching, jobs, totalJobsPages } = jobState;
+
   const idUser = getDataUserByKey("id");
   const initialFilters = {
     authorId: idUser,
@@ -38,14 +37,14 @@ const JobStudent = () => {
       });
     }
   };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    getAllJobs(1, filters);
+    getJobsFiltered(1, filters);
   };
+
   useEffect(() => {
-    /*     getmyJobsPaginated(page, filterQuery); */
-    getAllAreas();
-    getAllJobs(page, filters);
+    getJobsFiltered(page, filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 

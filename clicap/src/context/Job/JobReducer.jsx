@@ -1,4 +1,4 @@
-import { GET_JOB, GET_ALL_JOBS } from "./types";
+import { GET_JOB,SET_JOBS_FILTERS, GET_ALL_JOBS } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -14,8 +14,13 @@ export default (state, action) => {
       return {
         ...state,
         isFetching: false,
-        jobs: payload.allJobs,
-        totalJobsPages: payload.totalPages,
+        jobs: payload.jobs,
+        totalJobsPages: payload.totalJobsPages,
+      };
+    case SET_JOBS_FILTERS:
+      return {
+        ...state,
+        jobsFilter: payload,
       };
 
     default:
