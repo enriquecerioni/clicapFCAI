@@ -25,9 +25,9 @@ export const GenerateCertificate = () => {
           <button
             type="button"
             onClick={() => navigate("/certificate-types")}
-            className="btn btn-info"
+            className="btn btn-secondary"
           >
-            ver tipos de certificados
+            Ver tipos de certificados
           </button>
         </div>
       </div>

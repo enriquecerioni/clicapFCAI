@@ -94,7 +94,7 @@ const PaysAdmin = () => {
               <i className="fa-solid fa-magnifying-glass"></i>
             </Button>
 
-            <Button variant="primary" onClick={exportToExcel}>
+            <Button variant="btn btn-secondary" onClick={exportToExcel}>
               Exportar
             </Button>
           </form>

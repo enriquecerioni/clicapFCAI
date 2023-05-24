@@ -9,7 +9,6 @@ export const SidebarModify = () => {
   const loggout = () => {
     sessionStorage.removeItem("user");
     navigate("/");
-    // window.location.reload();
   };
   const navigate = useNavigate();
   const location = useLocation();

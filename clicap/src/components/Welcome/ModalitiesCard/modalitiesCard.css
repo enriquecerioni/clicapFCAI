@@ -36,18 +36,20 @@
 }
 
 .btnViewAll {
-  background-color: #19a7ce;
-  color: black;
+  background-color: var(--color-blue-primary);
+  border-color: var(--color-blue-primary);
+  color: #ffff;
   border-radius: 10em;
   font-size: 17px;
   font-weight: 600;
   padding: 1em 2em;
-  border: 1px solid #19a7ce;
+  border: 1px solid var(--color-blue-primary);
   /*  box-shadow: 0 0 0 0 black; */
 }
 
 .btnViewAll:hover {
-  background-color: #4b7df6;
+  background-color: #19a7ce;
+  border-color: #19a7ce;
 }
 
 .amount-worksbymodality-box {

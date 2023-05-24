@@ -12,7 +12,14 @@
   color: teal !important;
 }
 
+.boxcard-register-responsive {
+  width: 70% !important;
+}
 @media screen and (max-width: 480px) {
+  .boxcard-register-responsive {
+    width: 90% !important;
+  }
+
   .form-regis-responsive {
     display: flex;
     flex-wrap: wrap;
@@ -20,6 +27,6 @@
   }
 }
 
-.card-top{
-  margin-top:2rem;
+.card-top {
+  margin-top: 2rem;
 }

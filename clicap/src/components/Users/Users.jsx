@@ -127,11 +127,11 @@ const Users = ({ showModalCertificate }) => {
                 />
               </div>
 
-              <Button variant="primary" type="submit">
+              <button className="btn btn-primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
-              </Button>
+              </button>
               {pathname !== "/generate-certificate" ? (
-                <Button variant="primary" onClick={exportToExcel}>
+                <Button variant="btn btn-secondary" onClick={exportToExcel}>
                   Exportar
                 </Button>
               ) : null}

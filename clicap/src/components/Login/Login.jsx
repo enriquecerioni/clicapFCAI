@@ -4,13 +4,13 @@ import logo from "../../assets/clicap.png";
 import "./login.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import {reqAxios} from '../../helpers/helpers';
+import { reqAxios } from "../../helpers/helpers";
 import { useNavigate } from "react-router-dom";
 import { alertError } from "../../helpers/alerts";
-
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const Login = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const initialStateLogin = {
     identifyNumber: "",
@@ -26,16 +26,16 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formOk = onlyNumbers();
     if (formOk) {
-      const data = await reqAxios('POST','/user/login','',formLogin);
-      if (data.status && data.status===200) {
+      const data = await reqAxios("POST", "/user/login", "", formLogin);
+      if (data.status && data.status === 200) {
         //Guardo la informacion del usuario en el sessionStorage
         sessionStorage.setItem("user", JSON.stringify(data.data.user));
-        navigate('/home');
-      }else{
+        navigate("/home");
+      } else {
         return alertError(data.response.data.msg);
       }
     }
@@ -46,7 +46,8 @@ const Login = () => {
     return pattern.test(formLogin.identifyNumber);
   };
 
-  const disabled = () =>!!!formLogin.identifyNumber.trim() || !!!formLogin.password.trim();
+  const disabled = () =>
+    !!!formLogin.identifyNumber.trim() || !!!formLogin.password.trim();
 
   return (
     <>
@@ -103,24 +104,39 @@ const Login = () => {
                       onChange={handleChangeLogin}
                     />
                     <div className="center-center ms-1">
-                        {showPassword ? (
-                          <i type="button" onClick={() => setShowPassword(!showPassword)} className="fa-solid fa-eye"></i>
-                        ) : (
-                          <i type="button" onClick={() => setShowPassword(!showPassword)} className="fa-solid fa-eye-slash"></i>
-                        )}
+                      {showPassword ? (
+                        <i
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="fa-solid fa-eye"
+                        ></i>
+                      ) : (
+                        <i
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="fa-solid fa-eye-slash"
+                        ></i>
+                      )}
                     </div>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  disabled={putDisabled ? putDisabled : disabled()}
-                  className="btn btn-login"
+                <ClicapTooltip
+                  tooltip={putDisabled ? putDisabled : disabled()}
+                  text={"Por favor completar ID y Contraseña"}
                 >
-                  Iniciar sesión
-                </button>
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={putDisabled ? putDisabled : disabled()}
+                      className="btn btn-login"
+                    >
+                      Iniciar sesión
+                    </button>
+                  </div>
+                </ClicapTooltip>
                 <button
                   className="mt-2 w-100 btn btn-outline-success"
-                  onClick={()=>navigate('/register')}
+                  onClick={() => navigate("/register")}
                 >
                   Registrarme
                 </button>

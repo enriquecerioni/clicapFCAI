@@ -53,3 +53,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.boxCard-delivery-task {
+  width: 80% !important;
+}
+
+@media screen and (max-width: 480px) {
+  .boxCard-delivery-task {
+    width: 90% !important;
+  }
+}

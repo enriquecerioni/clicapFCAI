@@ -10,6 +10,7 @@ import { JobContext } from "../../context/Job/JobContext";
 import { alertError } from "../../helpers/alerts";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
@@ -137,19 +138,19 @@ const DeliveryTask = () => {
   }, [members]);
 
   return (
-    <div className="boxCard centerBox">
+    <div className="boxCard centerBox boxCard-delivery-task">
       <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
-              <div className="">
+              <div className="" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Título del trabajo
+                  * Título del trabajo
                 </label>
                 <div className="">
                   <input
@@ -163,12 +164,12 @@ const DeliveryTask = () => {
               </div>
 
               {/* AREA */}
-              <div className="ms-2">
+              <div className="ms-2" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Area
+                  * Area
                 </label>
                 <Select
                   options={areasSelector}
@@ -190,12 +191,12 @@ const DeliveryTask = () => {
               </div>
 
               {/* MODALIDAD */}
-              <div className="ms-2">
+              <div className="ms-2" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Modalidad
+                  * Modalidad
                 </label>
                 <Select
                   options={modalitiesSelector}
@@ -235,7 +236,7 @@ const DeliveryTask = () => {
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold"
               >
-                Trabajo
+                * Trabajo
               </label>
               <div className="">
                 <input
@@ -247,14 +248,24 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
-            <div className="mt-3 center-center">
-              <Button
-                disabled={putDisabled ? putDisabled : disabled()}
-                type="submit"
-                variant="primary"
-              >
-                Subir trabajo
-              </Button>
+            <ClicapTooltip
+              tooltip={putDisabled ? putDisabled : disabled()}
+              text={"Por favor completar los campos obligatorios"}
+            >
+              <div className="mt-3 center-center">
+                <button
+                  disabled={putDisabled ? putDisabled : disabled()}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  Subir trabajo
+                </button>
+              </div>
+            </ClicapTooltip>
+            <div className="mt-3 d-flex align-items-center">
+              <p className="m-0">"</p>
+              <p className="m-0 fw-bold fs-4">*</p>
+              <p className="m-0">": Campos obligatorios</p>
             </div>
           </form>
           {/*           <Button onClick={() => console.log(job)} variant="primary">

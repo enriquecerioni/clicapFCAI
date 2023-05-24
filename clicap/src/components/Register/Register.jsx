@@ -14,6 +14,7 @@ import { alertError } from "../../helpers/alerts";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../../context/User/UserContext";
 import { RegisterContext } from "../../context/Register/RegisterContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -31,7 +32,6 @@ const Register = () => {
   const [putDisabled, setPutDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [showErrorPassEquals, setShowErrorPassEquals] = useState(false);
   const isAdmin = getDataUserByKey("roleId");
   const isEditForm = window.location.pathname === `/user/edit/${id}`;
 
@@ -76,7 +76,7 @@ const Register = () => {
     if (formOk) {
       //verifico que las contraseñas sean iguales
       if (!passwordsEquals) {
-        return setShowErrorPassEquals(true);
+        return alertError("Las contraseñas no coinciden");
       } else {
         if (isEditForm) {
           await editUser(userRegister);
@@ -132,7 +132,7 @@ const Register = () => {
   return (
     <>
       <div className="login-view animate__animated animate__fadeInUp">
-        <div className="card card-login shadow w-50">
+        <div className="card card-login boxcard-register-responsive shadow ">
           <div className="logo-login">
             <h1>{isAdmin ? "Editar usuario" : "Registro"}</h1>
           </div>
@@ -435,28 +435,21 @@ const Register = () => {
                       </div>
                     </div>
                   </div>
-                  {showErrorPassEquals ? (
-                    <div
-                      className="alert alert-danger alert-dismissible fade show"
-                      role="alert"
-                    >
-                      Las contraseñas no coinciden
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : null}
                 </div>
-                <button
-                  type="submit"
-                  disabled={putDisabled ? putDisabled : disabled()}
-                  className="btn btn-login"
+                <ClicapTooltip
+                  tooltip={putDisabled ? putDisabled : disabled()}
+                  text={"Por favor completar todos los campos"}
                 >
-                  Enviar
-                </button>
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={putDisabled ? putDisabled : disabled()}
+                      className="btn btn-login"
+                    >
+                      Enviar
+                    </button>
+                  </div>
+                </ClicapTooltip>
               </form>
             </div>
           </div>
