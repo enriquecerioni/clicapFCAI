@@ -132,7 +132,7 @@ const Register = () => {
   return (
     <>
       <div className="login-view animate__animated animate__fadeInUp">
-        <div className="card card-login shadow w-50">
+        <div className="card card-login boxcard-register-responsive shadow ">
           <div className="logo-login">
             <h1>{isAdmin ? "Editar usuario" : "Registro"}</h1>
           </div>

@@ -138,14 +138,14 @@ const DeliveryTask = () => {
   }, [members]);
 
   return (
-    <div className="boxCard centerBox">
+    <div className="boxCard centerBox boxCard-delivery-task">
       <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
-              <div className="">
+              <div className="" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -164,7 +164,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* AREA */}
-              <div className="ms-2">
+              <div className="ms-2" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -191,7 +191,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* MODALIDAD */}
-              <div className="ms-2">
+              <div className="ms-2" style={{width:'100%'}}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
