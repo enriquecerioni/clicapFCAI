@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 export const UsersList = ({
   user,
@@ -34,10 +35,7 @@ export const UsersList = ({
         <td>{user.role.name}</td>
 
         <td>
-          <OverlayTrigger
-            placement={"top"}
-            overlay={<Tooltip>Generar certificado</Tooltip>}
-          >
+          <ClicapTooltip tooltip={true} text={"Generar certificado"}>
             <i
               type="button"
               className="fa-solid fa-id-card icon-size-table btn-certificate-table"
@@ -46,33 +44,27 @@ export const UsersList = ({
                 showModalCertificate(true);
               }}
             ></i>
-          </OverlayTrigger>
+          </ClicapTooltip>
         </td>
 
         <td className="">
-          <OverlayTrigger
-            placement={"top"}
-            overlay={<Tooltip>Editar usuario</Tooltip>}
-          >
+          <ClicapTooltip tooltip={true} text={"Editar usuario"}>
             <i
               type="button"
               className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
               onClick={() => navigate(`/user/edit/${user.id}`)}
             ></i>
-          </OverlayTrigger>
+          </ClicapTooltip>
         </td>
 
         <td>
-          <OverlayTrigger
-            placement={"top"}
-            overlay={<Tooltip>Eliminar usuario</Tooltip>}
-          >
+          <ClicapTooltip tooltip={true} text={"Eliminar usuario"}>
             <i
               type="button"
               className="fa-solid fa-trash-can color-icon-error icon-size-table btn-delete-table"
               onClick={deleteUser}
             ></i>
-          </OverlayTrigger>
+          </ClicapTooltip>
         </td>
       </tr>
     </>

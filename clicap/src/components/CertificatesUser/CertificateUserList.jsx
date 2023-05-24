@@ -2,6 +2,7 @@ import React from "react";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import jsPDF from "jspdf";
 import { getDataUserByKey } from "../../helpers/helpers";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
   const name = getDataUserByKey("name");
@@ -9,7 +10,7 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
   const identifyNumber = getDataUserByKey("identifyNumber");
   const fullNameAndNumber = `${name} ${surname}, ${identifyNumber}`;
   const fullName = `${name} ${surname}`;
-  
+
   const donwloadCertificate = async (type, certificate, job) => {
     const members = job.members === "" ? name : `${fullName}, ${job.members}`;
     const doc = new jsPDF("l", "mm", "a4", true);
@@ -29,12 +30,8 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
     if (certificate.type === 2) {
       doc.setLineWidth(0.5);
       doc.setFontSize(16);
-      var lines = doc.splitTextToSize(
-        members,
-        pdfInMM - lMargin - rMargin
-      );
+      var lines = doc.splitTextToSize(members, pdfInMM - lMargin - rMargin);
       doc.text(lMargin, 90, lines);
-  
     } else {
       doc.setFontSize(20);
       doc.text(fullNameAndNumber, width / 2, 90, {
@@ -76,18 +73,20 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
       <td>{userCertificate.certificate.name}</td>
       <td>{userCertificate.job ? userCertificate.job.name : "-"}</td>
       <td className="">
-        <Button
-          className="btn btn-info"
-          onClick={() =>
-            donwloadCertificate(
-              "",
-              userCertificate.certificate,
-              userCertificate.job ? userCertificate.job : ""
-            )
-          }
-        >
-          <i className="fa-solid fa-file-arrow-down icon-size-table"></i>
-        </Button>
+        <ClicapTooltip tooltip={true} text={"Descargar certificado"}>
+          <button
+            className="btn btn-secondary"
+            onClick={() =>
+              donwloadCertificate(
+                "",
+                userCertificate.certificate,
+                userCertificate.job ? userCertificate.job : ""
+              )
+            }
+          >
+            <i className="fa-solid fa-file-arrow-down icon-size-table"></i>
+          </button>
+        </ClicapTooltip>
       </td>
     </tr>
   );

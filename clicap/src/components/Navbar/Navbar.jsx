@@ -115,19 +115,13 @@ const Navbar = () => {
             <div>
               <p type="button">Inscripción</p>
             </div>
-            <div className="dropdown-content">
-              <p
-                className="active"
-                type="button"
-                onClick={() => navigate("/register")}
-              >
-                Registro
-              </p>
-              <p
-                className="active"
-                type="button"
-                onClick={() => navigate("/login")}
-              >
+          </div>
+        </div>
+
+        <div className="liNav">
+          <div className="">
+            <div>
+              <p type="button" onClick={() => navigate("/login")}>
                 Acceso
               </p>
             </div>

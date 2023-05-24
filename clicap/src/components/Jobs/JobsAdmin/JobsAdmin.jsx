@@ -82,7 +82,7 @@ const JobsAdmin = () => {
             </Button>
 
             <div className="ms-3">
-              <Button variant="outline-secondary" onClick={exportToExcel}>
+              <Button variant="btn btn-secondary" onClick={exportToExcel}>
                 <div className="d-flex align-items-center">
                   <i className="fa-solid fa-file-arrow-down"></i>
                   <p className="ms-2 m-0">Exportar</p>

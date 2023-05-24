@@ -10,6 +10,7 @@ import { JobContext } from "../../context/Job/JobContext";
 import { alertError } from "../../helpers/alerts";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const DeliveryTask = () => {
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Título del trabajo
+                  * Título del trabajo
                 </label>
                 <div className="">
                   <input
@@ -168,7 +169,7 @@ const DeliveryTask = () => {
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Area
+                  * Area
                 </label>
                 <Select
                   options={areasSelector}
@@ -195,7 +196,7 @@ const DeliveryTask = () => {
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Modalidad
+                  * Modalidad
                 </label>
                 <Select
                   options={modalitiesSelector}
@@ -235,7 +236,7 @@ const DeliveryTask = () => {
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold"
               >
-                Trabajo
+                * Trabajo
               </label>
               <div className="">
                 <input
@@ -247,14 +248,24 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
-            <div className="mt-3 center-center">
-              <Button
-                disabled={putDisabled ? putDisabled : disabled()}
-                type="submit"
-                variant="primary"
-              >
-                Subir trabajo
-              </Button>
+            <ClicapTooltip
+              tooltip={putDisabled ? putDisabled : disabled()}
+              text={"Por favor completar los campos obligatorios"}
+            >
+              <div className="mt-3 center-center">
+                <button
+                  disabled={putDisabled ? putDisabled : disabled()}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  Subir trabajo
+                </button>
+              </div>
+            </ClicapTooltip>
+            <div className="mt-3 d-flex align-items-center">
+              <p className="m-0">"</p>
+              <p className="m-0 fw-bold fs-4">*</p>
+              <p className="m-0">": Campos obligatorios</p>
             </div>
           </form>
           {/*           <Button onClick={() => console.log(job)} variant="primary">

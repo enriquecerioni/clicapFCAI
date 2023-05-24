@@ -77,6 +77,14 @@ const Welcome = () => {
     return { completes, summariesTotal };
   };
 
+  const roleNames = {
+    1: "Admin",
+    2: "Evaluador",
+    3: "Docente/Investigador",
+    4: "Alumno",
+  };
+  const getRoleName = () => (roleId ? roleNames[roleId] : "");
+
   useEffect(() => {
     if (areas.length === 0) {
       getAllAreas();
@@ -101,13 +109,14 @@ const Welcome = () => {
           <h1 className="center-center title-top">Bienvenido {name} </h1>
         </div>
 
+        <div className="row roleTitle mb-3">
+          <div className="info-role">
+            Rol de Usuario: <strong>{getRoleName()}</strong>
+          </div>
+        </div>
+
         {roleId === 1 ? (
           <div>
-            <div className="row roleTitle">
-              <div className="alert alert-info rolAlert" role="alert">
-                Rol de Usuario: <strong>Admin</strong>
-              </div>
-            </div>
             <div className="row">
               <div className="col">
                 <div className="text-center border dashboard-card">
@@ -318,22 +327,6 @@ const Welcome = () => {
           </div>
         ) : (
           <div>
-            <div className="row roleTitle">
-              {roleId === 2 ? (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Evaluador</strong>
-                </div>
-              ) : roleId === 3 ? (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Docente/Investigador</strong>
-                </div>
-              ) : (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Alumno</strong>
-                </div>
-              )}
-            </div>
-
             <div className="row">
               <div className="col border dashboard-card flex flexCard">
                 <div className="col mb-3 flex">

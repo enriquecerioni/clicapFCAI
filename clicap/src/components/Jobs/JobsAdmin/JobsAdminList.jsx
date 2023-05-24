@@ -12,6 +12,7 @@ import {
 import { alertError } from "../../../helpers/alerts";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
+import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
   const navigate = useNavigate();
@@ -169,28 +170,30 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
         {roleId === 1 ? (
           <>
-            <td>
-              <Button
-                className="btn btn-success"
-                onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
-                disabled={work.approve === 1 ? false : true}
-              >
-                Evaluaciones
-              </Button>
-            </td>
+            <ClicapTooltip
+              tooltip={work.approve === 1 ? false : true}
+              text={"No hay evaluaciones"}
+            >
+              <td>
+                <button
+                  className="btn btn-success"
+                  onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
+                  disabled={work.approve === 1 ? false : true}
+                >
+                  Evaluaciones
+                </button>
+              </td>
+            </ClicapTooltip>
 
             <td>
               {!assignEvaluator ? (
-                <OverlayTrigger
-                  placement={"top"}
-                  overlay={<Tooltip>Asignar evaluador</Tooltip>}
-                >
+                <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
                   <i
                     type="button"
                     className="icon-size-table fa-solid fa-user-tie"
                     onClick={() => setAssignEvaluator(!assignEvaluator)}
                   ></i>
-                </OverlayTrigger>
+                </ClicapTooltip>
               ) : null}
             </td>
 
@@ -203,11 +206,13 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
                   <i className="fa-solid fa-check"></i>
                 </Button>
               ) : (
-                <i
-                  type="button"
-                  className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
-                ></i>
+                <ClicapTooltip tooltip={true} text={"Editar Trabajo"}>
+                  <i
+                    type="button"
+                    className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+                    onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
+                  ></i>
+                </ClicapTooltip>
               )}
             </td>
 
@@ -220,11 +225,13 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
                   <i className="fa-solid fa-xmark"></i>
                 </Button>
               ) : (
-                <i
-                  type="button"
-                  className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
-                  onClick={deleteJob}
-                ></i>
+                <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
+                  <i
+                    type="button"
+                    className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
+                    onClick={deleteJob}
+                  ></i>
+                </ClicapTooltip>
               )}
             </td>
           </>
