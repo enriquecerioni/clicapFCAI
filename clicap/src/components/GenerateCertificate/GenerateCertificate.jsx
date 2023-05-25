@@ -17,7 +17,12 @@ export const GenerateCertificate = () => {
   return (
     <>
       {/* MODAL FILTER */}
-      {showModal ? <GenerateCertificateModal showModal={setShowModal} /> : null}
+      {showModal ? (
+        <GenerateCertificateModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      ) : null}
 
       <h1 className="center-center">Generar Certificado</h1>
       <div>

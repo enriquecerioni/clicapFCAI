@@ -73,6 +73,20 @@ export const JobState = ({ children }) => {
     }
   };
 
+  const getAllJobsByUser = async (authorId) => {
+    try {
+      const getAllJobsByUser = await reqAxios(
+        "GET",
+        `/job/getjobs/byuser?authorId=${authorId}`,
+        "",
+        ""
+      );
+      return getAllJobsByUser.data.response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //Buscar las correciones de un trabajo
   const getCorrectionsByJob = async (id) => {
     const params = { roleId, evaluatorId: userId };
@@ -116,12 +130,12 @@ export const JobState = ({ children }) => {
     }
   };
 
-  const setJobFilters=(filters)=>{
+  const setJobFilters = (filters) => {
     dispatch({
       type: "SET_JOBS_FILTERS",
       payload: filters,
     });
-  }
+  };
 
   return (
     <JobContext.Provider
@@ -132,7 +146,8 @@ export const JobState = ({ children }) => {
         getCorrectionsByJob,
         checkCorrection,
         getCorrectionByJob,
-        setJobFilters
+        setJobFilters,
+        getAllJobsByUser,
       }}
     >
       {children}

@@ -14,6 +14,7 @@ export const UsersList = ({
   const location = useLocation();
   const { pathname } = location;
   const { setUserIdToCertificate } = useContext(CertificateContext);
+  
   /*  const startDate = user.startDate.split('-') */
 
   const deleteUser = () => {

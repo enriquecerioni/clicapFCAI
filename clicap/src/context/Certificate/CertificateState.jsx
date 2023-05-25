@@ -105,16 +105,7 @@ export const CertificateState = ({ children }) => {
   return (
     <CertificateContext.Provider
       value={{
-        certificateData: state.certificateData,
-        certificates: state.certificates,
-        userCertificates: state.userCertificates,
-        certificateLogo: state.certificateLogo,
-        certificateTypesOpt: state.certificateTypesOpt,
-        userIdToCertificate: state.userIdToCertificate,
-        nameToCertificate: state.nameToCertificate,
-        totalCertificatesPages: state.totalCertificatesPages,
-        certificateSelector: state.certificateSelector,
-        isFetching: state.isFetching,
+        ceritificateState: state,
         getAllCertificates,
         setUserIdToCertificate,
         getAllCertificatesByUser,
