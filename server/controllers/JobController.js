@@ -382,7 +382,6 @@ exports.getAllPaginated = async (req, res) => {
 };
 exports.getAllJobsByUser = async (req, res) => {
   try {
-    console.log('entroo');
     const { authorId } = req.query;
     console.log(req.query);
     let options = {
