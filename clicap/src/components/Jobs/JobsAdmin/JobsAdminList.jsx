@@ -1,31 +1,28 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import Select from "react-select";
+import { Button } from "react-bootstrap";
 import { useEffect } from "react";
-import {
-  getDataUserByKey,
-  reqAxios,
-  waitAndRefresh,
-} from "../../../helpers/helpers";
-
-import { alertError } from "../../../helpers/alerts";
+import { getDataUserByKey } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
-export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
+export const JobsAdminList = ({
+  work,
+  showAlert,
+  setJobToDelete,
+  setShowAssignEvaluatorModal,
+  setJobToAssignEvaluator,
+}) => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const userId = getDataUserByKey("id");
 
-  const { checkCorrection, jobState } = useContext(JobContext);
-  const { jobs } = jobState;
+  const { checkCorrection } = useContext(JobContext);
 
   const { getAllEvaluators, userState } = useContext(UserContext);
-  const { evaluatorsSelector, evaluators } = userState;
+  const { evaluators } = userState;
 
-  const [assignEvaluator, setAssignEvaluator] = useState(false);
   const [haveCorrection, setHaveCorrection] = useState(false);
 
   /*  const startDate = work.startDate.split('-') */
@@ -40,50 +37,14 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     });
   };
 
-  const [saveEvaluators, setsaveEvaluators] = useState([]);
-  const [evaluatorsOptions1, setEvaluatorOptions1] = useState([]);
-  const [evaluatorsOptions2, setEvaluatorOptions2] = useState([]);
-  const [evaluatorSelected1, setEvaluatorSelected1] = useState("");
-  const [evaluatorSelected2, setEvaluatorSelected2] = useState("");
-
-  const handleChangeEvaluator = (e, name) => {
-    if (e) {
-      if (name === "evaluator1") {
-        return setEvaluatorSelected1(e.target.value);
-      } else {
-        return setEvaluatorSelected2(e.target.value);
-      }
-    }
-    if (name === "evaluator1") {
-      setEvaluatorSelected1("");
-    } else {
-      setEvaluatorSelected2("");
-    }
-  };
-
-  const setEvaluatorsOptions = () => {
-    setEvaluatorOptions1(evaluatorsSelector);
-    setEvaluatorOptions2(evaluatorsSelector);
-  };
-
-  const addEvaluators = async (id) => {
-    if (evaluatorSelected1 === evaluatorSelected2) {
-      return alertError("No se puede asignar el mismo evaluador!");
-    }
-    const jobSelected = jobs.find((item) => item.id === id);
-    const jobEdited = {
-      ...jobSelected,
-      evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : "",
-      evaluatorId2: evaluatorSelected2 !== "" ? evaluatorSelected2 : "",
-    };
-
-    await reqAxios("PUT", `/job/edit/${jobSelected.id}`, "", jobEdited);
-    waitAndRefresh(`/jobs`, 1000);
-  };
-
   const checkToCorrection = async () => {
     const correction = await checkCorrection(work.id, userId);
     setHaveCorrection(correction);
+  };
+
+  const addEvaluatorWithModal = () => {
+    setJobToAssignEvaluator(work);
+    setShowAssignEvaluatorModal(true);
   };
 
   useEffect(() => {
@@ -94,76 +55,20 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
     checkToCorrection();
   }, []);
 
-  useEffect(() => {
-    setEvaluatorsOptions();
-    setEvaluatorSelected1(work.evaluatorId1);
-    setEvaluatorSelected2(work.evaluatorId2);
-  }, [evaluatorsSelector]);
-
   return (
     <>
       <tr>
         <td>{work.author.name + " " + work.author.surname}</td>
         <td>{work.name}</td>
         <td>
-          {" "}
-          {assignEvaluator ? (
-            <div style={{ width: "175px" }} className="">
-              <Select
-                options={evaluatorsOptions1.filter(
-                  (el) => el.value !== evaluatorSelected2
-                )}
-                value={evaluatorsOptions1.filter(
-                  (el) => el.value === evaluatorSelected1
-                )}
-                placeholder={"seleccione.."}
-                name="evaluator1"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeEvaluator(e, "evaluator1")}
-              />
-            </div>
-          ) : work.evaluator1 ? (
-            work.evaluator1.name + " " + work.evaluator1.surname
-          ) : (
-            ""
-          )}
+          {work.evaluator1
+            ? work.evaluator1.name + " " + work.evaluator1.surname
+            : ""}
         </td>
         <td>
-          {" "}
-          {assignEvaluator ? (
-            <div style={{ width: "175px" }} className="">
-              <Select
-                options={evaluatorsOptions2.filter(
-                  (el) => el.value !== evaluatorSelected1
-                )}
-                value={evaluatorsOptions2.filter(
-                  (el) => el.value === evaluatorSelected2
-                )}
-                placeholder={"seleccione.."}
-                name="evaluator2"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeEvaluator(e, "evaluator2")}
-              />
-            </div>
-          ) : work.evaluator2 ? (
-            work.evaluator2.name + " " + work.evaluator2.surname
-          ) : (
-            ""
-          )}
+          {work.evaluator2
+            ? work.evaluator2.name + " " + work.evaluator2.surname
+            : ""}
         </td>
         <td>{work.area.name}</td>
         <td>{work.jobmodality.name}</td>
@@ -186,53 +91,33 @@ export const JobsAdminList = ({ work, showAlert, setJobToDelete }) => {
             </ClicapTooltip>
 
             <td>
-              {!assignEvaluator ? (
-                <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
-                  <i
-                    type="button"
-                    className="icon-size-table fa-solid fa-user-tie"
-                    onClick={() => setAssignEvaluator(!assignEvaluator)}
-                  ></i>
-                </ClicapTooltip>
-              ) : null}
+              <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
+                <i
+                  type="button"
+                  className="icon-size-table fa-solid fa-user-tie"
+                  onClick={addEvaluatorWithModal}
+                ></i>
+              </ClicapTooltip>
             </td>
 
             <td className="">
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-success"
-                  onClick={() => addEvaluators(work.id)}
-                >
-                  <i className="fa-solid fa-check"></i>
-                </Button>
-              ) : (
-                <ClicapTooltip tooltip={true} text={"Editar Trabajo"}>
-                  <i
-                    type="button"
-                    className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
-                    onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
-                  ></i>
-                </ClicapTooltip>
-              )}
+              <ClicapTooltip tooltip={true} text={"Editar Trabajo"}>
+                <i
+                  type="button"
+                  className="color-icon-edit fa-solid fa-pen-to-square icon-size-table btn-edit-table"
+                  onClick={() => navigate(`/jobs/job/edit/${work.id}`)}
+                ></i>
+              </ClicapTooltip>
             </td>
 
             <td>
-              {assignEvaluator ? (
-                <Button
-                  className="btn btn-danger"
-                  onClick={() => setAssignEvaluator(!assignEvaluator)}
-                >
-                  <i className="fa-solid fa-xmark"></i>
-                </Button>
-              ) : (
-                <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
-                  <i
-                    type="button"
-                    className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
-                    onClick={deleteJob}
-                  ></i>
-                </ClicapTooltip>
-              )}
+              <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
+                <i
+                  type="button"
+                  className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
+                  onClick={deleteJob}
+                ></i>
+              </ClicapTooltip>
             </td>
           </>
         ) : roleId === 2 ? (

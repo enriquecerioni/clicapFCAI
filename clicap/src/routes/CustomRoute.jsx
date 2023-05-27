@@ -38,6 +38,8 @@ import { ImportantDate } from "../components/ImportantDate/ImportantDate";
 import { ImportantDateTable } from "../components/ImportantDate/ImportantDateManager/ImportantDateTable";
 import { Areas } from "../components/Areas/Areas";
 import { LogoConfig } from "../components/Configuration/LogoConfig/LogoConfig";
+import { AreaList } from "../components/Areas/AreaList";
+import { Modalities } from "../components/Modalities/Modalities";
 
 const CustomRoute = () => (
   <>
@@ -94,6 +96,24 @@ const CustomRoute = () => (
         element={
           <Home>
             <ImportantDate />
+          </Home>
+        }
+      />
+
+      <Route
+        path="areas"
+        element={
+          <Home>
+            <AreaList />
+          </Home>
+        }
+      />
+
+      <Route
+        path="modalities"
+        element={
+          <Home>
+            <Modalities />
           </Home>
         }
       />
