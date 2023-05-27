@@ -8,10 +8,11 @@ import { AreaRow } from "./AreaRow";
 import "./configuration.css";
 import { LogoConfig } from "./LogoConfig/LogoConfig";
 import { AreaContext } from "../../context/Area/AreaContext";
+import { useNavigate } from "react-router-dom";
 
 export const Configuration = () => {
-
-  const { getAllAreas,createNewArea, areaState } = useContext(AreaContext);
+  const navigate=useNavigate();
+  const { getAllAreas, createNewArea, areaState } = useContext(AreaContext);
   const { areas } = areaState;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -50,6 +51,7 @@ export const Configuration = () => {
         <p>
           En esta sección se pueden realizar las configuraciones de cada evento
         </p>
+        <button className="btn btn-primary" onClick={()=>navigate('/importantdate-config')}>configurar fechas</button>
       </div>
       <Tabs
         defaultActiveKey="logo"

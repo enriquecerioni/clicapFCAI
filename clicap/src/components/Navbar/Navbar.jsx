@@ -73,7 +73,7 @@ const Navbar = () => {
 
         <div className="liNav">
           <div className="dropdown">
-            <div>
+            <div onClick={() => navigate("/importantdates")}>
               <p type="button">Fechas Importantes</p>
             </div>
           </div>
