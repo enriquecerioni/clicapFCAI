@@ -22,6 +22,7 @@ const AreaModel = require("./models/AreaModel");
 const RoleModel = require("./models/RoleModel");
 const CorrectionModel = require("./models/CorrectionModel");
 const CertificateRouter = require("./routes/CertificateRouter");
+const ImportantDateRouter = require("./routes/ImportantDateRouter");
 const UserModel = require("./models/UserModel");
 const RegularCertificateRouter = require("./routes/RegularCertificateRouter");
 
@@ -38,6 +39,7 @@ require("./models/JobDetailModel");
 require("./models/CorrectionModel");
 require("./models/StudentCertificateModel");
 require("./models/CertificateModel");
+require("./models/ImportantDates");
 
 dotenv.config({ path: "./.env" });
 
@@ -70,6 +72,7 @@ app.use("/api/clicap/role/", RoleRouter);
 app.use("/api/clicap/student/", StudentCertificateRouter);
 app.use("/api/clicap/file/", FileRouter);
 app.use("/api/clicap/certificate/", CertificateRouter);
+app.use("/api/clicap/importantdate/", ImportantDateRouter);
 
 const insertData = async () => {
   const areas = ["Alimentos", "Química"];

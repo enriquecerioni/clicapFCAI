@@ -26,8 +26,10 @@ const Welcome = () => {
   const { areas } = areaState;
 
   const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
-  const { getAllCertificatesByUser, userCertificates } =
+
+  const { getAllCertificatesByUser, ceritificateState } =
     useContext(CertificateContext);
+  const { userCertificates } = ceritificateState;
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);

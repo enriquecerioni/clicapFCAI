@@ -1,57 +1,59 @@
-import React, { useState } from "react";
-import { useContext } from "react";
-import { useEffect } from "react";
-import { waitAndRefresh } from "../../helpers/helpers";
-import { Tabs, Tab, Form, Button } from "react-bootstrap";
-import ModalDelete from "../Modals/ModalDelete";
-import { AreaRow } from "./AreaRow";
+import React from "react";
 import "./configuration.css";
-import { LogoConfig } from "./LogoConfig/LogoConfig";
-import { AreaContext } from "../../context/Area/AreaContext";
+import { useNavigate } from "react-router-dom";
 
 export const Configuration = () => {
+  const navigate = useNavigate();
 
-  const { getAllAreas,createNewArea, areaState } = useContext(AreaContext);
-  const { areas } = areaState;
-
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [areaToDelete, setAreaToDelete] = useState(false);
-  const [area, setArea] = useState({
-    name: "",
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createNewArea(area);
-    waitAndRefresh("/configuration", 500);
-  };
-
-  const handleChangeArea = (e) => {
-    setArea({
-      ...area,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  useEffect(() => {
-    if (areas.length === 0) {
-      getAllAreas();
-    }
-  }, []);
+  const configSections = [
+    {
+      icon: "fa-regular fa-image",
+      name: "Logos",
+      navigate: "/logos-config",
+    },
+    {
+      icon: "fa-solid fa-list-ul",
+      name: "Áreas",
+      navigate: "/area-config",
+    },
+    {
+      icon: "fa-regular fa-handshake",
+      name: "Avales/Sponsors",
+      navigate: "/importantdate-config",
+    },
+    {
+      icon: "fa-regular fa-calendar",
+      name: "Fechas importantes",
+      navigate: "/importantdate-config",
+    },
+  ];
 
   return (
     <>
-      {showDeleteModal ? (
-        <ModalDelete entity={areaToDelete} showAlert={setShowDeleteModal} />
-      ) : null}
-
       <div className="section-header">
         <h2>Configuración</h2>
         <p>
           En esta sección se pueden realizar las configuraciones de cada evento
         </p>
       </div>
-      <Tabs
+
+      <div className="d-flex flex-wrap justify-content-center">
+        {configSections.map((section, i) => {
+          return (
+            <div
+              type={"button"}
+              key={i}
+              className="d-flex flex-column align-items-center justify-content-center config-boxs"
+              onClick={() => navigate(section.navigate)}
+            >
+              <i className={`fa-2x ${section.icon}`}></i>
+              <p className="m-0">{section.name}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/*  <Tabs
         defaultActiveKey="logo"
         id="uncontrolled-tab-example"
         className="mb-3"
@@ -111,7 +113,7 @@ export const Configuration = () => {
             </div>
           </section>
         </Tab>
-      </Tabs>
+      </Tabs> */}
     </>
   );
 };

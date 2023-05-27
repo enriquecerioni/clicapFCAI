@@ -8,25 +8,28 @@ import { RegisterState } from "./Register/RegisterState";
 import { ModalitiesState } from "./Modalities/ModalitiesState";
 import { NewsState } from "./News/NewsState";
 import { AppState } from "./App/AppState";
+import { ImportantDateState } from "./ImportantDates/ImportantDateState";
 
 export const StateContext = ({ children }) => {
   return (
     <AppState>
-      <RegisterState>
-        <UserState>
-          <ModalitiesState>
-            <NewsState>
-              <JobState>
-                <CertificateState>
-                  <AreaState>
-                    <PayState>{children}</PayState>
-                  </AreaState>
-                </CertificateState>
-              </JobState>
-            </NewsState>
-          </ModalitiesState>
-        </UserState>
-      </RegisterState>
+      <ImportantDateState>
+        <RegisterState>
+          <UserState>
+            <ModalitiesState>
+              <NewsState>
+                <JobState>
+                  <CertificateState>
+                    <AreaState>
+                      <PayState>{children}</PayState>
+                    </AreaState>
+                  </CertificateState>
+                </JobState>
+              </NewsState>
+            </ModalitiesState>
+          </UserState>
+        </RegisterState>
+      </ImportantDateState>
     </AppState>
   );
 };

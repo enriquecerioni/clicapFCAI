@@ -40,7 +40,7 @@ export const UserState = ({ children }) => {
   const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
 
-    const userSelector = getAllUser.data.response.map((item, i) => {
+    const userSelector = getAllUser.map((item, i) => {
       return {
         label: item.identifyNumber + " - " + item.name + " " + item.surname,
         value: item.identifyNumber,

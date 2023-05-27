@@ -9,7 +9,9 @@ import StudentCertificateList from "./StudentCertificateList";
 const StudentCertificate = () => {
   const navigate = useNavigate();
   const { myCertificates, getMyCertificates } = useContext(EntitiesContext);
-  const { isFetching } = useContext(CertificateContext);
+  const { ceritificateState } = useContext(CertificateContext);
+  const { isFetching } = ceritificateState;
+
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };

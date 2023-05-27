@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import jsPDF from "jspdf";
 import { getDataUserByKey } from "../../helpers/helpers";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
+import { CertificateContext } from "../../context/Certificate/CertificateContext";
 
-export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
+export const CertificateUserList = ({ userCertificate }) => {
   const name = getDataUserByKey("name");
   const surname = getDataUserByKey("surname");
   const identifyNumber = getDataUserByKey("identifyNumber");
   const fullNameAndNumber = `${name} ${surname}, ${identifyNumber}`;
   const fullName = `${name} ${surname}`;
+
+  const { ceritificateState } = useContext(CertificateContext);
+  const { certificateLogo } = ceritificateState;
 
   const donwloadCertificate = async (type, certificate, job) => {
     const members = job.members === "" ? name : `${fullName}, ${job.members}`;
@@ -68,6 +72,7 @@ export const CertificateUserList = ({ userCertificate, certificateLogo }) => {
 
     doc.save("certificate.pdf");
   };
+
   return (
     <tr>
       <td>{userCertificate.certificate.name}</td>

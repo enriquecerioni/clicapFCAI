@@ -11,8 +11,12 @@ import Select from "react-select";
 
 export const NewCertificate = () => {
   const { certificateId } = useParams();
-  const { certificateData, getCertificateById, certificateTypesOpt } =
+  
+  const { getCertificateById, ceritificateState } =
     useContext(CertificateContext);
+
+  const { certificateData, certificateTypesOpt } = ceritificateState;
+
   const navigate = useNavigate();
   const [putDisabled, setPutDisabled] = useState(false);
   const [certificate, setCertificate] = useState(certificateData);
@@ -135,7 +139,7 @@ export const NewCertificate = () => {
             />
           </Form.Group>
         ) : null}
-        
+
         <FloatingLabel
           controlId="floatingTextarea2"
           label="Informacion del certificado"
