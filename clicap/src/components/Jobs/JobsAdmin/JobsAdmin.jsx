@@ -125,7 +125,7 @@ const JobsAdmin = () => {
             </div>
             <PaginationCustom
               currentPage={page}
-              totalJobsPages={totalJobsPages}
+              totalPages={totalJobsPages}
               paginate={setPage}
             />
           </>

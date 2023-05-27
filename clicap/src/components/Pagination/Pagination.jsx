@@ -7,6 +7,8 @@ export const PaginationCustom = ({ currentPage, totalPages, paginate }) => {
         pageNumbers.push(i);
     }
 
+    console.log(currentPage);
+    console.log(totalPages);
     return (
         <nav className='d-flex justify-content-center'>
             <ul className='pagination d-flex flex-wrap justify-content-center'>
