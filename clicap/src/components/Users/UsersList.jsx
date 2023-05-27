@@ -28,7 +28,6 @@ export const UsersList = ({
   };
   return (
     <>
-      {/*   { console.log(user.name)} */}
       <tr>
         <td>{user.name + " " + user.surname}</td>
         <td>{user.identifyNumber}</td>

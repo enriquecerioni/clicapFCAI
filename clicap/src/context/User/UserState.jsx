@@ -65,7 +65,6 @@ export const UserState = ({ children }) => {
         user.roleId === params.roleId
     );
 
-    console.log(userFounded);
     if (userFounded) {
       return dispatch({
         type: "SET_USERS_FILTERED",

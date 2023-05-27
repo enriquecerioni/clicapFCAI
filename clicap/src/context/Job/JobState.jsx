@@ -60,7 +60,7 @@ export const JobState = ({ children }) => {
         params,
         ""
       );
-      console.log(getAllJob.data);
+      
       dispatch({
         type: "GET_ALL_JOBS",
         payload: {

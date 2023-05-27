@@ -24,7 +24,6 @@ const Home = ({ children }) => {
 
   useEffect(() => {
     if (!searchPixels) {
-      console.log("Recarga dimensiones");
       setSearchPixels(true);
       putSidebarRespons();
     }
