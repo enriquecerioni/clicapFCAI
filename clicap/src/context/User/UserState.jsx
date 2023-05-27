@@ -40,7 +40,7 @@ export const UserState = ({ children }) => {
   const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
 
-    const userSelector = getAllUser.map((item, i) => {
+    const userSelector = getAllUser.data.response.map((item, i) => {
       return {
         label: item.identifyNumber + " - " + item.name + " " + item.surname,
         value: item.identifyNumber,
@@ -65,7 +65,6 @@ export const UserState = ({ children }) => {
         user.roleId === params.roleId
     );
 
-    console.log(userFounded);
     if (userFounded) {
       return dispatch({
         type: "SET_USERS_FILTERED",

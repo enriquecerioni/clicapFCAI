@@ -16,7 +16,6 @@ const UpdateInvoce = () => {
     const pay = allPays.find(p => p.id == id);
     const author = users.find(user => user.id === pay.authorId);
     // const author = users.find(user => user?.id === pay?.authorId)
-    // console.log(author);
     
     const handleSubmit = (e) => {
         e.preventDefault();

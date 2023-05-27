@@ -4,7 +4,6 @@ import { deleteAxios, deleteFile, waitAndRefresh } from "../../helpers/helpers";
 
 const ModalDelete = ({ entity, showAlert }) => {
   //entity.entityType -> instance/partner/customer
-  console.log(entity);
   
   if(entity.entityType === 'pay'){
     deleteFile(entity.receipt, 'payments');

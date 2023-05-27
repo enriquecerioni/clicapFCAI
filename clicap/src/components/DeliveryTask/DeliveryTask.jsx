@@ -66,7 +66,6 @@ const DeliveryTask = () => {
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      console.log(bodyFormData);
       await formDataAxios("POST", `/job/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);

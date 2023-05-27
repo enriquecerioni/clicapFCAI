@@ -88,14 +88,14 @@ const Navbar = () => {
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/page-in-process")}
+                onClick={() => navigate("/areas")}
               >
                 Áreas
               </p>
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/page-in-process")}
+                onClick={() => navigate("/modalities")}
               >
                 Modalidad de Presentación
               </p>

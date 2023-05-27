@@ -182,7 +182,7 @@ exports.checkCorrection = async (req, res) => {
     } else {
       res
         .status(200)
-        .json({ msg: "Error al obtener la corrección.", value: 0 });
+        .json({ msg: "No posee correcciones.", value: 0 });
     }
   } catch (error) {
     console.log("Error al obtener la corrección." + error);

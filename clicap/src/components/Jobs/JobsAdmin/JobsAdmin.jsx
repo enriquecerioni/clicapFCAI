@@ -10,25 +10,31 @@ import { JobsFilters } from "../JobsFilters/JobsFilters";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";
+import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
 
   const { jobState, getJobsFiltered } = useContext(JobContext);
-  const { jobsFilter,jobs,totalJobsPages } = jobState;
+  const { jobsFilter, jobs, totalJobsPages } = jobState;
 
   const { userState, getAllUsers, getAllEvaluators } = useContext(UserContext);
-  const { users } = userState;
+  const { users, evaluatorsSelector } = userState;
 
   const { areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
 
   const [filters, setFilters] = useState(jobsFilter);
+  const [showAssignEvaluatorModal, setShowAssignEvaluatorModal] =
+    useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
   const [page, setPage] = useState(1);
+
+  //evaluator
+  const [jobToAssignEvaluator, setJobToAssignEvaluator] = useState("");
 
   const exportToExcel = async () => {
     await reqAxiosDownload(`/job/export/jobs`, filters, "Trabajos");
@@ -67,6 +73,14 @@ const JobsAdmin = () => {
 
         {showDeleteModal ? (
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
+        ) : null}
+
+        {showAssignEvaluatorModal ? (
+          <AssignEvaluatorModal
+            showModal={showAssignEvaluatorModal}
+            setShowModal={setShowAssignEvaluatorModal}
+            job={jobToAssignEvaluator}
+          />
         ) : null}
 
         {roleId === 1 ? (
@@ -117,6 +131,8 @@ const JobsAdmin = () => {
                       work={work}
                       showAlert={setShowDeleteModal}
                       setJobToDelete={setJobToDelete}
+                      setShowAssignEvaluatorModal={setShowAssignEvaluatorModal}
+                      setJobToAssignEvaluator={setJobToAssignEvaluator}
                       key={work.id}
                     />
                   ))}
@@ -125,7 +141,7 @@ const JobsAdmin = () => {
             </div>
             <PaginationCustom
               currentPage={page}
-              totalJobsPages={totalJobsPages}
+              totalPages={totalJobsPages}
               paginate={setPage}
             />
           </>
