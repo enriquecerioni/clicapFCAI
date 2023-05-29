@@ -3,6 +3,7 @@ import {
   formDataAxios,
   getDataUserByKey,
   reqAxios,
+  waitAndRefresh,
 } from "../../helpers/helpers";
 import PayReducer from "./PayReducer";
 import { PayContext } from "./PayContext";
@@ -76,6 +77,28 @@ export const PayState = ({ children }) => {
     });
   };
 
+  const getPayByAuthorId = async (authorId) => {
+    const getAuthorPay = await reqAxios(
+      "GET",
+      `/pay/get/author/${authorId}`,
+      "",
+      ""
+    );
+    return getAuthorPay.data.response;
+  };
+
+  const createPayInvoice = async (id, invoice) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in invoice) {
+        bodyFormData.append(key, invoice[key]);
+      }
+      await formDataAxios("POST", `/pay/edit/invoice/${id}`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <PayContext.Provider
       value={{
@@ -84,6 +107,8 @@ export const PayState = ({ children }) => {
         getAllPays,
         getAllPaysToAdmin,
         getPaysFiltered,
+        createPayInvoice,
+        getPayByAuthorId,
       }}
     >
       {children}

@@ -12,7 +12,7 @@ export const JobState = ({ children }) => {
       name: "",
       jobModalityId: "",
       areaId: "",
-      authorId: userId,
+      authorId: getDataUserByKey("id"),
       status: 0,
       members: "",
       urlFile: "",
@@ -60,7 +60,7 @@ export const JobState = ({ children }) => {
         params,
         ""
       );
-      
+
       dispatch({
         type: "GET_ALL_JOBS",
         payload: {
