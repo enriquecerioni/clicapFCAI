@@ -10,6 +10,7 @@ import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";
 import { JobContext } from "../../context/Job/JobContext";
 import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
+import { PayContext } from "../../context/Pay/PayContext";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const Welcome = () => {
   const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
 
+  const { getPayByAuthorId } = useContext(PayContext);
+
   const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
 
   const { getAllCertificatesByUser, ceritificateState } =
@@ -33,6 +36,7 @@ const Welcome = () => {
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);
+  const [authorPay, setAuthorPay] = useState("");
 
   const goAndFiltered = (numArea, numModality) => {
     setGoToJobFiltered(!goToJobFiltered);
@@ -86,6 +90,11 @@ const Welcome = () => {
     4: "Alumno",
   };
   const getRoleName = () => (roleId ? roleNames[roleId] : "");
+  const getAuthorPayAndSet = async () => {
+    const authorPayFound = await getPayByAuthorId(userId);
+    setAuthorPay(authorPayFound);
+    console.log("authorPayFound", authorPayFound);
+  };
 
   useEffect(() => {
     if (areas.length === 0) {
@@ -94,6 +103,7 @@ const Welcome = () => {
     if (roleId !== 1) {
       getAllCertificatesByUser(userId);
     }
+    getAuthorPayAndSet();
     getAndSetNumberOfJobs();
   }, []);
 
@@ -338,14 +348,20 @@ const Welcome = () => {
                       role="alert"
                     >
                       <p>
-                        Ya has subido un trabajo{" "}
+                        {roleId === 2
+                          ? "Tienes un trabajo asignado "
+                          : "Ya has subido un trabajo "}
                         <i className="fas fa-info-circle"></i>
                       </p>
                       <button
                         className="btn btn-success"
-                        onClick={() => navigate("/myjobs")}
+                        onClick={() =>
+                          navigate(roleId === 2 ? "/jobs" : "/myjobs")
+                        }
                       >
-                        Mis trabajos
+                        {roleId === 2
+                          ? "Ver trabajos asignados"
+                          : "Mis trabajos"}
                       </button>
                     </div>
                   ) : (
@@ -366,7 +382,7 @@ const Welcome = () => {
                     </div>
                   )}
 
-                  {myPays.length > 0 ? (
+                  {authorPay ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
