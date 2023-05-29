@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getDataUserByKey } from "../../helpers/helpers";
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/App/AppContext";
 
 export const SidebarModify = () => {
   const roleId = getDataUserByKey("roleId");
   const idUser = getDataUserByKey("id");
-  const loggout = () => {
-    sessionStorage.removeItem("user");
-    navigate("/");
-  };
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { setLoggout } = useContext(AppContext);
+
   const [url, setUrl] = useState(null);
 
   const redirectJobPage = () => {
@@ -19,6 +20,14 @@ export const SidebarModify = () => {
       return navigate("/jobs");
     }
     navigate("/myjobs");
+  };
+
+  const loggout = () => {
+    sessionStorage.removeItem("user");
+    if (location.pathname === "/") {
+      setLoggout();
+    }
+    navigate("/");
   };
 
   useEffect(() => {

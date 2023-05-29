@@ -1,4 +1,4 @@
-import { SET_SEARCH_PIXELS,SET_MENU_PHONE } from "./types";
+import { SET_SEARCH_PIXELS,SET_MENU_PHONE, SET_LOGGOUT } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -13,6 +13,11 @@ export default (state, action) => {
       return {
         ...state,
         menuPhone: payload,
+      };
+    case SET_LOGGOUT:
+      return {
+        ...state,
+        loggout: payload,
       };
 
     default:
