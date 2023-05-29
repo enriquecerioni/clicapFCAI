@@ -15,6 +15,7 @@ export const SponsorState = ({ children }) => {
       //only use in frontend
       isNew: true,
     },
+    all: [],
     sponsors: [],
     institutional: [],
     isFetching: true,

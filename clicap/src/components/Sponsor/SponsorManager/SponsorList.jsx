@@ -11,7 +11,7 @@ export const SponsorList = ({ sponsor, setSponsorToDelete, showAlert }) => {
     showAlert(true);
     setSponsorToDelete({
       id: sponsor.id,
-      entityName: sponsor.title,
+      entityName: sponsor.name,
       entityType: "sponsor",
       navigate: pathname,
     });

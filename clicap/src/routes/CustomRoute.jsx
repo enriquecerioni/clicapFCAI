@@ -41,6 +41,7 @@ import { AreaList } from "../components/Areas/AreaList";
 import { Modalities } from "../components/Modalities/Modalities";
 import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable";
 import { Institutional } from "../views/Institutional/Institutional";
+import { Contact } from "../views/Contact/Contact";
 
 const CustomRoute = () => (
   <>
@@ -151,6 +152,15 @@ const CustomRoute = () => (
         element={
           <Home>
             <Sponsors />
+          </Home>
+        }
+      />
+
+      <Route
+        path="contact"
+        element={
+          <Home>
+            <Contact />
           </Home>
         }
       />
