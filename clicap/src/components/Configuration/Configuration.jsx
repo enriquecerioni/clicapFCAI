@@ -19,7 +19,7 @@ export const Configuration = () => {
     {
       icon: "fa-regular fa-handshake",
       name: "Avales/Sponsors",
-      navigate: "/importantdate-config",
+      navigate: "/sponsor-config",
     },
     {
       icon: "fa-regular fa-calendar",
