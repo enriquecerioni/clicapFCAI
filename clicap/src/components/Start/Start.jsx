@@ -122,25 +122,32 @@ const Start = () => {
             <div className="col-lg-6">
               <h2>Acerca del Congreso</h2>
               <p>
-                Sed nam ut dolor qui repellendus iusto odit. Possimus inventore
-                eveniet accusamus error amet eius aut accusantium et. Non odit
-                consequatur repudiandae sequi ea odio molestiae. Enim possimus
-                sunt inventore in est ut optio sequi unde.
+                Las IV Jornadas de enseñanza e investigación de las ciencias
+                experimentales, tienen como objetivo general, contribuir al
+                desarrollo integral de la comunidad, al bien común y a la
+                ciudadanía plena en los ámbitos local, regional, provincial y
+                nacional, atendiendo con pertinencia necesidades y demandas
+                sociales, considerando los planes estratégicos provinciales y
+                nacionales, articulando saberes y prácticas con una clara
+                orientación interdisciplinar, en un marco de responsabilidad
+                institucional.
               </p>
             </div>
             <div className="col-lg-3">
               <h3>Donde</h3>
               <p>
-                Facultad de Ciencias Aplicadas a la Industria, San Rafael,
-                Mendoza, Argentina.
+                Facultad de Ciencias Aplicadas a la Industria (FCAI-UNCuyo) –
+                Bernardo de Irigoyen 375 – San Rafael (Mendoza – Argentina).
+                Museo de Historia Natural - Av. Ing. Julio Balloffet 3099 - San
+                Rafael. (Mendoza – Argentina).
               </p>
             </div>
             <div className="col-lg-3">
               <h3>Cuando</h3>
               <p>
-                Lunes, Martes y Miercoles
+                Jueves y Viernes
                 <br />
-                10-12 Abril
+                14 y 15 de Septiembre de 2023
               </p>
             </div>
           </div>
@@ -150,7 +157,6 @@ const Start = () => {
         <div className="container">
           <div className="section-header">
             <h2>RESPONSABLES DE LA ORGANIZACIÓN</h2>
-            <p>Organizadores del Congreso CLICAP</p>
           </div>
 
           <div className="row">
@@ -241,7 +247,6 @@ const Start = () => {
         <div className="container">
           <div className="section-header">
             <h2>Galería</h2>
-            <p>Algunas imágenes del último congreso CLICAP 2022.</p>
           </div>
         </div>
 

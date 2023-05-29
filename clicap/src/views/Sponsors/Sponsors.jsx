@@ -13,7 +13,7 @@ export const Sponsors = () => {
     <section id="clients" className="clients wow fadeInUp">
       <div className="container">
         <div className="section-header">
-          <h2>Sponsors</h2>
+          <h2>Auspiciantes</h2>
         </div>
 
         <div
