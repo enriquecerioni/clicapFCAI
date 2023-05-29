@@ -157,6 +157,7 @@ const DeliveryTask = () => {
                     placeholder="Nombre"
                     className="form-control"
                     name="name"
+                    value={job.name}
                     onChange={(e) => handleChangeUpJob(e, "name")}
                   />
                 </div>

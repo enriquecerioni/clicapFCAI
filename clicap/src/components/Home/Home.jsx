@@ -9,9 +9,8 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/App/AppContext";
 
 const Home = ({ children }) => {
-
   const { appState, setSearchPixels, setMenuPhone } = useContext(AppContext);
-  const { searchPixels, menuPhone } = appState;
+  const { searchPixels, menuPhone, loggout } = appState;
 
   const putSidebarRespons = () => {
     if (window.innerWidth < 760) {
@@ -27,7 +26,7 @@ const Home = ({ children }) => {
       setSearchPixels(true);
       putSidebarRespons();
     }
-  }, []);
+  }, [loggout]);
 
   return (
     <>
