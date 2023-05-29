@@ -14,7 +14,7 @@ const ImportantDateModel = db.define("importantDate", {
     allowNull: false
   },
   description: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
 });
