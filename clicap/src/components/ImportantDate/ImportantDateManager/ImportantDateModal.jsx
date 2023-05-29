@@ -34,6 +34,7 @@ export const ImportantDateModal = ({
 
   return (
     <CustomModal
+    sizeClass="modal-50w"
       showModal={showModal}
       setShowModal={setShowModal}
       title={`${getNewOrEdit()} fecha importante`}

@@ -5,7 +5,8 @@ import { AppContext } from "./AppContext";
 export const AppState = ({ children }) => {
   const initialState = {
     searchPixels: false,
-    menuPhone:false
+    menuPhone: false,
+    loggout: false,
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
@@ -23,13 +24,20 @@ export const AppState = ({ children }) => {
       payload: value,
     });
   };
+  const setLoggout = async () => {
+    dispatch({
+      type: "SET_LOGGOUT",
+      payload: !state.loggout,
+    });
+  };
 
   return (
     <AppContext.Provider
       value={{
         appState: state,
         setSearchPixels,
-        setMenuPhone
+        setMenuPhone,
+        setLoggout,
       }}
     >
       {children}
