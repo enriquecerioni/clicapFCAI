@@ -23,7 +23,7 @@ export const ImportantDateList = ({
     });
   };
 
-/*   const editDate = () => {
+  /*   const editDate = () => {
     date.isNew = false;
     setDate(date);
     setCreateOrEditModal(true);
@@ -34,7 +34,7 @@ export const ImportantDateList = ({
       <tr>
         <td>{date.title}</td>
         <td>{date.description}</td>
-    {/*     <td className="">
+        {/*     <td className="">
           <ClicapTooltip tooltip={true} text={"Editar fecha importante"}>
             <i
               type="button"

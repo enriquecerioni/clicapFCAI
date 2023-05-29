@@ -2,14 +2,6 @@ import React, { useEffect, useContext, useState } from "react";
 import firstSpeaker from "../../assets/authorities/1.jpg";
 import secondSpeaker from "../../assets/authorities/2.jpg";
 import thirdSpeaker from "../../assets/authorities/3.jpg";
-import logo1 from "../../assets/endorsements/logo-1.png";
-import logo2 from "../../assets/endorsements/logo-2.png";
-import logo3 from "../../assets/endorsements/logo-3.png";
-import logo4 from "../../assets/endorsements/logo-4.png";
-import logo5 from "../../assets/endorsements/logo-5.png";
-import logo6 from "../../assets/endorsements/logo-6.png";
-import logo7 from "../../assets/endorsements/logo-7.jpg";
-import logo8 from "../../assets/endorsements/logo-8.jpg";
 import CountdownTimer from "../CounterdownTimer/CountdownTimer";
 
 import "./start.scss";
@@ -17,9 +9,16 @@ import "./button.css";
 import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import Carousel from "../Carousel/Carousel";
+import { Sponsors } from "../../views/Sponsors/Sponsors";
+import {
+  Endorsements,
+  Institutional,
+} from "../../views/Institutional/Institutional";
+import { SponsorContext } from "../../context/Sponsor/SponsorContex";
 
 const Start = () => {
   const { time, setTime, getDate, handleTime } = useContext(EntitiesContext);
+  const { getAllSponsors } = useContext(SponsorContext);
   const userId = getDataUserByKey("roleId");
   const [logoApp, setLogoApp] = useState("");
   const [date, setDate] = useState(time);
@@ -38,6 +37,10 @@ const Start = () => {
     getDate();
     loadAppLogo();
   }, [time]);
+
+  useEffect(() => {
+    getAllSponsors("All");
+  }, []);
 
   return (
     <>
@@ -61,7 +64,7 @@ const Start = () => {
                 type="date"
                 className="form-date-input"
                 onChange={(e) => setDate(e.target.value)}
-                value={date}
+                value={time}
               />
               <button
                 className="btn btn-primary ms-3"
@@ -243,89 +246,11 @@ const Start = () => {
         </div>
 
         <Carousel />
-        {/* <div className="row">
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery1} alt="" className="img-fluid" />
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery2} alt="" className="img-fluid" />
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6">
-            <div className="speaker">
-              <img src={gallery3} alt="" className="img-fluid" />
-            </div>
-          </div>
-        </div> */}
       </section>
 
-      <section id="clients" className="clients section-with-bg wow fadeInUp">
-        <div className="container">
-          <div className="section-header">
-            <h2>AVALES INSTITUCIONALES</h2>
-          </div>
+      <Institutional />
 
-          <div
-            className="row no-gutters clients-wrap clearfix"
-            data-aos="fade-up"
-          >
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo1} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo2} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo3} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo4} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo5} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo6} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo7} className="img-fluid" alt="" />
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-4 col-xs-6">
-              <div className="client-logo">
-                <img src={logo8} className="img-fluid" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-      </section>
+      <Sponsors />
 
       <footer id="footer">
         <div className="footer-top">
