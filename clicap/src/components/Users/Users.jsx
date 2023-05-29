@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ModalDelete from "../Modals/ModalDelete";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { UsersList } from "./UsersList";
 import { Button } from "react-bootstrap";
 import Select from "react-select";
@@ -16,14 +15,16 @@ const Users = ({ showModalCertificate }) => {
   const roleId = getDataUserByKey("roleId");
   const location = useLocation();
   const { pathname } = location;
-  const { getAllUsers, usersSelector } = useContext(UserContext);
+
+  const { getAllUsers, userState, getUsersFiltered } = useContext(UserContext);
+  const { usersSelector, users, usersFiltered, totalUsersPages } = userState;
+
   const initialFilters = {
     name: "",
     roleId: "",
     identifyNumber: "",
   };
-  const { usersFiltered, getUsersFiltered, totalUsersPages } =
-    useContext(EntitiesContext);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
   const [userToDelete, setUserToDelete] = useState(false);
@@ -39,6 +40,7 @@ const Users = ({ showModalCertificate }) => {
     },
     { value: 4, label: "Alumno", target: { name: "roleId", value: 4 } },
   ];
+
   const handleChangeFilter = (e, name) => {
     if (e) {
       setFilters({
@@ -52,6 +54,7 @@ const Users = ({ showModalCertificate }) => {
       });
     }
   };
+
   const exportToExcel = async () => {
     await reqAxiosDownload(`/user/export/users`, filters, "Usuarios");
   };
@@ -60,9 +63,12 @@ const Users = ({ showModalCertificate }) => {
     e.preventDefault();
     getUsersFiltered(1, filters);
   };
+
   useEffect(() => {
+    if (users.length === 0) {
+      getAllUsers();
+    }
     getUsersFiltered(page, filters);
-    getAllUsers("identifyNumber", "identifyNumber");
   }, [page]);
 
   return (
@@ -73,14 +79,6 @@ const Users = ({ showModalCertificate }) => {
 
       <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
-        <div className="d-flex justify-content-end">
-          {/*           <Button
-            className="btn btn-success"
-            onClick={() => navigate("/customers/create")}
-          >
-            <i className="fa-solid fa-plus"></i> Subir trabajo
-          </Button> */}
-        </div>
 
         {roleId === 1 ? (
           <div className="">
@@ -129,11 +127,11 @@ const Users = ({ showModalCertificate }) => {
                 />
               </div>
 
-              <Button variant="primary" type="submit">
+              <button className="btn btn-primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
-              </Button>
+              </button>
               {pathname !== "/generate-certificate" ? (
-                <Button variant="primary" onClick={exportToExcel}>
+                <Button variant="btn btn-secondary" onClick={exportToExcel}>
                   Exportar
                 </Button>
               ) : null}
@@ -150,6 +148,7 @@ const Users = ({ showModalCertificate }) => {
                     <th>Dni</th>
                     <th>Email</th>
                     <th>Rol</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>

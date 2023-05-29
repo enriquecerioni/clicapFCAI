@@ -8,24 +8,14 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const Sequelize = require("sequelize");
 const excelJS = require("exceljs");
+const { transporter } = require("../utils/utils");
 const { PAGE_LIMIT } = process.env;
 const EXCEL_CELL_WIDTH = 12;
 //NODEMAILER
-const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const RoleModel = require("../models/RoleModel");
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
-
-var transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_APP,
-    pass: "ktsrrsbzpcjnyhgy",
-  },
-});
 
 transporter.use(
   "compile",
@@ -121,7 +111,7 @@ exports.register = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.status(500).json({ msg: error.message });
+        return res.status(500).json({ msg: error });
       } else {
         console.log("Email enviado!");
         res.end();

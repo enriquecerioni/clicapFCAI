@@ -73,7 +73,7 @@ const Navbar = () => {
 
         <div className="liNav">
           <div className="dropdown">
-            <div>
+            <div onClick={() => navigate("/importantdates")}>
               <p type="button">Fechas Importantes</p>
             </div>
           </div>
@@ -88,14 +88,14 @@ const Navbar = () => {
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/page-in-process")}
+                onClick={() => navigate("/areas")}
               >
                 Áreas
               </p>
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/page-in-process")}
+                onClick={() => navigate("/modalities")}
               >
                 Modalidad de Presentación
               </p>
@@ -115,19 +115,13 @@ const Navbar = () => {
             <div>
               <p type="button">Inscripción</p>
             </div>
-            <div className="dropdown-content">
-              <p
-                className="active"
-                type="button"
-                onClick={() => navigate("/register")}
-              >
-                Registro
-              </p>
-              <p
-                className="active"
-                type="button"
-                onClick={() => navigate("/login")}
-              >
+          </div>
+        </div>
+
+        <div className="liNav">
+          <div className="">
+            <div>
+              <p type="button" onClick={() => navigate("/login")}>
                 Acceso
               </p>
             </div>

@@ -2,14 +2,14 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "../upload-receipt.css";
 import { Button } from "react-bootstrap";
-import { getDataUserByKey } from "../../../helpers/helpers";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { PayContext } from "../../../context/Pay/PayContext";
 import { useNavigate } from "react-router-dom";
 
 const PayReceipt = () => {
   const navigate = useNavigate();
-  const { payData, createNewPay } = useContext(PayContext);
+  const { payState, createNewPay } = useContext(PayContext);
+  const { payData } = payState;
+
   const [pay, setPay] = useState(payData);
 
   useEffect(() => {

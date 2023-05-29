@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import Select from "react-select";
 import {
   getDataUserByKey,
   isAuthenticated,
@@ -9,37 +10,63 @@ import {
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "./register.css";
 import Tooltip from "react-bootstrap/Tooltip";
-import { alertError, alertSuccess } from "../../helpers/alerts";
+import { alertError } from "../../helpers/alerts";
 import { useNavigate, useParams } from "react-router-dom";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { UserContext } from "../../context/User/UserContext";
+import { RegisterContext } from "../../context/Register/RegisterContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const Register = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { getAllRoles, roles, getDataUser } = useContext(EntitiesContext);
   const roleId = getDataUserByKey("roleId");
-  const { userData, getUserData } = useContext(UserContext);
-  console.log(userData);
+
+  const { getAllRoles, editUser, createUser, registerState } =
+    useContext(RegisterContext);
+  const { rolesSelector } = registerState;
+
+  const { userState, getUserData } = useContext(UserContext);
+  const { userData } = userState;
+
   const [userRegister, setUserRegister] = useState(userData);
   const [putDisabled, setPutDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [showErrorPassEquals, setShowErrorPassEquals] = useState(false);
   const isAdmin = getDataUserByKey("roleId");
-  const idUser = userRegister.id ? userRegister.id : null;
   const isEditForm = window.location.pathname === `/user/edit/${id}`;
 
-  const handleChangeRegister = (e) => {
-    setUserRegister({
-      ...userRegister,
-      [e.target.name]: e.target.value,
-    });
+  const identifyTypeOptions = [
+    {
+      label: "DNI",
+      value: "DNI",
+      target: { name: "identifyType", value: "DNI" },
+    },
+    {
+      label: "Pasaporte",
+      value: "Pasaporte",
+      target: { name: "identifyType", value: "Pasaporte" },
+    },
+  ];
+
+  const handleChangeRegister = (e, name) => {
+    if (e) {
+      setUserRegister({
+        ...userRegister,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setUserRegister({
+        ...userRegister,
+        [name]: "",
+      });
+    }
   };
+
   const onlyNumbers = () => {
     const pattern = /^[0-9]+$/;
     return pattern.test(userRegister.identifyNumber);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //valido que sean solo numeros
@@ -49,25 +76,13 @@ const Register = () => {
     if (formOk) {
       //verifico que las contraseñas sean iguales
       if (!passwordsEquals) {
-        return setShowErrorPassEquals(true);
+        return alertError("Las contraseñas no coinciden");
       } else {
         if (isEditForm) {
-          const data = await reqAxios(
-            "PUT",
-            `/user/edit/${idUser}`,
-            "",
-            userRegister
-          );
-          alertSuccess(data.data.response);
+          await editUser(userRegister);
           navigate("/home");
         } else {
-          const data = await reqAxios(
-            "POST",
-            "/user/register",
-            "",
-            userRegister
-          );
-          alertSuccess(data.data.response);
+          createUser(userRegister);
           navigate("/login");
         }
       }
@@ -92,13 +107,24 @@ const Register = () => {
     );
   };
 
+  const rolesOptions = () => {
+    if (rolesSelector.length > 0) {
+      if (roleId === 1) {
+        return rolesSelector;
+      }
+      return rolesSelector.filter(
+        (role) => role.value !== 1 && role.value !== 2
+      );
+    }
+  };
+
   useEffect(() => {
     getAllRoles();
     if (isAuthenticated()) {
       getUserData(id);
     }
   }, []);
-  
+
   useEffect(() => {
     setUserRegister(userData);
   }, [userData]);
@@ -106,9 +132,8 @@ const Register = () => {
   return (
     <>
       <div className="login-view animate__animated animate__fadeInUp">
-        <div className="card card-login shadow w-50">
+        <div className="card card-login boxcard-register-responsive shadow ">
           <div className="logo-login">
-            {console.log(isAuthenticated)}
             <h1>{isAdmin ? "Editar usuario" : "Registro"}</h1>
           </div>
           <div className="card-body">
@@ -123,27 +148,22 @@ const Register = () => {
                     >
                       Rol
                     </label>
-                    <div className="">
-                      <select
-                        className="form-select"
-                        name="roleId"
-                        value={userRegister.roleId}
-                        onChange={handleChangeRegister}
-                      >
-                        <option value={""}>Seleccione</option>
-                        {roles.map((rol) =>
-                          roleId === 1 ? (
-                            <option key={rol.id} value={rol.id}>
-                              {rol.name}
-                            </option>
-                          ) : rol.id !== 1 && rol.id !== 2 ? (
-                            <option key={rol.id} value={rol.id}>
-                              {rol.name}
-                            </option>
-                          ) : null
-                        )}
-                      </select>
-                    </div>
+                    <Select
+                      options={rolesOptions()}
+                      placeholder={"seleccione.."}
+                      name="roleId"
+                      value={rolesSelector.filter(
+                        (role) => role.value === userRegister.roleId
+                      )}
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          primary: "#3D84A8",
+                        },
+                      })}
+                      onChange={(e) => handleChangeRegister(e, "roleId")}
+                    />
                   </div>
                 ) : null}
                 <div className="row form-regis-responsive">
@@ -155,18 +175,22 @@ const Register = () => {
                     >
                       Tipo de identificación
                     </label>
-                    <div className="d-flex">
-                      <select
-                        className="form-select"
-                        name="identifyType"
-                        value={userRegister.identifyType}
-                        onChange={handleChangeRegister}
-                      >
-                        <option value={""}>Seleccione</option>
-                        <option value={"DNI"}>DNI</option>
-                        <option value={"Pasaporte"}>Pasaporte</option>
-                      </select>
-                    </div>
+                    <Select
+                      options={identifyTypeOptions}
+                      placeholder={"seleccione.."}
+                      name="identifyType"
+                      value={identifyTypeOptions.filter(
+                        (type) => type.value === userRegister.identifyType
+                      )}
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          primary: "#3D84A8",
+                        },
+                      })}
+                      onChange={(e) => handleChangeRegister(e, "identifyType")}
+                    />
                   </div>
                   {/* ID */}
                   <div className="mb-2 col">
@@ -411,28 +435,21 @@ const Register = () => {
                       </div>
                     </div>
                   </div>
-                  {showErrorPassEquals ? (
-                    <div
-                      className="alert alert-danger alert-dismissible fade show"
-                      role="alert"
-                    >
-                      Las contraseñas no coinciden
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : null}
                 </div>
-                <button
-                  type="submit"
-                  disabled={putDisabled ? putDisabled : disabled()}
-                  className="btn btn-login"
+                <ClicapTooltip
+                  tooltip={putDisabled ? putDisabled : disabled()}
+                  text={"Por favor completar todos los campos"}
                 >
-                  Enviar
-                </button>
+                  <div>
+                    <button
+                      type="submit"
+                      disabled={putDisabled ? putDisabled : disabled()}
+                      className="btn btn-login"
+                    >
+                      Enviar
+                    </button>
+                  </div>
+                </ClicapTooltip>
               </form>
             </div>
           </div>

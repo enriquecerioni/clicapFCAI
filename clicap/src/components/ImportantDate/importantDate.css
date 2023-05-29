@@ -1,0 +1,25 @@
+.importantDate-card {
+  display: flex;
+  /*   background-color: aqua; */
+  color: #ffff;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #30A2FF;
+  margin: 1rem;
+}
+
+.imp-date-title{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.imp-date-description{
+    font-size: 16px;
+}
+
+.circle-icon-imp-date {
+  border-radius: 100%;
+  height: 30px;
+  width: 30px;
+  /* background-color: #00C4FF; */
+}

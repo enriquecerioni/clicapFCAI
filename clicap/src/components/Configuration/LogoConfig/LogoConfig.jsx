@@ -75,70 +75,78 @@ export const LogoConfig = () => {
   }, []);
 
   return (
-    <div className="center-center">
-      <div className="widthConfig boxCard">
-        <Form.Label className="fw-bold">Logo del evento</Form.Label>
-        <div className="">
-          <input
-            type="file"
-            className="form-control"
-            name="urlFile"
-            onChange={(e) => handleChange(e, logoApp, setLogoApp)}
-          />
-        </div>
-        <div className="mb-3">
-          <Button
-            variant="success"
-            className="w-100"
-            onClick={(e) => handleSubmit(e, logoApp)}
-          >
-            Guardar
-          </Button>{" "}
-        </div>
-        <div className="mt-3 mb-3 text-center">
-          <p className="fw-bold">Logo:</p>
-          {imgLoaded.appLogoImg !== "" ? (
-            <img
-              className="showImgLogo"
-              src={`data:image/png;base64,${imgLoaded.appLogoImg}`}
-              alt=""
+    <>
+      <div className="section-header">
+        <h2>Logo / Fondo</h2>
+      </div>
+
+      <div className="center-center">
+        <div className="widthConfig boxCard">
+          <Form.Label className="fw-bold">Logo del evento</Form.Label>
+          <div className="">
+            <input
+              type="file"
+              className="form-control"
+              name="urlFile"
+              onChange={(e) => handleChange(e, logoApp, setLogoApp)}
             />
-          ) : (
-            "No hay Logo"
-          )}
-        </div>
-        <div className="p-3"><hr /></div>
-        <Form.Label className="fw-bold">Fondo del certificado</Form.Label>
-        <div className="">
-          <input
-            type="file"
-            className="form-control"
-            name="urlFile"
-            onChange={(e) => handleChange(e, certificateBg, setCertificateBg)}
-          />
-        </div>
-        <div className="">
-          <Button
-            variant="success"
-            className="w-100"
-            onClick={(e) => handleSubmit(e, certificateBg)}
-          >
-            Guardar
-          </Button>{" "}
-        </div>
-        <div className="mt-3 text-center">
-          <p className="fw-bold">Fondo:</p>
-          {imgLoaded.certificateImg !== "" ? (
-            <img
-              className="showImg"
-              src={`data:image/png;base64,${imgLoaded.certificateImg}`}
-              alt=""
+          </div>
+          <div className="mb-3">
+            <Button
+              variant="success"
+              className="w-100"
+              onClick={(e) => handleSubmit(e, logoApp)}
+            >
+              Guardar
+            </Button>{" "}
+          </div>
+          <div className="mt-3 mb-3 text-center">
+            <p className="fw-bold">Logo:</p>
+            {imgLoaded.appLogoImg !== "" ? (
+              <img
+                className="showImgLogo"
+                src={`data:image/png;base64,${imgLoaded.appLogoImg}`}
+                alt=""
+              />
+            ) : (
+              "No hay Logo"
+            )}
+          </div>
+          <div className="p-3">
+            <hr />
+          </div>
+          <Form.Label className="fw-bold">Fondo del certificado</Form.Label>
+          <div className="">
+            <input
+              type="file"
+              className="form-control"
+              name="urlFile"
+              onChange={(e) => handleChange(e, certificateBg, setCertificateBg)}
             />
-          ) : (
-            "No hay Fondo de imagen"
-          )}
+          </div>
+          <div className="">
+            <Button
+              variant="success"
+              className="w-100"
+              onClick={(e) => handleSubmit(e, certificateBg)}
+            >
+              Guardar
+            </Button>{" "}
+          </div>
+          <div className="mt-3 text-center">
+            <p className="fw-bold">Fondo:</p>
+            {imgLoaded.certificateImg !== "" ? (
+              <img
+                className="showImg"
+                src={`data:image/png;base64,${imgLoaded.certificateImg}`}
+                alt=""
+              />
+            ) : (
+              "No hay Fondo de imagen"
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

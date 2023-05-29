@@ -3,23 +3,12 @@ const JobDetailModel = require("../models/JobDetailModel");
 const { PAGE_LIMIT } = process.env;
 const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
+const { transporter } = require("../utils/utils");
 const JobModalityModel = require("../models/JobModalityModel");
 const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
-//NODEMAILER
-const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
-
-var transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_APP,
-    pass: "ktsrrsbzpcjnyhgy",
-  },
-});
 
 transporter.use(
   "compile",
@@ -191,9 +180,7 @@ exports.checkCorrection = async (req, res) => {
     if (detail) {
       res.status(200).json({ response: detail, value: 1 });
     } else {
-      res
-        .status(200)
-        .json({ msg: "Error al obtener la corrección.", value: 0 });
+      res.status(200).json({ msg: "No posee correcciones.", value: 0 });
     }
   } catch (error) {
     console.log("Error al obtener la corrección." + error);

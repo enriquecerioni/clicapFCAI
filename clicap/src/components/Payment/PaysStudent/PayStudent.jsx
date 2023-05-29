@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../pays.css";
 import { useNavigate } from "react-router";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 /* import { PaginationCustom } from "../PaginationCustom/PaginationCustom"; */
 import { getDataUserByKey } from "../../../helpers/helpers";
 import PayStudentList from "./PayStudentList";
@@ -9,11 +8,13 @@ import { PayContext } from "../../../context/Pay/PayContext";
 
 const PayStudent = () => {
   const navigate = useNavigate();
-  const { pays, getAllPays } = useContext(PayContext);
+  const { payState, getAllPays } = useContext(PayContext);
+  const { pays } = payState;
+
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };
-  
+
   useEffect(() => {
     /*     getmyJobsPaginated(page, filterQuery); */
     getAllPays(page, filterToAuthor);

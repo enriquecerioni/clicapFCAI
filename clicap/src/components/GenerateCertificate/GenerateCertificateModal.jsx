@@ -7,15 +7,18 @@ import { CertificateContext } from "../../context/Certificate/CertificateContext
 import { JobContext } from "../../context/Job/JobContext";
 import { reqAxios } from "../../helpers/helpers";
 
-export const GenerateCertificateModal = ({ showModal }) => {
+export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
+  const { getAllCertificates, ceritificateState } =
+    useContext(CertificateContext);
+
   const {
-    getAllCertificates,
     certificates,
-    userIdToCertificate,
     nameToCertificate,
-    certificateTypesOpt
-  } = useContext(CertificateContext);
-  const { jobs, getAllJobs } = useContext(JobContext);
+    userIdToCertificate,
+    certificateTypesOpt,
+  } = ceritificateState;
+
+  const { getAllJobsByUser } = useContext(JobContext);
 
   const initialState = {
     type: "",
@@ -24,8 +27,9 @@ export const GenerateCertificateModal = ({ showModal }) => {
     jobId: "",
   };
 
-  const closeModal = () => showModal(false);
+  const closeModal = () => setShowModal(!showModal);
   const [certificateData, setCertificateData] = useState(initialState);
+  const [jobsUser, setJobsUser] = useState([]);
   const [putDisabled, setPutDisabled] = useState(false);
 
   const allCertificates = certificates.map((certificate) => ({
@@ -33,11 +37,12 @@ export const GenerateCertificateModal = ({ showModal }) => {
     label: certificate.name,
     target: { value: certificate.id, name: "certificateId" },
   }));
-  const allJobs = jobs.map((job) => ({
+
+  /*   const allJobs = jobs.map((job) => ({
     value: job.id,
     label: job.name,
     target: { value: job.id, name: "jobId" },
-  }));
+  })); */
 
   const disabled = () => {
     return !!!certificateData.type || !!!certificateData.certificateId;
@@ -55,14 +60,27 @@ export const GenerateCertificateModal = ({ showModal }) => {
       [name]: "",
     });
   };
+
   const handleSubmit = async () => {
     await reqAxios("POST", `/student/create`, "", certificateData);
     closeModal();
   };
 
+  const getAllJobsByUserAndSetJobs = async () => {
+    const allJobs = await getAllJobsByUser(userIdToCertificate);
+    const allJobsSelector = allJobs.map((item, i) => {
+      return {
+        label: item.name,
+        value: item.id,
+        target: { name: "jobId", value: item.id },
+      };
+    });
+    setJobsUser(allJobsSelector);
+  };
+
   useEffect(() => {
     getAllCertificates();
-    getAllJobs(1, { authorId: userIdToCertificate });
+    getAllJobsByUserAndSetJobs();
   }, []);
 
   return (
@@ -126,7 +144,7 @@ export const GenerateCertificateModal = ({ showModal }) => {
                 Trabajo
               </label>
               <Select
-                options={allJobs}
+                options={jobsUser}
                 placeholder={"seleccione.."}
                 isDisabled={certificateData.type === 1 ? true : false}
                 name="jobId"

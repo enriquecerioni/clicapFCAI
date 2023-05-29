@@ -6,12 +6,19 @@ import ModalDelete from "../Modals/ModalDelete";
 
 export default function CertificateTypes() {
   const navigate = useNavigate();
-  const { getAllCertificates, certificates } = useContext(CertificateContext);
+  const { getAllCertificates, getCertificatesLogo, ceritificateState } =
+    useContext(CertificateContext);
+  const { certificates, certificateLogo } = ceritificateState;
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [certificateToDelete, setCertificateToDelete] = useState({});
 
   useEffect(() => {
     getAllCertificates();
+
+    if (certificateLogo === "") {
+      getCertificatesLogo();
+    }
   }, []);
   return (
     <>
@@ -46,6 +53,9 @@ export default function CertificateTypes() {
                   <tr>
                     <th>Nombre</th>
                     <th>Texto</th>
+                    <th>Tipo</th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -56,9 +66,6 @@ export default function CertificateTypes() {
                       certificate={certificate}
                       showAlert={setShowDeleteModal}
                       setCertificateToDelete={setCertificateToDelete}
-                      /*                
-                      setUserToDelete={setUserToDelete} */
-                      /*     setCustomerToDelete={handleDelete} */
                       key={certificate.id}
                     />
                   ))}

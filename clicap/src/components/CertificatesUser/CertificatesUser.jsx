@@ -5,13 +5,11 @@ import { getDataUserByKey } from "../../helpers/helpers";
 import { Loader } from "../Loader/Loader";
 
 export default function CertificatesUser() {
-  const {
-    getAllCertificatesByUser,
-    getCertificatesLogo,
-    certificateLogo,
-    userCertificates,
-  } = useContext(CertificateContext);
-  const { isFetching } = useContext(CertificateContext);
+  const { getAllCertificatesByUser, getCertificatesLogo, ceritificateState } =
+    useContext(CertificateContext);
+
+  const { certificateLogo, userCertificates, isFetching } = ceritificateState;
+
   const userId = getDataUserByKey("id");
 
   useEffect(() => {

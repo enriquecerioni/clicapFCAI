@@ -13,7 +13,7 @@ const EntitiesProvider = ({ children }) => {
   const roleId = getDataUserByKey("roleId");
   //Estados iniciales
   //Estado inicial cuenta regresiva
-  const [time, setTime] = useState("2022-11-12");
+  const [time, setTime] = useState("2023-12-31");
   //ESTADO INICIAL REGISTRO
   const initialStateRegister = {
     roleId: "",
@@ -65,7 +65,7 @@ const EntitiesProvider = ({ children }) => {
   const initialStateCertificate = {
     detail: "",
     urlFile: "",
-    authorId: ""
+    authorId: "",
   };
   //ESTADO INICIAL DE UNA CORRECCION
   const initialCorrection = {
@@ -367,7 +367,7 @@ const EntitiesProvider = ({ children }) => {
         : e.target.value;
     setCertificate({
       ...certificate,
-      ['authorId']: userId,
+      ["authorId"]: userId,
       [e.target.name]: value,
     });
   };
@@ -377,7 +377,12 @@ const EntitiesProvider = ({ children }) => {
       for (const key in certificate) {
         bodyFormData.append(key, certificate[key]);
       }
-      await formDataAxios("POST", `/regular-certificates/create`, "", bodyFormData);
+      await formDataAxios(
+        "POST",
+        `/regular-certificates/create`,
+        "",
+        bodyFormData
+      );
     } catch (e) {
       console.log(e);
     }
@@ -446,7 +451,7 @@ const EntitiesProvider = ({ children }) => {
         dataFilter,
         ""
       );
-      console.log(dataMyCertificates)
+      console.log(dataMyCertificates);
       setMyCertificates(dataMyCertificates.data.response);
     } catch (e) {
       console.log(e);
@@ -588,7 +593,7 @@ const EntitiesProvider = ({ children }) => {
         setFiltersGlobal,
         handleChangeFilterGlobal,
         getAllRegularCertificates,
-        allRegularCertificates
+        allRegularCertificates,
       }}
     >
       {children}

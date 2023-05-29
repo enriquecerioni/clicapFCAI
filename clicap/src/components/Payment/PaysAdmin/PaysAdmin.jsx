@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import ModalDelete from "../../Modals/ModalDelete";
 import { ExtensiveList } from "../../ExtensiveList/ExtensiveList";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { PaysAdminList } from "./PaysAdminList";
 import { PayContext } from "../../../context/Pay/PayContext";
 import { UserContext } from "../../../context/User/UserContext";
@@ -12,13 +11,16 @@ import { Loader } from "../../Loader/Loader";
 import { reqAxiosDownload } from "../../../helpers/helpers";
 
 const PaysAdmin = () => {
-  const navigate = useNavigate();
   const initialFilters = {
     authorId: "",
   };
 
-  const { getAllUsers, usersSelector, users } = useContext(UserContext);
-  const { pays, getPaysFiltered, isFetching } = useContext(PayContext);
+  const { getAllUsers, userState } = useContext(UserContext);
+  const { usersSelector, users } = userState;
+
+  const { getPaysFiltered, payState } = useContext(PayContext);
+  const { pays, isFetching } = payState;
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [PayToDelete, setPayToDelete] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
@@ -43,13 +45,16 @@ const PaysAdmin = () => {
   };
 
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/pay/export/pays`, filters,'Pagos');
+    await reqAxiosDownload(`/pay/export/pays`, filters, "Pagos");
   };
 
   useEffect(() => {
-    getAllUsers("identifyNumber", "id");
+    if (users.length === 0) {
+      getAllUsers();
+    }
     getPaysFiltered(1, filters);
   }, []);
+
   return (
     <>
       {/*     CAMBIAR */}
@@ -89,7 +94,7 @@ const PaysAdmin = () => {
               <i className="fa-solid fa-magnifying-glass"></i>
             </Button>
 
-            <Button variant="primary" onClick={exportToExcel}>
+            <Button variant="btn btn-secondary" onClick={exportToExcel}>
               Exportar
             </Button>
           </form>

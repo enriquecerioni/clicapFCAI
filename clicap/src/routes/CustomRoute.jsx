@@ -28,14 +28,19 @@ import { GenerateCertificate } from "../components/GenerateCertificate/GenerateC
 import { NewCertificate } from "../components/GenerateCertificate/NewCertificate/NewCertificate";
 import CertificateTypes from "../components/GenerateCertificate/CertificateTypes";
 import { Configuration } from "../components/Configuration/Configuration";
-import { StudentCertificateList } from "../components/StudentCertificate/Admin/StudentCertificateList";
 import StudentCertificateAdmin from "../components/StudentCertificate/Admin/StudentCertificateAdmin";
 import { PageInProcess } from "../components/PageInProcess/PageInProcess";
 import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommittee";
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
-import { Institutional } from "../views/Institutional/Institutional";
 import { Sponsors } from "../views/Sponsors/Sponsors";
-import { Contact } from "../views/Contact/Contact";
+import { ImportantDate } from "../components/ImportantDate/ImportantDate";
+import { ImportantDateTable } from "../components/ImportantDate/ImportantDateManager/ImportantDateTable";
+import { Areas } from "../components/Areas/Areas";
+import { LogoConfig } from "../components/Configuration/LogoConfig/LogoConfig";
+import { AreaList } from "../components/Areas/AreaList";
+import { Modalities } from "../components/Modalities/Modalities";
+import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable";
+import { Institutional } from "../views/Institutional/Institutional";
 
 const CustomRoute = () => (
   <>
@@ -70,6 +75,24 @@ const CustomRoute = () => (
       />
 
       <Route
+        path="sponsors"
+        element={
+          <Home>
+            <Sponsors />
+          </Home>
+        }
+      />
+
+      <Route
+        path="institutional"
+        element={
+          <Home>
+            <Institutional />
+          </Home>
+        }
+      />
+
+      <Route
         path="scientific-committee"
         element={
           <Home>
@@ -88,6 +111,33 @@ const CustomRoute = () => (
       />
 
       <Route
+        path="importantdates"
+        element={
+          <Home>
+            <ImportantDate />
+          </Home>
+        }
+      />
+
+      <Route
+        path="areas"
+        element={
+          <Home>
+            <AreaList />
+          </Home>
+        }
+      />
+
+      <Route
+        path="modalities"
+        element={
+          <Home>
+            <Modalities />
+          </Home>
+        }
+      />
+
+      <Route
         path="institutional"
         element={
           <Home>
@@ -101,15 +151,6 @@ const CustomRoute = () => (
         element={
           <Home>
             <Sponsors />
-          </Home>
-        }
-      />
-
-      <Route
-        path="contact"
-        element={
-          <Home>
-            <Contact />
           </Home>
         }
       />
@@ -137,6 +178,42 @@ const CustomRoute = () => (
         element={
           <PrivateAdminRoute>
             <Configuration />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="logos-config"
+        element={
+          <PrivateAdminRoute>
+            <LogoConfig />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="importantdate-config"
+        element={
+          <PrivateAdminRoute>
+            <ImportantDateTable />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="sponsor-config"
+        element={
+          <PrivateAdminRoute>
+            <SponsorTable />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="area-config"
+        element={
+          <PrivateAdminRoute>
+            <Areas />
           </PrivateAdminRoute>
         }
       />

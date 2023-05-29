@@ -38,12 +38,14 @@ export const NewCorrections = () => {
     /*     navigate('/jobs'); */
     waitAndRefresh("jobs", 1000);
   };
+
   useEffect(() => {
     setCorrection({
       ...correction,
       ["jobId"]: Number(id),
     });
   }, []);
+  
   return (
     <>
       <div className="center-center">

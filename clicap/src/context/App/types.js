@@ -1,0 +1,3 @@
+export const SET_SEARCH_PIXELS = "SET_SEARCH_PIXELS";
+export const SET_MENU_PHONE = "SET_MENU_PHONE";
+export const SET_LOGGOUT = "SET_LOGGOUT";

@@ -2,41 +2,62 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
-import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
-import { EntitiesContext } from "../../context/EntitiesContext";
+import { formDataAxios } from "../../helpers/helpers";
+import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
 import { JobContext } from "../../context/Job/JobContext";
 import { alertError } from "../../helpers/alerts";
+import { AreaContext } from "../../context/Area/AreaContext";
+import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { jobData, getJobId } = useContext(JobContext);
-  const { areas, getAllAreas, modalities, getAllModalities } =
-    useContext(EntitiesContext);
+
+  const { jobState, getJobId } = useContext(JobContext);
+  const { jobData } = jobState;
+
+  const { areaState, getAllAreas } = useContext(AreaContext);
+  const { areas, areasSelector } = areaState;
+
+  const { modalitiesState, getAllModalities } = useContext(ModalitiesContext);
+
+  const { modalities, modalitiesSelector } = modalitiesState;
 
   const [job, setJob] = useState(jobData);
   const [putDisabled, setPutDisabled] = useState(false);
+
   const [members, setMembers] = useState({
     items: [],
     value: "",
     error: null,
   });
-  const handleChangeUpJob = (e) => {
+
+  const handleChangeUpJob = (e, name) => {
     let value =
       e.target.type === "file"
         ? e.target.value === ""
           ? ""
           : e.target.files[0]
         : e.target.value;
-    if (e.target.name === "areaId") {
+
+    /*     if (name === "areaId") {
       value = Number(value);
+    } */
+
+    if (e) {
+      setJob({
+        ...job,
+        [e.target.name]: value,
+      });
+    } else {
+      setJob({
+        ...job,
+        [name]: "",
+      });
     }
-    setJob({
-      ...job,
-      [e.target.name]: value,
-    });
   };
 
   const createNewJob = async () => {
@@ -45,7 +66,6 @@ const DeliveryTask = () => {
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      console.log(bodyFormData);
       await formDataAxios("POST", `/job/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
@@ -89,8 +109,14 @@ const DeliveryTask = () => {
     if (id) {
       getJobId(id);
     }
-    getAllAreas();
-    getAllModalities();
+
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+
+    if (modalities.length === 0) {
+      getAllModalities();
+    }
   }, []);
 
   useEffect(() => {
@@ -111,19 +137,19 @@ const DeliveryTask = () => {
   }, [members]);
 
   return (
-    <div className="boxCard centerBox">
+    <div className="boxCard centerBox boxCard-delivery-task">
       <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
-              <div className="">
+              <div className="" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Título del trabajo
+                  * Título del trabajo
                 </label>
                 <div className="">
                   <input
@@ -132,63 +158,63 @@ const DeliveryTask = () => {
                     className="form-control"
                     name="name"
                     value={job.name}
-                    onChange={handleChangeUpJob}
+                    onChange={(e) => handleChangeUpJob(e, "name")}
                   />
                 </div>
               </div>
 
               {/* AREA */}
-              <div className="ms-2">
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Area
+                  * Area
                 </label>
-                <div className="">
-                  <select
-                    className="form-select"
-                    name="areaId"
-                    value={job.areaId}
-                    onChange={handleChangeUpJob}
-                  >
-                    <option value={""}>Seleccione</option>
-                    {areas.length > 0
-                      ? areas.map((area) => (
-                          <option key={area.id} value={area.id}>
-                            {area.name}
-                          </option>
-                        ))
-                      : null}
-                  </select>
-                </div>
+                <Select
+                  options={areasSelector}
+                  placeholder={"seleccione.."}
+                  name="areaId"
+                  value={areasSelector.filter(
+                    (area) => job.areaId === area.value
+                  )}
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeUpJob(e, "areaId")}
+                />
               </div>
 
               {/* MODALIDAD */}
-              <div className="ms-2">
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
                 >
-                  Modalidad
+                  * Modalidad
                 </label>
-                <div className="">
-                  <select
-                    className="form-select"
-                    name="jobModalityId"
-                    value={job.jobModalityId}
-                    onChange={handleChangeUpJob}
-                  >
-                    <option value={""}>Seleccione</option>
-                    {modalities.length > 0
-                      ? modalities.map((modality) => (
-                          <option key={modality.id} value={modality.id}>
-                            {modality.name}
-                          </option>
-                        ))
-                      : null}
-                  </select>
-                </div>
+                <Select
+                  options={modalitiesSelector}
+                  placeholder={"seleccione.."}
+                  name="jobModalityId"
+                  value={modalitiesSelector.filter(
+                    (modality) => job.jobModalityId === modality.value
+                  )}
+                  isClearable={true}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: "#3D84A8",
+                    },
+                  })}
+                  onChange={(e) => handleChangeUpJob(e, "jobModalityId")}
+                />
               </div>
             </div>
             {/* Miembros */}
@@ -203,16 +229,6 @@ const DeliveryTask = () => {
                 membersToSend={members}
                 setMembersToSend={setMembers}
               />
-              {/*               <div className="">
-                <input
-                  type="text"
-                  placeholder="Ivan castro;Enrique Cerioni;"
-                  className="form-control"
-                  name="members"
-                  value={job.members}
-                  onChange={handleChangeUpJob}
-                />
-              </div> */}
             </div>
             {/* Archivo */}
             <div className="mt-2">
@@ -220,7 +236,7 @@ const DeliveryTask = () => {
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold"
               >
-                Trabajo
+                * Trabajo
               </label>
               <div className="">
                 <input
@@ -228,18 +244,28 @@ const DeliveryTask = () => {
                   placeholder="Seleccione..."
                   className="form-control"
                   name="urlFile"
-                  onChange={handleChangeUpJob}
+                  onChange={(e) => handleChangeUpJob(e, "urlFile")}
                 />
               </div>
             </div>
-            <div className="mt-3 center-center">
-              <Button
-                disabled={putDisabled ? putDisabled : disabled()}
-                type="submit"
-                variant="primary"
-              >
-                Subir trabajo
-              </Button>
+            <ClicapTooltip
+              tooltip={putDisabled ? putDisabled : disabled()}
+              text={"Por favor completar los campos obligatorios"}
+            >
+              <div className="mt-3 center-center">
+                <button
+                  disabled={putDisabled ? putDisabled : disabled()}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  Subir trabajo
+                </button>
+              </div>
+            </ClicapTooltip>
+            <div className="mt-3 d-flex align-items-center">
+              <p className="m-0">"</p>
+              <p className="m-0 fw-bold fs-4">*</p>
+              <p className="m-0">": Campos obligatorios</p>
             </div>
           </form>
           {/*           <Button onClick={() => console.log(job)} variant="primary">

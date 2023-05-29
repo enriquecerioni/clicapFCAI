@@ -5,42 +5,66 @@ import { SidebarModify } from "../SidebarModify/SidebarModify";
 import "./home.css";
 import "../../App.css";
 import { MenuPhone } from "../MenuPhone/MenuPhone";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../context/App/AppContext";
 
 const Home = ({ children }) => {
-  /*   const putSidebarRespons = () => {
+  const { appState, setSearchPixels, setMenuPhone } = useContext(AppContext);
+  const { searchPixels, menuPhone, loggout } = appState;
+
+  const putSidebarRespons = () => {
     if (window.innerWidth < 760) {
-      setShowMenuPhone(true);
+      setMenuPhone(true);
     } else {
-      setShowMenuPhone(false);
+      setMenuPhone(false);
     }
   };
-  window.addEventListener("resize", putSidebarRespons); */
+  /* window.addEventListener("resize", putSidebarRespons); */
+
+  useEffect(() => {
+    if (!searchPixels) {
+      setSearchPixels(true);
+      putSidebarRespons();
+    }
+  }, [loggout]);
 
   return (
     <>
       <div className="">
-        <div className="show-menu-desktop">
-          <Navbar />
-          <Container className="h-100">
-            <Row className="h-100">
-              {isAuthenticated() ? (
-                <>
-                  <Col sm={2} className="col-sidebar p-0">
-                    <SidebarModify />
-                  </Col>
+        {!menuPhone ? (
+          <div className="show-menu-desktop h-100">
+            <Navbar />
+            <Container className="h-100">
+              <Row className="h-100">
+                {isAuthenticated() ? (
+                  <>
+                    <Col
+                      sm={2}
+                      className="col-sidebar p-0"
+                      style={{
+                        borderRightColor: "#ffff",
+                        backgroundColor: "#2864f6",
+                        borderTopRightRadius: "10px",
+                      }}
+                    >
+                      <SidebarModify />
+                    </Col>
+                    <Col className="p-0" style={{ backgroundColor: "#D2E9E9" }}>
+                      {children}
+                    </Col>
+                  </>
+                ) : (
                   <Col className="p-0">{children}</Col>
-                </>
-              ) : (
-                <Col className="p-0">{children}</Col>
-              )}
-            </Row>
-          </Container>
-        </div>
-
-        <div className="show-menu-phone">
-          <MenuPhone />
-          <Col className="p-0">{children}</Col>
-        </div>
+                )}
+              </Row>
+            </Container>
+          </div>
+        ) : (
+          <div className="show-menu-phone">
+            <MenuPhone />
+            <Col className="p-0">{children}</Col>
+          </div>
+        )}
       </div>
     </>
   );

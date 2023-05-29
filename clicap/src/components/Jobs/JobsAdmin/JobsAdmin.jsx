@@ -3,56 +3,52 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { JobsAdminList } from "./JobsAdminList";
 import ModalDelete from "../../Modals/ModalDelete";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
 import { CustomModal } from "../../CustomModal/CustomModal";
 import { JobsFilters } from "../JobsFilters/JobsFilters";
+import { JobContext } from "../../../context/Job/JobContext";
+import { UserContext } from "../../../context/User/UserContext";
+import { AreaContext } from "../../../context/Area/AreaContext";
+import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
 
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
-  const userId = getDataUserByKey("id");
-  const {
-    allJobs,
-    getAllJobs,
-    users,
-    getAllUsers,
-    getAllAreas,
-    usersSelector,
-    areasSelector,
-    totalPages,
-    allStatusJob,
-    getAllEvaluators,
-    allEvaluatorsSelector,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
 
-  /*   const initialFilters = {
-    authorId: "",
-    name: "",
-    areaId: "",
-    jobModalityId: "",
-    status: "",
-    evaluatorId: roleId === 2 ? userId : "",
-  }; */
+  const { jobState, getJobsFiltered } = useContext(JobContext);
+  const { jobsFilter, jobs, totalJobsPages } = jobState;
 
-  const [filters, setFilters] = useState(filtersGlobal);
+  const { userState, getAllUsers, getAllEvaluators } = useContext(UserContext);
+  const { users, evaluatorsSelector } = userState;
+
+  const { areaState, getAllAreas } = useContext(AreaContext);
+  const { areas } = areaState;
+
+  const [filters, setFilters] = useState(jobsFilter);
+  const [showAssignEvaluatorModal, setShowAssignEvaluatorModal] =
+    useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
   const [JobToDelete, setJobToDelete] = useState(false);
   const [page, setPage] = useState(1);
 
+  //evaluator
+  const [jobToAssignEvaluator, setJobToAssignEvaluator] = useState("");
+
   const exportToExcel = async () => {
-    await reqAxiosDownload(`/job/export/jobs`, filtersGlobal, "Trabajos");
+    await reqAxiosDownload(`/job/export/jobs`, filters, "Trabajos");
   };
 
   useEffect(() => {
-    getAllUsers();
-    getAllAreas();
-    getAllEvaluators();
-    getAllJobs(page, filtersGlobal);
+    if (users.length === 0) {
+      getAllUsers();
+      getAllEvaluators();
+    }
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+    getJobsFiltered(page, filters);
   }, [page]);
 
   return (
@@ -67,12 +63,24 @@ const JobsAdmin = () => {
             showModal={showModalFilters}
             setShowModal={setShowModalFilters}
           >
-            <JobsFilters setShowModalFilters={setShowModalFilters} />
+            <JobsFilters
+              filters={filters}
+              setFilters={setFilters}
+              setShowModalFilters={setShowModalFilters}
+            />
           </CustomModal>
         ) : null}
 
         {showDeleteModal ? (
           <ModalDelete entity={JobToDelete} showAlert={setShowDeleteModal} />
+        ) : null}
+
+        {showAssignEvaluatorModal ? (
+          <AssignEvaluatorModal
+            showModal={showAssignEvaluatorModal}
+            setShowModal={setShowAssignEvaluatorModal}
+            job={jobToAssignEvaluator}
+          />
         ) : null}
 
         {roleId === 1 ? (
@@ -88,7 +96,7 @@ const JobsAdmin = () => {
             </Button>
 
             <div className="ms-3">
-              <Button variant="outline-secondary" onClick={exportToExcel}>
+              <Button variant="btn btn-secondary" onClick={exportToExcel}>
                 <div className="d-flex align-items-center">
                   <i className="fa-solid fa-file-arrow-down"></i>
                   <p className="ms-2 m-0">Exportar</p>
@@ -98,7 +106,7 @@ const JobsAdmin = () => {
           </div>
         ) : null}
 
-        {allJobs.length > 0 ? (
+        {jobs.length > 0 ? (
           <>
             <div className="mt-3 overflow-x">
               <table className="table table-hover">
@@ -118,11 +126,13 @@ const JobsAdmin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allJobs.map((work) => (
+                  {jobs.map((work) => (
                     <JobsAdminList
                       work={work}
                       showAlert={setShowDeleteModal}
                       setJobToDelete={setJobToDelete}
+                      setShowAssignEvaluatorModal={setShowAssignEvaluatorModal}
+                      setJobToAssignEvaluator={setJobToAssignEvaluator}
                       key={work.id}
                     />
                   ))}
@@ -131,7 +141,7 @@ const JobsAdmin = () => {
             </div>
             <PaginationCustom
               currentPage={page}
-              totalPages={totalPages}
+              totalPages={totalJobsPages}
               paginate={setPage}
             />
           </>

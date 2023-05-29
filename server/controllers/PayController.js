@@ -145,6 +145,24 @@ exports.getById = async (req, res) => {
   }
 };
 
+exports.getByAuthorId = async (req, res) => {
+  try {
+    const { authorId } = req.params;
+    console.log(req.params);
+    const pay = await PayModel.findOne({
+      where: { authorId },
+    });
+
+    if (pay) {
+      res.status(200).json({ response: pay });
+    } else {
+      res.status(500).json({ msg: "Error al obtener el pago del autor." });
+    }
+  } catch (error) {
+    console.log("Error al obtener el pago del autor." + error);
+  }
+};
+
 exports.getAll = async (req, res) => {
   try {
     const pay = await PayModel.findAll();

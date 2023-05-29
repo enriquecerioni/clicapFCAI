@@ -1,33 +1,39 @@
 .sidebar {
-  background-color: #ffff;
+  background-color: #2864f6;
   padding-top: 10px;
+  border-radius: 0 10px 0 0;
 }
 .ulSidebar {
   display: flex;
   flex-direction: column;
   font-size: 18px;
   font-weight: 400;
+  color: #ffff;
+  margin: 2px;
 }
 
 .li-box-icon {
   display: flex;
   justify-content: center;
   width: 25px;
-  color: #5f9df7;
+  color: #ffff;
 }
 .li-sidebar {
   padding: 12px 12px 12px 10px;
 }
 .li-sidebar:hover {
-  background-color: #bad7e9;
+  background-color: #4b7df6;
   border-radius: 5px;
 }
 
 .sidebar-activate {
-  background-color: #bad7e9;
+  background-color: #4b7df6;
+  border-radius: 5px;
+  font-weight: 600;
 }
 
 .section-sidebar {
+  /* font-weight: 600; */
   font-weight: bold;
   padding-left: 10px;
 }

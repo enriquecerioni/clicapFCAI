@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const db = require('../database/database');
+const db = require("../database/database");
 
 const NewModel = db.define("new", {
   id: {
@@ -22,9 +22,9 @@ const NewModel = db.define("new", {
     allowNull: false,
   },
   imgbase64: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  }
+    type: DataTypes.TEXT("long"),
+    allowNull: false,
+  },
 });
 
-module.exports = NewModel
+module.exports = NewModel;

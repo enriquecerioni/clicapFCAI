@@ -31,7 +31,6 @@ export const reqAxios = async (method, shortUrl, param, data) => {
         "Content-Type": "application/json",
       }, */
     });
-    console.log(res.data);
     if (method !== "get") {
       alertSuccess(res.data.msg);
     }
@@ -113,7 +112,6 @@ export const deleteFile = async (nameFile, folder) => {
       method: "GET",
       responseType: "blob", // important
     });
-    console.log("Archivo eliminado.");
   } catch (error) {
     console.log(error);
   }

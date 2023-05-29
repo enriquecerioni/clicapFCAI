@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getDataUserByKey } from "../../helpers/helpers";
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/App/AppContext";
 
 export const SidebarModify = () => {
   const roleId = getDataUserByKey("roleId");
   const idUser = getDataUserByKey("id");
-  const loggout = () => {
-    sessionStorage.removeItem("user");
-    navigate("/");
-    // window.location.reload();
-  };
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { setLoggout } = useContext(AppContext);
+
   const [url, setUrl] = useState(null);
 
   const redirectJobPage = () => {
@@ -20,6 +20,14 @@ export const SidebarModify = () => {
       return navigate("/jobs");
     }
     navigate("/myjobs");
+  };
+
+  const loggout = () => {
+    sessionStorage.removeItem("user");
+    if (location.pathname === "/") {
+      setLoggout();
+    }
+    navigate("/");
   };
 
   useEffect(() => {
@@ -30,7 +38,6 @@ export const SidebarModify = () => {
     <>
       <div className="sidebar">
         <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
-          <p className="m-0 section-sidebar">MENU</p>
           <li
             className={`d-flex gap-2 align-items-center li-sidebar ${
               url === "/home" ? "sidebar-activate" : ""
@@ -45,7 +52,10 @@ export const SidebarModify = () => {
               <span>Menú principal</span>
             </div>
           </li>
-          <p className="m-0 section-sidebar">LISTAS</p>
+          <div className="center-center">
+            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
+          </div>
+          <p className="m-0 section-sidebar">Listas</p>
           {roleId === 1 ? (
             <li
               className={`d-flex gap-2 align-items-center li-sidebar ${
@@ -173,7 +183,11 @@ export const SidebarModify = () => {
             </li>
           )}
 
-          <p className="m-0 section-sidebar">USUARIO</p>
+          <div className="center-center">
+            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
+          </div>
+
+          <p className="m-0 section-sidebar">Usuario</p>
           <li
             onClick={() => navigate(`/user/edit/${idUser}`)}
             className={`d-flex gap-2 align-items-center li-sidebar ${

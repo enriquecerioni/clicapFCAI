@@ -8,47 +8,43 @@ import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";
+import { JobContext } from "../../context/Job/JobContext";
+import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
+import { PayContext } from "../../context/Pay/PayContext";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const {
-    allJobs,
-    myPays,
-    getAllAreas,
-    areas,
-    setFiltersGlobal,
-    filtersGlobal,
-  } = useContext(EntitiesContext);
-
-  const { getNumberOfJobs } = useContext(AreaContext);
-
-  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
-  const { getAllCertificatesByUser, userCertificates } = useContext(CertificateContext);
   const userId = getDataUserByKey("id");
-
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
 
-  const getBase64FromUrl = async (url) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
-  };
+  const { myPays } = useContext(EntitiesContext);
+
+  const { jobState, setJobFilters } = useContext(JobContext);
+  const { jobsFilter, jobs } = jobState;
+
+  const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
+  const { areas } = areaState;
+
+  const { getPayByAuthorId } = useContext(PayContext);
+
+  const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
+
+  const { getAllCertificatesByUser, ceritificateState } =
+    useContext(CertificateContext);
+  const { userCertificates } = ceritificateState;
+
+  const [filters, setFilters] = useState(jobsFilter);
+  const [goToJobFiltered, setGoToJobFiltered] = useState(false);
+  const [authorPay, setAuthorPay] = useState("");
 
   const goAndFiltered = (numArea, numModality) => {
-    setFiltersGlobal({
-      ...filtersGlobal,
+    setGoToJobFiltered(!goToJobFiltered);
+    setFilters({
+      ...filters,
       ["areaId"]: numArea,
       ["jobModalityId"]: numModality,
     });
-    navigate("/jobs");
   };
 
   const getAndSetNumberOfJobs = async () => {
@@ -63,7 +59,7 @@ const Welcome = () => {
     }
   };
   const getAmountByJobSummaries = (areaId) => {
-    if (amountJobsAndSum.completeWorks) {
+    if (amountJobsAndSum.summaries) {
       return amountJobsAndSum.summaries.find((item) => item.id === areaId)
         .amount;
     }
@@ -87,11 +83,36 @@ const Welcome = () => {
     return { completes, summariesTotal };
   };
 
+  const roleNames = {
+    1: "Admin",
+    2: "Evaluador",
+    3: "Docente/Investigador",
+    4: "Alumno",
+  };
+  const getRoleName = () => (roleId ? roleNames[roleId] : "");
+  const getAuthorPayAndSet = async () => {
+    const authorPayFound = await getPayByAuthorId(userId);
+    setAuthorPay(authorPayFound);
+    console.log("authorPayFound", authorPayFound);
+  };
+
   useEffect(() => {
+    if (areas.length === 0) {
+      getAllAreas();
+    }
+    if (roleId !== 1) {
+      getAllCertificatesByUser(userId);
+    }
+    getAuthorPayAndSet();
     getAndSetNumberOfJobs();
-    getAllAreas();
-    getAllCertificatesByUser(userId);
   }, []);
+
+  useEffect(() => {
+    if (goToJobFiltered) {
+      setJobFilters(filters);
+      navigate("/jobs");
+    }
+  }, [filters]);
 
   return (
     <>
@@ -100,67 +121,113 @@ const Welcome = () => {
           <h1 className="center-center title-top">Bienvenido {name} </h1>
         </div>
 
+        <div className="row roleTitle mb-3">
+          <div className="info-role">
+            Rol de Usuario: <strong>{getRoleName()}</strong>
+          </div>
+        </div>
+
         {roleId === 1 ? (
           <div>
-            <div className="row roleTitle">
-              <div className="alert alert-info rolAlert" role="alert">
-                Rol de Usuario: <strong>Admin</strong>
-              </div>
-            </div>
             <div className="row">
-              <div className="col text-center border dashboard-card">
-                <h2 className="mb-5">Trabajos Completos</h2>
-                <div className="flexColumn">
-                  {areas.length > 0 ? (
-                    areas.map((area) => {
-                      return (
-                        <button
-                          type="button"
-                          className="btnAreas"
-                          onClick={() => goAndFiltered(area.id, 1)}
-                        >
-                          {area.name + ` (${getAmountByJobComplete(area.id)})`}
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <Loader />
-                  )}
+              <div className="col">
+                <div className="text-center border dashboard-card">
+                  <h2 className="">Trabajos Completos</h2>
+                  <div className="center-center">
+                    <hr
+                      style={{ border: "1px solid grey", width: "100px" }}
+                    ></hr>
+                  </div>
+                  <div className="flexColumn">
+                    {areas.length > 0 ? (
+                      areas.map((area) => {
+                        return (
+                          <button
+                            type="button"
+                            className="btnAreas"
+                            onClick={() => goAndFiltered(area.id, 1)}
+                          >
+                            <div className="d-flex justify-content-between">
+                              <p className="m-0 title-modality-welcome">
+                                {area.name}
+                              </p>
+                              <div
+                                className="amount-worksbymodality-box center-center"
+                                style={{
+                                  backgroundColor: "#B0DAFF",
+                                  border: "1px solid #19A7CE",
+                                }}
+                              >
+                                <p className="m-0 ">{`${getAmountByJobComplete(
+                                  area.id
+                                )}`}</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <Loader />
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btnViewAll"
+                    onClick={() => goAndFiltered("", 1)}
+                  >
+                    {/* {`Ver todos (${completeJobsTotal().completes})`} */}
+                    {`Ver todos`}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btnViewAll"
-                  onClick={() => goAndFiltered("", 1)}
-                >
-                  {`Ver todos (${completeJobsTotal().completes})`}
-                </button>
               </div>
-              <div className="col text-center border dashboard-card">
-                <h2 className="mb-5">Resúmenes</h2>
-                <div className="flexColumn">
-                  {areas.length > 0 ? (
-                    areas.map((area) => {
-                      return (
-                        <button
-                          type="button"
-                          className="btnAreas"
-                          onClick={() => goAndFiltered(area.id, 2)}
-                        >
-                          {area.name + `(${getAmountByJobSummaries(area.id)})`}
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <Loader />
-                  )}
+              <div className="col">
+                <div className=" text-center border dashboard-card">
+                  <h2 className="">Resúmenes</h2>
+                  <div className="center-center">
+                    <hr
+                      style={{ border: "1px solid grey", width: "100px" }}
+                    ></hr>
+                  </div>
+                  <div className="flexColumn">
+                    {areas.length > 0 ? (
+                      areas.map((area) => {
+                        return (
+                          <button
+                            type="button"
+                            className="btnAreas"
+                            onClick={() => goAndFiltered(area.id, 2)}
+                          >
+                            <div className="d-flex justify-content-between">
+                              <p className="m-0 title-modality-welcome">
+                                {area.name}
+                              </p>
+                              <div
+                                className="amount-worksbymodality-box center-center"
+                                style={{
+                                  backgroundColor: "#B0DAFF",
+                                  border: "1px solid #19A7CE",
+                                }}
+                              >
+                                <p className="m-0 ">{`${getAmountByJobSummaries(
+                                  area.id
+                                )}`}</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <Loader />
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btnViewAll"
+                    onClick={() => goAndFiltered("", 2)}
+                  >
+                    {`Ver todos (${completeJobsTotal().summariesTotal})`}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btnViewAll"
-                  onClick={() => goAndFiltered("", 2)}
-                >
-                   {`Ver todos (${completeJobsTotal().summariesTotal})`}
-                </button>
               </div>
             </div>
             <div className="row">
@@ -272,39 +339,29 @@ const Welcome = () => {
           </div>
         ) : (
           <div>
-            <div className="row roleTitle">
-              {roleId === 2 ? (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Evaluador</strong>
-                </div>
-              ) : roleId === 3 ? (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Docente/Investigador</strong>
-                </div>
-              ) : (
-                <div className="alert alert-info" role="alert">
-                  Rol de Usuario: <strong>Alumno</strong>
-                </div>
-              )}
-            </div>
-
             <div className="row">
               <div className="col border dashboard-card flex flexCard">
                 <div className="col mb-3 flex">
-                  {allJobs.length > 0 ? (
+                  {jobs.length > 0 ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
                     >
                       <p>
-                        Ya has subido un trabajo{" "}
+                        {roleId === 2
+                          ? "Tienes un trabajo asignado "
+                          : "Ya has subido un trabajo "}
                         <i className="fas fa-info-circle"></i>
                       </p>
                       <button
                         className="btn btn-success"
-                        onClick={() => navigate("/myjobs")}
+                        onClick={() =>
+                          navigate(roleId === 2 ? "/jobs" : "/myjobs")
+                        }
                       >
-                        Mis trabajos
+                        {roleId === 2
+                          ? "Ver trabajos asignados"
+                          : "Mis trabajos"}
                       </button>
                     </div>
                   ) : (
@@ -325,7 +382,7 @@ const Welcome = () => {
                     </div>
                   )}
 
-                  {myPays.length > 0 ? (
+                  {authorPay ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
@@ -364,15 +421,14 @@ const Welcome = () => {
                     role="alert"
                   >
                     <p>
-                      {userCertificates.length > 0 ? 
-                      'Ya tienes un certificado '
-                      : 'No tienes ningun certificado otorgado aún '
-                    }
+                      {userCertificates.length > 0
+                        ? "Ya tienes un certificado "
+                        : "No tienes ningun certificado otorgado aún "}
                       <i className="fas fa-info-circle"></i>
                     </p>
-                    <button 
+                    <button
                       className="btn btn-info"
-                      onClick={() => navigate("/mycertificates")} 
+                      onClick={() => navigate("/mycertificates")}
                       disabled={userCertificates.length > 0 ? false : true}
                     >
                       Descargar Certificados
