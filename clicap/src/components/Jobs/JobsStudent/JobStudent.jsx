@@ -24,25 +24,6 @@ const JobStudent = () => {
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
 
-  const handleChangeFilter = (e, name) => {
-    if (e) {
-      setFilters({
-        ...filters,
-        [e.target.name]: e.target.value,
-      });
-    } else {
-      setFilters({
-        ...filters,
-        [name]: "",
-      });
-    }
-  };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    getJobsFiltered(1, filters);
-  };
-
   useEffect(() => {
     getJobsFiltered(page, filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps

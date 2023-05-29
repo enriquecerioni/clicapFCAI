@@ -144,7 +144,7 @@ const DeliveryTask = () => {
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
-              <div className="" style={{width:'100%'}}>
+              <div className="" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -164,7 +164,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* AREA */}
-              <div className="ms-2" style={{width:'100%'}}>
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -191,7 +191,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* MODALIDAD */}
-              <div className="ms-2" style={{width:'100%'}}>
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"

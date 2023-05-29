@@ -42,3 +42,8 @@
   background-color: #19a7ce;
   color: #fff;
 }
+
+.centerBox {
+  margin: auto;
+  margin-top: 10vh;
+}

@@ -180,9 +180,7 @@ exports.checkCorrection = async (req, res) => {
     if (detail) {
       res.status(200).json({ response: detail, value: 1 });
     } else {
-      res
-        .status(200)
-        .json({ msg: "No posee correcciones.", value: 0 });
+      res.status(200).json({ msg: "No posee correcciones.", value: 0 });
     }
   } catch (error) {
     console.log("Error al obtener la corrección." + error);
@@ -213,6 +211,6 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar la correción." });
     }
   } catch (error) {
-    console.log("Error al eliminar la correción." + error)
+    console.log("Error al eliminar la correción." + error);
   }
 };

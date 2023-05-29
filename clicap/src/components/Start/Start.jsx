@@ -90,30 +90,6 @@ const Start = () => {
             </a>
           </div>
         </div>
-
-        {/* <div className="intro-container wow fadeIn">
-          <h1 className="mb-4 pb-0">
-            <img src={clicap} alt="Image not found" className="clicapLogo"/>
-          </h1>
-          <p className="mb-4 pb-0">
-            10-12 Abril, Facultad de Ciencias Aplicadas a la Industria, San
-            Rafalel (Mendoza)
-          </p>
-          <a
-            href="https://www.youtube.com/watch?v=K4lYCtmJVvk&ab_channel=MediaMendoza"
-            className="venobox play-btn mb-4"
-            data-vbtype="video"
-            data-autoplay="true"
-            target="blank"
-          ></a>
-          <a
-            href="#about"
-            className="about-btn scrollto"
-            style={{ textDecoration: "none" }}
-          >
-            Acerca del Congreso
-          </a>
-        </div> */}
       </section>
 
       <section id="about">
@@ -249,7 +225,6 @@ const Start = () => {
             <h2>Galería</h2>
           </div>
         </div>
-
         <Carousel />
       </section>
 

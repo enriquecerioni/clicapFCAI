@@ -1,4 +1,4 @@
-import { GET_JOB,SET_JOBS_FILTERS, GET_ALL_JOBS } from "./types";
+import { GET_JOB, SET_JOBS_FILTERS, GET_ALL_JOBS } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;

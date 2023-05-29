@@ -37,7 +37,7 @@ export const UserState = ({ children }) => {
     });
   };
 
-  const getAllUsers = async () => {
+  const getAllUsers = async (nameOpt, valueOpt) => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
 
     const userSelector = getAllUser.data.response.map((item, i) => {
@@ -125,7 +125,7 @@ export const UserState = ({ children }) => {
         getUserData,
         getAllUsers,
         getUsersFiltered,
-        getAllEvaluators
+        getAllEvaluators,
       }}
     >
       {children}
