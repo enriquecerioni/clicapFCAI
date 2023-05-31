@@ -15,9 +15,10 @@ import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
 const JobsAdmin = () => {
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
+  const isEvaluator = roleId === 2 ? true : false;
 
   const { jobState, getJobsFiltered } = useContext(JobContext);
-  const { jobsFilter, jobs, totalJobsPages } = jobState;
+  const { jobsFilter, jobs, totalJobsPages, assignedEvaluator } = jobState;
 
   const { userState, getAllUsers, getAllEvaluators } = useContext(UserContext);
   const { users, evaluatorsSelector } = userState;
@@ -48,8 +49,13 @@ const JobsAdmin = () => {
     if (areas.length === 0) {
       getAllAreas();
     }
+    //search assign jobs when the user is evaluator
+    if (isEvaluator) {
+      filters.evaluatorId = getDataUserByKey("id");
+    }
+
     getJobsFiltered(page, filters);
-  }, [page]);
+  }, [page, assignedEvaluator]);
 
   return (
     <>
@@ -114,8 +120,12 @@ const JobsAdmin = () => {
                   <tr>
                     <th>Autor</th>
                     <th>Título</th>
-                    <th>Evaludor 1</th>
-                    <th>Evaludor 2</th>
+                    {isEvaluator ? null : (
+                      <>
+                        <th>Evaludor 1</th>
+                        <th>Evaludor 2</th>
+                      </>
+                    )}
                     <th>Area</th>
                     <th>Modalidad</th>
                     <th>Estado</th>

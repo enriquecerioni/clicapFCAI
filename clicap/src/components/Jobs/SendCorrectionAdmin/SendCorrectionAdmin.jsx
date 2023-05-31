@@ -14,7 +14,8 @@ export const SendCorrectionAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { getCorrectionsByJob } = useContext(JobContext);
+  const { getCorrectionsByJob, sendCorrectionApproved } =
+    useContext(JobContext);
 
   const [stateOfCorrection, setStateOfCorrection] = useState(0);
   const [loader, setLoader] = useState(true);
@@ -31,12 +32,12 @@ export const SendCorrectionAdmin = () => {
     2: {
       background: "color-warning-smooth-bk",
       color: "color-warning-strong",
-      icon: "",
+      icon: "fa-triangle-exclamation",
     },
     3: {
       background: "color-warning-smooth-bk",
       color: "color-warning-strong",
-      icon: "",
+      icon: "fa-triangle-exclamation",
     },
     4: {
       background: "color-danger-smooth-bk",
@@ -60,7 +61,7 @@ export const SendCorrectionAdmin = () => {
       details,
       sendMail,
     };
-    await reqAxios("POST", "/jobdetails/create", "", correctionData);
+    await sendCorrectionApproved(correctionData);
     navigate("/jobs");
   };
 
@@ -84,6 +85,7 @@ export const SendCorrectionAdmin = () => {
     }
     return colorsBox[value].color;
   };
+
   const getIconByStatus = (value) => (value ? colorsBox[value].icon : "");
 
   useEffect(() => {

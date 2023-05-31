@@ -5,20 +5,7 @@ import { API_URL } from "./constants";
 export const isAuthenticated = () => sessionStorage.getItem("user");
 export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
-  switch (key) {
-    case "id":
-      return dataUser ? dataUser.id : null;
-    case "roleId":
-      return dataUser ? dataUser.roleId : null;
-    case "name":
-      return dataUser ? dataUser.name : null;
-    case "surname":
-      return dataUser ? dataUser.surname : null;
-    case "identifyNumber":
-      return dataUser ? dataUser.identifyNumber : null;
-    default:
-      return null;
-  }
+  return dataUser && dataUser[key] ? dataUser[key] : null
 };
 export const reqAxios = async (method, shortUrl, param, data) => {
   try {

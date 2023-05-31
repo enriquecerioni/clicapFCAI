@@ -1,4 +1,4 @@
-import { GET_JOB,SET_JOBS_FILTERS, GET_ALL_JOBS } from "./types";
+import { GET_JOB,SET_JOBS_FILTERS, GET_ALL_JOBS, SET_ASSIGNED_EVALUATOR } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -21,6 +21,11 @@ export default (state, action) => {
       return {
         ...state,
         jobsFilter: payload,
+      };
+    case SET_ASSIGNED_EVALUATOR:
+      return {
+        ...state,
+        assignedEvaluator: payload,
       };
 
     default:

@@ -17,6 +17,7 @@ export const JobsAdminList = ({
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const userId = getDataUserByKey("id");
+  const isEvaluator = roleId === 2 ? true : false;
 
   const { checkCorrection } = useContext(JobContext);
 
@@ -60,16 +61,20 @@ export const JobsAdminList = ({
       <tr>
         <td>{work.author.name + " " + work.author.surname}</td>
         <td>{work.name}</td>
-        <td>
-          {work.evaluator1
-            ? work.evaluator1.name + " " + work.evaluator1.surname
-            : ""}
-        </td>
-        <td>
-          {work.evaluator2
-            ? work.evaluator2.name + " " + work.evaluator2.surname
-            : ""}
-        </td>
+        {isEvaluator ? null : (
+          <>
+            <td>
+              {work.evaluator1
+                ? work.evaluator1.name + " " + work.evaluator1.surname
+                : ""}
+            </td>
+            <td>
+              {work.evaluator2
+                ? work.evaluator2.name + " " + work.evaluator2.surname
+                : ""}
+            </td>
+          </>
+        )}
         <td>{work.area.name}</td>
         <td>{work.jobmodality.name}</td>
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
@@ -111,7 +116,7 @@ export const JobsAdminList = ({
             </td>
 
             <td>
-              <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
+              <ClicapTooltip tooltip={true} text={"Eliminar trabajo"}>
                 <i
                   type="button"
                   className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
@@ -120,15 +125,22 @@ export const JobsAdminList = ({
               </ClicapTooltip>
             </td>
           </>
-        ) : roleId === 2 ? (
+        ) : isEvaluator ? (
           <td>
-            <Button
-              className="btn btn-success"
-              onClick={() => navigate(`/job/corrections/${work.id}`)}
-              disabled={haveCorrection !== 0 ? true : false}
+            <ClicapTooltip
+              tooltip={haveCorrection !== 0 ? true : false}
+              text={"El trabajo ya fue evaluado"}
             >
-              Evaluar
-            </Button>
+              <div>
+                <Button
+                  className="btn btn-success"
+                  onClick={() => navigate(`/job/corrections/${work.id}`)}
+                  disabled={haveCorrection !== 0 ? true : false}
+                >
+                  Evaluar
+                </Button>
+              </div>
+            </ClicapTooltip>
           </td>
         ) : null}
       </tr>

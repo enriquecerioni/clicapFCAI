@@ -1,5 +1,9 @@
 import { useReducer } from "react";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import {
+  formDataAxios,
+  getDataUserByKey,
+  reqAxios,
+} from "../../helpers/helpers";
 import { JobContext } from "./JobContext";
 import JobReducer from "./JobReducer";
 
@@ -12,7 +16,7 @@ export const JobState = ({ children }) => {
       name: "",
       jobModalityId: "",
       areaId: "",
-      authorId: userId,
+      authorId: getDataUserByKey("id"),
       status: 0,
       members: "",
       urlFile: "",
@@ -26,14 +30,35 @@ export const JobState = ({ children }) => {
       areaId: "",
       jobModalityId: "",
       status: "",
-      evaluatorId: roleId === 2 ? userId : "",
+      evaluatorId: "",
+    },
+    correctionInitial: {
+      jobId: "",
+      correctionId: 0,
+      evaluatorId: userId,
+      details: "",
+      sendMail: 0,
     },
     prefiltered: false,
     isFetching: true,
+    assignedEvaluator: false,
     totalJobsPages: 0,
     usersSelector: [],
   };
   const [state, dispatch] = useReducer(JobReducer, initialState);
+
+  const createNewJob = async (job) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in job) {
+        bodyFormData.append(key, job[key]);
+      }
+      console.log(bodyFormData);
+      await formDataAxios("POST", `/job/create`, "", bodyFormData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getJobId = async (id) => {
     try {
@@ -52,6 +77,23 @@ export const JobState = ({ children }) => {
     }
   };
 
+  const updateJobById = async (job, jobId) => {
+    try {
+      await reqAxios("PUT", `/job/edit/${jobId}`, "", job);
+      if (job.urlFile !== "") {
+        const bodyFormData = new FormData();
+
+        bodyFormData.append("id", jobId);
+        bodyFormData.append("urlFile", job.urlFile);
+
+        console.log(bodyFormData);
+        await reqAxios("POST", `/job/upload`, "", bodyFormData);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getJobsFiltered = async (page, params) => {
     try {
       const getAllJob = await reqAxios(
@@ -60,7 +102,7 @@ export const JobState = ({ children }) => {
         params,
         ""
       );
-      
+
       dispatch({
         type: "GET_ALL_JOBS",
         payload: {
@@ -84,6 +126,40 @@ export const JobState = ({ children }) => {
       return getAllJobsByUser.data.response;
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const addEvaluatorsToJob = async (jobId, jobEdited) => {
+    try {
+      await reqAxios("PUT", `/job/edit/${jobId}`, "", jobEdited);
+      dispatch({
+        type: "SET_ASSIGNED_EVALUATOR",
+        payload: !state.assignedEvaluator,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const createEvaluationByEvaluatorOrAdmin = async (correction) => {
+    try {
+      await reqAxios("POST", "/jobdetails/create", "", correction);
+      /* await reqAxios("PUT", `/job/setcorrection/${jobId}`, "", {
+        status: correction.correctionId,
+      }); */
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const sendCorrectionApproved = async (correction) => {
+    try {
+      await reqAxios("POST", "/jobdetails/create", "", correction);
+      /*  await reqAxios("PUT", `/job/setcorrection/${correction.jobId}`, "", {
+        status: correction.correctionId,
+      }); */
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -141,6 +217,8 @@ export const JobState = ({ children }) => {
     <JobContext.Provider
       value={{
         jobState: state,
+        createNewJob,
+        updateJobById,
         getJobId,
         getJobsFiltered,
         getCorrectionsByJob,
@@ -148,6 +226,9 @@ export const JobState = ({ children }) => {
         getCorrectionByJob,
         setJobFilters,
         getAllJobsByUser,
+        addEvaluatorsToJob,
+        createEvaluationByEvaluatorOrAdmin,
+        sendCorrectionApproved,
       }}
     >
       {children}

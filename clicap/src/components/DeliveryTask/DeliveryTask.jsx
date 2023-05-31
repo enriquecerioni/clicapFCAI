@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
 import { Button } from "react-bootstrap";
-import { formDataAxios } from "../../helpers/helpers";
+import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
 import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
@@ -15,8 +15,10 @@ import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 const DeliveryTask = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const roleId = getDataUserByKey("roleId");
 
-  const { jobState, getJobId } = useContext(JobContext);
+  const { jobState, getJobId, createNewJob, updateJobById } =
+    useContext(JobContext);
   const { jobData } = jobState;
 
   const { areaState, getAllAreas } = useContext(AreaContext);
@@ -43,10 +45,6 @@ const DeliveryTask = () => {
           : e.target.files[0]
         : e.target.value;
 
-    /*     if (name === "areaId") {
-      value = Number(value);
-    } */
-
     if (e) {
       setJob({
         ...job,
@@ -60,18 +58,6 @@ const DeliveryTask = () => {
     }
   };
 
-  const createNewJob = async () => {
-    try {
-      const bodyFormData = new FormData();
-      for (const key in job) {
-        bodyFormData.append(key, job[key]);
-      }
-      await formDataAxios("POST", `/job/create`, "", bodyFormData);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (job.name.length > 150) {
@@ -80,8 +66,18 @@ const DeliveryTask = () => {
     if (job.members.length > 200) {
       return alertError("Autor/Autores: Máximo 200 caracteres.");
     }
-    await createNewJob();
-    navigate("/myjobs");
+
+    if (id) {
+      job.status = null;
+      job.addEvaluators = false;
+      if (typeof job.urlFile === "string") {
+        job.urlFile = "";
+      }
+      await updateJobById(job, id);
+    } else {
+      await createNewJob(job);
+    }
+    /* roleId === 4 ? navigate("/myjobs") : navigate("/jobs"); */
   };
 
   const checkFields = () => {
@@ -144,7 +140,7 @@ const DeliveryTask = () => {
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
-              <div className="" style={{width:'100%'}}>
+              <div className="" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -164,7 +160,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* AREA */}
-              <div className="ms-2" style={{width:'100%'}}>
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
@@ -191,7 +187,7 @@ const DeliveryTask = () => {
               </div>
 
               {/* MODALIDAD */}
-              <div className="ms-2" style={{width:'100%'}}>
+              <div className="ms-2" style={{ width: "100%" }}>
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-bold"
