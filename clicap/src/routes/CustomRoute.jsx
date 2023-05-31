@@ -32,7 +32,6 @@ import StudentCertificateAdmin from "../components/StudentCertificate/Admin/Stud
 import { PageInProcess } from "../components/PageInProcess/PageInProcess";
 import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommittee";
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
-import { Institutional } from "../views/Institutional/Institutional";
 import { Sponsors } from "../views/Sponsors/Sponsors";
 import { ImportantDate } from "../components/ImportantDate/ImportantDate";
 import { ImportantDateTable } from "../components/ImportantDate/ImportantDateManager/ImportantDateTable";
@@ -40,6 +39,9 @@ import { Areas } from "../components/Areas/Areas";
 import { LogoConfig } from "../components/Configuration/LogoConfig/LogoConfig";
 import { AreaList } from "../components/Areas/AreaList";
 import { Modalities } from "../components/Modalities/Modalities";
+import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable";
+import { Institutional } from "../views/Institutional/Institutional";
+import { Contact } from "../views/Contact/Contact";
 
 const CustomRoute = () => (
   <>
@@ -69,6 +71,24 @@ const CustomRoute = () => (
         element={
           <Home>
             <News />
+          </Home>
+        }
+      />
+
+      <Route
+        path="sponsors"
+        element={
+          <Home>
+            <Sponsors />
+          </Home>
+        }
+      />
+
+      <Route
+        path="institutional"
+        element={
+          <Home>
+            <Institutional />
           </Home>
         }
       />
@@ -137,6 +157,15 @@ const CustomRoute = () => (
       />
 
       <Route
+        path="contact"
+        element={
+          <Home>
+            <Contact />
+          </Home>
+        }
+      />
+
+      <Route
         path="newjob"
         element={
           <PrivateRoute>
@@ -177,6 +206,15 @@ const CustomRoute = () => (
         element={
           <PrivateAdminRoute>
             <ImportantDateTable />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="sponsor-config"
+        element={
+          <PrivateAdminRoute>
+            <SponsorTable />
           </PrivateAdminRoute>
         }
       />

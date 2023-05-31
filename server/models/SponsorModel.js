@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database/database");
 
-const NewModel = db.define("new", {
+const SponsorModel = db.define("sponsor", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -9,11 +9,15 @@ const NewModel = db.define("new", {
     autoIncrement: true,
     allowNull: false,
   },
-  title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  content: {
+  link: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  type: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -27,4 +31,4 @@ const NewModel = db.define("new", {
   },
 });
 
-module.exports = NewModel;
+module.exports = SponsorModel;

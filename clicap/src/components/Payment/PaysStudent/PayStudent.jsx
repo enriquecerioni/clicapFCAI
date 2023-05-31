@@ -10,7 +10,7 @@ const PayStudent = () => {
   const navigate = useNavigate();
   const { payState, getAllPays } = useContext(PayContext);
   const { pays } = payState;
-  
+
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };

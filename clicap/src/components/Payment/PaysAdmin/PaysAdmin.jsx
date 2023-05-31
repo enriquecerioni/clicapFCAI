@@ -20,7 +20,7 @@ const PaysAdmin = () => {
 
   const { getPaysFiltered, payState } = useContext(PayContext);
   const { pays, isFetching } = payState;
-  
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [PayToDelete, setPayToDelete] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
