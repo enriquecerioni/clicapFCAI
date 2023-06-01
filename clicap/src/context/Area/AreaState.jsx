@@ -5,7 +5,6 @@ import AreaReducer from "./AreaReducer";
 import { alertSuccess } from "../../helpers/alerts";
 
 export const AreaState = ({ children }) => {
-  const userId = getDataUserByKey("id");
   const initialState = {
     area: {
       name: "",

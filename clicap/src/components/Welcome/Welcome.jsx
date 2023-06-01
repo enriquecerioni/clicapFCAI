@@ -11,6 +11,7 @@ import { Loader } from "../Loader/Loader";
 import { JobContext } from "../../context/Job/JobContext";
 import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
 import { PayContext } from "../../context/Pay/PayContext";
+import { AppContext } from "../../context/App/AppContext";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -20,8 +21,13 @@ const Welcome = () => {
 
   const { myPays } = useContext(EntitiesContext);
 
-  const { jobState, setJobFilters,setUserLogged } = useContext(JobContext);
-  const { jobsFilter, jobs,jobData } = jobState;
+  const { appState, setRefreshRoleIdAndUserId } = useContext(AppContext);
+  const { refreshRoleIdAndUserId } = appState;
+
+  const { jobState, setJobFilters, setUserLogged } = useContext(JobContext);
+  const { jobsFilter, jobs } = jobState;
+
+  const { setUserIdToPays } = useContext(PayContext);
 
   const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
@@ -97,10 +103,13 @@ const Welcome = () => {
   };
 
   useEffect(() => {
-    if (jobData.authorId === "") {
-      console.log("object");
+    if (refreshRoleIdAndUserId) {
+      console.log("actualizo el id");
       setUserLogged();
+      setUserIdToPays();
+      setRefreshRoleIdAndUserId();
     }
+
     if (areas.length === 0) {
       getAllAreas();
     }

@@ -6,6 +6,7 @@ export const AppState = ({ children }) => {
   const initialState = {
     searchPixels: false,
     menuPhone: false,
+    refreshRoleIdAndUserId: true,
     loggout: false,
   };
 
@@ -30,6 +31,12 @@ export const AppState = ({ children }) => {
       payload: !state.loggout,
     });
   };
+  const setRefreshRoleIdAndUserId = async () => {
+    dispatch({
+      type: "SET_REFRESH_ROLEID_USERID",
+      payload: false,
+    });
+  };
 
   return (
     <AppContext.Provider
@@ -38,6 +45,7 @@ export const AppState = ({ children }) => {
         setSearchPixels,
         setMenuPhone,
         setLoggout,
+        setRefreshRoleIdAndUserId,
       }}
     >
       {children}

@@ -4,7 +4,6 @@ import { CertificateContext } from "./CertificateContext";
 import CertificateReducer from "./CertificateReducer";
 
 export const CertificateState = ({ children }) => {
-  const userId = getDataUserByKey("id");
   const initialState = {
     certificateData: {
       type: 1,

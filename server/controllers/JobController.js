@@ -134,7 +134,6 @@ exports.updateById = async (req, res) => {
       assignEvaluators.push({ id: Number(evaluatorId2) });
     }
 
-    console.log("entrooooo");
     const doc = await JobModel.update(
       {
         name: name,
