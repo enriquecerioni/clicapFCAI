@@ -77,7 +77,7 @@ const DeliveryTask = () => {
     } else {
       await createNewJob(job);
     }
-    /* roleId === 4 ? navigate("/myjobs") : navigate("/jobs"); */
+    roleId === 4 ? navigate("/myjobs") : navigate("/jobs");
   };
 
   const checkFields = () => {
@@ -102,6 +102,7 @@ const DeliveryTask = () => {
   };
 
   useEffect(() => {
+    
     if (id) {
       getJobId(id);
     }

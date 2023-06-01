@@ -10,6 +10,7 @@ import { PayContext } from "./PayContext";
 
 export const PayState = ({ children }) => {
   const userId = getDataUserByKey("id");
+  
   const initialState = {
     payData: {
       amount: "",
@@ -22,6 +23,7 @@ export const PayState = ({ children }) => {
       authorId: userId,
     },
     pays: [],
+    refreshPays: false,
     isFetching: true,
   };
   const [state, dispatch] = useReducer(PayReducer, initialState);
@@ -33,6 +35,11 @@ export const PayState = ({ children }) => {
         bodyFormData.append(key, pay[key]);
       }
       await formDataAxios("POST", `/pay/create`, "", bodyFormData);
+
+      dispatch({
+        type: "SET_REFRESH_PAYS",
+        payload: !state.refreshPays,
+      });
     } catch (e) {
       console.log(e);
     }

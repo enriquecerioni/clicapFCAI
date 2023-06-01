@@ -3,7 +3,7 @@ import React from "react";
 //components
 import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 
-export const CorrectionModal = ({jobName, showModal, description }) => {
+export const CorrectionModal = ({ jobName, showModal, correction }) => {
   const closeModal = () => showModal(false);
 
   return (
@@ -11,15 +11,15 @@ export const CorrectionModal = ({jobName, showModal, description }) => {
       <Modal
         show={showModal}
         onHide={closeModal}
-        dialogClassName="modal-50w"
+        dialogClassName="modal-80w"
         aria-labelledby="example-custom-modal-styling-title"
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            {jobName} - Corrección
+            {jobName} <br/> ({correction.correction.name})
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="">{description}</Modal.Body>
+        <Modal.Body className="">{correction.details}</Modal.Body>
       </Modal>
     </>
   );

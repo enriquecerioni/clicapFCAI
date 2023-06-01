@@ -22,14 +22,17 @@ const JobStudentList = ({ job, setjobToDelete }) => {
     setCorrecModal(true);
   };
 
-  const getTextTooltip = job.status === null ? 'Solo puede presentar un trabajo si tiene alguna corrección' : 'Subir nueva versión del trabajo'
-    
+  const getTextTooltip =
+    job.status === null
+      ? "Solo puede presentar un trabajo si tiene alguna corrección"
+      : "Subir nueva versión del trabajo";
+
   return (
     <>
       {showCorrecModal ? (
         <CorrectionModal
           jobName={job.name}
-          description={correction.details}
+          correction={correction}
           showModal={setCorrecModal}
         />
       ) : null}
@@ -53,11 +56,8 @@ const JobStudentList = ({ job, setjobToDelete }) => {
           </td>
         </ClicapTooltip>
 
-        <td className="text-center">
-          <ClicapTooltip
-            tooltip={true}
-            text={getTextTooltip}
-          >
+        <ClicapTooltip tooltip={true} text={getTextTooltip}>
+          <td className="text-center">
             <Button
               className="btn btn-primary"
               disabled={job.status === null || job.status === 1 ? true : false}
@@ -65,8 +65,8 @@ const JobStudentList = ({ job, setjobToDelete }) => {
             >
               <i className="fa-solid fa-file-arrow-up"></i>
             </Button>
-          </ClicapTooltip>
-        </td>
+          </td>
+        </ClicapTooltip>
         <td className="text-center">
           <ClicapTooltip tooltip={true} text={"Descargar Trabajo"}>
             <button

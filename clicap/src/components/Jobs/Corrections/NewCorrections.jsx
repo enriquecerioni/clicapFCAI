@@ -7,11 +7,12 @@ import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
-export const NewCorrections = () => {
+export const NewCorrections = ({ job }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { jobState, createEvaluationByEvaluatorOrAdmin } = useContext(JobContext);
+  const { jobState, createEvaluationByEvaluatorOrAdmin } =
+    useContext(JobContext);
   const { correctionInitial } = jobState;
 
   const [correction, setCorrection] = useState(correctionInitial);
@@ -44,6 +45,7 @@ export const NewCorrections = () => {
     setCorrection({
       ...correction,
       ["jobId"]: Number(id),
+      ["correctionNumber"]: job.correctionNumber,
     });
   }, []);
 
@@ -85,8 +87,8 @@ export const NewCorrections = () => {
         </FloatingLabel>
         <div className="center-center mt-3">
           <ClicapTooltip
-          tooltip={putDisabled ? putDisabled : disabled()}
-          text={'Por favor complete todos los campos'}
+            tooltip={putDisabled ? putDisabled : disabled()}
+            text={"Por favor complete todos los campos"}
           >
             <div className="d-flex">
               <Button

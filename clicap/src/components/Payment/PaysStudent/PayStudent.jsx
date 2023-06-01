@@ -9,7 +9,7 @@ import { PayContext } from "../../../context/Pay/PayContext";
 const PayStudent = () => {
   const navigate = useNavigate();
   const { payState, getAllPays } = useContext(PayContext);
-  const { pays } = payState;
+  const { pays, refreshPays } = payState;
 
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
@@ -19,7 +19,7 @@ const PayStudent = () => {
     /*     getmyJobsPaginated(page, filterQuery); */
     getAllPays(page, filterToAuthor);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, refreshPays]);
 
   return (
     <>

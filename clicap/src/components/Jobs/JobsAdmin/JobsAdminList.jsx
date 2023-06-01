@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { useEffect } from "react";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { downloadFile, getDataUserByKey } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
@@ -39,7 +39,11 @@ export const JobsAdminList = ({
   };
 
   const checkToCorrection = async () => {
-    const correction = await checkCorrection(work.id, userId);
+    const correction = await checkCorrection(
+      work.id,
+      userId,
+      work.correctionNumber
+    );
     setHaveCorrection(correction);
   };
 
@@ -126,22 +130,32 @@ export const JobsAdminList = ({
             </td>
           </>
         ) : isEvaluator ? (
-          <td>
-            <ClicapTooltip
-              tooltip={haveCorrection !== 0 ? true : false}
-              text={"El trabajo ya fue evaluado"}
-            >
-              <div>
-                <Button
-                  className="btn btn-success"
-                  onClick={() => navigate(`/job/corrections/${work.id}`)}
-                  disabled={haveCorrection !== 0 ? true : false}
-                >
-                  Evaluar
-                </Button>
-              </div>
-            </ClicapTooltip>
-          </td>
+          <>
+            <td>
+              <ClicapTooltip
+                tooltip={haveCorrection === 0 ? false : true}
+                text={"El trabajo ya fue evaluado"}
+              >
+                <div>
+                  <Button
+                    className="btn btn-success"
+                    onClick={() => navigate(`/job/corrections/${work.id}`)}
+                    disabled={haveCorrection === 0 ? false : true}
+                  >
+                    Evaluar
+                  </Button>
+                </div>
+              </ClicapTooltip>
+            </td>
+            <td>
+              <Button
+                variant="primary"
+                onClick={() => downloadFile(work.urlFile, "documents")}
+              >
+                Descargar Ult. Version
+              </Button>
+            </td>
+          </>
         ) : null}
       </tr>
     </>

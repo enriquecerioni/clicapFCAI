@@ -58,6 +58,7 @@ export const SendCorrectionAdmin = () => {
       jobId: corrections[0].jobId,
       correctionId: stateOfCorrection,
       evaluatorId: null,
+      correctionNumber: corrections[0].correctionNumber,
       details,
       sendMail,
     };

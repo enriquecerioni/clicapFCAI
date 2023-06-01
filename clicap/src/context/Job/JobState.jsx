@@ -16,7 +16,7 @@ export const JobState = ({ children }) => {
       name: "",
       jobModalityId: "",
       areaId: "",
-      authorId: getDataUserByKey("id"),
+      authorId: "",
       status: 0,
       members: "",
       urlFile: "",
@@ -35,7 +35,7 @@ export const JobState = ({ children }) => {
     correctionInitial: {
       jobId: "",
       correctionId: 0,
-      evaluatorId: userId,
+      evaluatorId: "",
       details: "",
       sendMail: 0,
     },
@@ -71,6 +71,17 @@ export const JobState = ({ children }) => {
       dispatch({
         type: "GET_JOB",
         payload: dataJobId.data.response[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cleanJobData = () => {
+    try {
+      console.log("clean");
+      dispatch({
+        type: "CLEAN_JOB_DATA",
       });
     } catch (error) {
       console.log(error);
@@ -180,10 +191,10 @@ export const JobState = ({ children }) => {
   };
 
   //Chequea si ya tiene una correccion
-  const checkCorrection = async (workId, userId) => {
+  const checkCorrection = async (workId, userId, correctionNumber) => {
     const check = await reqAxios(
       "get",
-      `/jobdetails/check/${workId}/${userId}`,
+      `/jobdetails/check/${workId}/${userId}/${correctionNumber}`,
       "",
       ""
     );
@@ -212,6 +223,12 @@ export const JobState = ({ children }) => {
       payload: filters,
     });
   };
+  const setUserLogged = () => {
+    dispatch({
+      type: "SET_USER_LOGGED",
+      payload: getDataUserByKey("id"),
+    });
+  };
 
   return (
     <JobContext.Provider
@@ -229,6 +246,8 @@ export const JobState = ({ children }) => {
         addEvaluatorsToJob,
         createEvaluationByEvaluatorOrAdmin,
         sendCorrectionApproved,
+        setUserLogged,
+        cleanJobData,
       }}
     >
       {children}

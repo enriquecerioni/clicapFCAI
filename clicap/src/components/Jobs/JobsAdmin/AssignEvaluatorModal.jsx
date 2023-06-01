@@ -50,6 +50,7 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
       addEvaluators: true,
     };
     await addEvaluatorsToJob(jobSelected.id, jobEdited);
+    setShowModal(!showModal);
   };
 
   useEffect(() => {
