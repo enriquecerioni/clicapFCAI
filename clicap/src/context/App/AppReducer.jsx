@@ -1,4 +1,4 @@
-import { SET_SEARCH_PIXELS,SET_MENU_PHONE, SET_LOGGOUT } from "./types";
+import { SET_SEARCH_PIXELS,SET_MENU_PHONE, SET_LOGGOUT, SET_REFRESH_ROLEID_USERID } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -18,6 +18,11 @@ export default (state, action) => {
       return {
         ...state,
         loggout: payload,
+      };
+    case SET_REFRESH_ROLEID_USERID:
+      return {
+        ...state,
+        refreshRoleIdAndUserId: payload,
       };
 
     default:

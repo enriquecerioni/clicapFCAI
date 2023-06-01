@@ -3,14 +3,13 @@ import {
   formDataAxios,
   getDataUserByKey,
   reqAxios,
-  waitAndRefresh,
 } from "../../helpers/helpers";
 import PayReducer from "./PayReducer";
 import { PayContext } from "./PayContext";
 
 export const PayState = ({ children }) => {
   const userId = getDataUserByKey("id");
-  
+
   const initialState = {
     payData: {
       amount: "",
@@ -105,6 +104,12 @@ export const PayState = ({ children }) => {
       console.log(e);
     }
   };
+  const setUserIdToPays = () => {
+    dispatch({
+      type: "SET_USERID",
+      payload: getDataUserByKey("id"),
+    });
+  };
 
   return (
     <PayContext.Provider
@@ -116,6 +121,7 @@ export const PayState = ({ children }) => {
         getPaysFiltered,
         createPayInvoice,
         getPayByAuthorId,
+        setUserIdToPays,
       }}
     >
       {children}

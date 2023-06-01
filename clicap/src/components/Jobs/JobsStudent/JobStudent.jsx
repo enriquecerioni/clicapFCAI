@@ -12,8 +12,8 @@ import { JobContext } from "../../../context/Job/JobContext";
 const JobStudent = () => {
   const navigate = useNavigate();
 
-  const { getJobsFiltered, jobState } = useContext(JobContext);
-  const { isFetching, jobs, totalJobsPages } = jobState;
+  const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
+  const { isFetching, jobs, totalJobsPages, jobData } = jobState;
 
   const idUser = getDataUserByKey("id");
   const initialFilters = {
@@ -26,6 +26,9 @@ const JobStudent = () => {
 
   useEffect(() => {
     getJobsFiltered(page, filters);
+    if (jobData.name !== "") {
+      cleanJobData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 

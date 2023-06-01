@@ -79,7 +79,6 @@ export const JobState = ({ children }) => {
 
   const cleanJobData = () => {
     try {
-      console.log("clean");
       dispatch({
         type: "CLEAN_JOB_DATA",
       });
