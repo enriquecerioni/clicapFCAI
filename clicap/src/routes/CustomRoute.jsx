@@ -38,10 +38,11 @@ import { ImportantDateTable } from "../components/ImportantDate/ImportantDateMan
 import { Areas } from "../components/Areas/Areas";
 import { LogoConfig } from "../components/Configuration/LogoConfig/LogoConfig";
 import { AreaList } from "../components/Areas/AreaList";
-import { Modalities } from "../components/Modalities/Modalities";
+import { Modalities } from "../views/Modalities/Modalities";
 import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable";
 import { Institutional } from "../views/Institutional/Institutional";
 import { Contact } from "../views/Contact/Contact";
+import { Exposition } from "../views/Exposition/Exposition";
 
 const CustomRoute = () => (
   <>
@@ -134,6 +135,15 @@ const CustomRoute = () => (
         element={
           <Home>
             <Modalities />
+          </Home>
+        }
+      />
+
+      <Route
+        path="expositions"
+        element={
+          <Home>
+            <Exposition />
           </Home>
         }
       />

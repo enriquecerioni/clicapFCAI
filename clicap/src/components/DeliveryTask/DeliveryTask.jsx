@@ -102,7 +102,6 @@ const DeliveryTask = () => {
   };
 
   useEffect(() => {
-    
     if (id) {
       getJobId(id);
     }
@@ -170,7 +169,7 @@ const DeliveryTask = () => {
                 </label>
                 <Select
                   options={areasSelector}
-                  placeholder={"seleccione.."}
+                  placeholder={"Seleccione..."}
                   name="areaId"
                   value={areasSelector.filter(
                     (area) => job.areaId === area.value
@@ -197,7 +196,7 @@ const DeliveryTask = () => {
                 </label>
                 <Select
                   options={modalitiesSelector}
-                  placeholder={"seleccione.."}
+                  placeholder={"Seleccione..."}
                   name="jobModalityId"
                   value={modalitiesSelector.filter(
                     (modality) => job.jobModalityId === modality.value
@@ -238,7 +237,7 @@ const DeliveryTask = () => {
               <div className="">
                 <input
                   type="file"
-                  placeholder="Seleccione..."
+                  placeholder="Seleccione...."
                   className="form-control"
                   name="urlFile"
                   onChange={(e) => handleChangeUpJob(e, "urlFile")}

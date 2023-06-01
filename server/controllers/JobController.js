@@ -418,6 +418,24 @@ exports.getAllPaginated = async (req, res) => {
     console.log("La instancia no existe." + error);
   }
 };
+
+exports.getByAuthorId = async (req, res) => {
+  try {
+    const { authorId } = req.params;
+    const job = await JobModel.findOne({
+      where: { authorId },
+    });
+
+    if (job) {
+      res.status(200).json({ response: [job] });
+    } else {
+      res.status(200).json({ response: [] });
+    }
+  } catch (error) {
+    console.log("Error al obtener el trabajo del autor." + error);
+  }
+};
+
 exports.getAllJobsByUser = async (req, res) => {
   try {
     const { authorId } = req.query;

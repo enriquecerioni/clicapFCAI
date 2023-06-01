@@ -71,12 +71,12 @@ const PaysAdmin = () => {
           <form method="get" className="center-filter" onSubmit={handleSubmit}>
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
-                Nombre / Dni
+                DNI - Nombre
               </label>
               <Select
                 components={{ ExtensiveList }}
                 options={usersSelector}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="authorId"
                 isClearable={true}
                 theme={(theme) => ({

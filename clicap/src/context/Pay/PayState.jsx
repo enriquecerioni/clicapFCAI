@@ -20,6 +20,7 @@ export const PayState = ({ children }) => {
       detail: "",
       urlFile: "",
       authorId: userId,
+      invoice: "",
     },
     pays: [],
     refreshPays: false,
@@ -105,6 +106,7 @@ export const PayState = ({ children }) => {
     }
   };
   const setUserIdToPays = () => {
+    console.log(getDataUserByKey("id"));
     dispatch({
       type: "SET_USERID",
       payload: getDataUserByKey("id"),

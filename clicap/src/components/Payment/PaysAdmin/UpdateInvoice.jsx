@@ -7,6 +7,8 @@ import { EntitiesContext } from "../../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/User/UserContext";
 import { PayContext } from "../../../context/Pay/PayContext";
+import "../pays.css";
+import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 const UpdateInvoce = () => {
   const navigate = useNavigate();
@@ -18,11 +20,16 @@ const UpdateInvoce = () => {
   const { id } = useParams();
   const pay = pays.find((p) => p.id == id);
   const author = users.find((user) => user.id === pay.authorId);
+  const [refreshPays, setRefreshPays] = useState(false);
+  const disabled = () => (invoce.invoice === "" ? true : false);
+  console.log(pay?.invoice);
+  console.log(pay?.invoice === "" ? true : false);
   // const author = users.find(user => user?.id === pay?.authorId)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createPayInvoice(id, invoce);
+    setRefreshPays(!refreshPays);
     navigate("/pays");
   };
 
@@ -39,49 +46,59 @@ const UpdateInvoce = () => {
     if (users.length === 0) {
       getAllUsers();
     }
-  }, []);
+  }, [refreshPays]);
 
   return (
-    <div className="container m-5 card p-5">
-      <h1 className="text-center mb-4">Datos del Pago</h1>
-      <div className="mb-2">{/* <strong>Autor</strong>: {author.name} */}</div>
-      <div className="mb-2">
-        <strong>CUIL/CUIT</strong>:{" "}
-        {pay.cuitCuil.slice(0, 2) +
-          "-" +
-          pay.cuitCuil.slice(2, 10) +
-          "-" +
-          pay.cuitCuil.slice(10, 11)}
-      </div>
-      <div className="mb-2">
-        <strong>Monto</strong>: {pay.amount} - {pay.moneyType}{" "}
-      </div>
-      <div className="mb-2">
-        <strong>Forma de Pago</strong>: {pay.payType}{" "}
-      </div>
-      <div className="mb-2">
-        <strong>Condición Frente al IVA</strong>: {pay.iva}{" "}
-      </div>
-      <div className="mb-2">
-        <strong>Detalle del Pago</strong>: {pay.detail}{" "}
-      </div>
+    <div className="pay-container">
+      <div className="pay-card update-invoice">
+        <h2 className="text-center mb-4">Datos del pago</h2>
+        <div className="mb-3">
+          <strong>CUIL/CUIT</strong>:{" "}
+          {pay.cuitCuil.slice(0, 2) +
+            "-" +
+            pay.cuitCuil.slice(2, 10) +
+            "-" +
+            pay.cuitCuil.slice(10, 11)}
+        </div>
+        <div className="mb-3">
+          <strong>Monto</strong>: {pay.amount} - {pay.moneyType}{" "}
+        </div>
+        <div className="mb-3">
+          <strong>Forma de Pago</strong>: {pay.payType}{" "}
+        </div>
+        <div className="mb-3">
+          <strong>Condición Frente al IVA</strong>: {pay.iva}{" "}
+        </div>
+        <div className="mb-3">
+          <strong>Detalle del Pago</strong>: {pay.detail}{" "}
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="">
-          <input
-            type="file"
-            placeholder="Seleccione..."
-            className="form-control"
-            name="invoice"
-            onChange={handleChangeInvoice}
-          />
-        </div>
-        <div className="mt-3 text-center">
-          <Button type="submit" variant="primary" className="w-25">
-            Subir Factura
-          </Button>
-        </div>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div className="">
+            <input
+              type="file"
+              placeholder="Seleccione...."
+              className="form-control"
+              name="invoice"
+              onChange={handleChangeInvoice}
+            />
+          </div>
+          <div className="mt-3 text-center">
+            <ClicapTooltip tooltip={disabled()} text="Debe subir una factura">
+              <div className="d-flex center-center">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="w-25"
+                  disabled={disabled()}
+                >
+                  Subir Factura
+                </Button>
+              </div>
+            </ClicapTooltip>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

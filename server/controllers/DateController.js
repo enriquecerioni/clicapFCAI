@@ -6,8 +6,6 @@ exports.getEventDate = async (req, res) => {
     console.log(date);
     if (date) {
       res.status(200).json({ response: date });
-    } else {
-      res.status(500).json({ msg: "Error al obtener la fecha." });
     }
   } catch (error) {
     console.log("Error al obtener la fecha.");
@@ -31,6 +29,6 @@ exports.updateDate = async (req, res) => {
       res.status(500).json({ msg: "El fecha no existe!" });
     }
   } catch (error) {
-    console.log("El fecha no existe!")
+    console.log("El fecha no existe!");
   }
 };

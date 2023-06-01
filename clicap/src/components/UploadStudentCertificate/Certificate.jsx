@@ -14,16 +14,13 @@ const Certificate = () => {
   const [putDisabled, setPutDisabled] = useState(false);
 
   const disabled = () => {
-    return (
-      !!!certificate.detail ||
-      !!!certificate.urlFile
-    );
+    return !!!certificate.detail || !!!certificate.urlFile;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewCertificate();
-    waitAndRefresh("/student")
+    waitAndRefresh("/student");
   };
 
   return (
@@ -62,7 +59,7 @@ const Certificate = () => {
               <div className="">
                 <input
                   type="file"
-                  placeholder="Seleccione..."
+                  placeholder="Seleccione...."
                   className="form-control"
                   name="urlFile"
                   onChange={handleChangeCertificate}
@@ -70,11 +67,11 @@ const Certificate = () => {
               </div>
             </div>
             <div className="mt-3 center-center">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 variant="primary"
                 disabled={putDisabled ? putDisabled : disabled()}
-                >
+              >
                 Subir Certificado
               </Button>
             </div>

@@ -102,7 +102,7 @@ const Navbar = () => {
               <p
                 className="active"
                 type="button"
-                onClick={() => navigate("/page-in-process")}
+                onClick={() => navigate("/expositions")}
               >
                 Dinámica de exposiciones
               </p>

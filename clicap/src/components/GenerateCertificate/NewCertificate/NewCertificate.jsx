@@ -11,7 +11,7 @@ import Select from "react-select";
 
 export const NewCertificate = () => {
   const { certificateId } = useParams();
-  
+
   const { getCertificateById, ceritificateState } =
     useContext(CertificateContext);
 
@@ -69,7 +69,7 @@ export const NewCertificate = () => {
           </label>
           <Select
             options={certificateTypesOpt}
-            placeholder={"seleccione.."}
+            placeholder={"Seleccione..."}
             name="type"
             value={certificateTypesOpt.filter(
               (op) => certificate.type === op.value

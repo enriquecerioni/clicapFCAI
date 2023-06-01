@@ -104,7 +104,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               </label>
               <Select
                 options={certificateTypesOpt}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="type"
                 value={certificateTypesOpt.filter(
                   (op) => certificateData.type === op.value
@@ -126,7 +126,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               </label>
               <Select
                 options={allCertificates}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="certificateId"
                 isClearable={true}
                 theme={(theme) => ({
@@ -145,7 +145,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               </label>
               <Select
                 options={jobsUser}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 isDisabled={certificateData.type === 1 ? true : false}
                 name="jobId"
                 isClearable={true}

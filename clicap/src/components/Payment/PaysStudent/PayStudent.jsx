@@ -38,22 +38,20 @@ const PayStudent = () => {
 
       {/* TABLA */}
       {pays.length > 0 ? (
-        <>
-          <div className="box-cardPay col d-flex justify-content-center">
-            {pays.map((pay, i) => (
-              <PayStudentList
-                pay={pay}
-                /* setInstanceToDelete={handleDelete} */
-                key={pay.id}
-              />
-            ))}
-          </div>
+        <div className="pay-container">
+          {pays.map((pay, i) => (
+            <PayStudentList
+              pay={pay}
+              /* setInstanceToDelete={handleDelete} */
+              key={pay.id}
+            />
+          ))}
           {/* <PaginationCustom
               currentPage={page}
               totalPages={totalPages}
               paginate={setPage}
             /> */}
-        </>
+        </div>
       ) : (
         <p className="text-center">No se han realizado pagos aún.</p>
       )}

@@ -35,15 +35,9 @@ const StudentCertificate = () => {
         </div>
       </div>
 
-      {!isFetching ? (
-        <div className="center-center">
-          <Loader />
-        </div>
-      ) : null}
-
       {myCertificates.length > 0 ? (
         <>
-          <div className="box-cardJob">
+          <div className="student-certificate-container">
             {myCertificates.map((certificate, i) => (
               <StudentCertificateList certificate={certificate} key={i} />
             ))}

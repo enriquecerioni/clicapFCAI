@@ -11,6 +11,16 @@ const PayReceipt = () => {
   const { payData } = payState;
 
   const [pay, setPay] = useState(payData);
+  const disabled = () =>
+    pay.amount === "" ||
+    pay.moneyType === "" ||
+    pay.payType === "" ||
+    pay.cuitCuil === "" ||
+    pay.iva === "" ||
+    pay.detail === "" ||
+    pay.urlFile === ""
+      ? true
+      : false;
 
   useEffect(() => {
     setPay(payData);
@@ -52,7 +62,7 @@ const PayReceipt = () => {
                 </label>
                 <div className="">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Ingrese el monto..."
                     className="form-control"
                     name="amount"
@@ -179,7 +189,7 @@ const PayReceipt = () => {
               <div className="">
                 <input
                   type="file"
-                  placeholder="Seleccione..."
+                  placeholder="Seleccione...."
                   className="form-control"
                   name="urlFile"
                   onChange={handleChangePay}
@@ -187,7 +197,7 @@ const PayReceipt = () => {
               </div>
             </div>
             <div className="mt-3 center-center">
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={disabled()}>
                 Subir Comprobante
               </Button>
             </div>

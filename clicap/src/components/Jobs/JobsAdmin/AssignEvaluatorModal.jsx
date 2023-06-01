@@ -88,7 +88,7 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
               value={evaluatorsOptions1.filter(
                 (el) => el.value === evaluatorSelected1
               )}
-              placeholder={"seleccione.."}
+              placeholder={"Seleccione..."}
               name="evaluator1"
               isClearable={true}
               theme={(theme) => ({
@@ -113,7 +113,7 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
               value={evaluatorsOptions2.filter(
                 (el) => el.value === evaluatorSelected2
               )}
-              placeholder={"seleccione.."}
+              placeholder={"Seleccione..."}
               name="evaluator2"
               isClearable={true}
               theme={(theme) => ({

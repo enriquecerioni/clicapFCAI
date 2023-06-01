@@ -216,6 +216,16 @@ export const JobState = ({ children }) => {
     }
   };
 
+  const getJobByAuthorId = async (authorId) => {
+    const getAuthorJob = await reqAxios(
+      "GET",
+      `/job/get/author/${authorId}`,
+      "",
+      ""
+    );
+    return getAuthorJob.data.response;
+  };
+
   const setJobFilters = (filters) => {
     dispatch({
       type: "SET_JOBS_FILTERS",
@@ -247,6 +257,7 @@ export const JobState = ({ children }) => {
         sendCorrectionApproved,
         setUserLogged,
         cleanJobData,
+        getJobByAuthorId,
       }}
     >
       {children}

@@ -1,4 +1,9 @@
 /node_modules
 /public
+/public/documents
+/public/invoices
+/public/news
+/public/payments
+/public/regularcertificates
 .env
 

@@ -89,12 +89,12 @@ const Users = ({ showModalCertificate }) => {
             >
               <div className="me-3" style={{ width: "350px" }}>
                 <label htmlFor="forName" className="form-label">
-                  Nombre / Dni
+                  DNI - Nombre
                 </label>
                 <Select
                   components={{ ExtensiveList }}
                   options={usersSelector}
-                  placeholder={"seleccione.."}
+                  placeholder={"Seleccione..."}
                   name="identifyNumber"
                   isClearable={true}
                   theme={(theme) => ({
@@ -113,7 +113,7 @@ const Users = ({ showModalCertificate }) => {
                 </label>
                 <Select
                   options={RolesOptions}
-                  placeholder={"seleccione.."}
+                  placeholder={"Seleccione..."}
                   name="roleId"
                   isClearable={true}
                   theme={(theme) => ({

@@ -150,7 +150,7 @@ const Register = () => {
                     </label>
                     <Select
                       options={rolesOptions()}
-                      placeholder={"seleccione.."}
+                      placeholder={"Seleccione..."}
                       name="roleId"
                       value={rolesSelector.filter(
                         (role) => role.value === userRegister.roleId
@@ -177,7 +177,7 @@ const Register = () => {
                     </label>
                     <Select
                       options={identifyTypeOptions}
-                      placeholder={"seleccione.."}
+                      placeholder={"Seleccione..."}
                       name="identifyType"
                       value={identifyTypeOptions.filter(
                         (type) => type.value === userRegister.identifyType

@@ -26,22 +26,25 @@ const ImportantDateRouter = require("./routes/ImportantDateRouter");
 const UserModel = require("./models/UserModel");
 const RegularCertificateRouter = require("./routes/RegularCertificateRouter");
 const SponsorRouter = require("./routes/SponsorRouter");
+const JobExpositionRouter = require("./routes/JobExpositionRouter");
+const JobExpositionModel = require("./models/JobExpositionModel");
 
 // Models
-require("./models/RegularCertificateModel");
-require("./models/NewModel");
-require("./models/DateModel");
-require("./models/UserModel");
-require("./models/JobModel");
-require("./models/PayModel");
 require("./models/AreaModel");
+require("./models/CertificateModel");
+require("./models/CorrectionModel");
+require("./models/DateModel");
+require("./models/ImportantDates");
+require("./models/JobModel");
+require("./models/JobExpositionModel");
 require("./models/JobModalityModel");
 require("./models/JobDetailModel");
-require("./models/CorrectionModel");
+require("./models/NewModel");
+require("./models/PayModel");
+require("./models/RegularCertificateModel");
 require("./models/StudentCertificateModel");
-require("./models/CertificateModel");
-require("./models/ImportantDates");
 require("./models/SponsorModel");
+require("./models/UserModel");
 
 dotenv.config({ path: "./.env" });
 
@@ -61,21 +64,22 @@ app.listen(PORT, () => {
 });
 
 // URL Routes
-app.use("/api/clicap/regular-certificates/", RegularCertificateRouter);
-app.use("/api/clicap/new/", NewRouter);
-app.use("/api/clicap/date/", DateRouter);
 app.use("/api/clicap/area/", AreaRouter);
+app.use("/api/clicap/certificate/", CertificateRouter);
+app.use("/api/clicap/date/", DateRouter);
+app.use("/api/clicap/file/", FileRouter);
+app.use("/api/clicap/importantdate/", ImportantDateRouter);
 app.use("/api/clicap/job/", JobRouter);
 app.use("/api/clicap/jobdetails/", JobDetailsRouter);
 app.use("/api/clicap/jobmodality/", JobModalityRouter);
+app.use("/api/clicap/jobexposition/", JobExpositionRouter);
+app.use("/api/clicap/new/", NewRouter);
 app.use("/api/clicap/pay/", PayRouter);
-app.use("/api/clicap/user/", UserRouter);
+app.use("/api/clicap/regular-certificates/", RegularCertificateRouter);
 app.use("/api/clicap/role/", RoleRouter);
-app.use("/api/clicap/student/", StudentCertificateRouter);
-app.use("/api/clicap/file/", FileRouter);
-app.use("/api/clicap/certificate/", CertificateRouter);
-app.use("/api/clicap/importantdate/", ImportantDateRouter);
 app.use("/api/clicap/sponsor/", SponsorRouter);
+app.use("/api/clicap/student/", StudentCertificateRouter);
+app.use("/api/clicap/user/", UserRouter);
 
 const insertData = async () => {
   const areas = ["Alimentos", "Química"];
@@ -84,6 +88,7 @@ const insertData = async () => {
     "Trabajos de investigación",
     "Prácticas áulicas o de laboratorios",
   ];
+  const exposition = ["Presentación de pósters"];
   const corrections = [
     "Aceptado",
     "Aceptado con modificaciones Menores",
@@ -164,6 +169,11 @@ const insertData = async () => {
   });
   modality.forEach(async (item) => {
     await JobModalityModel.create({
+      name: item,
+    });
+  });
+  exposition.forEach(async (item) => {
+    await JobExpositionModel.create({
       name: item,
     });
   });

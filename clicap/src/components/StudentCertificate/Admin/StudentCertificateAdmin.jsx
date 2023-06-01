@@ -1,38 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import ModalDelete from "../../Modals/ModalDelete";
 import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { PaginationCustom } from "../../Pagination/Pagination";
-import { getDataUserByKey, reqAxiosDownload } from "../../../helpers/helpers";
+import { getDataUserByKey } from "../../../helpers/helpers";
 import { StudentCertificateList } from "./StudentCertificateList";
+import { StudentContext } from "../../../context/StudentCertificate/StudentContext";
 
 const StudentCertificateAdmin = () => {
-  const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
-  const userId = getDataUserByKey("id");
-  const {
-    allJobs,
-    getAllJobs,
-    users,
-    getAllUsers,
-    getAllAreas,
-    usersSelector,
-    areasSelector,
-    totalPages,
-    allStatusJob,
-    getAllEvaluators,
-    allEvaluatorsSelector,
-    setFiltersGlobal,
-    filtersGlobal,
-    allRegularCertificates,
-    getAllRegularCertificates
-  } = useContext(EntitiesContext);
+  const { getAllUsers, usersSelector, setFiltersGlobal, filtersGlobal } =
+    useContext(EntitiesContext);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [CertificateToDelete, setCertificateToDelete] = useState(false);
   const [page, setPage] = useState(1);
+  const { getAllRegularCertificates, studentState, totalStudentPages } =
+    useContext(StudentContext);
+  const { studentCertificates } = studentState;
 
   const handleChangeFilter = (e, name) => {
     if (e) {
@@ -55,17 +41,19 @@ const StudentCertificateAdmin = () => {
 
   useEffect(() => {
     getAllUsers();
-    getAllRegularCertificates(page, filtersGlobal)
-  }, [page]);
+    getAllRegularCertificates(page, filtersGlobal);
+  }, [page, filtersGlobal]);
 
   return (
     <>
       <div className="ms-3 me-3">
         <h2 className="text-center">Certificados de Alumno Regular</h2>
-        <div className="d-flex justify-content-end">
-        </div>
+        <div className="d-flex justify-content-end"></div>
         {showDeleteModal ? (
-          <ModalDelete entity={CertificateToDelete} showAlert={setShowDeleteModal} />
+          <ModalDelete
+            entity={CertificateToDelete}
+            showAlert={setShowDeleteModal}
+          />
         ) : null}
 
         {roleId === 1 ? (
@@ -75,13 +63,13 @@ const StudentCertificateAdmin = () => {
               className="center-filters"
               onSubmit={handleSubmit}
             >
-              <div  className="me-3">
+              <div className="me-3">
                 <label htmlFor="forAuthorId" className="form-label">
                   Autor
                 </label>
                 <Select
                   options={usersSelector}
-                  placeholder={"seleccione.."}
+                  placeholder={"Seleccione..."}
                   name="authorId"
                   isClearable={true}
                   theme={(theme) => ({
@@ -94,7 +82,7 @@ const StudentCertificateAdmin = () => {
                   onChange={(e) => handleChangeFilter(e, "authorId")}
                 />
               </div>
-              
+
               <Button variant="primary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
               </Button>
@@ -102,7 +90,7 @@ const StudentCertificateAdmin = () => {
           </div>
         ) : null}
 
-        {allRegularCertificates.length > 0 ? (
+        {studentCertificates.length > 0 ? (
           <>
             <div className="mt-3 overflow-x">
               <table className="table table-hover">
@@ -115,7 +103,7 @@ const StudentCertificateAdmin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {allRegularCertificates.map((regularCertificate) => (
+                  {studentCertificates.map((regularCertificate) => (
                     <StudentCertificateList
                       regularCertificate={regularCertificate}
                       showAlert={setShowDeleteModal}
@@ -128,12 +116,14 @@ const StudentCertificateAdmin = () => {
             </div>
             <PaginationCustom
               currentPage={page}
-              totalPages={totalPages}
+              totalPages={totalStudentPages}
               paginate={setPage}
             />
           </>
         ) : (
-          <p className="mt-4 text-center">No hay certificados de alumno regular.</p>
+          <p className="mt-4 text-center">
+            No hay certificados de alumno regular.
+          </p>
         )}
       </div>
     </>

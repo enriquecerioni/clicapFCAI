@@ -247,7 +247,7 @@ export const SendCorrectionAdmin = () => {
             <p className="m-0">Estado</p>
             <Select
               options={statusCorrections}
-              placeholder={"seleccione.."}
+              placeholder={"Seleccione..."}
               name="correctionId"
               isClearable={true}
               theme={(theme) => ({
@@ -301,7 +301,7 @@ export const SendCorrectionAdmin = () => {
               <p className="m-0">Estado</p>
               <Select
                 options={statusCorrections}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="correctionId"
                 isClearable={true}
                 theme={(theme) => ({

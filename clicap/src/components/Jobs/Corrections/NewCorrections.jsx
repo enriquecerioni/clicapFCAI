@@ -59,7 +59,7 @@ export const NewCorrections = ({ job }) => {
           <Form.Label className="fw-bold">Estado del trabajo</Form.Label>
           <Select
             options={statusCorrections}
-            placeholder={"seleccione.."}
+            placeholder={"Seleccione..."}
             name="correctionId"
             value={statusCorrections.filter(
               (status) => correction.correctionId === status.value

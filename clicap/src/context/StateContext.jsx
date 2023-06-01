@@ -10,29 +10,35 @@ import { NewsState } from "./News/NewsState";
 import { AppState } from "./App/AppState";
 import { ImportantDateState } from "./ImportantDates/ImportantDateState";
 import { SponsorState } from "./Sponsor/SponsorState";
+import { StudentState } from "./StudentCertificate/StudentState";
+import { ExpositionState } from "./Exposition/ExpositionState";
 
 export const StateContext = ({ children }) => {
   return (
     <AppState>
-      <SponsorState>
-        <ImportantDateState>
-          <RegisterState>
-            <UserState>
-              <ModalitiesState>
-                <NewsState>
-                  <JobState>
-                    <CertificateState>
-                      <AreaState>
-                        <PayState>{children}</PayState>
-                      </AreaState>
-                    </CertificateState>
-                  </JobState>
-                </NewsState>
-              </ModalitiesState>
-            </UserState>
-          </RegisterState>
-        </ImportantDateState>
-      </SponsorState>
+      <ExpositionState>
+        <StudentState>
+          <SponsorState>
+            <ImportantDateState>
+              <RegisterState>
+                <UserState>
+                  <ModalitiesState>
+                    <NewsState>
+                      <JobState>
+                        <CertificateState>
+                          <AreaState>
+                            <PayState>{children}</PayState>
+                          </AreaState>
+                        </CertificateState>
+                      </JobState>
+                    </NewsState>
+                  </ModalitiesState>
+                </UserState>
+              </RegisterState>
+            </ImportantDateState>
+          </SponsorState>
+        </StudentState>
+      </ExpositionState>
     </AppState>
   );
 };

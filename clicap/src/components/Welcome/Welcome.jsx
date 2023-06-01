@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
@@ -19,20 +18,17 @@ const Welcome = () => {
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
 
-  const { myPays } = useContext(EntitiesContext);
-
   const { appState, setRefreshRoleIdAndUserId } = useContext(AppContext);
   const { refreshRoleIdAndUserId } = appState;
 
-  const { jobState, setJobFilters, setUserLogged } = useContext(JobContext);
+  const { jobState, setJobFilters, setUserLogged, getJobByAuthorId } =
+    useContext(JobContext);
   const { jobsFilter, jobs } = jobState;
 
-  const { setUserIdToPays } = useContext(PayContext);
+  const { setUserIdToPays, getPayByAuthorId } = useContext(PayContext);
 
   const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
-
-  const { getPayByAuthorId } = useContext(PayContext);
 
   const [amountJobsAndSum, setAmountJobsAndSum] = useState([]);
 
@@ -42,7 +38,8 @@ const Welcome = () => {
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);
-  const [authorPay, setAuthorPay] = useState("");
+  const [authorJob, setAuthorJob] = useState([]);
+  const [authorPay, setAuthorPay] = useState([]);
 
   const goAndFiltered = (numArea, numModality) => {
     setGoToJobFiltered(!goToJobFiltered);
@@ -96,10 +93,12 @@ const Welcome = () => {
     4: "Alumno",
   };
   const getRoleName = () => (roleId ? roleNames[roleId] : "");
-  const getAuthorPayAndSet = async () => {
+
+  const getAuthorPayandJob = async () => {
     const authorPayFound = await getPayByAuthorId(userId);
+    const authorJobfound = await getJobByAuthorId(userId);
     setAuthorPay(authorPayFound);
-    console.log("authorPayFound", authorPayFound);
+    setAuthorJob(authorJobfound);
   };
 
   useEffect(() => {
@@ -107,7 +106,7 @@ const Welcome = () => {
       console.log("actualizo el id");
       setUserLogged();
       setUserIdToPays();
-      setRefreshRoleIdAndUserId();
+      setRefreshRoleIdAndUserId(false);
     }
 
     if (areas.length === 0) {
@@ -116,8 +115,8 @@ const Welcome = () => {
     if (roleId !== 1) {
       getAllCertificatesByUser(userId);
     }
-    getAuthorPayAndSet();
     getAndSetNumberOfJobs();
+    getAuthorPayandJob();
   }, []);
 
   useEffect(() => {
@@ -355,7 +354,7 @@ const Welcome = () => {
             <div className="row">
               <div className="col border dashboard-card flex flexCard">
                 <div className="col mb-3 flex">
-                  {jobs.length > 0 ? (
+                  {authorJob.length ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
@@ -395,7 +394,7 @@ const Welcome = () => {
                     </div>
                   )}
 
-                  {authorPay ? (
+                  {authorPay.length ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"

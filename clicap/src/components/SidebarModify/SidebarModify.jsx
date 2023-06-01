@@ -11,7 +11,7 @@ export const SidebarModify = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { setLoggout } = useContext(AppContext);
+  const { setLoggout, setRefreshRoleIdAndUserId } = useContext(AppContext);
 
   const [url, setUrl] = useState(null);
 
@@ -24,6 +24,7 @@ export const SidebarModify = () => {
 
   const loggout = () => {
     sessionStorage.removeItem("user");
+    setRefreshRoleIdAndUserId(true);
     if (location.pathname === "/") {
       setLoggout();
     }

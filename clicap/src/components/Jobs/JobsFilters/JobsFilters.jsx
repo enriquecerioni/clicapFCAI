@@ -86,7 +86,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               </label>
               <Select
                 options={authorSelector}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="authorId"
                 isClearable={true}
                 theme={(theme) => ({
@@ -105,7 +105,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               </label>
               <Select
                 options={areasSelector}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="areaId"
                 value={areasSelector.filter(
                   (area) => filters.areaId === area.value
@@ -133,7 +133,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                 value={modalities.filter(
                   (mod) => filters.jobModalityId === mod.value
                 )}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="jobModalityId"
                 isClearable={true}
                 theme={(theme) => ({
@@ -152,7 +152,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               </label>
               <Select
                 options={evaluatorsSelector}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="evaluatorId"
                 isClearable={true}
                 theme={(theme) => ({
@@ -171,7 +171,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               </label>
               <Select
                 options={toCorrectionOptions}
-                placeholder={"seleccione.."}
+                placeholder={"Seleccione..."}
                 name="status"
                 isClearable={true}
                 theme={(theme) => ({

@@ -31,10 +31,10 @@ export const AppState = ({ children }) => {
       payload: !state.loggout,
     });
   };
-  const setRefreshRoleIdAndUserId = async () => {
+  const setRefreshRoleIdAndUserId = (value) => {
     dispatch({
       type: "SET_REFRESH_ROLEID_USERID",
-      payload: false,
+      payload: value,
     });
   };
 
