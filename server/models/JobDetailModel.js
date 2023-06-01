@@ -28,6 +28,11 @@ const JobDetailModel = db.define("jobdetail", {
     allowNull: false,
     type: DataTypes.TEXT,
   },
+  correctionNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+  },
   sendMail: {
     allowNull: false,
     type: DataTypes.INTEGER,

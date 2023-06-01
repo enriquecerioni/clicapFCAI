@@ -48,6 +48,11 @@ const JobModel = db.define("job", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  correctionNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+  },
   evaluatorId1: {
     allowNull: true,
     type: DataTypes.INTEGER,

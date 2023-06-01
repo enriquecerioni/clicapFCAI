@@ -28,13 +28,21 @@ exports.create = async (req, res) => {
   //approve = 0 -> Significa que el admin NO tiene evaluaciones de ese trabajo
   //sendMail = 1 -> Significa que se envia un email
   try {
-    const { jobId, evaluatorId, correctionId, details, sendMail } = req.body;
+    const {
+      jobId,
+      evaluatorId,
+      correctionId,
+      details,
+      sendMail,
+      correctionNumber,
+    } = req.body;
     console.log(req.body);
     const detail = await JobDetailModel.create({
       jobId,
       evaluatorId,
       correctionId,
       details,
+      correctionNumber,
       sendMail,
     });
 
@@ -87,12 +95,15 @@ exports.create = async (req, res) => {
 
         //approve in 0 because correction is approved
         await JobModel.update(
-          { status: correctionId, approve: 0 },
+          {
+            status: correctionId,
+            approve: 0,
+            correctionNumber: correctionNumber + 1,
+          },
           { where: { id: jobId } }
         );
-
-        res.status(200).json({ msg: "Correción creada!" });
       }
+      res.status(200).json({ msg: "Correción creada!" });
     } else {
       res.status(500).json({ msg: "Error al crear la corrección." });
     }
@@ -182,9 +193,9 @@ exports.getById = async (req, res) => {
 
 exports.checkCorrection = async (req, res) => {
   try {
-    const { jobId, evaluatorId } = req.params;
+    const { jobId, evaluatorId, correctionNumber } = req.params;
     const detail = await JobDetailModel.findOne({
-      where: { jobId, evaluatorId },
+      where: { jobId, evaluatorId, correctionNumber },
     });
 
     if (detail) {
