@@ -20,8 +20,8 @@ const Welcome = () => {
 
   const { myPays } = useContext(EntitiesContext);
 
-  const { jobState, setJobFilters } = useContext(JobContext);
-  const { jobsFilter, jobs } = jobState;
+  const { jobState, setJobFilters,setUserLogged } = useContext(JobContext);
+  const { jobsFilter, jobs,jobData } = jobState;
 
   const { getNumberOfJobs, areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
@@ -97,6 +97,10 @@ const Welcome = () => {
   };
 
   useEffect(() => {
+    if (jobData.authorId === "") {
+      console.log("object");
+      setUserLogged();
+    }
     if (areas.length === 0) {
       getAllAreas();
     }

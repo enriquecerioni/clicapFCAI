@@ -7,7 +7,7 @@ const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
-const { transporter } = require("../utils/utils");
+const { transporter, deleteFileGeneric } = require("../utils/utils");
 const CorrectionModel = require("../models/CorrectionModel");
 const excelJS = require("exceljs");
 const EXCEL_CELL_WIDTH = 12;
@@ -114,10 +114,10 @@ exports.updateById = async (req, res) => {
       areaId,
       authorId,
       members,
-      urlFile,
       status,
       evaluatorId1,
       evaluatorId2,
+      addEvaluators,
     } = req.body;
     console.log(req.body);
 
@@ -134,6 +134,7 @@ exports.updateById = async (req, res) => {
       assignEvaluators.push({ id: Number(evaluatorId2) });
     }
 
+    console.log("entrooooo");
     const doc = await JobModel.update(
       {
         name: name,
@@ -141,7 +142,6 @@ exports.updateById = async (req, res) => {
         members: members,
         authorId: authorId,
         status,
-        urlFile: urlFile,
         evaluatorId1: evaluatorId1,
         evaluatorId2: evaluatorId2,
       },
@@ -153,7 +153,7 @@ exports.updateById = async (req, res) => {
     };
 
     if (doc) {
-      if (assignEvaluators.length) {
+      if (assignEvaluators.length > 0 && addEvaluators) {
         options.where = {
           [Op.or]: assignEvaluators,
         };
@@ -165,7 +165,7 @@ exports.updateById = async (req, res) => {
           var mailOptions = {
             from: process.env.EMAIL_APP,
             to: user[i].email,
-            subject: "Nueva corrección",
+            subject: "Nuevo trabajo asignado",
             template: "mailAssignToJob",
             attachments: [
               {
@@ -196,6 +196,45 @@ exports.updateById = async (req, res) => {
     }
   } catch (error) {
     console.log("El Trabajo no existe!" + error);
+  }
+};
+exports.uploadFileJob = async (req, res) => {
+  try {
+    uploadJob(req, res, async (err) => {
+      if (err) {
+        err.message = "The file is so heavy for my service";
+        return res.send(err);
+      }
+
+      const { id } = req.body;
+
+      const { urlFile } = await JobModel.findOne({
+        where: { id: id },
+        attributes: ["urlFile"],
+      });
+
+      const fileToDelete = {
+        nameFile: urlFile,
+        folder: "documents",
+      };
+
+      deleteFileGeneric(fileToDelete);
+
+      const doc = await JobModel.update(
+        {
+          urlFile: jobUUID,
+        },
+        { where: { id: id } }
+      );
+
+      if (doc) {
+        return res.status(200).json({ msg: "Archivo actualizado!" });
+      } else {
+        return res.status(500).json({ msg: "Error al subir el archivo." });
+      }
+    });
+  } catch (error) {
+    console.log("Error al crear el Trabajo." + error);
   }
 };
 

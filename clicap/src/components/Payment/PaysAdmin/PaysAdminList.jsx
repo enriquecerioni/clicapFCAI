@@ -19,6 +19,7 @@ export const PaysAdminList = ({ pay, users, showAlert, setPayToDelete }) => {
       entityType: "pay",
       receipt: pay.urlFile,
       invoice: pay.invoice,
+      navigate: "/pays",
     });
   };
   return (

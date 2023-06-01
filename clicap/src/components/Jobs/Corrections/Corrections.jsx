@@ -25,7 +25,7 @@ export const Corrections = () => {
       <h2 className="text-center">
         Correcciones del {jobId ? jobId.name : null}
       </h2>
-      <div className="text-end me-3 mt-3">
+      {/*       <div className="text-end me-3 mt-3">
         {!newCorrection && roleId === 2 ? (
           <Button
             variant="success"
@@ -35,12 +35,16 @@ export const Corrections = () => {
             Nueva Corrección
           </Button>
         ) : null}
-        <Button variant="primary" onClick={() => downloadFile(jobId.urlFile, 'documents')}>
+        <Button
+          variant="primary"
+          onClick={() => downloadFile(jobId.urlFile, "documents")}
+        >
           Descargar Ult. Version
         </Button>
-      </div>
+      </div> */}
 
-      {!newCorrection ? (
+      <NewCorrections job={jobId} />
+      {/* {{        {!newCorrection ? (
         corrections.length > 0 ? (
           <>
             <div style={{ overflowX: "auto" }}>
@@ -58,24 +62,15 @@ export const Corrections = () => {
                     <CorrectionList
                       key={i}
                       correction={correction}
-                      /*     setCustomerToDelete={handleDelete} */
                     />
                   ))}
                 </tbody>
               </table>
             </div>
-            {/*  <PaginationCustom
-              currentPage={page}
-              totalPages={totalPages}
-              paginate={setPage}
-            /> */}
           </>
         ) : (
           <p className="text-center">No hay registros</p>
-        )
-      ) : (
-        <NewCorrections />
-      )}
+        )}} */}
     </>
   );
 };

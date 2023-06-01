@@ -24,64 +24,85 @@ transporter.use(
 );
 
 exports.create = async (req, res) => {
+  //approve = 1 -> Significa que el admin tiene evaluaciones de ese trabajo para crear una evaluacion definitiva
+  //approve = 0 -> Significa que el admin NO tiene evaluaciones de ese trabajo
+  //sendMail = 1 -> Significa que se envia un email
   try {
-    const { jobId, evaluatorId, correctionId, details, sendMail, approve } =
-      req.body;
+    const {
+      jobId,
+      evaluatorId,
+      correctionId,
+      details,
+      sendMail,
+      correctionNumber,
+    } = req.body;
     console.log(req.body);
     const detail = await JobDetailModel.create({
       jobId,
       evaluatorId,
       correctionId,
       details,
+      correctionNumber,
       sendMail,
     });
-    //approve in 1 to admin approve
-    await JobModel.update({ approve: 1 }, { where: { id: jobId } });
-    if (Number(sendMail) === 1) {
-      const doc = await JobModel.findOne({
-        where: { id: jobId },
-        include: [
-          {
-            model: UserModel,
-            as: "author",
-            attributes: ["name", "surname", "email"],
-          },
-        ],
-      });
-      //approve in 0 because correction is approved
-      await JobModel.update(
-        { status: correctionId, approve: 0 },
-        { where: { id: jobId } }
-      );
 
-      var mailOptions = {
-        from: process.env.EMAIL_APP,
-        to: doc.author.email,
-        subject: "Nueva corrección",
-        template: "mailNewCorrection",
-        attachments: [
-          {
-            filename: "appLogo.jpg",
-            path: "./public/logos/appLogo.jpg",
-            cid: "logo", //my mistake was putting "cid:logo@cid" here!
-          },
-        ],
-        context: {
-          evaluatorName: doc.user.name + " " + doc.user.surname,
-          titleTp: doc.name,
-        },
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res.status(500).json({ msg: error.message });
-        } else {
-          console.log("Email enviado!");
-          res.end();
-        }
-      });
-      return res.status(200).json({ msg: "Correción creada!" });
+    if (evaluatorId !== null) {
+      //approve in 1 to admin approve
+      await JobModel.update({ approve: 1 }, { where: { id: jobId } });
     }
+
     if (detail) {
+      if (Number(sendMail) === 1) {
+        const doc = await JobModel.findOne({
+          where: { id: jobId },
+          include: [
+            {
+              model: UserModel,
+              as: "author",
+              attributes: ["name", "surname", "email"],
+            },
+          ],
+        });
+
+        const { name, author } = doc;
+
+        var mailOptions = {
+          from: process.env.EMAIL_APP,
+          to: doc.author.email,
+          subject: "Nueva corrección",
+          template: "mailNewCorrection",
+          attachments: [
+            {
+              filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
+              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+            },
+          ],
+          context: {
+            evaluatorName: author.name + " " + author.surname,
+            titleTp: name,
+          },
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          console.log("ENTRO");
+          if (error) {
+            return res.status(500).json({ msg: error.message });
+          } else {
+            console.log("Email enviado!");
+            res.end();
+          }
+        });
+
+        //approve in 0 because correction is approved
+        await JobModel.update(
+          {
+            status: correctionId,
+            approve: 0,
+            correctionNumber: correctionNumber + 1,
+          },
+          { where: { id: jobId } }
+        );
+      }
       res.status(200).json({ msg: "Correción creada!" });
     } else {
       res.status(500).json({ msg: "Error al crear la corrección." });
@@ -172,9 +193,9 @@ exports.getById = async (req, res) => {
 
 exports.checkCorrection = async (req, res) => {
   try {
-    const { jobId, evaluatorId } = req.params;
+    const { jobId, evaluatorId, correctionNumber } = req.params;
     const detail = await JobDetailModel.findOne({
-      where: { jobId, evaluatorId },
+      where: { jobId, evaluatorId, correctionNumber },
     });
 
     if (detail) {

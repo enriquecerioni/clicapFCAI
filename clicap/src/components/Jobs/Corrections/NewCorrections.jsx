@@ -3,15 +3,21 @@ import { useEffect } from "react";
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import { EntitiesContext } from "../../../context/EntitiesContext";
-import { reqAxios, waitAndRefresh } from "../../../helpers/helpers";
 import { statusCorrections } from "../typesCorrections";
+import { JobContext } from "../../../context/Job/JobContext";
+import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
-export const NewCorrections = () => {
+export const NewCorrections = ({ job }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { correction, setCorrection } = useContext(EntitiesContext);
+
+  const { jobState, createEvaluationByEvaluatorOrAdmin } =
+    useContext(JobContext);
+  const { correctionInitial } = jobState;
+
+  const [correction, setCorrection] = useState(correctionInitial);
   const [putDisabled, setPutDisabled] = useState(false);
+
   //CORRECCIONES
   const handleNewCorrection = (e, name) => {
     if (e === null) {
@@ -31,21 +37,18 @@ export const NewCorrections = () => {
   };
 
   const handleSubmitCorrection = async () => {
-    await reqAxios("POST", "/jobdetails/create", "", correction);
-    await reqAxios("PUT", `/job/setcorrection/${id}`, "", {
-      status: correction.correctionId,
-    });
-    /*     navigate('/jobs'); */
-    waitAndRefresh("jobs", 1000);
+    await createEvaluationByEvaluatorOrAdmin(correction);
+    navigate("/jobs");
   };
 
   useEffect(() => {
     setCorrection({
       ...correction,
       ["jobId"]: Number(id),
+      ["correctionNumber"]: job.correctionNumber,
     });
   }, []);
-  
+
   return (
     <>
       <div className="center-center">
@@ -58,6 +61,9 @@ export const NewCorrections = () => {
             options={statusCorrections}
             placeholder={"seleccione.."}
             name="correctionId"
+            value={statusCorrections.filter(
+              (status) => correction.correctionId === status.value
+            )}
             isClearable={true}
             theme={(theme) => ({
               ...theme,
@@ -80,13 +86,20 @@ export const NewCorrections = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          <Button
-            variant="success"
-            disabled={putDisabled ? putDisabled : disabled()}
-            onClick={handleSubmitCorrection}
+          <ClicapTooltip
+            tooltip={putDisabled ? putDisabled : disabled()}
+            text={"Por favor complete todos los campos"}
           >
-            Guardar Corrección
-          </Button>
+            <div className="d-flex">
+              <Button
+                variant="success"
+                disabled={putDisabled ? putDisabled : disabled()}
+                onClick={handleSubmitCorrection}
+              >
+                Guardar Corrección
+              </Button>
+            </div>
+          </ClicapTooltip>
         </div>
       </div>
     </>

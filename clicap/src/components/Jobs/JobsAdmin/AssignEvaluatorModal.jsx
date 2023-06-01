@@ -10,7 +10,7 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
   const { userState } = useContext(UserContext);
   const { evaluatorsSelector } = userState;
 
-  const { jobState } = useContext(JobContext);
+  const { jobState, addEvaluatorsToJob } = useContext(JobContext);
   const { jobs } = jobState;
 
   const [evaluatorsOptions1, setEvaluatorOptions1] = useState([]);
@@ -47,10 +47,10 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
       ...jobSelected,
       evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : "",
       evaluatorId2: evaluatorSelected2 !== "" ? evaluatorSelected2 : "",
+      addEvaluators: true,
     };
-
-    await reqAxios("PUT", `/job/edit/${jobSelected.id}`, "", jobEdited);
-    waitAndRefresh(`/jobs`, 1000);
+    await addEvaluatorsToJob(jobSelected.id, jobEdited);
+    setShowModal(!showModal);
   };
 
   useEffect(() => {

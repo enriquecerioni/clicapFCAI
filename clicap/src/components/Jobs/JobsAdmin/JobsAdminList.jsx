@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { useEffect } from "react";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { downloadFile, getDataUserByKey } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
@@ -17,6 +17,7 @@ export const JobsAdminList = ({
   const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const userId = getDataUserByKey("id");
+  const isEvaluator = roleId === 2 ? true : false;
 
   const { checkCorrection } = useContext(JobContext);
 
@@ -38,7 +39,11 @@ export const JobsAdminList = ({
   };
 
   const checkToCorrection = async () => {
-    const correction = await checkCorrection(work.id, userId);
+    const correction = await checkCorrection(
+      work.id,
+      userId,
+      work.correctionNumber
+    );
     setHaveCorrection(correction);
   };
 
@@ -60,16 +65,20 @@ export const JobsAdminList = ({
       <tr>
         <td>{work.author.name + " " + work.author.surname}</td>
         <td>{work.name}</td>
-        <td>
-          {work.evaluator1
-            ? work.evaluator1.name + " " + work.evaluator1.surname
-            : ""}
-        </td>
-        <td>
-          {work.evaluator2
-            ? work.evaluator2.name + " " + work.evaluator2.surname
-            : ""}
-        </td>
+        {isEvaluator ? null : (
+          <>
+            <td>
+              {work.evaluator1
+                ? work.evaluator1.name + " " + work.evaluator1.surname
+                : ""}
+            </td>
+            <td>
+              {work.evaluator2
+                ? work.evaluator2.name + " " + work.evaluator2.surname
+                : ""}
+            </td>
+          </>
+        )}
         <td>{work.area.name}</td>
         <td>{work.jobmodality.name}</td>
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
@@ -111,7 +120,7 @@ export const JobsAdminList = ({
             </td>
 
             <td>
-              <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
+              <ClicapTooltip tooltip={true} text={"Eliminar trabajo"}>
                 <i
                   type="button"
                   className="fa-solid fa-trash-can icon-size-table btn-delete-table color-icon-error"
@@ -120,16 +129,33 @@ export const JobsAdminList = ({
               </ClicapTooltip>
             </td>
           </>
-        ) : roleId === 2 ? (
-          <td>
-            <Button
-              className="btn btn-success"
-              onClick={() => navigate(`/job/corrections/${work.id}`)}
-              disabled={haveCorrection !== 0 ? true : false}
-            >
-              Evaluar
-            </Button>
-          </td>
+        ) : isEvaluator ? (
+          <>
+            <td>
+              <ClicapTooltip
+                tooltip={haveCorrection === 0 ? false : true}
+                text={"El trabajo ya fue evaluado"}
+              >
+                <div>
+                  <Button
+                    className="btn btn-success"
+                    onClick={() => navigate(`/job/corrections/${work.id}`)}
+                    disabled={haveCorrection === 0 ? false : true}
+                  >
+                    Evaluar
+                  </Button>
+                </div>
+              </ClicapTooltip>
+            </td>
+            <td>
+              <Button
+                variant="primary"
+                onClick={() => downloadFile(work.urlFile, "documents")}
+              >
+                Descargar Ult. Version
+              </Button>
+            </td>
+          </>
         ) : null}
       </tr>
     </>
