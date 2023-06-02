@@ -3,7 +3,7 @@ import {
   SET_JOBS_FILTERS,
   GET_ALL_JOBS,
   SET_ASSIGNED_EVALUATOR,
-  SET_USER_LOGGED,
+  SET_USERID_TO_JOB,
   CLEAN_JOB_DATA,
 } from "./types";
 
@@ -43,6 +43,19 @@ export default (state, action) => {
       return {
         ...state,
         jobsFilter: payload,
+      };
+    case SET_USERID_TO_JOB:
+      return {
+        ...state,
+        jobData: {
+          ...state.jobData,
+          authorId: payload,
+        },
+      };
+    case SET_ASSIGNED_EVALUATOR:
+      return {
+        ...state,
+        assignedEvaluator: payload,
       };
 
     default:

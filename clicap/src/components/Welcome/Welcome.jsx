@@ -21,7 +21,7 @@ const Welcome = () => {
   const { appState, setRefreshRoleIdAndUserId } = useContext(AppContext);
   const { refreshRoleIdAndUserId } = appState;
 
-  const { jobState, setJobFilters, setUserLogged, getJobByAuthorId } =
+  const { jobState, setJobFilters, setRefreshUserIdToJob, getJobByAuthorId } =
     useContext(JobContext);
   const { jobsFilter, jobs } = jobState;
 
@@ -104,7 +104,7 @@ const Welcome = () => {
   useEffect(() => {
     if (refreshRoleIdAndUserId) {
       console.log("actualizo el id");
-      setUserLogged();
+      setRefreshUserIdToJob();
       setUserIdToPays();
       setRefreshRoleIdAndUserId(false);
     }
