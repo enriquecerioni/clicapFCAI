@@ -232,9 +232,9 @@ export const JobState = ({ children }) => {
       payload: filters,
     });
   };
-  const setUserLogged = () => {
+  const setRefreshUserIdToJob = () => {
     dispatch({
-      type: "SET_USER_LOGGED",
+      type: "SET_USERID_TO_JOB",
       payload: getDataUserByKey("id"),
     });
   };
@@ -255,7 +255,7 @@ export const JobState = ({ children }) => {
         addEvaluatorsToJob,
         createEvaluationByEvaluatorOrAdmin,
         sendCorrectionApproved,
-        setUserLogged,
+        setRefreshUserIdToJob,
         cleanJobData,
         getJobByAuthorId,
       }}
