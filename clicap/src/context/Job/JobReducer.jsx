@@ -44,17 +44,6 @@ export default (state, action) => {
         ...state,
         jobsFilter: payload,
       };
-    case SET_ASSIGNED_EVALUATOR:
-      return {
-        ...state,
-        assignedEvaluator: payload,
-      };
-    case SET_USER_LOGGED:
-      return {
-        ...state,
-        jobData: { ...state.jobData, authorId: payload },
-        correctionInitial: { ...state.correctionInitial, evaluatorId: payload },
-      };
 
     default:
       return state;

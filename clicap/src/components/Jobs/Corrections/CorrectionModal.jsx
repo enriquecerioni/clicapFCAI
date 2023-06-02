@@ -16,7 +16,7 @@ export const CorrectionModal = ({ jobName, showModal, correction }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            {jobName} <br/> ({correction.correction.name})
+            {jobName} <br /> ({correction.correction.name})
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="">{correction.details}</Modal.Body>

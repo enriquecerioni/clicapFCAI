@@ -418,6 +418,41 @@ exports.getAllPaginated = async (req, res) => {
     console.log("La instancia no existe." + error);
   }
 };
+exports.getAllJobsByUser = async (req, res) => {
+  try {
+    const { authorId } = req.query;
+    console.log(req.query);
+    let options = {
+      where: {},
+      include: [
+        { model: AreaModel },
+        { model: JobModalityModel },
+        {
+          model: UserModel,
+          as: "author",
+          attributes: ["name", "surname"],
+        },
+        { model: CorrectionModel, as: "jobStatus" },
+        { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
+        { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
+      ],
+    };
+
+    if (authorId) {
+      options.where.authorId = authorId;
+    }
+
+    const jobsByUser = await JobModel.findAll(options);
+
+    if (jobsByUser) {
+      res.status(200).json({ response: jobsByUser });
+    } else {
+      res.status(500).json({ msg: "Los trabajos del usuario no existen." });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 exports.getByAuthorId = async (req, res) => {
   try {

@@ -1,4 +1,9 @@
-import { SET_SEARCH_PIXELS,SET_MENU_PHONE, SET_LOGGOUT, SET_REFRESH_ROLEID_USERID } from "./types";
+import {
+  SET_SEARCH_PIXELS,
+  SET_MENU_PHONE,
+  SET_LOGGOUT,
+  SET_REFRESH_ROLEID_USERID,
+} from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;

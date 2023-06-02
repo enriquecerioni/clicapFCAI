@@ -48,7 +48,6 @@ export const NewCorrections = ({ job }) => {
       ["correctionNumber"]: job.correctionNumber,
     });
   }, []);
-
   return (
     <>
       <div className="center-center">

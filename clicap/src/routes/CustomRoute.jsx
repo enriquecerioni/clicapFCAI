@@ -167,15 +167,6 @@ const CustomRoute = () => (
       />
 
       <Route
-        path="contact"
-        element={
-          <Home>
-            <Contact />
-          </Home>
-        }
-      />
-
-      <Route
         path="newjob"
         element={
           <PrivateRoute>

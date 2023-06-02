@@ -86,7 +86,6 @@ export const SendCorrectionAdmin = () => {
     }
     return colorsBox[value].color;
   };
-
   const getIconByStatus = (value) => (value ? colorsBox[value].icon : "");
 
   useEffect(() => {

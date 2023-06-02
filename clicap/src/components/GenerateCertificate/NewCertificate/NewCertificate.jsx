@@ -11,7 +11,6 @@ import Select from "react-select";
 
 export const NewCertificate = () => {
   const { certificateId } = useParams();
-
   const { getCertificateById, ceritificateState } =
     useContext(CertificateContext);
 
