@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
-import { Button, Card, Col, Row, FloatingLabel, Form } from "react-bootstrap";
+import { FloatingLabel, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import { reqAxios } from "../../../helpers/helpers";
 import { alertSuccess } from "../../../helpers/alerts";
 import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
@@ -141,7 +140,9 @@ export const SendCorrectionAdmin = () => {
                       style={{ border: "1px solid grey", width: "100px" }}
                     ></hr>
                   </div>
-                  <div>{corrections[0].details}</div>
+                  <div className="box-correction-detail">
+                    {corrections[0].details}
+                  </div>
                 </div>
                 <div className="center-center mt-2">
                   <button
@@ -211,7 +212,9 @@ export const SendCorrectionAdmin = () => {
                       style={{ border: "1px solid grey", width: "100px" }}
                     ></hr>
                   </div>
-                  <div>{corrections[1].details}</div>
+                  <div className="box-correction-detail">
+                    {corrections[1].details}
+                  </div>
                 </div>
                 <div className="center-center mt-2">
                   <button

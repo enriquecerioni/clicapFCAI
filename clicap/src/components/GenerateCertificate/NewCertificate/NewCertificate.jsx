@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { CertificateContext } from "../../../context/Certificate/CertificateContext";
 import { useEffect } from "react";
 import Select from "react-select";
+import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 export const NewCertificate = () => {
   const { certificateId } = useParams();
@@ -17,7 +18,6 @@ export const NewCertificate = () => {
   const { certificateData, certificateTypesOpt } = ceritificateState;
 
   const navigate = useNavigate();
-  const [putDisabled, setPutDisabled] = useState(false);
   const [certificate, setCertificate] = useState(certificateData);
   const location = useLocation();
   const { pathname } = location;
@@ -94,20 +94,6 @@ export const NewCertificate = () => {
             placeholder="Nombre del certificado"
           />
         </Form.Group>
-        {/*         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Intro</Form.Label>
-          <Form.Control
-            type="text"
-            name="introtext"
-            value={certificate.introtext}
-            onChange={handleChange}
-            placeholder={
-              certificate.type === 1
-                ? "ha/n expuesto en modalidad Póster, el trabajo:"
-                : "ha participado en el CONGRESO LATINOAMERICANO DE INGENIERÍA Y CIENCIAS APLICADAS en calidad:"
-            }
-          />
-        </Form.Group> */}
 
         <label htmlFor="forName" className="form-label">
           Intro
@@ -154,23 +140,27 @@ export const NewCertificate = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          {pathname !== `/edit-certificate-type/${certificateId}` ? (
-            <Button
-              variant="success"
-              disabled={putDisabled ? putDisabled : disabled()}
-              onClick={handleSubmit}
-            >
-              Crear certificado
-            </Button>
-          ) : (
-            <Button
-              variant="success"
-              disabled={putDisabled ? putDisabled : disabled()}
-              onClick={handleSubmitEdit}
-            >
-              Editar certificado
-            </Button>
-          )}
+          <ClicapTooltip tooltip={disabled()} text={'Debe completar todos los campos'}>
+            <div className="d-flex">
+              {pathname !== `/edit-certificate-type/${certificateId}` ? (
+                <Button
+                  variant="success"
+                  disabled={disabled()}
+                  onClick={handleSubmit}
+                >
+                  Crear certificado
+                </Button>
+              ) : (
+                <Button
+                  variant="success"
+                  disabled={disabled()}
+                  onClick={handleSubmitEdit}
+                >
+                  Editar certificado
+                </Button>
+              )}
+            </div>
+          </ClicapTooltip>
         </div>
         {/* <input type="date" className="form-date-input" onChange={handleTime} /> */}
       </div>
