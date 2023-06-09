@@ -34,8 +34,8 @@ export const CertificateUserList = ({ userCertificate }) => {
     if (certificate.type === 2) {
       doc.setLineWidth(0.5);
       doc.setFontSize(16);
-      var lines = doc.splitTextToSize(members, pdfInMM - lMargin - rMargin);
-      doc.text(lMargin, 90, lines);
+      lines = doc.splitTextToSize(members, pdfInMM - 10 - 10);
+      doc.text(150, 90, lines, "center");
     } else {
       doc.setFontSize(20);
       doc.text(fullNameAndNumber, width / 2, 90, {

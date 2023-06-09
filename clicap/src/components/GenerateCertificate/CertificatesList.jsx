@@ -23,7 +23,7 @@ export const CertificatesList = ({
 
   const withMembers = (value) =>
     value
-      ? "Rodolfo Vergne Cerioni, Antonela Suarez, Camila muñoz, Franco Bayon"
+      ? "Rodolfo Vergne, Bibiana Manuel, Benjamin Sandoval, Sandra Arreceygor, Veronica Felix, Natalia Ordenes, Carina Rabau, Ana Laura Mateos, Mary Metcalfe, Camila Muñoz, Antonela Suarez, Valeria Alcala, Franco Bayon"
       : "";
 
   const getExampleJob = (certificateType, onlyOrManyPeople) => {
@@ -41,7 +41,8 @@ export const CertificatesList = ({
   };
 
   const donwloadCertificate = async (type, certificate, job) => {
-    const members = job.members === "" ? name : `${fullName}, ${job.members}`;
+    const members = job.members === "" ? fullName : `${fullName}, ${job.members}`;
+    var lines;
     const doc = new jsPDF("l", "mm", "a4", true);
     var lMargin = 15; //left margin in mm
     var rMargin = 15; //right margin in mm
@@ -59,17 +60,15 @@ export const CertificatesList = ({
     if (certificate.type === 2) {
       doc.setLineWidth(0.5);
       doc.setFontSize(16);
-      var lines = doc.splitTextToSize(members, pdfInMM - lMargin - rMargin);
-      doc.text(lMargin, 90, lines);
+      lines = doc.splitTextToSize(members, pdfInMM - 10 - 10);
+      doc.text(150, 90, lines,'center');
     } else {
       doc.setFontSize(20);
-      doc.text(fullNameAndNumber, width / 2, 90, {
-        align: "center",
-      }); //centrar
+      doc.text(fullNameAndNumber, width / 2, 90, 'center'); //centrar
     }
     doc.setLineWidth(0.5);
     doc.setFontSize(16);
-    var lines = doc.splitTextToSize(
+    lines = doc.splitTextToSize(
       certificate.introtext,
       pdfInMM - lMargin - rMargin
     );
@@ -77,19 +76,15 @@ export const CertificatesList = ({
 
     if (certificate.type === 2) {
       doc.setFontSize(16);
-      doc.text(job.name, width / 2, 125, {
-        align: "center",
-      }); //centrar
+      doc.text(job.name, width / 2, 125, 'center'); //centrar
     } else {
       doc.setFontSize(16);
-      doc.text(certificate.jobtext, width / 2, 120, {
-        align: "center",
-      }); //centrar
+      doc.text(certificate.jobtext, width / 2, 120, 'center'); //centrar
     }
 
     doc.setLineWidth(0.5);
     doc.setFontSize(16);
-    var lines = doc.splitTextToSize(
+    lines = doc.splitTextToSize(
       certificate.text,
       pdfInMM - lMargin - rMargin
     );

@@ -37,7 +37,7 @@ export const UserState = ({ children }) => {
     });
   };
 
-  const getAllUsers = async (nameOpt, valueOpt) => {
+  const getAllUsers = async () => {
     const getAllUser = await reqAxios("GET", "/user/getall", "", "");
 
     const userSelector = getAllUser.data.response.map((item, i) => {

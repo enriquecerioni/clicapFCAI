@@ -9,6 +9,7 @@ import { getDataUserByKey, reqAxiosDownload } from "../../helpers/helpers";
 import { UserContext } from "../../context/User/UserContext";
 import { ExtensiveList } from "../ExtensiveList/ExtensiveList";
 import "./users.css";
+import { RegisterContext } from "../../context/Register/RegisterContext";
 
 const Users = ({ showModalCertificate }) => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const Users = ({ showModalCertificate }) => {
 
   const { getAllUsers, userState, getUsersFiltered } = useContext(UserContext);
   const { usersSelector, users, usersFiltered, totalUsersPages } = userState;
+
+  const { getAllRoles, registerState } = useContext(RegisterContext);
+  const { rolesSelector } = registerState;
 
   const initialFilters = {
     name: "",
@@ -29,17 +33,6 @@ const Users = ({ showModalCertificate }) => {
   const [filters, setFilters] = useState(initialFilters);
   const [userToDelete, setUserToDelete] = useState(false);
   const [page, setPage] = useState(1);
-
-  const RolesOptions = [
-    { value: 1, label: "Administrador", target: { name: "roleId", value: 1 } },
-    { value: 2, label: "Evaluador", target: { name: "roleId", value: 2 } },
-    {
-      value: 3,
-      label: "Docente investigador",
-      target: { name: "roleId", value: 3 },
-    },
-    { value: 4, label: "Alumno", target: { name: "roleId", value: 4 } },
-  ];
 
   const handleChangeFilter = (e, name) => {
     if (e) {
@@ -67,6 +60,9 @@ const Users = ({ showModalCertificate }) => {
   useEffect(() => {
     if (users.length === 0) {
       getAllUsers();
+    }
+    if (rolesSelector.length === 0) {
+      getAllRoles();
     }
     getUsersFiltered(page, filters);
   }, [page]);
@@ -112,7 +108,7 @@ const Users = ({ showModalCertificate }) => {
                   Rol
                 </label>
                 <Select
-                  options={RolesOptions}
+                  options={rolesSelector}
                   placeholder={"Seleccione..."}
                   name="roleId"
                   isClearable={true}

@@ -41,3 +41,9 @@
   font-size: 18px;
   font-weight: 600;
 }
+
+.box-correction-detail {
+  height: 250px;
+  overflow: auto;
+  padding: 10px;
+}

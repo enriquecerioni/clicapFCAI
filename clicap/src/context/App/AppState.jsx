@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import AppReducer from "./AppReducer";
 import { AppContext } from "./AppContext";
+import { reqAxios } from "../../helpers/helpers";
 
 export const AppState = ({ children }) => {
   const initialState = {
@@ -37,6 +38,16 @@ export const AppState = ({ children }) => {
       payload: value,
     });
   };
+  const getAppLogo = async () => {
+    const AppLogo = await reqAxios(
+      "GET",
+      `/certificate/getcertificatelogo/appLogo`,
+      "",
+      ""
+    );
+    
+    return AppLogo.data.response;
+  };
 
   return (
     <AppContext.Provider
@@ -46,6 +57,7 @@ export const AppState = ({ children }) => {
         setMenuPhone,
         setLoggout,
         setRefreshRoleIdAndUserId,
+        getAppLogo,
       }}
     >
       {children}
