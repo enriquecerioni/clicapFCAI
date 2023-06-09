@@ -47,7 +47,6 @@ export const News = () => {
       <div className="container">
         <div className="section-header">
           <h2>Novedades</h2>
-          <p>Últimas publicaciones acerca del congreso</p>
         </div>
         {role === 1 && (
           <div className="boxAddNews boxCard">

@@ -112,8 +112,8 @@ const Navbar = () => {
 
         <div className="liNav">
           <div className="dropdown">
-            <div>
-              <p type="button">Inscripción</p>
+            <div onClick={() => navigate("/register")}>
+              <p type="button">Aranceles</p>
             </div>
           </div>
         </div>

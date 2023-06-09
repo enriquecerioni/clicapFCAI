@@ -90,7 +90,7 @@ const Welcome = () => {
     1: "Admin",
     2: "Evaluador",
     3: "Docente/Investigador",
-    4: "Alumno",
+    4: "Estudiante",
   };
   const getRoleName = () => (roleId ? roleNames[roleId] : "");
 

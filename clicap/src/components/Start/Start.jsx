@@ -96,7 +96,7 @@ const Start = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-6">
-              <h2>Acerca del Congreso</h2>
+              <h2>Acerca del evento</h2>
               <p>
                 Las IV Jornadas de enseñanza e investigación de las ciencias
                 experimentales, tienen como objetivo general, contribuir al
@@ -334,10 +334,7 @@ const Start = () => {
 
         <div className="container">
           <div className="copyright">
-            &copy; Copyright <strong>CLICAP 2022</strong>. All Rights Reserved
-          </div>
-          <div className="credits">
-            Designed by <a href="">Droid Soft</a>
+            &copy; Copyright <strong>Eventos FCAI</strong>. All Rights Reserved
           </div>
         </div>
       </footer>
