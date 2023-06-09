@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import jsPDF from "jspdf";
 import { getDataUserByKey } from "../../helpers/helpers";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
@@ -18,6 +17,7 @@ export const CertificateUserList = ({ userCertificate }) => {
   const donwloadCertificate = async (type, certificate, job) => {
     const members = job.members === "" ? name : `${fullName}, ${job.members}`;
     const doc = new jsPDF("l", "mm", "a4", true);
+    var lines;
     var lMargin = 15; //left margin in mm
     var rMargin = 15; //right margin in mm
     var pdfInMM = 300; // width of A4 in mm
@@ -44,7 +44,7 @@ export const CertificateUserList = ({ userCertificate }) => {
     }
     doc.setLineWidth(0.5);
     doc.setFontSize(16);
-    var lines = doc.splitTextToSize(
+      lines = doc.splitTextToSize(
       certificate.introtext,
       pdfInMM - lMargin - rMargin
     );
@@ -64,7 +64,7 @@ export const CertificateUserList = ({ userCertificate }) => {
 
     doc.setLineWidth(0.5);
     doc.setFontSize(16);
-    var lines = doc.splitTextToSize(
+      lines = doc.splitTextToSize(
       certificate.text,
       pdfInMM - lMargin - rMargin
     );

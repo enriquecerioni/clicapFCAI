@@ -19,7 +19,7 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
                   href=""
                   onClick={() => {
                     setShowNavbarPhone(!showNavbarPhone);
-                    navigate("/scientific_comittee");
+                    navigate("/scientific-committee");
                   }}
                 >
                   Comité Científico
@@ -29,7 +29,7 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
                   href=""
                   onClick={() => {
                     setShowNavbarPhone(!showNavbarPhone);
-                    navigate("/organizing_committee");
+                    navigate("/organizing-committee");
                   }}
                 >
                   Comité Organizador
@@ -39,7 +39,7 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
                   href=""
                   onClick={() => {
                     setShowNavbarPhone(!showNavbarPhone);
-                    navigate("/institutional_guarantees");
+                    navigate("/institutional");
                   }}
                 >
                   Avales Institucionales
@@ -60,7 +60,7 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
 
           <div className="liNav">
             <div className="dropdown">
-              <div>
+              <div onClick={() => navigate("/importantdates")}>
                 <p type="button">Fechas Importantes</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
                   type="button"
                   onClick={() => {
                     setShowNavbarPhone(!showNavbarPhone);
-                    navigate("/exhibitions");
+                    navigate("/expositions");
                   }}
                 >
                   Dinámica de exposiciones
@@ -108,22 +108,21 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
 
           <div className="liNav">
             <div className="dropdown">
-              <div>
-                <p type="button">Inscripción</p>
+              <div
+                onClick={() => {
+                  setShowNavbarPhone(!showNavbarPhone);
+                  navigate("/register");
+                }}
+              >
+                <p type="button">Aranceles</p>
               </div>
-              <div className="dropdown-content">
+            </div>
+          </div>
+
+          <div className="liNav">
+            <div className="dropdown">
+              <div>
                 <p
-                  className="active"
-                  type="button"
-                  onClick={() => {
-                    setShowNavbarPhone(!showNavbarPhone);
-                    navigate("/register");
-                  }}
-                >
-                  Registro
-                </p>
-                <p
-                  className="active"
                   type="button"
                   onClick={() => {
                     setShowNavbarPhone(!showNavbarPhone);
