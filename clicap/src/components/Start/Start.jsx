@@ -15,22 +15,20 @@ import {
   Institutional,
 } from "../../views/Institutional/Institutional";
 import { SponsorContext } from "../../context/Sponsor/SponsorContex";
+import { AppContext } from "../../context/App/AppContext";
 
 const Start = () => {
-  const { time, setTime, getDate, handleTime } = useContext(EntitiesContext);
+  const { time, getDate, handleTime } = useContext(EntitiesContext);
   const { getAllSponsors } = useContext(SponsorContext);
   const userId = getDataUserByKey("roleId");
   const [logoApp, setLogoApp] = useState("");
   const [date, setDate] = useState(time);
 
+  const { getAppLogo } = useContext(AppContext);
+
   const loadAppLogo = async () => {
-    const AppLogo = await reqAxios(
-      "GET",
-      `/certificate/getcertificatelogo/appLogo`,
-      "",
-      ""
-    );
-    setLogoApp(AppLogo.data.response);
+    const AppLogo = await getAppLogo();
+    setLogoApp(AppLogo);
   };
 
   useEffect(() => {

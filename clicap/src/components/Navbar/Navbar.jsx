@@ -1,33 +1,19 @@
-// import s from "./navbar.module.css";
 import "./navbar.css";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/clicap.png";
-import {
-  getDataUserByKey,
-  isAuthenticated,
-  reqAxios,
-} from "../../helpers/helpers";
 import { useState } from "react";
+import { AppContext } from "../../context/App/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const idUser = getDataUserByKey("id");
-  const loggout = () => {
-    sessionStorage.removeItem("user");
-    navigate("/");
-  };
   const [logoApp, setLogoApp] = useState("");
+  const { getAppLogo } = useContext(AppContext);
 
   const loadAppLogo = async () => {
-    const AppLogo = await reqAxios(
-      "GET",
-      `/certificate/getcertificatelogo/appLogo`,
-      "",
-      ""
-    );
-    setLogoApp(AppLogo.data.response);
+    const AppLogo = await getAppLogo();
+    setLogoApp(AppLogo);
   };
+
   useEffect(() => {
     loadAppLogo();
   }, []);
