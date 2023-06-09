@@ -83,7 +83,7 @@ app.use("/api/clicap/user/", UserRouter);
 
 const insertData = async () => {
   const areas = ["Alimentos", "Química"];
-  const roles = ["Admin", "Evaluador", "Docente Investigador", "Alumno"];
+  const roles = ["Admin", "Evaluador", "Docente Investigador", "Estudiante"];
   const modality = [
     "Trabajos de investigación",
     "Prácticas áulicas o de laboratorios",
