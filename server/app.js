@@ -146,8 +146,8 @@ const insertData = async () => {
       roleId: 4,
       identifyType: "DNI",
       identifyNumber: 3333,
-      name: "Ivan",
-      surname: "Castro",
+      name: "Ramiro",
+      surname: "Perez",
       email: "scytfcai@fcai.uncu.edu.ar",
       password:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
@@ -205,7 +205,7 @@ const insertData = async () => {
 //SYNC -> sync with the database, if the model matches the table.
 db.sync()
   .then(() => {
-    // insertData();
+    //insertData();
     console.log("Database connected...");
   })
   .catch((error) => {
