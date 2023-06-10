@@ -39,14 +39,11 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
   };
 
   const addEvaluators = async (id) => {
-    if (evaluatorSelected1 === evaluatorSelected2) {
-      return alertError("No se puede asignar el mismo evaluador!");
-    }
     const jobSelected = jobs.find((item) => item.id === id);
     const jobEdited = {
       ...jobSelected,
-      evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : "",
-      evaluatorId2: evaluatorSelected2 !== "" ? evaluatorSelected2 : "",
+      evaluatorId1: evaluatorSelected1 !== "" ? evaluatorSelected1 : null,
+      evaluatorId2: evaluatorSelected2 !== "" ? evaluatorSelected2 : null,
       addEvaluators: true,
     };
     await addEvaluatorsToJob(jobSelected.id, jobEdited);

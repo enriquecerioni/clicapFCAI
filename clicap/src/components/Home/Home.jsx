@@ -7,6 +7,7 @@ import "../../App.css";
 import { MenuPhone } from "../MenuPhone/MenuPhone";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/App/AppContext";
+import { Footer } from "../Footer/Footer";
 
 const Home = ({ children }) => {
   const { appState, setSearchPixels, setMenuPhone } = useContext(AppContext);
@@ -58,11 +59,13 @@ const Home = ({ children }) => {
                 )}
               </Row>
             </Container>
+            <Footer />
           </div>
         ) : (
           <div className="show-menu-phone">
             <MenuPhone />
             <Col className="p-0">{children}</Col>
+            <Footer />
           </div>
         )}
       </div>

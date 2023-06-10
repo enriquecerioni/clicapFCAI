@@ -10,9 +10,6 @@ export const OrganizingCommittee = () => {
       <div className="boxCard centerBoxView mb-5">
         <div className="poderver flex-column container p-3">
           <ul className="flex flex-wrap">
-            <li className="listStyle">
-              Mónica Barrera Fernandez De la Hoz Valdivia
-            </li>
             <li className="listStyle">Dr. Augusto Roggiero</li>
             <li className="listStyle">Dra. María Ximena Erice</li>
             <li className="listStyle">Lic. Florencia Tarabelli</li>

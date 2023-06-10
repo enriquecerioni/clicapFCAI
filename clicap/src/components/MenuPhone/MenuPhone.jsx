@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import logo from "../../assets/clicap.png";
 import { isAuthenticated } from "../../helpers/helpers";
 import { NavbarPhone } from "./NavbarPhone/NavbarPhone";
 import { SidebarPhone } from "./sidebarPhone/SidebarPhone";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { AppContext } from "../../context/App/AppContext";
+import { useNavigate } from "react-router-dom";
 
 export const MenuPhone = () => {
+  const navigate = useNavigate();
+
   const [showSidebarPhone, setShowSidebarPhone] = useState(false);
   const [showNavbarPhone, setShowNavbarPhone] = useState(false);
+  const { getAppLogo } = useContext(AppContext);
+
+  const [logoApp, setLogoApp] = useState("");
+
+  const loadAppLogo = async () => {
+    const AppLogo = await getAppLogo();
+    setLogoApp(AppLogo);
+  };
+
+  useEffect(() => {
+    loadAppLogo();
+  }, []);
 
   return (
     <>
       <div className="d-flex align-items-center justify-content-between p-1">
-        
         {isAuthenticated() ? (
           <div>
             <Button
@@ -32,7 +48,12 @@ export const MenuPhone = () => {
         ) : null}
 
         <div>
-          <img className="logoImg" src={logo} alt="logo" />
+          <img
+            className="logoImg"
+            src={`data:image/png;base64,${logoApp}`}
+            alt="logo"
+            onClick={() => navigate("/")}
+          />
         </div>
 
         <div>

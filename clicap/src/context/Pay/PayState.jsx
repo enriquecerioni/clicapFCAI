@@ -107,7 +107,6 @@ export const PayState = ({ children }) => {
     }
   };
   const setUserIdToPays = () => {
-    console.log(getDataUserByKey("id"));
     dispatch({
       type: "SET_USERID",
       payload: getDataUserByKey("id"),

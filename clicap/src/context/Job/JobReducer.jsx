@@ -51,6 +51,10 @@ export default (state, action) => {
           ...state.jobData,
           authorId: payload,
         },
+        correctionInitial: {
+          ...state.correctionInitial,
+          evaluatorId: payload,
+        },
       };
     case SET_ASSIGNED_EVALUATOR:
       return {
