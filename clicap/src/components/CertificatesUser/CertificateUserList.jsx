@@ -31,6 +31,8 @@ export const CertificateUserList = ({ userCertificate }) => {
     doc.setFontSize(14);
     doc.text("Certificamos que:", 10, 80);
 
+    //change text in bold
+    doc.setFont(undefined, "bold");
     if (certificate.type === 2) {
       doc.setLineWidth(0.5);
       doc.setFontSize(16);
@@ -43,31 +45,27 @@ export const CertificateUserList = ({ userCertificate }) => {
       }); //centrar
     }
     doc.setLineWidth(0.5);
-    doc.setFontSize(16);
-      lines = doc.splitTextToSize(
+    doc.setFontSize(16).setFont(undefined, "normal");
+    lines = doc.splitTextToSize(
       certificate.introtext,
       pdfInMM - lMargin - rMargin
     );
-    doc.text(lMargin, 110, lines);
+    doc.text(lMargin, 112, lines);
 
+    //change text in bold
+    doc.setFontSize(16).setFont(undefined, "bold");
     if (certificate.type === 2) {
-      doc.setFontSize(16);
-      doc.text(job.name, width / 2, 125, {
-        align: "center",
-      }); //centrar
+      lines = doc.splitTextToSize(job.name, pdfInMM - 10 - 10);
+      doc.text(150, 122, lines, "center");
     } else {
-      doc.setFontSize(16);
-      doc.text(certificate.jobtext, width / 2, 120, {
-        align: "center",
-      }); //centrar
+      lines = doc.splitTextToSize(certificate.jobtext, pdfInMM - 10 - 10);
+      doc.text(150, 122, lines, "center");
     }
 
     doc.setLineWidth(0.5);
-    doc.setFontSize(16);
-      lines = doc.splitTextToSize(
-      certificate.text,
-      pdfInMM - lMargin - rMargin
-    );
+    //change text in normal
+    doc.setFontSize(16).setFont(undefined, "normal");
+    lines = doc.splitTextToSize(certificate.text, pdfInMM - lMargin - rMargin);
     doc.text(lMargin, 140, lines);
 
     doc.save("certificate.pdf");
