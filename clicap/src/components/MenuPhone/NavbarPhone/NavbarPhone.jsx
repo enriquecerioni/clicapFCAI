@@ -60,7 +60,12 @@ export const NavbarPhone = ({ showNavbarPhone, setShowNavbarPhone }) => {
 
           <div className="liNav">
             <div className="dropdown">
-              <div onClick={() => navigate("/importantdates")}>
+              <div
+                onClick={() => {
+                  setShowNavbarPhone(!showNavbarPhone);
+                  navigate("/importantdates");
+                }}
+              >
                 <p type="button">Fechas Importantes</p>
               </div>
             </div>
