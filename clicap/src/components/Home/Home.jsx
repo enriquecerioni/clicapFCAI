@@ -59,7 +59,6 @@ const Home = ({ children }) => {
                 )}
               </Row>
             </Container>
-            <Footer />
           </div>
         ) : (
           <div className="show-menu-phone">
