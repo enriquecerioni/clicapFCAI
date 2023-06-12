@@ -133,14 +133,26 @@ export const JobsAdminList = ({
           <>
             <td>
               <ClicapTooltip
-                tooltip={haveCorrection === 0 ? false : true}
+                tooltip={
+                  work.status === null
+                    ? haveCorrection === 0
+                      ? false
+                      : true
+                    : true
+                }
                 text={"El trabajo ya fue evaluado"}
               >
                 <div>
                   <Button
                     className="btn btn-success"
                     onClick={() => navigate(`/job/corrections/${work.id}`)}
-                    disabled={haveCorrection === 0 ? false : true}
+                    disabled={
+                      work.status === null
+                        ? haveCorrection === 0
+                          ? false
+                          : true
+                        : true
+                    }
                   >
                     Evaluar
                   </Button>
