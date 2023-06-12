@@ -37,20 +37,30 @@ const Navbar = () => {
             <div className="dropdown-content">
               <p
                 className="active"
+                type="button"
                 onClick={() => navigate("/scientific-committee")}
               >
                 Comité Científico
               </p>
               <p
                 className="active"
+                type="button"
                 onClick={() => navigate("/organizing-committee")}
               >
                 Comité Organizador
               </p>
-              <p className="active" onClick={() => navigate("/institutional")}>
+              <p
+                className="active"
+                type="button"
+                onClick={() => navigate("/institutional")}
+              >
                 Avales Institucionales
               </p>
-              <p className="active" onClick={() => navigate("/sponsors")}>
+              <p
+                className="active"
+                type="button"
+                onClick={() => navigate("/sponsors")}
+              >
                 Auspiciantes
               </p>
             </div>
