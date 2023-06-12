@@ -430,7 +430,7 @@ const CustomRoute = () => (
       />
 
       <Route
-        path="api/clicap/user/acount-activate/:token"
+        path="fcai/user/acount-activate/:token"
         element={<AccountActivate />}
       />
 
