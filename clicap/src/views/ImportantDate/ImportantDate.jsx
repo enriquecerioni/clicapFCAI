@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { ImportantDateCard } from "./ImportantDateCard";
 import { ImportantDateContext } from "../../context/ImportantDates/ImportantDateContext";
-import { Loader } from "../Loader/Loader";
+import { Loader } from "../../components/Loader/Loader";
 
 export const ImportantDate = () => {
   const { getAllImportantDates, importantDateState } =

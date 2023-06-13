@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { AreaContext } from "../../context/Area/AreaContext";
+import './Area.css';
 
-export const AreaList = () => {
+export const Area = () => {
   const { getAllAreas, areaState } = useContext(AreaContext);
   const { areas } = areaState;
 
@@ -18,22 +19,24 @@ export const AreaList = () => {
           <h2>Áreas</h2>
         </div>
       </div>
-      <div className="center-center fs-4 ">
-        <div className="">
+      <div className="center-center fs-4">
+        <div className="d-flex flex-wrap center-center">
           {areas.length > 0 ? (
             areas.map((area, i) => (
-              <div key={i} className="">
-                <div className="d-flex justify-content-start align-items-center">
+              <div key={i} className="information-card-area">
+                <div className="d-flex justify-content-start">
                   <i
-                    className="fa-regular fa-circle-check"
+                    className="fa-solid fa-pen mt-2"
                     style={{ color: "#2864f6" }}
                   ></i>
-                  <p className="m-0 ms-2 fw-bold">{area.name}</p>
+                  <p className="m-0 ms- areaTitle">{area.name}</p>
                 </div>
               </div>
             ))
           ) : (
-            <div className="center-center">No hay áreas por el momento</div>
+            <div className="center-center">
+              No hay modalidades por el momento
+            </div>
           )}
         </div>
       </div>

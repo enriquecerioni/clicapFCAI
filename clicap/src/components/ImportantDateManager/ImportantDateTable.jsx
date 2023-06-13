@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ImportantDateList } from "./ImportantDateList";
-import { ImportantDateContext } from "../../../context/ImportantDates/ImportantDateContext";
-import { Loader } from "../../Loader/Loader";
-import ModalDelete from "../../Modals/ModalDelete";
+import { ImportantDateContext } from "../../context/ImportantDates/ImportantDateContext";
+import { Loader } from "../Loader/Loader";
+import ModalDelete from "../Modals/ModalDelete";
 import { ImportantDateModal } from "./ImportantDateModal";
 
 export const ImportantDateTable = () => {
