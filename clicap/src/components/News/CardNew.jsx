@@ -20,7 +20,7 @@ export const CardNew = ({ news, showAlert, setNewToDelete, role }) => {
             </div>
             <h4>{news.title}</h4>
             <hr />
-            <p>{news.content}</p>
+            <a href={news.content} style={{textDecoration:"none"}} target="blank">Click aquí</a> para mas información.
             
             <div className='iconPosition'>
             {role === 1 &&
