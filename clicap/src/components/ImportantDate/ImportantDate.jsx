@@ -31,7 +31,7 @@ export const ImportantDate = () => {
         <h2>Fechas importantes</h2>
       </div>
 
-      <div className="m-4 d-flex flex-wrap">
+      <div className="m-4 d-flex flex-column align-items-center">
         {importantDates.length > 0 ? (
           importantDates.map((date, i) => {
             return (
