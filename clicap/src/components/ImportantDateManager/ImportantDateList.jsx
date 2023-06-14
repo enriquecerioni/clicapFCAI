@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
-import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
 export const ImportantDateList = ({
   date,

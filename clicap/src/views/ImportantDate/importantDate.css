@@ -6,6 +6,25 @@
   padding: 1rem;
   background-color: #30A2FF;
   margin: 1rem;
+  width: 50%;
+}
+
+@media(max-width:1300px){
+  .importantDate-card {
+    width: 60%;
+  }
+}
+
+@media(max-width:900px){
+  .importantDate-card {
+    width: 70%;
+  }
+}
+
+@media(max-width:600px){
+  .importantDate-card {
+    width: 90%;
+  }
 }
 
 .imp-date-title{

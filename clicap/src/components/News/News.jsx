@@ -64,7 +64,7 @@ export const News = () => {
               <div className="mb-3">
                 <input
                   type="text"
-                  placeholder="Contenido de la novedad"
+                  placeholder="Enlace de la novedad..."
                   className="form-control"
                   name="content"
                   value={newToCreate.content}
