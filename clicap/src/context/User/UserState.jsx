@@ -60,12 +60,11 @@ export const UserState = ({ children }) => {
 
   const getUsersFiltered = async (page, params) => {
     const userFounded = state.usersFiltered.find(
-      (user) =>
-        user.identifyNumber === params.identifyNumber ||
-        user.roleId === params.roleId
+      (user) => user.identifyNumber === params.identifyNumber
     );
 
     if (userFounded) {
+      console.log("ya esta aca");
       return dispatch({
         type: "SET_USERS_FILTERED",
         payload: {

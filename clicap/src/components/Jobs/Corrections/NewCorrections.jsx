@@ -7,13 +7,13 @@ import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
-export const NewCorrections = ({ job }) => {
-  const { id } = useParams();
+export const NewCorrections = () => {
+
   const navigate = useNavigate();
 
   const { jobState, createEvaluationByEvaluatorOrAdmin } =
     useContext(JobContext);
-  const { correctionInitial } = jobState;
+  const { correctionInitial, jobData } = jobState;
 
   const [correction, setCorrection] = useState(correctionInitial);
   const [putDisabled, setPutDisabled] = useState(false);
@@ -42,12 +42,9 @@ export const NewCorrections = ({ job }) => {
   };
 
   useEffect(() => {
-    setCorrection({
-      ...correction,
-      ["jobId"]: Number(id),
-      ["correctionNumber"]: job.correctionNumber,
-    });
-  }, []);
+    setCorrection(correctionInitial);
+  }, [jobData]);
+
   return (
     <>
       <div className="center-center">

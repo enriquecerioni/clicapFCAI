@@ -1,12 +1,10 @@
 import { useReducer } from "react";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import { reqAxios } from "../../helpers/helpers";
 import { RegisterContext } from "./RegisterContext";
 import RegisterReducer from "./RegisterReducer";
 import { alertSuccess } from "../../helpers/alerts";
 
 export const RegisterState = ({ children }) => {
-  const idUser = getDataUserByKey("id");
-
   const initialState = {
     roles: [],
     rolesSelector: [],
@@ -51,7 +49,7 @@ export const RegisterState = ({ children }) => {
     try {
       const data = await reqAxios(
         "PUT",
-        `/user/edit/${idUser}`,
+        `/user/edit/${userRegister.id}`,
         "",
         userRegister
       );

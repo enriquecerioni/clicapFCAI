@@ -8,8 +8,6 @@ import { JobContext } from "./JobContext";
 import JobReducer from "./JobReducer";
 
 export const JobState = ({ children }) => {
-  const userId = getDataUserByKey("id");
-  const roleId = getDataUserByKey("roleId");
 
   const initialState = {
     jobData: {
@@ -34,6 +32,7 @@ export const JobState = ({ children }) => {
     },
     correctionInitial: {
       jobId: "",
+      correctionNumber: "",
       correctionId: 0,
       evaluatorId: "",
       details: "",
@@ -70,7 +69,14 @@ export const JobState = ({ children }) => {
 
       dispatch({
         type: "GET_JOB",
-        payload: dataJobId.data.response[0],
+        payload: {
+          jobData: dataJobId.data.response[0],
+          correctionInitial: {
+            ...state.correctionInitial,
+            jobId: Number(dataJobId.data.response[0].id),
+            correctionNumber: dataJobId.data.response[0].correctionNumber,
+          },
+        },
       });
     } catch (error) {
       console.log(error);
@@ -165,22 +171,18 @@ export const JobState = ({ children }) => {
   const sendCorrectionApproved = async (correction) => {
     try {
       await reqAxios("POST", "/jobdetails/create", "", correction);
-      /*  await reqAxios("PUT", `/job/setcorrection/${correction.jobId}`, "", {
-        status: correction.correctionId,
-      }); */
     } catch (e) {
       console.log(e);
     }
   };
 
   //Buscar las correciones de un trabajo
-  const getCorrectionsByJob = async (id) => {
-    const params = { roleId, evaluatorId: userId };
+  const getCorrectionsByJob = async (id, correctionNumber) => {
     try {
       const corrections = await reqAxios(
         "GET",
-        `/jobdetails/get/${id}`,
-        params,
+        `/jobdetails/get/${id}/${correctionNumber}`,
+        {},
         ""
       );
       return corrections.data.response;
@@ -201,12 +203,13 @@ export const JobState = ({ children }) => {
   };
 
   //Buscar la correcion para el trabajo como usuario
-  const getCorrectionByJob = async (id) => {
-    const params = { roleId, evaluatorId: null };
+  const getCorrectionByJob = async (jobId, correctionNumber) => {
+    //evaluatorId: 1 -> 1 indica la correccion que creo el admin (correccion definitiva)
+    const params = { evaluatorId: 1 };
     try {
       const corrections = await reqAxios(
         "GET",
-        `/jobdetails/get/${id}`,
+        `/jobdetails/get/${jobId}/${correctionNumber}`,
         params,
         ""
       );
@@ -232,7 +235,8 @@ export const JobState = ({ children }) => {
       payload: filters,
     });
   };
-  const setRefreshUserIdToJob = () => {
+
+  const setRefreshUserIdToJob = async () => {
     dispatch({
       type: "SET_USERID_TO_JOB",
       payload: getDataUserByKey("id"),

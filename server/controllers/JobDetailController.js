@@ -141,43 +141,41 @@ exports.updateById = async (req, res) => {
 
 exports.getById = async (req, res) => {
   try {
-    const { jobId } = req.params;
-    const { roleId, evaluatorId } = req.query;
+    const { jobId, correctionNumber } = req.params;
+    const { evaluatorId } = req.query;
+    console.log(req.params);
     console.log(req.query);
     let options = "";
-    if (Number(roleId) === 2) {
-      options = {
-        where: { jobId, evaluatorId: Number(evaluatorId) },
-        include: [
-          { model: CorrectionModel },
-          {
-            model: UserModel,
-            as: "evaluator",
-            attributes: ["name", "surname"],
-          },
-          {
-            model: JobModel,
-            attributes: ["name", "urlFile"],
-          },
-        ],
+    let whereOpts;
+    //evaluatorId: 1 -> el 1 indica que esa correccion la creo el admin
+    if (evaluatorId) {
+      whereOpts = {
+        jobId,
+        evaluatorId: Number(evaluatorId),
+        correctionNumber,
       };
     } else {
-      options = {
-        where: { jobId },
-        include: [
-          { model: CorrectionModel },
-          {
-            model: UserModel,
-            as: "evaluator",
-            attributes: ["name", "surname"],
-          },
-          {
-            model: JobModel,
-            attributes: ["name", "urlFile"],
-          },
-        ],
+      whereOpts = {
+        jobId,
+        correctionNumber,
       };
     }
+
+    options = {
+      where: whereOpts,
+      include: [
+        { model: CorrectionModel },
+        {
+          model: UserModel,
+          as: "evaluator",
+          attributes: ["name", "surname"],
+        },
+        {
+          model: JobModel,
+          attributes: ["name", "urlFile"],
+        },
+      ],
+    };
 
     const detail = await JobDetailModel.findAll(options);
 

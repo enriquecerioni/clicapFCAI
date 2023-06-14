@@ -8,6 +8,8 @@ import { reqAxios } from "../../helpers/helpers";
 import { useNavigate } from "react-router-dom";
 import { alertError } from "../../helpers/alerts";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
+import { useContext } from "react";
+import { AppContext } from "../../context/App/AppContext";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Login = () => {
   const [formLogin, setFormLogin] = useState(initialStateLogin);
   const [showPassword, setShowPassword] = useState(false);
   const [putDisabled, setPutDisabled] = useState(false);
+  const { setRefreshRoleIdAndUserId } = useContext(AppContext);
 
   const handleChangeLogin = (e) => {
     setFormLogin({
@@ -32,6 +35,7 @@ const Login = () => {
     if (formOk) {
       const data = await reqAxios("POST", "/user/login", "", formLogin);
       if (data.status && data.status === 200) {
+        setRefreshRoleIdAndUserId(true);
         //Guardo la informacion del usuario en el sessionStorage
         sessionStorage.setItem("user", JSON.stringify(data.data.user));
         navigate("/home");
