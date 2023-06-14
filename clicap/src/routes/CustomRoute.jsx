@@ -43,6 +43,7 @@ import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable"
 import { Institutional } from "../views/Institutional/Institutional";
 import { Contact } from "../views/Contact/Contact";
 import { Exposition } from "../views/Exposition/Exposition";
+import { Payment } from "../views/Payment/Payment";
 
 const CustomRoute = () => (
   <>
@@ -144,6 +145,15 @@ const CustomRoute = () => (
         element={
           <Home>
             <Exposition />
+          </Home>
+        }
+      />
+
+      <Route
+        path="payments"
+        element={
+          <Home>
+            <Payment />
           </Home>
         }
       />

@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AppContext } from "../../context/App/AppContext";
+import { isAuthenticated } from "../../helpers/helpers";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -108,21 +109,39 @@ const Navbar = () => {
 
         <div className="liNav">
           <div className="dropdown">
-            <div onClick={() => navigate("/register")}>
+            <div onClick={() => navigate("/payments")}>
               <p type="button">Aranceles</p>
             </div>
           </div>
         </div>
 
-        <div className="liNav">
-          <div className="">
+        {
+          !isAuthenticated() ? (
+            <div className="liNav">
+          <div className="dropdown">
             <div>
-              <p type="button" onClick={() => navigate("/login")}>
-                Acceso
+              <p type="button">Acceso</p>
+            </div>
+            <div className="dropdown-content">
+              <p
+                className="active"
+                type="button"
+                onClick={() => navigate("/login")}
+              >
+                Iniciar Sesión
+              </p>
+              <p
+                className="active"
+                type="button"
+                onClick={() => navigate("/register")}
+              >
+                Registrarse
               </p>
             </div>
           </div>
         </div>
+          ): null
+        }
 
         <div className="liNav">
           <div className="dropdown">
