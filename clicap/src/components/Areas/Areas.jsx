@@ -62,7 +62,7 @@ export const Areas = () => {
               </div>
               <div className="mb-3 text-end">
                 <Button type="submit" variant="success">
-                  Crear Novedad
+                  Crear Área
                 </Button>
               </div>
             </form>

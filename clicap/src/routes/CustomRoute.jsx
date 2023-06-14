@@ -33,16 +33,17 @@ import { PageInProcess } from "../components/PageInProcess/PageInProcess";
 import { ScientificCommitte } from "../views/ScientificCommittee/ScientificCommittee";
 import { OrganizingCommittee } from "../views/OrganizingCommittee/OrganizingCommittee";
 import { Sponsors } from "../views/Sponsors/Sponsors";
-import { ImportantDate } from "../components/ImportantDate/ImportantDate";
-import { ImportantDateTable } from "../components/ImportantDate/ImportantDateManager/ImportantDateTable";
+import { ImportantDate } from "../views/ImportantDate/ImportantDate";
+import { ImportantDateTable } from "../components/ImportantDateManager/ImportantDateTable";
 import { Areas } from "../components/Areas/Areas";
 import { LogoConfig } from "../components/Configuration/LogoConfig/LogoConfig";
-import { AreaList } from "../components/Areas/AreaList";
+import { Area } from "../views/Area/Area";
 import { Modalities } from "../views/Modalities/Modalities";
 import { SponsorTable } from "../components/Sponsor/SponsorManager/SponsorTable";
 import { Institutional } from "../views/Institutional/Institutional";
 import { Contact } from "../views/Contact/Contact";
 import { Exposition } from "../views/Exposition/Exposition";
+import { Payment } from "../views/Payment/Payment";
 
 const CustomRoute = () => (
   <>
@@ -125,7 +126,7 @@ const CustomRoute = () => (
         path="areas"
         element={
           <Home>
-            <AreaList />
+            <Area />
           </Home>
         }
       />
@@ -144,6 +145,15 @@ const CustomRoute = () => (
         element={
           <Home>
             <Exposition />
+          </Home>
+        }
+      />
+
+      <Route
+        path="payments"
+        element={
+          <Home>
+            <Payment />
           </Home>
         }
       />

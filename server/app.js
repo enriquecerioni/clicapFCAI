@@ -28,6 +28,7 @@ const RegularCertificateRouter = require("./routes/RegularCertificateRouter");
 const SponsorRouter = require("./routes/SponsorRouter");
 const JobExpositionRouter = require("./routes/JobExpositionRouter");
 const JobExpositionModel = require("./models/JobExpositionModel");
+const PaymentRouter = require("./routes/PaymentRouter");
 
 // Models
 require("./models/AreaModel");
@@ -41,6 +42,7 @@ require("./models/JobModalityModel");
 require("./models/JobDetailModel");
 require("./models/NewModel");
 require("./models/PayModel");
+require("./models/PaymentModel");
 require("./models/RegularCertificateModel");
 require("./models/StudentCertificateModel");
 require("./models/SponsorModel");
@@ -75,6 +77,7 @@ app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/jobexposition/", JobExpositionRouter);
 app.use("/api/clicap/new/", NewRouter);
 app.use("/api/clicap/pay/", PayRouter);
+app.use("/api/clicap/payment/", PaymentRouter);
 app.use("/api/clicap/regular-certificates/", RegularCertificateRouter);
 app.use("/api/clicap/role/", RoleRouter);
 app.use("/api/clicap/sponsor/", SponsorRouter);
