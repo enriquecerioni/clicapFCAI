@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { ImportantDateCard } from "./ImportantDateCard";
 import { ImportantDateContext } from "../../context/ImportantDates/ImportantDateContext";
-import { Loader } from "../Loader/Loader";
+import { Loader } from "../../components/Loader/Loader";
 
 export const ImportantDate = () => {
   const { getAllImportantDates, importantDateState } =
@@ -31,7 +31,7 @@ export const ImportantDate = () => {
         <h2>Fechas importantes</h2>
       </div>
 
-      <div className="m-4 d-flex flex-wrap">
+      <div className="m-4 d-flex flex-column align-items-center">
         {importantDates.length > 0 ? (
           importantDates.map((date, i) => {
             return (

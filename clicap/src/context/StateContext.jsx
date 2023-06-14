@@ -12,33 +12,36 @@ import { ImportantDateState } from "./ImportantDates/ImportantDateState";
 import { SponsorState } from "./Sponsor/SponsorState";
 import { StudentState } from "./StudentCertificate/StudentState";
 import { ExpositionState } from "./Exposition/ExpositionState";
+import { PaymentState } from "./Payment/PaymentState";
 
 export const StateContext = ({ children }) => {
   return (
     <AppState>
-      <ExpositionState>
-        <StudentState>
-          <SponsorState>
-            <ImportantDateState>
-              <RegisterState>
-                <UserState>
-                  <ModalitiesState>
-                    <NewsState>
-                      <JobState>
-                        <CertificateState>
-                          <AreaState>
-                            <PayState>{children}</PayState>
-                          </AreaState>
-                        </CertificateState>
-                      </JobState>
-                    </NewsState>
-                  </ModalitiesState>
-                </UserState>
-              </RegisterState>
-            </ImportantDateState>
-          </SponsorState>
-        </StudentState>
-      </ExpositionState>
+      <PaymentState>
+        <ExpositionState>
+          <StudentState>
+            <SponsorState>
+              <ImportantDateState>
+                <RegisterState>
+                  <UserState>
+                    <ModalitiesState>
+                      <NewsState>
+                        <JobState>
+                          <CertificateState>
+                            <AreaState>
+                              <PayState>{children}</PayState>
+                            </AreaState>
+                          </CertificateState>
+                        </JobState>
+                      </NewsState>
+                    </ModalitiesState>
+                  </UserState>
+                </RegisterState>
+              </ImportantDateState>
+            </SponsorState>
+          </StudentState>
+        </ExpositionState>
+      </PaymentState>
     </AppState>
   );
 };

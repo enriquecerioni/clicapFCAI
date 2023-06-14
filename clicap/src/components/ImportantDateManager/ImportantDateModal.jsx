@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { CustomModal } from "../../CustomModal/CustomModal";
+import { CustomModal } from "../CustomModal/CustomModal";
 import { FloatingLabel, Form } from "react-bootstrap";
-import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
-import { ImportantDateContext } from "../../../context/ImportantDates/ImportantDateContext";
+import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
+import { ImportantDateContext } from "../../context/ImportantDates/ImportantDateContext";
 
 export const ImportantDateModal = ({
   showModal,
