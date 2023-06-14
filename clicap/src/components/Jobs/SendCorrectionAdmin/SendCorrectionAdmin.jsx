@@ -10,7 +10,7 @@ import { Loader } from "../../Loader/Loader";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 export const SendCorrectionAdmin = () => {
-  const { id } = useParams();
+  const { id, correctionNumber } = useParams();
   const navigate = useNavigate();
 
   const { getCorrectionsByJob, sendCorrectionApproved } =
@@ -56,7 +56,7 @@ export const SendCorrectionAdmin = () => {
     const correctionData = {
       jobId: corrections[0].jobId,
       correctionId: stateOfCorrection,
-      evaluatorId: null,
+      evaluatorId: 1,
       correctionNumber: corrections[0].correctionNumber,
       details,
       sendMail,
@@ -71,7 +71,7 @@ export const SendCorrectionAdmin = () => {
   };
 
   const getAndSetCorrections = async () => {
-    const allCorrections = await getCorrectionsByJob(id);
+    const allCorrections = await getCorrectionsByJob(id, correctionNumber);
     setCorrections(allCorrections);
     setLoader(false);
   };

@@ -91,7 +91,7 @@ export const JobsAdminList = ({
               <td>
                 <button
                   className="btn btn-success"
-                  onClick={() => navigate(`/job/correctionstosend/${work.id}`)}
+                  onClick={() => navigate(`/job/correctionstosend/${work.id}/${work.correctionNumber}`)}
                   disabled={work.approve === 1 ? false : true}
                 >
                   Evaluaciones

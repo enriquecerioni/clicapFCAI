@@ -284,7 +284,7 @@ const CustomRoute = () => (
       />
 
       <Route
-        path="job/correctionstosend/:id"
+        path="job/correctionstosend/:id/:correctionNumber"
         element={
           <PrivateAdminRoute>
             <SendCorrectionAdmin />

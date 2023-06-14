@@ -17,7 +17,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
   const [correction, setCorrection] = useState({});
 
   const getCorrection = async () => {
-    const correct = await getCorrectionByJob(job.id);
+    const correct = await getCorrectionByJob(job.id, job.correctionNumber - 1);
     setCorrection(correct);
     setCorrecModal(true);
   };
