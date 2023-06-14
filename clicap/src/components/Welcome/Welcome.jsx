@@ -24,6 +24,14 @@ const Welcome = () => {
   const { jobState, setJobFilters, setRefreshUserIdToJob, getJobByAuthorId } =
     useContext(JobContext);
   const { jobsFilter, jobs } = jobState;
+  const jobsFiltersEmpty = {
+    authorId: "",
+    name: "",
+    areaId: "",
+    jobModalityId: "",
+    status: "",
+    evaluatorId: "",
+  };
 
   const { setUserIdToPays, getPayByAuthorId } = useContext(PayContext);
 
@@ -106,6 +114,8 @@ const Welcome = () => {
       setRefreshUserIdToJob();
       setUserIdToPays();
       setRefreshRoleIdAndUserId(false);
+      //clean filters
+      setJobFilters(jobsFiltersEmpty);
     }
 
     if (areas.length === 0) {

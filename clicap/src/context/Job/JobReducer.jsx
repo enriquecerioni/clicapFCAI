@@ -14,7 +14,8 @@ export default (state, action) => {
     case GET_JOB:
       return {
         ...state,
-        jobData: payload,
+        jobData: payload.jobData,
+        correctionInitial: payload.correctionInitial,
         isFetching: false,
       };
     case CLEAN_JOB_DATA:
