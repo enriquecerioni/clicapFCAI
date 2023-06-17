@@ -168,7 +168,7 @@ const Welcome = () => {
                             className="btnAreas"
                             onClick={() => goAndFiltered(area.id, 1)}
                           >
-                            <div className="d-flex justify-content-between">
+                            <div className="d-flex justify-content-between align-items-center">
                               <p className="m-0 title-modality-welcome">
                                 {area.name}
                               </p>
@@ -218,7 +218,7 @@ const Welcome = () => {
                             className="btnAreas"
                             onClick={() => goAndFiltered(area.id, 2)}
                           >
-                            <div className="d-flex justify-content-between">
+                            <div className="d-flex justify-content-between align-items-center">
                               <p className="m-0 title-modality-welcome">
                                 {area.name}
                               </p>

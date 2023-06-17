@@ -66,7 +66,7 @@ const Login = () => {
                     htmlFor="exampleInputEmail1"
                     className="form-label fw-bold"
                   >
-                    ID
+                    DNI / PASAPORTE
                   </label>
                   <div className="d-flex">
                     <input

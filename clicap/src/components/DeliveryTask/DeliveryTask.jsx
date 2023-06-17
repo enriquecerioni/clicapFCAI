@@ -63,8 +63,13 @@ const DeliveryTask = () => {
     if (job.name.length > 150) {
       return alertError("El nombre debe tener como máximo 150 caracteres.");
     }
-    if (job.members.length > 200) {
-      return alertError("Autor/Autores: Máximo 200 caracteres.");
+
+    if (members.value !== "") {
+      job.members = members.value;
+
+      if (job.members.length > 200) {
+        return alertError("Autor/Autores: Máximo 200 caracteres.");
+      }
     }
 
     if (id) {

@@ -3,6 +3,7 @@ import { getDataUserByKey } from "../../helpers/helpers";
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/App/AppContext";
+import { sidebarOptions } from "../../helpers/sidebarOptions";
 
 export const SidebarModify = () => {
   const roleId = getDataUserByKey("roleId");
@@ -53,11 +54,40 @@ export const SidebarModify = () => {
               <span>Menú principal</span>
             </div>
           </li>
-          <div className="center-center">
-            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
-          </div>
-          <p className="m-0 section-sidebar">Listas</p>
-          {roleId === 1 ? (
+
+          {sidebarOptions.map((section) => {
+            return (
+              <>
+                <div className="center-center">
+                  <hr
+                    style={{ border: "1px solid white", width: "100px" }}
+                  ></hr>
+                </div>
+
+                <p className="m-0 section-sidebar">{section.section}</p>
+
+                {section["options"].map((op) => {
+                  return op.roles.includes(roleId) ? (
+                    <li
+                      className={`d-flex gap-2 align-items-center li-sidebar ${
+                        url === op.redirection ? "sidebar-activate" : ""
+                      }`}
+                      type="button"
+                      onClick={() => navigate(op.redirection)}
+                    >
+                      <div className="li-box-icon">
+                        <i className={`${op.icon}`}></i>
+                      </div>
+                      <div>
+                        <span>{op.name}</span>
+                      </div>
+                    </li>
+                  ) : null;
+                })}
+              </>
+            );
+          })}
+          {/* {roleId === 1 ? (
             <li
               className={`d-flex gap-2 align-items-center li-sidebar ${
                 url === "/users" ? "sidebar-activate" : ""
@@ -182,7 +212,7 @@ export const SidebarModify = () => {
                 <span>Configuración</span>
               </div>
             </li>
-          )}
+          )} */}
 
           <div className="center-center">
             <hr style={{ border: "1px solid white", width: "100px" }}></hr>

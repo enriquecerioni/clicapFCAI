@@ -43,34 +43,34 @@ export const sidebarOptions = [
         name: "Trabajos asignados",
         icon: "fa-solid fa-file",
         redirection: "/jobs",
-        roles: [3],
+        roles: [2],
       },
       {
         name: "Mis Trabajos",
         icon: "fa-solid fa-file",
         redirection: "/myjobs",
-        roles: [4],
+        roles: [2, 4],
       },
 
       {
         name: "Mis pagos",
         icon: "fa-solid fa-wallet",
         redirection: "/mypays",
-        roles: [3, 4],
+        roles: [2, 4],
       },
 
       {
         name: "Constancia de Alumno regular",
         icon: "fa-solid fa-list-check",
         redirection: "/student",
-        roles: [4],
+        roles: [2, 4],
       },
 
       {
         name: "Mis certificados",
-        icon: "fa-solid fa-list-check",
+        icon: "fa-solid fa-user-graduate",
         redirection: "/mycertificates",
-        roles: [3, 4],
+        roles: [2, 4],
       },
     ],
   },
