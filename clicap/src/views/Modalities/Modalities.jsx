@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
+import { Button } from "react-bootstrap";
+import { downloadFile } from "../../helpers/helpers";
 
 export const Modalities = () => {
   const { getAllModalities, modalitiesState } = useContext(ModalitiesContext);
@@ -28,13 +30,19 @@ export const Modalities = () => {
                     className="fa-regular fa-circle-check"
                     style={{ color: "#2864f6" }}
                   ></i>
-                  <p className="m-0 ms-2 fw-bold">{modality.name}</p>
+                  <p className="m-0 ms-2 fw-bold">{modality.title}</p>
                 </div>
                 <div className="mt-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Impedit sit tempora animi, eveniet eum ipsam quod commodi,
-                  architecto neque a eius iste et sapiente placeat illum. Ab
-                  delectus similique enim.
+                 {modality.description}
+                </div>
+                <div className="center-center">
+                  <Button
+                    variant="primary"
+                    className="w-50 mt-5"
+                    onClick={() => downloadFile(modality.urlFile, "modalities")}
+                  >
+                    Descargar plantilla
+                  </Button>
                 </div>
               </div>
             ))
