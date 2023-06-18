@@ -85,7 +85,7 @@ const Start = () => {
               className="button-17"
               style={{ textDecoration: "none" }}
             >
-              Acerca del Congreso
+              Acerca del evento
             </a>
           </div>
         </div>

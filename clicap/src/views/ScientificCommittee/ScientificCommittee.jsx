@@ -19,7 +19,7 @@ export const ScientificCommitte = () => {
             <li className="listStyle">Mgter Lic. Claudia Bertolo</li>
             <li className="listStyle">Dra. Nora Marlia</li>
             <li className="listStyle">Mgter.Lic. Marcela Yelós</li>
-            <li className="listStyle">Dra. María Fernanda Massut.</li>
+            <li className="listStyle">Dra. María Fernanda Massut</li>
             <li className="listStyle">Dra. Mariana Troncoso</li>
             <li className="listStyle">Lic. Prof. Gabriela Ponce</li>
             <li className="listStyle">Mgter. Verónica Cabañas</li>

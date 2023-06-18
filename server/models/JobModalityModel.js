@@ -9,9 +9,17 @@ const JobModalityModel = db.define("jobmodality", {
     autoIncrement: true,
     allowNull: false,
   },
-  name: {
+  title: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  urlFile: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
 });
 

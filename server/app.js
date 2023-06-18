@@ -88,8 +88,18 @@ const insertData = async () => {
   const areas = ["Alimentos", "Química"];
   const roles = ["Admin", "Evaluador", "Docente Investigador", "Estudiante"];
   const modality = [
-    "Trabajos de investigación",
-    "Prácticas áulicas o de laboratorios",
+    {
+      id: 1,
+      title: "Prácticas áulicas o de laboratorios",
+      description: "Una experiencia áulica o pedagógica es una práctica que se realiza en el ámbito educativo e incluye saberes, objetivos, estrategias didácticas, recursos y evaluación. Tiene como finalidad promover aprendizajes significativos a través de propuestas de enseñanza innovadoras.",
+      urlFile: "practicas-lab.docx"
+    },
+    {
+      id: 2,
+      title: "Trabajos de investigación",
+      description: "La investigación educativa es un proceso por el cual se construyen conocimientos de un modo sistemático y riguroso acerca de alguna problemática relacionada a la educación. Los procesos investigativos incluyen la selección de un tema-problema de investigación, supuestos, objetivos, marco teórico, metodología, resultados, conclusiones y referentes bibliográfcos.",
+      urlFile: "trabajos-inv.docx"
+    }
   ];
   const exposition = ["Presentación de pósters"];
   const corrections = [
@@ -103,7 +113,7 @@ const insertData = async () => {
       id: 1,
       roleId: 1,
       identifyType: "DNI",
-      identifyNumber: 0000,
+      identifyNumber: 0,
       name: "Admin",
       surname: "ADM",
       email: "scytfcai@fcai.uncu.edu.ar",
@@ -172,7 +182,10 @@ const insertData = async () => {
   });
   modality.forEach(async (item) => {
     await JobModalityModel.create({
-      name: item,
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      urlFile: item.urlFile
     });
   });
   exposition.forEach(async (item) => {
@@ -208,7 +221,7 @@ const insertData = async () => {
 //SYNC -> sync with the database, if the model matches the table.
 db.sync()
   .then(() => {
-    //insertData();
+    // insertData();
     console.log("Database connected...");
   })
   .catch((error) => {

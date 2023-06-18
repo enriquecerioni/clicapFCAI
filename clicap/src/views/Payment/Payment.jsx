@@ -41,8 +41,8 @@ export const Payment = () => {
               </div>
             ))
           ) : (
-            <div className="center-center">
-              Este evento no requiere aranceles.
+            <div className="information-card center-center">
+              Este evento no requiere pago de aranceles
             </div>
           )}
         </div>
