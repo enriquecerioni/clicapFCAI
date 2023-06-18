@@ -3,7 +3,7 @@ import "./deliveryTask.css";
 
 export const MembersChips = ({ membersToSend, setMembersToSend }) => {
   const handleKeyDown = (evt) => {
-    if (["Enter", "Tab", ","].includes(evt.key)) {
+    if (["Enter", "Tab", ",", ";"].includes(evt.key)) {
       evt.preventDefault();
       var value = membersToSend.value.trim();
       if (value && isValid(value)) {

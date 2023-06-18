@@ -30,8 +30,8 @@ const AccountActivate=()=>{
             <h2 className="mt-3">{title}</h2>
             <br />
             <p>{subTitle}</p>
-            <p>En breve será redireccionado a Clicap...</p>
-            {waitAndRefresh('/login',14000)}
+            <p>En breve será redireccionado a la página del evento...</p>
+            {waitAndRefresh('/login',5000)}
         </div>
     </div>
     </>)
