@@ -60,7 +60,11 @@ const JobStudentList = ({ job, setjobToDelete }) => {
           <td className="text-center">
             <Button
               className="btn btn-primary"
-              disabled={job.status === null || job.status === 1 ? true : false}
+              disabled={
+                job.status === null || [1, 4].includes(job.status)
+                  ? true
+                  : false
+              }
               onClick={() => navigate(`/myjob/${job.id}`)}
             >
               <i className="fa-solid fa-file-arrow-up"></i>
