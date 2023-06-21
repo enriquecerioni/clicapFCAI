@@ -22,6 +22,7 @@ export const UserState = ({ children }) => {
     usersFiltered: [],
     totalUsersPages: 0,
     usersSelector: [],
+    authorSelector: [],
     evaluators: [],
     evaluatorsSelector: [],
   };
@@ -48,12 +49,21 @@ export const UserState = ({ children }) => {
       };
     });
 
+    const authorSelector = getAllUser.data.response.map((item, i) => {
+      return {
+        label: item.identifyNumber + " - " + item.name + " " + item.surname,
+        value: item.id,
+        target: { name: "authorId", value: item.id },
+      };
+    });
+
     dispatch({
       type: "SET_USERS",
       payload: {
         users: getAllUser.data.response,
         totalUsersPages: getAllUser.data.pages,
         userSelector: userSelector,
+        authorSelector:authorSelector
       },
     });
   };

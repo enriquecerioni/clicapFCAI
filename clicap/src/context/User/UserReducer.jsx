@@ -15,6 +15,7 @@ export default (state, action) => {
         users: payload.users,
         totalUsersPages: payload.totalUsersPages,
         usersSelector: payload.userSelector,
+        authorSelector: payload.authorSelector,
       };
     case SET_EVALUATORS:
       return {
