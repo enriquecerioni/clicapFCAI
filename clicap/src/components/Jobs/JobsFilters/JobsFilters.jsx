@@ -10,15 +10,10 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
   const { getJobsFiltered } = useContext(JobContext);
 
   const { userState } = useContext(UserContext);
-  const { usersSelector, evaluatorsSelector } = userState;
+  const { authorSelector, evaluatorsSelector } = userState;
 
   const { areaState } = useContext(AreaContext);
   const { areasSelector } = areaState;
-
-  const authorSelector = usersSelector.map((author) => {
-    author.target.name = "authorId";
-    return author;
-  });
 
   const modalities = [
     {
@@ -74,6 +69,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               <input
                 type="text"
                 name="name"
+                value={filters.name}
                 className="form-control"
                 id="exampleFormControlInput1"
                 placeholder="Título"
@@ -89,6 +85,9 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                 placeholder={"Seleccione..."}
                 name="authorId"
                 isClearable={true}
+                value={authorSelector.filter(
+                  (author) => filters.authorId === author.value
+                )}
                 theme={(theme) => ({
                   ...theme,
                   colors: {
@@ -155,6 +154,9 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                 placeholder={"Seleccione..."}
                 name="evaluatorId"
                 isClearable={true}
+                value={evaluatorsSelector.filter(
+                  (evaluator) => filters.evaluatorId === evaluator.value
+                )}
                 theme={(theme) => ({
                   ...theme,
                   colors: {
@@ -172,8 +174,11 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               <Select
                 options={toCorrectionOptions}
                 placeholder={"Seleccione..."}
-                name="status"
+                name="approve"
                 isClearable={true}
+                value={toCorrectionOptions.filter(
+                  (status) => filters.approve === status.value
+                )}
                 theme={(theme) => ({
                   ...theme,
                   colors: {
