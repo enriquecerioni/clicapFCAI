@@ -80,7 +80,7 @@ export const JobsAdminList = ({
           </>
         )}
         <td>{work.area.name}</td>
-        <td>{work.jobmodality.name}</td>
+        <td>{work.jobmodality.title}</td>
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
         {roleId === 1 ? (
           <>

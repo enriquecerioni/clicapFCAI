@@ -11,6 +11,7 @@ import { JobContext } from "../../context/Job/JobContext";
 import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
 import { PayContext } from "../../context/Pay/PayContext";
 import { AppContext } from "../../context/App/AppContext";
+import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -43,6 +44,8 @@ const Welcome = () => {
   const { getAllCertificatesByUser, ceritificateState } =
     useContext(CertificateContext);
   const { userCertificates } = ceritificateState;
+
+  const { getAllModalities } = useContext(ModalitiesContext);
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);
@@ -124,6 +127,7 @@ const Welcome = () => {
     if (roleId !== 1) {
       getAllCertificatesByUser(userId);
     }
+    getAllModalities();
     getAndSetNumberOfJobs();
     getAuthorPayandJob();
   }, []);
@@ -153,7 +157,7 @@ const Welcome = () => {
             <div className="row">
               <div className="col">
                 <div className="text-center border dashboard-card">
-                  <h2 className="">Trabajos Completos</h2>
+                  <h2 className="">Trabajos de investigación</h2>
                   <div className="center-center">
                     <hr
                       style={{ border: "1px solid grey", width: "100px" }}
@@ -203,7 +207,7 @@ const Welcome = () => {
               </div>
               <div className="col">
                 <div className=" text-center border dashboard-card">
-                  <h2 className="">Resúmenes</h2>
+                  <h2 className="">Prácticas áulicas o de laboratorios</h2>
                   <div className="center-center">
                     <hr
                       style={{ border: "1px solid grey", width: "100px" }}
