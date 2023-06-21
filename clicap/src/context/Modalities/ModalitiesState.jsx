@@ -26,7 +26,7 @@ export const ModalitiesState = ({ children }) => {
       const modalitiesToSelector = getAllModalities.data.response.map(
         (item, i) => {
           return {
-            label: item.name,
+            label: item.title,
             value: item.id,
             target: { name: "jobModalityId", value: item.id },
           };

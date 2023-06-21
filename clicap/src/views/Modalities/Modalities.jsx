@@ -20,8 +20,8 @@ export const Modalities = () => {
           <h2>Modalidades de presentación</h2>
         </div>
       </div>
-      <div className="center-center fs-4 ">
-        <div className="d-flex flex-wrap center-center">
+      <div className="center-center fs-4">
+        <div className="d-flex flex-wrap justify-content-center">
           {modalities.length > 0 ? (
             modalities.map((modality, i) => (
               <div key={i} className="information-card">
