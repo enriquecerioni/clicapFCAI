@@ -4,19 +4,18 @@ import { deleteAxios, deleteFile, waitAndRefresh } from "../../helpers/helpers";
 
 const ModalDelete = ({ entity, showAlert }) => {
   //entity.entityType -> instance/partner/customer
-  
-  if(entity.entityType === 'pay'){
-    deleteFile(entity.receipt, 'payments');
-    deleteFile(entity.invoice, 'invoices');
-  } else if(entity.entityType === 'job'){
-    deleteFile(entity.job, 'documents');
-  } else if(entity.entityType === 'new'){
-    deleteFile(entity.image, 'news');
-  } else if(entity.entityType === 'regular-certificates'){
-    deleteFile(entity.certificate, 'regularcertificates');
-  }
 
   const deleteEntity = async () => {
+    if(entity.entityType === 'pay'){
+      deleteFile(entity.receipt, 'payments');
+      deleteFile(entity.invoice, 'invoices');
+    } else if(entity.entityType === 'job'){
+      deleteFile(entity.job, 'documents');
+    } else if(entity.entityType === 'new'){
+      deleteFile(entity.image, 'news');
+    } else if(entity.entityType === 'regular-certificates'){
+      deleteFile(entity.certificate, 'regularcertificates');
+    }
     const entityDeleted = await deleteAxios(
       `/${entity.entityType}/delete/${entity.id}`
     );

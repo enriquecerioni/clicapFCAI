@@ -5,6 +5,7 @@ import "./jobsFilters.css";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";
 import { JobContext } from "../../../context/Job/JobContext";
+import { ModalitiesContext } from "../../../context/Modalities/ModalitiesContext";
 
 export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
   const { getJobsFiltered } = useContext(JobContext);
@@ -15,14 +16,8 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
   const { areaState } = useContext(AreaContext);
   const { areasSelector } = areaState;
 
-  const modalities = [
-    {
-      label: "Trabajo completo",
-      value: 1,
-      target: { name: "jobModalityId", value: 1 },
-    },
-    { label: "Resumen", value: 2, target: { name: "jobModalityId", value: 2 } },
-  ];
+  const { modalitiesState } = useContext(ModalitiesContext);
+  const { modalitiesSelector } = modalitiesState;
 
   const toCorrectionOptions = [
     {
@@ -128,8 +123,8 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                 Modalidad
               </label>
               <Select
-                options={modalities}
-                value={modalities.filter(
+                options={modalitiesSelector}
+                value={modalitiesSelector.filter(
                   (mod) => filters.jobModalityId === mod.value
                 )}
                 placeholder={"Seleccione..."}

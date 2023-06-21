@@ -39,7 +39,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
       <tr>
         <td>{job.name}</td>
         <td>{job.area.name}</td>
-        <td>{job.jobmodality.name}</td>
+        <td>{job.jobmodality.title}</td>
         <td>{job.jobStatus?.name}</td>
         <ClicapTooltip
           tooltip={job.status === null ? true : false}
