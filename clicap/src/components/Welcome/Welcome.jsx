@@ -45,7 +45,8 @@ const Welcome = () => {
     useContext(CertificateContext);
   const { userCertificates } = ceritificateState;
 
-  const { getAllModalities } = useContext(ModalitiesContext);
+  const { getAllModalities, modalitiesState } = useContext(ModalitiesContext);
+  const { modalities } = modalitiesState;
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);
@@ -62,8 +63,8 @@ const Welcome = () => {
   };
 
   const getAndSetNumberOfJobs = async () => {
-    const prueba = await getNumberOfJobs();
-    setAmountJobsAndSum(prueba);
+    const numbersOfJobs = await getNumberOfJobs();
+    setAmountJobsAndSum(numbersOfJobs);
   };
 
   const getAmountByJobComplete = (areaId) => {
@@ -123,11 +124,11 @@ const Welcome = () => {
 
     if (areas.length === 0) {
       getAllAreas();
+      getAllModalities();
     }
     if (roleId !== 1) {
       getAllCertificatesByUser(userId);
     }
-    getAllModalities();
     getAndSetNumberOfJobs();
     getAuthorPayandJob();
   }, []);
@@ -200,8 +201,7 @@ const Welcome = () => {
                     className="btnViewAll"
                     onClick={() => goAndFiltered("", 1)}
                   >
-                    {/* {`Ver todos (${completeJobsTotal().completes})`} */}
-                    {`Ver todos`}
+                    {`Ver todos (${completeJobsTotal().completes})`}
                   </button>
                 </div>
               </div>
@@ -255,7 +255,8 @@ const Welcome = () => {
                 </div>
               </div>
             </div>
-            <div className="row">
+
+            <div className="row mt-3">
               <h2 className="text-center">Información del Sistema</h2>
               <div className="col border dashboard-card flex flexCard">
                 <div className="cardBodyHome">

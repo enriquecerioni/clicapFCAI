@@ -11,6 +11,7 @@ const excelJS = require("exceljs");
 const { transporter } = require("../utils/utils");
 const { PAGE_LIMIT } = process.env;
 const EXCEL_CELL_WIDTH = 12;
+const RoleController = require("../controllers/RoleController");
 //NODEMAILER
 const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
@@ -280,6 +281,15 @@ exports.updateById = async (req, res) => {
       { password },
       process.env.JWT_ACOUNT_ACTIVE
     );
+
+    const checkIdentifyNumber = await UserModel.findOne({
+      where: { identifyNumber },
+    });
+
+    if (checkIdentifyNumber) {
+      return res.status(500).json({ msg: "El DNI / PASAPORTE ya está registrado!" });
+    }
+    
     const user = await UserModel.update(
       {
         name: name,
@@ -296,6 +306,8 @@ exports.updateById = async (req, res) => {
       { where: { id: id } }
     );
 
+    const role = await await RoleModel.findByPk(roleId);
+
     if (user) {
       var mailOptions = {
         from: process.env.EMAIL_APP,
@@ -309,7 +321,15 @@ exports.updateById = async (req, res) => {
             cid: "logo",
           },
         ],
-        context: { id: identifyNumber, password: password },
+        context: {
+          id: identifyNumber,
+          password: password,
+          name: name + " " + surname,
+          roleId: role.name,
+          email: email,
+          phone: phone,
+          address: address,
+        },
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
