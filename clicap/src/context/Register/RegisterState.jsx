@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import { reqAxios } from "../../helpers/helpers";
 import { RegisterContext } from "./RegisterContext";
 import RegisterReducer from "./RegisterReducer";
-import { alertSuccess } from "../../helpers/alerts";
+import { alertError, alertSuccess } from "../../helpers/alerts";
 
 export const RegisterState = ({ children }) => {
   const initialState = {
@@ -46,17 +46,17 @@ export const RegisterState = ({ children }) => {
   };
 
   const editUser = async (userRegister) => {
-    try {
-      const data = await reqAxios(
-        "PUT",
-        `/user/edit/${userRegister.id}`,
-        "",
-        userRegister
-      );
+    const data = await reqAxios(
+      "PUT",
+      `/user/edit/${userRegister.id}`,
+      "",
+      userRegister
+    );
 
+    if (data.status && data.status === 200) {
       alertSuccess(data.data.response);
-    } catch (error) {
-      console.log(error);
+    } else {
+      return alertError(data.response.data.msg);
     }
   };
 

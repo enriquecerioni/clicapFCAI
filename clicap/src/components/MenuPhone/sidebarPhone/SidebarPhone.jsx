@@ -2,6 +2,7 @@ import React from "react";
 import "../menuPhone.css";
 import { useNavigate } from "react-router-dom";
 import { getDataUserByKey } from "../../../helpers/helpers";
+import { sidebarOptions } from "../../../helpers/sidebarOptions";
 
 export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
   const roleId = getDataUserByKey("roleId");
@@ -22,12 +23,12 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
     setShowSidebarPhone(!showSidebarPhone);
     navigate("/myjobs");
   };
+
   return (
     <>
       <div className="sidebarPhone-box animate__animated animate__fadeInLeft">
         <div className="sidebar">
           <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
-            <p className="m-0 section-sidebar">MENU</p>
             <li
               className="d-flex gap-2 align-items-center li-sidebar"
               type="button"
@@ -43,124 +44,39 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
                 <span>Menú principal</span>
               </div>
             </li>
-            <p className="m-0 section-sidebar">LISTAS</p>
-            {roleId === 1 ? (
-              <li
-                className="d-flex gap-2 align-items-center li-sidebar"
-                type="button"
-                onClick={() => {
-                  setShowSidebarPhone(!showSidebarPhone);
-                  navigate("/users");
-                }}
-              >
-                <div className="li-box-icon">
-                  <i className="fa-solid fa-users"></i>
-                </div>
-                <div>
-                  <span>Listado de Usuarios</span>
-                </div>
-              </li>
-            ) : null}
+            {sidebarOptions.map((section) => {
+              return (
+                <>
+                  <div className="center-center">
+                    <hr
+                      style={{ border: "1px solid white", width: "100px" }}
+                    ></hr>
+                  </div>
 
-            <li
-              onClick={() => redirectJobPage()}
-              className="d-flex gap-2 align-items-center li-sidebar"
-              type="button"
-            >
-              <div className="li-box-icon">
-                <i className="fa-solid fa-file"></i>
-              </div>
-              <div>
-                {roleId === 1 ? (
-                  <span>Listado de Trabajos</span>
-                ) : roleId === 2 ? (
-                  <span>Trabajos asignados</span>
-                ) : (
-                  <span>Mis Trabajos</span>
-                )}
-              </div>
-            </li>
+                  <p className="m-0 section-sidebar">{section.section}</p>
 
-            <li
-              onClick={
-                roleId === 1
-                  ? () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/pays");
-                    }
-                  : () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/mypays");
-                    }
-              }
-              className="d-flex gap-2 align-items-center li-sidebar"
-              type="button"
-            >
-              <div className="li-box-icon">
-                <i className="fa-solid fa-wallet"></i>
-              </div>
-              <div>
-                {roleId === 1 ? (
-                  <span>Listado de Pagos</span>
-                ) : (
-                  <span>Mis Pagos</span>
-                )}
-              </div>
-            </li>
-
-            <li
-              onClick={
-                roleId === 1
-                  ? () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/certificates");
-                    }
-                  : () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/student");
-                    }
-              }
-              className="d-flex gap-2 align-items-center li-sidebar"
-              type="button"
-            >
-              <div className="li-box-icon">
-                <i className="fa-solid fa-list-check"></i>
-              </div>
-              <div>
-                {roleId === 1 ? (
-                  <span>Listado de Constancias de AR</span>
-                ) : (
-                  <span>Constancia de Alumno regular</span>
-                )}
-              </div>
-            </li>
-
-            <li
-              onClick={
-                roleId === 1
-                  ? () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/generate-certificate");
-                    }
-                  : () => {
-                      setShowSidebarPhone(!showSidebarPhone);
-                      navigate("/mycertificates");
-                    }
-              }
-              className="d-flex gap-2 align-items-center li-sidebar"
-              type="button"
-            >
-              <div className="li-box-icon">
-                <i className="fa-solid fa-user-graduate"></i>
-              </div>
-              <div>
-                {roleId === 1 ? (
-                  <span>Generar Certificado</span>
-                ) : (
-                  <span>Mis certificados</span>
-                )}
-              </div>
-            </li>
+                  {section["options"].map((op) => {
+                    return op.roles.includes(roleId) ? (
+                      <li
+                        className="d-flex gap-2 align-items-center li-sidebar"
+                        type="button"
+                        onClick={() => {
+                          setShowSidebarPhone(!showSidebarPhone);
+                          navigate(op.redirection);
+                        }}
+                      >
+                        <div className="li-box-icon">
+                          <i className={`${op.icon}`}></i>
+                        </div>
+                        <div>
+                          <span>{op.name}</span>
+                        </div>
+                      </li>
+                    ) : null;
+                  })}
+                </>
+              );
+            })}
 
             <p className="m-0 section-sidebar">USUARIO</p>
             <li
@@ -178,7 +94,6 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
                 <span>Editar Perfil</span>
               </div>
             </li>
-
             <li
               onClick={loggout}
               className="d-flex gap-2 align-items-center li-sidebar"
@@ -191,6 +106,7 @@ export const SidebarPhone = ({ showSidebarPhone, setShowSidebarPhone }) => {
                 <span>Cerrar Sesión</span>
               </div>
             </li>
+            
           </ul>
         </div>
       </div>
