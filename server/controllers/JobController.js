@@ -118,6 +118,8 @@ exports.updateById = async (req, res) => {
       evaluatorId1,
       evaluatorId2,
       addEvaluators,
+      newVersion,
+      correctionNumber,
     } = req.body;
     console.log(req.body);
 
@@ -143,6 +145,7 @@ exports.updateById = async (req, res) => {
         status,
         evaluatorId1: evaluatorId1,
         evaluatorId2: evaluatorId2,
+        correctionNumber: correctionNumber + 1,
       },
       { where: { id: id } }
     );
@@ -152,43 +155,78 @@ exports.updateById = async (req, res) => {
     };
 
     if (doc) {
-      if (assignEvaluators.length > 0 && addEvaluators) {
+      if (assignEvaluators.length > 0) {
         options.where = {
           [Op.or]: assignEvaluators,
         };
+
         //search user email
         const user = await UserModel.findAll(options);
-        console.log(user);
-        //send email with your configuration
-        user.forEach((evaluator, i) => {
-          var mailOptions = {
-            from: process.env.EMAIL_APP,
-            to: user[i].email,
-            subject: "Nuevo trabajo asignado",
-            template: "mailAssignToJob",
-            attachments: [
-              {
-                filename: "appLogo.jpg",
-                path: "./public/logos/appLogo.jpg",
-                cid: "logo", //my mistake was putting "cid:logo@cid" here!
+
+        if (addEvaluators) {
+          user.forEach((evaluator, i) => {
+            var mailOptions = {
+              from: process.env.EMAIL_APP,
+              to: user[i].email,
+              subject: "Nuevo trabajo asignado",
+              template: "mailAssignToJob",
+              attachments: [
+                {
+                  filename: "appLogo.jpg",
+                  path: "./public/logos/appLogo.jpg",
+                  cid: "logo", //my mistake was putting "cid:logo@cid" here!
+                },
+              ],
+              context: {
+                evaluatorName: user[i].name + " " + user[i].surname,
+                jobName: doc.name,
               },
-            ],
-            context: {
-              evaluatorName: user[i].name + " " + user[i].surname,
-              jobName: doc.name,
-            },
-          };
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return res.status(500).json({ msg: error.message });
-            } else {
-              console.log("Email enviado!");
-              res.end();
-            }
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return res.status(500).json({ msg: error.message });
+              } else {
+                console.log("Email enviado!");
+                res.end();
+              }
+            });
+
+            //send email with your configuration
+            return res.status(200).json({ msg: "Evaluador asignado!" });
           });
-        });
-        return res.status(200).json({ msg: "Evaluador asignado!" });
+        }
+
+        if (newVersion) {
+          user.forEach((evaluator, i) => {
+            var mailOptions = {
+              from: process.env.EMAIL_APP,
+              to: user[i].email,
+              subject: "Nueva versión del trabajo",
+              template: "mailWithNewVersionJob",
+              attachments: [
+                {
+                  filename: "appLogo.jpg",
+                  path: "./public/logos/appLogo.jpg",
+                  cid: "logo", //my mistake was putting "cid:logo@cid" here!
+                },
+              ],
+              context: {
+                evaluatorName: user[i].name + " " + user[i].surname,
+                jobName: doc.name,
+              },
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return res.status(500).json({ msg: error.message });
+              } else {
+                console.log("Email enviado!");
+                res.end();
+              }
+            });
+          });
+        }
       }
+
       res.status(200).json({ msg: "Trabajo editado!" });
     } else {
       res.status(500).json({ msg: "El Trabajo no existe!" });

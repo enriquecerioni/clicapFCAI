@@ -36,7 +36,10 @@ exports.create = async (req, res) => {
       sendMail,
       correctionNumber,
     } = req.body;
+    let mailOptions;
+
     console.log(req.body);
+
     const detail = await JobDetailModel.create({
       jobId,
       evaluatorId,
@@ -46,27 +49,26 @@ exports.create = async (req, res) => {
       sendMail,
     });
 
-    if (evaluatorId !== null) {
-      //approve in 1 to admin approve
-      await JobModel.update({ approve: 1 }, { where: { id: jobId } });
-    }
+    //approve in 1 to admin approve
+    await JobModel.update({ approve: 1 }, { where: { id: jobId } });
 
     if (detail) {
+      const doc = await JobModel.findOne({
+        where: { id: jobId },
+        include: [
+          {
+            model: UserModel,
+            as: "author",
+            attributes: ["name", "surname", "email"],
+          },
+        ],
+      });
+
+      const { name, author } = doc;
+
+      // sendMail = 1 => send email to author's job
       if (Number(sendMail) === 1) {
-        const doc = await JobModel.findOne({
-          where: { id: jobId },
-          include: [
-            {
-              model: UserModel,
-              as: "author",
-              attributes: ["name", "surname", "email"],
-            },
-          ],
-        });
-
-        const { name, author } = doc;
-
-        var mailOptions = {
+        mailOptions = {
           from: process.env.EMAIL_APP,
           to: doc.author.email,
           subject: "Nueva corrección",
@@ -83,26 +85,43 @@ exports.create = async (req, res) => {
             titleTp: name,
           },
         };
-        transporter.sendMail(mailOptions, (error, info) => {
-          console.log("ENTRO");
-          if (error) {
-            return res.status(500).json({ msg: error.message });
-          } else {
-            console.log("Email enviado!");
-            res.end();
-          }
-        });
 
         //approve in 0 because correction is approved
         await JobModel.update(
           {
             status: correctionId,
             approve: 0,
-            correctionNumber: correctionNumber + 1,
           },
           { where: { id: jobId } }
         );
+      } else {
+        mailOptions = {
+          from: process.env.EMAIL_APP,
+          to: doc.author.email,
+          subject: "Nueva evaluación",
+          template: "mailWithNewEvaluationJob",
+          attachments: [
+            {
+              filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
+              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+            },
+          ],
+          context: {
+            titleTp: name,
+          },
+        };
       }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ msg: error.message });
+        } else {
+          console.log("Email enviado!");
+          res.end();
+        }
+      });
+
       res.status(200).json({ msg: "Correción creada!" });
     } else {
       res.status(500).json({ msg: "Error al crear la corrección." });
