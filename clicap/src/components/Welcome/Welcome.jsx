@@ -115,6 +115,7 @@ const Welcome = () => {
 
   useEffect(() => {
     if (refreshRoleIdAndUserId) {
+      console.log("actualizo");
       setRefreshUserIdToJob();
       setUserIdToPays();
       setRefreshRoleIdAndUserId(false);

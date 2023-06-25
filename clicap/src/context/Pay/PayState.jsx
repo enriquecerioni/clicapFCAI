@@ -107,6 +107,7 @@ export const PayState = ({ children }) => {
     }
   };
   const setUserIdToPays = () => {
+    console.log("actualizo pagos");
     dispatch({
       type: "SET_USERID",
       payload: getDataUserByKey("id"),
