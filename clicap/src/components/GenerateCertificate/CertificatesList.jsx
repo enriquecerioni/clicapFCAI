@@ -82,17 +82,17 @@ export const CertificatesList = ({
     doc.setFontSize(16).setFont(undefined, "bold");
     if (certificate.type === 2) {
       lines = doc.splitTextToSize(job.name, pdfInMM - 10 - 10);
-      doc.text(150, 122, lines, "center");
     } else {
       lines = doc.splitTextToSize(certificate.jobtext, pdfInMM - 10 - 10);
-      doc.text(150, 122, lines, "center");
     }
+
+    doc.text(150, 128, lines, "center");
 
     doc.setLineWidth(0.5);
     //change text in normal
     doc.setFontSize(16).setFont(undefined, "normal");
     lines = doc.splitTextToSize(certificate.text, pdfInMM - lMargin - rMargin);
-    doc.text(lMargin, 140, lines);
+    doc.text(lMargin, 146, lines);
 
     doc.save("certificate.pdf");
   };

@@ -237,7 +237,6 @@ export const JobState = ({ children }) => {
   };
 
   const setRefreshUserIdToJob = async () => {
-    console.log("actualizo jobs");
     dispatch({
       type: "SET_USERID_TO_JOB",
       payload: getDataUserByKey("id"),

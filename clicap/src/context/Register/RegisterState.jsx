@@ -39,7 +39,7 @@ export const RegisterState = ({ children }) => {
   const createUser = async (userRegister) => {
     try {
       const data = await reqAxios("POST", "/user/register", "", userRegister);
-      alertSuccess(data.data.response);
+      alertSuccess(data.data.response,15000);
     } catch (error) {
       console.log(error);
     }
