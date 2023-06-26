@@ -8,7 +8,6 @@ import { JobContext } from "./JobContext";
 import JobReducer from "./JobReducer";
 
 export const JobState = ({ children }) => {
-
   const initialState = {
     jobData: {
       name: "",
@@ -95,6 +94,7 @@ export const JobState = ({ children }) => {
 
   const updateJobById = async (job, jobId) => {
     try {
+      job.newVersion = true;
       await reqAxios("PUT", `/job/edit/${jobId}`, "", job);
       if (job.urlFile !== "") {
         const bodyFormData = new FormData();

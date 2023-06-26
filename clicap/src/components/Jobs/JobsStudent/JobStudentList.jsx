@@ -8,8 +8,6 @@ import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 const JobStudentList = ({ job, setjobToDelete }) => {
   const navigate = useNavigate();
-  const classInactive = "shadow card-inst border-b-danger";
-  const classActive = "shadow card-inst border-b-success";
   const [showCorrecModal, setCorrecModal] = useState(false);
 
   const { getCorrectionByJob } = useContext(JobContext);
@@ -17,7 +15,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
   const [correction, setCorrection] = useState({});
 
   const getCorrection = async () => {
-    const correct = await getCorrectionByJob(job.id, job.correctionNumber - 1);
+    const correct = await getCorrectionByJob(job.id, job.correctionNumber);
     setCorrection(correct);
     setCorrecModal(true);
   };
