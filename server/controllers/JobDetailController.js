@@ -65,6 +65,9 @@ exports.create = async (req, res) => {
       });
 
       const { name, author } = doc;
+      const correction = await CorrectionModel.findByPk({
+        where: { id: correctionId },
+      });
 
       // sendMail = 1 => send email to author's job
       if (Number(sendMail) === 1) {
@@ -83,6 +86,7 @@ exports.create = async (req, res) => {
           context: {
             evaluatorName: author.name + " " + author.surname,
             titleTp: name,
+            correctionName: correction.name,
           },
         };
 
