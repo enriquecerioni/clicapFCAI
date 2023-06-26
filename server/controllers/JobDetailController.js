@@ -65,13 +65,18 @@ exports.create = async (req, res) => {
       });
 
       const { name, author } = doc;
+      const correction = await CorrectionModel.findOne({
+        where: { id: correctionId },
+      });
+
+      const getCorrectionStatus = () => correctionId === 1 ? "Trabajo aceptado" : correctionId === 4 ? "Trabajo no Aceptado" : "Nueva corrección"
 
       // sendMail = 1 => send email to author's job
       if (Number(sendMail) === 1) {
         mailOptions = {
           from: process.env.EMAIL_APP,
           to: doc.author.email,
-          subject: "Nueva corrección",
+          subject: getCorrectionStatus(),
           template: "mailNewCorrection",
           attachments: [
             {
@@ -83,6 +88,8 @@ exports.create = async (req, res) => {
           context: {
             evaluatorName: author.name + " " + author.surname,
             titleTp: name,
+            correctionStatus: getCorrectionStatus(),
+            correctionName: correction.name,
           },
         };
 

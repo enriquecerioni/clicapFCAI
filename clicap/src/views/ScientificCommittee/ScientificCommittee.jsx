@@ -12,7 +12,7 @@ export const ScientificCommitte = () => {
         <div className="poderver flex-column container p-3">
           <ul className="flex flex-wrap">
             <li className="listStyle">Dra. Cecilia Musale</li>
-            <li className="listStyle">Mgter. Augusto Roggiero</li>
+            <li className="listStyle">Dr. Augusto Roggiero</li>
             <li className="listStyle">Dra. Silvia Clavijo</li>
             <li className="listStyle">Dra. Eugenia Márquez</li>
             <li className="listStyle">Dra. Lidia Catalan</li>

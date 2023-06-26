@@ -2,26 +2,26 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-/* import gallery1 from "../../assets/gallery/1.PNG";
-import gallery2 from "../../assets/gallery/2.JPG";
-import gallery3 from "../../assets/gallery/3.JPG";
-// import gallery4 from "../../assets/gallery/4.JPG";
-import gallery5 from "../../assets/gallery/5.JPG";
-import gallery6 from "../../assets/gallery/6.JPG";
-import gallery7 from "../../assets/gallery/7.JPG";
-import gallery8 from "../../assets/gallery/8.JPG"; */
+import gallery1 from "../../assets/gallery/1.PNG";
+import gallery2 from "../../assets/gallery/2.jpg";
+import gallery3 from "../../assets/gallery/3.jpg";
+// import gallery4 from "../../assets/gallery/4.jpg";
+import gallery5 from "../../assets/gallery/5.jpg";
+import gallery6 from "../../assets/gallery/6.jpg";
+import gallery7 from "../../assets/gallery/7.jpg";
+import gallery8 from "../../assets/gallery/8.jpg";
 import "./Carousel.css";
 
 const Carousel = () => {
   const photos = [
-  /*   gallery1,
+    gallery1,
     gallery2,
     gallery3,
     // gallery4,
     gallery5,
     gallery6,
     gallery7,
-    gallery8, */
+    gallery8,
   ];
 
   const settings = {

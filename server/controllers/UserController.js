@@ -181,6 +181,9 @@ exports.acountActivate = async (req, res) => {
           institution: institution,
           phone: phone,
         });
+
+        const role = await await RoleModel.findByPk(roleId);
+        
         if (user) {
           var mailOptions = {
             from: process.env.EMAIL_APP,
@@ -194,7 +197,15 @@ exports.acountActivate = async (req, res) => {
                 cid: "logo",
               },
             ],
-            context: { id: identifyNumber, password: password },
+            context: { 
+              id: identifyNumber,
+              password: password,
+              name: name + " " + surname,
+              roleId: role.name,
+              email: email,
+              phone: phone,
+              address: address, 
+            },
           };
 
           transporter.sendMail(mailOptions, (error, info) => {
