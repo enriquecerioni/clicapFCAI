@@ -24,7 +24,7 @@ export const Sponsors = () => {
             sponsors.map((sponsor) => {
               return (
                 <div className="col-lg-3 col-md-4 col-xs-6">
-                  <a href={sponsor.link}>
+                  <a href={sponsor.link} target="_blank">
                     <div className="client-logo">
                       <img
                         src={sponsor.imgbase64}
