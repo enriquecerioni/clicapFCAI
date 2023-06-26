@@ -120,7 +120,7 @@ exports.register = async (req, res) => {
     });
 
     return res.status(200).json({
-      response: "Enviando email para que active su cuenta...",
+      response: "En breve se enviará un email a su correo para activar su cuenta.",
     });
   } catch (error) {
     return res.status(500).send({
