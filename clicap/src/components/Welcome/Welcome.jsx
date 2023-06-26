@@ -8,7 +8,6 @@ import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";
 import { JobContext } from "../../context/Job/JobContext";
-import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
 import { PayContext } from "../../context/Pay/PayContext";
 import { AppContext } from "../../context/App/AppContext";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
@@ -45,8 +44,7 @@ const Welcome = () => {
     useContext(CertificateContext);
   const { userCertificates } = ceritificateState;
 
-  const { getAllModalities, modalitiesState } = useContext(ModalitiesContext);
-  const { modalities } = modalitiesState;
+  const { getAllModalities } = useContext(ModalitiesContext);
 
   const [filters, setFilters] = useState(jobsFilter);
   const [goToJobFiltered, setGoToJobFiltered] = useState(false);
@@ -129,6 +127,7 @@ const Welcome = () => {
     if (roleId !== 1) {
       getAllCertificatesByUser(userId);
     }
+    getAllModalities();
     getAndSetNumberOfJobs();
     getAuthorPayandJob();
   }, []);

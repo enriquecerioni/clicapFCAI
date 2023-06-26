@@ -14,14 +14,14 @@ import "./Carousel.css";
 
 const Carousel = () => {
   const photos = [
-    gallery1,
+  /*   gallery1,
     gallery2,
     gallery3,
     // gallery4,
     gallery5,
     gallery6,
     gallery7,
-    gallery8,
+    gallery8, */
   ];
 
   const settings = {
