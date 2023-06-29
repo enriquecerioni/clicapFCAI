@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import { reqAxios } from "../../helpers/helpers";
 import { AreaContext } from "./AreaContext";
 import AreaReducer from "./AreaReducer";
 import { alertSuccess } from "../../helpers/alerts";

@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { reqAxios, waitAndRefresh } from "../../helpers/helpers";
+import { useNavigate, useParams } from "react-router-dom";
+import { reqAxios } from "../../helpers/helpers";
 import "./AccountActivate.css";
 import { Loader } from "../Loader/Loader";
 
 const AccountActivate = () => {
+  const navigate = useNavigate();
   const { token } = useParams();
   const [activate, setActivate] = useState({
     activated: false,
@@ -64,10 +65,17 @@ const AccountActivate = () => {
               <h2 className="mt-3">{title}</h2>
               <br />
               <p>{subTitle}</p>
-              <p>En breve será redireccionado a la página del evento...</p>
+              <div className="center-center">
+                <button
+                  type="button"
+                  onClick={() => navigate("/login")}
+                  className="btn btn-primary"
+                >
+                  Ir a la página del evento
+                </button>
+              </div>
             </>
           )}
-          {waitAndRefresh("/login", 8000)}
         </div>
       </div>
     </>

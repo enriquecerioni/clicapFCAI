@@ -5,7 +5,7 @@ import { API_URL } from "./constants";
 export const isAuthenticated = () => sessionStorage.getItem("user");
 export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
-  return dataUser && dataUser[key] ? dataUser[key] : null
+  return dataUser && dataUser[key] ? dataUser[key] : null;
 };
 export const reqAxios = async (method, shortUrl, param, data) => {
   try {
@@ -18,11 +18,20 @@ export const reqAxios = async (method, shortUrl, param, data) => {
         "Content-Type": "application/json",
       }, */
     });
-    if (method !== "get") {
-      alertSuccess(res.data.msg);
+
+    if (res.status && res.status === 200) {
+      if (method !== "get") {
+        alertSuccess(res.data.msg);
+      }
+      return res;
     }
-    return res;
   } catch (error) {
+    if (error.response.status === 404) {
+      console.log(error);
+      return alertError("Error al conectar con el servidor");
+    }
+
+    alertError(error.response.data.msg);
     return error;
   }
 };
