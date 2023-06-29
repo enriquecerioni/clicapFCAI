@@ -304,11 +304,11 @@ exports.updateById = async (req, res) => {
       process.env.JWT_ACOUNT_ACTIVE
     );
 
-    const registeredUser = await UserModel.findOne({
+    const registeredUser = await UserModel.findAll({
       where: { identifyNumber },
     });
 
-    if (registeredUser && registeredUser.id !== id) {
+    if (registeredUser.length !== 0) {
       return res
         .status(500)
         .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
@@ -367,7 +367,7 @@ exports.updateById = async (req, res) => {
       });
       return res
         .status(200)
-        .json({ response: "Usuario editado correctamente!" });
+        .json({ msg: "Usuario editado correctamente!" });
     } else {
       res.status(500).json({ msg: "El usuario no existe!" });
     }

@@ -14,7 +14,7 @@ export const UsersList = ({
   const location = useLocation();
   const { pathname } = location;
   const { setUserIdToCertificate } = useContext(CertificateContext);
-  
+
   /*  const startDate = user.startDate.split('-') */
 
   const deleteUser = () => {
@@ -34,18 +34,20 @@ export const UsersList = ({
         <td>{user.email}</td>
         <td>{user.role.name}</td>
 
-        <td>
-          <ClicapTooltip tooltip={true} text={"Generar certificado"}>
-            <i
-              type="button"
-              className="fa-solid fa-id-card icon-size-table btn-certificate-table"
-              onClick={() => {
-                setUserIdToCertificate(user.id, user.name, user.surname);
-                showModalCertificate(true);
-              }}
-            ></i>
-          </ClicapTooltip>
-        </td>
+        {location.pathname !== "/users" ? (
+          <td>
+            <ClicapTooltip tooltip={true} text={"Generar certificado"}>
+              <i
+                type="button"
+                className="fa-solid fa-id-card icon-size-table btn-certificate-table"
+                onClick={() => {
+                  setUserIdToCertificate(user.id, user.name, user.surname);
+                  showModalCertificate(true);
+                }}
+              ></i>
+            </ClicapTooltip>
+          </td>
+        ) : null}
 
         <td className="">
           <ClicapTooltip tooltip={true} text={"Editar usuario"}>
