@@ -308,9 +308,7 @@ exports.updateById = async (req, res) => {
       where: { identifyNumber },
     });
 
-    console.log(registeredUser.length);
-
-    if (registeredUser.length > 0) {
+    if (registeredUser.length != 1) {
       return res
         .status(500)
         .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
