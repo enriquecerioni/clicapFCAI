@@ -6,6 +6,7 @@ import { downloadFile, getDataUserByKey } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
+import "../../../App.css";
 
 export const JobsAdminList = ({
   work,
@@ -103,8 +104,8 @@ export const JobsAdminList = ({
               <ClicapTooltip tooltip={true} text={"Asignar evaluador"}>
                 <i
                   type="button"
-                  className="icon-size-table fa-solid fa-user-tie"
-                  onClick={addEvaluatorWithModal}
+                  className={`${work.status === 1 ? 'icon-size-table fa-solid fa-user-tie fa-disabled' : 'icon-size-table fa-solid fa-user-tie'}`}
+                  onClick={work.status === 1 ? null : addEvaluatorWithModal}
                 ></i>
               </ClicapTooltip>
             </td>

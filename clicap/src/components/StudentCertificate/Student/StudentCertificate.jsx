@@ -1,24 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { CertificateContext } from "../../../context/Certificate/CertificateContext";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { getDataUserByKey } from "../../../helpers/helpers";
-import { Loader } from "../../Loader/Loader";
 import StudentCertificateList from "./StudentCertificateList";
+import { StudentContext } from "../../../context/StudentCertificate/StudentContext";
 
 const StudentCertificate = () => {
   const navigate = useNavigate();
-  const { myCertificates, getMyCertificates } = useContext(EntitiesContext);
-  const { ceritificateState } = useContext(CertificateContext);
-  const { isFetching } = ceritificateState;
+  const { studentState, getAllRegularCertificates } = useContext(StudentContext);
+  const { studentCertificates, refreshCertificates } = studentState;
 
   const [page, setPage] = useState(1);
   const idUser = getDataUserByKey("id");
   const filterToAuthor = { authorId: idUser };
 
   useEffect(() => {
-    getMyCertificates(page, filterToAuthor);
-  }, [page]);
+    getAllRegularCertificates(page, filterToAuthor);
+  }, [page, refreshCertificates]);
 
   return (
     <>
@@ -35,10 +32,10 @@ const StudentCertificate = () => {
         </div>
       </div>
 
-      {myCertificates.length > 0 ? (
+      {studentCertificates.length > 0 ? (
         <>
           <div className="student-certificate-container">
-            {myCertificates.map((certificate, i) => (
+            {studentCertificates.map((certificate, i) => (
               <StudentCertificateList certificate={certificate} key={i} />
             ))}
           </div>
