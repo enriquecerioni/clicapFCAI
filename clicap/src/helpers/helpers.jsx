@@ -31,7 +31,7 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       return alertError("Error al conectar con el servidor");
     }
 
-    alertError(error.response.data.msg);
+    alertError(error.response.data.msg, false);
     return error;
   }
 };
