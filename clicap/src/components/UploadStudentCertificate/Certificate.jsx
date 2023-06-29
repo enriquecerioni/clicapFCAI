@@ -2,24 +2,40 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 // import "../upload-receipt.css";
 import { Button } from "react-bootstrap";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
-import { waitAndRefresh } from "../../helpers/helpers";
+import { getDataUserByKey, waitAndRefresh } from "../../helpers/helpers";
+import { StudentContext } from "../../context/StudentCertificate/StudentContext";
 
 const Certificate = () => {
   const navigate = useNavigate();
-  const { certificate, handleChangeCertificate, createNewCertificate } =
-    useContext(EntitiesContext);
-
+  const { studentState, createNewCertificate } =
+    useContext(StudentContext);
+  const { studentInitial } = studentState;
+  const [certificate, setCertificate] = useState(studentInitial);
   const [putDisabled, setPutDisabled] = useState(false);
+  const userId = getDataUserByKey("id");
 
   const disabled = () => {
     return !!!certificate.detail || !!!certificate.urlFile;
   };
 
+  const handleChangeCertificate = (e) => {
+    let value =
+      e.target.type === "file"
+        ? e.target.value === ""
+          ? ""
+          : e.target.files[0]
+        : e.target.value;
+    setCertificate({
+      ...certificate,
+      ["authorId"]: userId,
+      [e.target.name]: value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createNewCertificate();
+    createNewCertificate(certificate);
     waitAndRefresh("/student");
   };
 
@@ -76,9 +92,6 @@ const Certificate = () => {
               </Button>
             </div>
           </form>
-          {/*           <Button onClick={() => console.log(job)} variant="primary">
-            console
-          </Button> */}
         </div>
       </div>
     </div>

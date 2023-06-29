@@ -184,3 +184,8 @@ body,
     width: 90vw;
   }
 }
+
+.fa-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
