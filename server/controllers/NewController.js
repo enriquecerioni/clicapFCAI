@@ -25,6 +25,15 @@ const storage = multer.diskStorage({
 const createNews = multer({
   storage,
   limits: { fileSize: 1000000 },
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const mimetype = fileTypes.test(file.mimetype);
+    const extname = fileTypes.test(path.extname(file.originalname));
+    if(mimetype && extname){
+      return cb(null, true);
+    }
+    cb("Error: el archivo debe ser una imagen valida (.jpeg|.jpg|.png|.gif)");
+  }
 }).single("urlFile");
 
 exports.create = async (req, res) => {
@@ -32,7 +41,7 @@ exports.create = async (req, res) => {
     createNews(req, res, async (err) => {
       if (err) {
         err.message = "The file is so heavy for my service";
-        return res.send(err);
+        return res.status(500).json({ msg: err.message });
       }
       const imgbase64 = base64_encode(
         path.join(__dirname, `../public/news/${jobUUID}`)
