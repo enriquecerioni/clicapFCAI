@@ -36,7 +36,7 @@ const Certificate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewCertificate(certificate);
-    waitAndRefresh("/student");
+    navigate('/student')
   };
 
   return (
