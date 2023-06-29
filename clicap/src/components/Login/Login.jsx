@@ -34,14 +34,13 @@ const Login = () => {
     const formOk = onlyNumbers();
     if (formOk) {
       const data = await reqAxios("POST", "/user/login", "", formLogin);
+
       if (data.status && data.status === 200) {
         setRefreshRoleIdAndUserId(true);
         //Guardo la informacion del usuario en el sessionStorage
         sessionStorage.setItem("user", JSON.stringify(data.data.user));
         navigate("/home");
-      } else {
-        return alertError(data.response.data.msg);
-      }
+      } 
     }
     /* formOk ? await reqAxios('POST','/user/login','',formLogin): alertError('ID Incorrecto'); */
   };

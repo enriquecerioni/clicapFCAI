@@ -1,4 +1,4 @@
-import { GET_ALL_REGULAR_CERTIFICATES } from "./types";
+import { GET_ALL_REGULAR_CERTIFICATES, SET_REFRESH_CERTIFICATES } from "./types";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -11,7 +11,11 @@ export default (state, action) => {
         totalStudentPages: payload.totalStudentPages,
         isFetching: false,
       };
-
+    case SET_REFRESH_CERTIFICATES:
+      return {
+        ...state,
+        refreshCertificates: payload,
+      };
     default:
       return state;
   }

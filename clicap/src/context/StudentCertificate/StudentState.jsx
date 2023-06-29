@@ -18,6 +18,7 @@ export const StudentState = ({ children }) => {
     studentCertificates: [],
     isFetching: true,
     totalStudentPages: 0,
+    refreshCertificates: false
   };
 
   const [state, dispatch] = useReducer(StudentReducer, initialState);
@@ -48,10 +49,33 @@ export const StudentState = ({ children }) => {
     }
   };
 
+  const createNewCertificate = async (certificate) => {
+    try {
+      const bodyFormData = new FormData();
+      for (const key in certificate) {
+        bodyFormData.append(key, certificate[key]);
+      }
+      await formDataAxios(
+        "POST",
+        `/regular-certificates/create`,
+        "",
+        bodyFormData
+      );
+
+      dispatch({
+        type: "SET_REFRESH_CERTIFICATES",
+        payload: !state.refreshCertificates,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <StudentContext.Provider
       value={{
         studentState: state,
+        createNewCertificate,
         getAllRegularCertificates,
       }}
     >

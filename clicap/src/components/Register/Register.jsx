@@ -80,7 +80,7 @@ const Register = () => {
       } else {
         if (isEditForm) {
           await editUser(userRegister);
-          navigate("/home");
+          navigate("/users");
         } else {
           createUser(userRegister);
           navigate("/login");

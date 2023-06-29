@@ -179,12 +179,15 @@ exports.updateById = async (req, res) => {
               ],
               context: {
                 evaluatorName: user[i].name + " " + user[i].surname,
-                jobName: doc.name,
+                jobName: name,
               },
             };
             transporter.sendMail(mailOptions, (error, info) => {
               if (error) {
-                return res.status(500).json({ msg: error.message });
+                console.log(error);
+                return res
+                  .status(500)
+                  .json({ msg: "Error al enviar el email al evaluador/es" });
               } else {
                 console.log("Email enviado!");
                 res.end();
@@ -229,7 +232,7 @@ exports.updateById = async (req, res) => {
 
       res.status(200).json({ msg: "Trabajo editado!" });
     } else {
-      res.status(500).json({ msg: "El Trabajo no existe!" });
+      res.status(500).json({ msg: "Error al editar el trabajo" });
     }
   } catch (error) {
     console.log("El Trabajo no existe!" + error);
