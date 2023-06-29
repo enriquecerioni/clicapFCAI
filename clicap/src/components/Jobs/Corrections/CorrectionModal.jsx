@@ -1,7 +1,7 @@
 import React from "react";
 
 //components
-import { Button, Modal, Tabs, Tab } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 export const CorrectionModal = ({ jobName, showModal, correction }) => {
   const closeModal = () => showModal(false);
@@ -16,10 +16,10 @@ export const CorrectionModal = ({ jobName, showModal, correction }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            {jobName} <br /> ({correction.correction.name})
+            {jobName} <br /> ({correction?.correction.name})
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="">{correction.details}</Modal.Body>
+        <Modal.Body className="">{correction?.details}</Modal.Body>
       </Modal>
     </>
   );

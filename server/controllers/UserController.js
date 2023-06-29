@@ -71,6 +71,16 @@ exports.register = async (req, res) => {
       });
     }
 
+    const checkIdentifyNumber = await UserModel.findOne({
+      where: { identifyNumber },
+    });
+
+    if (checkIdentifyNumber) {
+      return res
+        .status(500)
+        .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
+    }
+
     const token = jwt.sign(
       {
         name,
@@ -120,7 +130,8 @@ exports.register = async (req, res) => {
     });
 
     return res.status(200).json({
-      response: "En breve se enviará un email a su correo para activar su cuenta.",
+      response:
+        "En breve se enviará un email a su correo para activar su cuenta.",
     });
   } catch (error) {
     return res.status(500).send({
@@ -183,7 +194,7 @@ exports.acountActivate = async (req, res) => {
         });
 
         const role = await await RoleModel.findByPk(roleId);
-        
+
         if (user) {
           var mailOptions = {
             from: process.env.EMAIL_APP,
@@ -197,14 +208,14 @@ exports.acountActivate = async (req, res) => {
                 cid: "logo",
               },
             ],
-            context: { 
+            context: {
               id: identifyNumber,
               password: password,
               name: name + " " + surname,
               roleId: role.name,
               email: email,
               phone: phone,
-              address: address, 
+              address: address,
             },
           };
 
@@ -293,14 +304,16 @@ exports.updateById = async (req, res) => {
       process.env.JWT_ACOUNT_ACTIVE
     );
 
-    const checkIdentifyNumber = await UserModel.findOne({
+    const registeredUser = await UserModel.findOne({
       where: { identifyNumber },
     });
 
-    if (checkIdentifyNumber) {
-      return res.status(500).json({ msg: "El DNI / PASAPORTE ya está registrado!" });
+    if (registeredUser && registeredUser.id !== id) {
+      return res
+        .status(500)
+        .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
     }
-    
+
     const user = await UserModel.update(
       {
         name: name,
@@ -345,6 +358,7 @@ exports.updateById = async (req, res) => {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
+          console.log("Error al enviar el email");
           return res.status(500).json({ msg: error.message });
         } else {
           console.log("Email enviado!");
