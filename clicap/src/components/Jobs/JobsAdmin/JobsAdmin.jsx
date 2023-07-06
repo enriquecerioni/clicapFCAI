@@ -133,6 +133,7 @@ const JobsAdmin = () => {
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>

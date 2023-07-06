@@ -141,10 +141,9 @@ const Users = ({ showModalCertificate }) => {
                 <thead>
                   <tr>
                     <th>Nombre</th>
-                    <th>Dni / Pasaporte</th>
+                    <th>DNI / Pasaporte</th>
                     <th>Email</th>
                     <th>Rol</th>
-                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>

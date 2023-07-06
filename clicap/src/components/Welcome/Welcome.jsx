@@ -472,8 +472,8 @@ const Welcome = () => {
                   <ul>
                     <li>
                       <p className="card-text">
-                        En esta sección podrás cargar trabajos en el sistema
-                        (Trabajos Completos / Resúmenes).
+                        En esta sección podrás cargar trabajos en el sistema para que sean corregidos por evaluadores
+                        (Prácticas áulicas o de laboratorios / Trabajos de Investigación).
                       </p>
                     </li>
                     <li>

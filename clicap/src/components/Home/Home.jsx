@@ -1,7 +1,7 @@
 import { isAuthenticated } from "../../helpers/helpers";
 import Navbar from "../Navbar/Navbar";
 import { Container, Row, Col } from "react-bootstrap";
-import { SidebarModify } from "../SidebarModify/SidebarModify";
+import { Sidebar } from "../Sidebar/Sidebar";
 import "./home.css";
 import "../../App.css";
 import { MenuPhone } from "../MenuPhone/MenuPhone";
@@ -48,7 +48,7 @@ const Home = ({ children }) => {
                         borderTopRightRadius: "10px",
                       }}
                     >
-                      <SidebarModify />
+                      <Sidebar />
                     </Col>
                     <Col className="p-0" style={{ backgroundColor: "#D2E9E9" }}>
                       {children}

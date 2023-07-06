@@ -13,7 +13,7 @@ export const Contact = () => {
         <div className="poderver container p-3 display-flex">
           <div className="contactBox">
             <h3>Ubicación</h3>
-            <p>M5600GVG, Bernardo de Irigoyen 301, San Rafael, Mendoza</p>
+            <p>Bernardo de Irigoyen 301, San Rafael, Mendoza</p>
           </div>
           <div className="contactBox">
             <h3>Correo Electrónico</h3>
@@ -21,7 +21,7 @@ export const Contact = () => {
           </div>
           <div className="contactBox">
             <h3>Llamar</h3>
-            <p>+54 0260 442-1947</p>
+            <p>+54 0260 442-1947 <br /> Int: 1508</p>
           </div>
         </div>
       </div>

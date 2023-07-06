@@ -1,136 +1,120 @@
-import "./sidebar.scss";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import PaidIcon from "@mui/icons-material/Paid";
-import TaskIcon from "@mui/icons-material/Task";
-import { Link, useNavigate } from "react-router-dom";
-import { getDataUserByKey, isAuthenticated } from "../../helpers/helpers";
+import React, { useContext, useEffect, useState } from "react";
+import { getDataUserByKey } from "../../helpers/helpers";
+import "./sidebar.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/App/AppContext";
+import { sidebarOptions } from "../../helpers/sidebarOptions";
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const roleId = getDataUserByKey("roleId");
   const idUser = getDataUserByKey("id");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { setLoggout, setRefreshRoleIdAndUserId } = useContext(AppContext);
+
+  const [url, setUrl] = useState(null);
+
   const loggout = () => {
     sessionStorage.removeItem("user");
-    navigate("/");
-    // window.location.reload();
-  };
-  const navigate = useNavigate();
-
-  const redirectJobPage = () => {
-    if (roleId === 1 || roleId === 2) {
-      return navigate("/jobs");
+    setRefreshRoleIdAndUserId(true);
+    if (location.pathname === "/") {
+      setLoggout();
     }
-    navigate("/myjobs");
+    navigate("/");
   };
+
+  useEffect(() => {
+    setUrl(location.pathname);
+  }, [location]);
+
   return (
-    <div className="sidebar sidebarshow col-lg-2 col-md-6 animate__animated animate__fadeInLeftBig">
-      <div className="center">
-        <ul>
-          <p className="title">MAIN</p>
-          <li onClick={() => navigate("/home")}>
-            <DashboardIcon className="icon" />
-            <span>Menú Principal</span>
-          </li>
-          <p className="title">LISTS</p>
-          {roleId === 1 ? (
-            <Link to="/users" style={{ textDecoration: "none" }}>
-              <li>
-                <PersonOutlineIcon className="icon" />
-                <span>Listado de Usuarios</span>
-              </li>
-            </Link>
-          ) : null}
-          <li onClick={() => redirectJobPage()}>
-            <StoreIcon className="icon" />
-            {roleId === 1 ? (
-              <span>Listado de Trabajos</span>
-            ) : roleId === 2 ? (
-              <span>Trabajos asignados</span>
-            ) : (
-              <span>Mis Trabajos</span>
-            )}
-          </li>
+    <>
+      <div className="sidebar">
+        <ul style={{ listStyle: "none" }} className=" ulSidebar p-0">
           <li
-            onClick={
-              roleId === 1 ? () => navigate("/pays") : () => navigate("/mypays")
-            }
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === "/home" ? "sidebar-activate" : ""
+            }`}
+            type="button"
+            onClick={() => navigate("/home")}
           >
-            <PaidIcon className="icon" />
-            {roleId === 1 ? (
-              <span>Listado de Pagos</span>
-            ) : (
-              <span>Mis Pagos</span>
-            )}
+            <div className="li-box-icon">
+              <i className="fa-solid fa-house"></i>
+            </div>
+            <div>
+              <span>Menú principal</span>
+            </div>
           </li>
+
+          {sidebarOptions.map((section) => {
+            return (
+              <>
+                <div className="center-center">
+                  <hr
+                    style={{ border: "1px solid white", width: "100px" }}
+                  ></hr>
+                </div>
+
+                <p className="m-0 section-sidebar">{section.section}</p>
+
+                {section["options"].map((op) => {
+                  return op.roles.includes(roleId) ? (
+                    <li
+                      className={`d-flex gap-2 align-items-center li-sidebar ${
+                        url === op.redirection ? "sidebar-activate" : ""
+                      }`}
+                      type="button"
+                      onClick={() => navigate(op.redirection)}
+                    >
+                      <div className="li-box-icon">
+                        <i className={`${op.icon}`}></i>
+                      </div>
+                      <div>
+                        <span>{op.name}</span>
+                      </div>
+                    </li>
+                  ) : null;
+                })}
+              </>
+            );
+          })}
+
+          <div className="center-center">
+            <hr style={{ border: "1px solid white", width: "100px" }}></hr>
+          </div>
+
+          <p className="m-0 section-sidebar">Usuario</p>
           <li
-            onClick={
-              roleId === 1
-                ? () => navigate("/certificates")
-                : () => navigate("/student")
-            }
+            onClick={() => navigate(`/user/edit/${idUser}`)}
+            className={`d-flex gap-2 align-items-center li-sidebar ${
+              url === `/user/edit/${idUser}` ? "sidebar-activate" : ""
+            }`}
+            type="button"
           >
-            <TaskIcon className="icon" />
-            {roleId === 1 ? (
-              <span>Listado de Constancias de AR</span>
-            ) : (
-              <span>Constancia de Alumno regular</span>
-            )}
+            <div className="li-box-icon">
+              <i className="fa-solid fa-user-pen"></i>
+            </div>
+            <div>
+              <span>Editar Perfil</span>
+            </div>
           </li>
-          {/* <Link to="/works" style={{ textDecoration: "none" }}>
-            <li>
-              <CreditCardIcon className="icon" />
-              <span>Trabajos (Admin)</span>
-            </li>
-          </Link>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
-          </li>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <p className="title">SERVICE</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
-          </li> */}
-          <p className="title">USUARIO</p>
-          <li onClick={() => navigate(`/user/edit/${idUser}`)}>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Editar Perfil</span>
-          </li>
-          <li onClick={loggout}>
-            <ExitToAppIcon className="icon" />
-            <span>Cerrar Sesión</span>
+
+          <li
+            onClick={loggout}
+            className="d-flex gap-2 align-items-center li-sidebar"
+            type="button"
+          >
+            <div className="li-box-icon">
+              <i className="fa-solid fa-right-from-bracket"></i>
+            </div>
+            <div>
+              <span>Cerrar Sesión</span>
+            </div>
           </li>
         </ul>
       </div>
-    </div>
+    </>
   );
 };
-
-export default Sidebar;
