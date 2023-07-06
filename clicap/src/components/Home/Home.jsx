@@ -1,7 +1,7 @@
 import { isAuthenticated } from "../../helpers/helpers";
 import Navbar from "../Navbar/Navbar";
 import { Container, Row, Col } from "react-bootstrap";
-import { Sidebar } from "../Sidebar/Sidebar";
+import { Sidebar } from "../../components/Sidebar/SideBar";
 import "./home.css";
 import "../../App.css";
 import { MenuPhone } from "../MenuPhone/MenuPhone";
