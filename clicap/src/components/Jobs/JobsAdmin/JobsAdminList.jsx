@@ -85,6 +85,19 @@ export const JobsAdminList = ({
         <td>{work.jobStatus ? work.jobStatus.name : null}</td>
         {roleId === 1 ? (
           <>
+          <td className="text-center">
+          <ClicapTooltip tooltip={true} text={"Descargar trabajo"}>
+            <button
+              className="btn btn-secondary"
+            >
+              <i
+                className="icon-size-table fa-solid fa-file-arrow-down"
+                type="button"
+                onClick={() => downloadFile(work.urlFile, "documents")}
+              ></i>
+            </button>
+          </ClicapTooltip>
+        </td>
             <ClicapTooltip
               tooltip={work.approve === 1 ? false : true}
               text={"No hay evaluaciones"}

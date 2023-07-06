@@ -10,25 +10,25 @@ export const sidebarOptions = [
         roles: [1],
       },
       {
-        name: "Listado de Trabajos",
+        name: "Listado de trabajos",
         icon: "fa-solid fa-file",
         redirection: "/jobs",
         roles: [1],
       },
       {
-        name: "Listado de Pagos",
+        name: "Listado de pagos",
         icon: "fa-solid fa-wallet",
         redirection: "/pays",
         roles: [1],
       },
       {
-        name: "Listado de Constancias de AR",
+        name: "Listado de constancias de AR",
         icon: "fa-solid fa-list-check",
         redirection: "/certificates",
         roles: [1],
       },
       {
-        name: "Generar Certificado",
+        name: "Generar certificado",
         icon: "fa-solid fa-user-graduate",
         redirection: "/generate-certificate",
         roles: [1],
@@ -46,31 +46,31 @@ export const sidebarOptions = [
         roles: [2],
       },
       {
-        name: "Mis Trabajos",
+        name: "Mis trabajos",
         icon: "fa-solid fa-file",
         redirection: "/myjobs",
-        roles: [2, 4],
+        roles: [2, 3, 4],
       },
 
       {
         name: "Mis pagos",
         icon: "fa-solid fa-wallet",
         redirection: "/mypays",
-        roles: [2, 4],
+        roles: [2, 3, 4],
       },
 
       {
-        name: "Constancia de Alumno regular",
+        name: "Constancia de alumno regular",
         icon: "fa-solid fa-list-check",
         redirection: "/student",
-        roles: [2, 4],
+        roles: [4],
       },
 
       {
         name: "Mis certificados",
         icon: "fa-solid fa-user-graduate",
         redirection: "/mycertificates",
-        roles: [2, 4],
+        roles: [2, 3, 4],
       },
     ],
   },

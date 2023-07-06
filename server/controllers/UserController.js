@@ -266,7 +266,7 @@ exports.login = async (req, res) => {
 
           if (user && password === passwordToken) {
             delete user.password;
-            return res.status(200).json({ msg: "Usuario logado!", user: user });
+            return res.status(200).json({ msg: "Inicio de sesión exitoso", user: user });
           } else {
             return res.status(401).json({ msg: "Id o contraseña incorrecta" });
           }
