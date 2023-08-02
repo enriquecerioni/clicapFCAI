@@ -13,7 +13,7 @@ export const Contact = () => {
         <div className="poderver container p-3 display-flex">
           <div className="contactBox">
             <h3>Ubicación</h3>
-            <p>Bernardo de Irigoyen 301, San Rafael, Mendoza</p>
+            <p>Bernardo de Irigoyen 375, San Rafael, Mendoza</p>
           </div>
           <div className="contactBox">
             <h3>Correo Electrónico</h3>
