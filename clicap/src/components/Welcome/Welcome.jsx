@@ -408,7 +408,7 @@ const Welcome = () => {
                     </div>
                   )}
 
-                  {authorPay.length ? (
+                  {/* {authorPay.length ? (
                     <div
                       className="alert alert-success alertWidth flexAlert"
                       role="alert"
@@ -440,7 +440,7 @@ const Welcome = () => {
                         Subir Comprobante
                       </button>
                     </div>
-                  )}
+                  )} */}
 
                   <div
                     className="alert alert-info alertWidth flexAlert"
@@ -486,7 +486,7 @@ const Welcome = () => {
                   </ul>
                 </div>
 
-                <div className="cardBodyHome">
+                {/* <div className="cardBodyHome">
                   <h5 className="card-title">Mis Pagos</h5>
                   <ul>
                     <li>
@@ -503,7 +503,7 @@ const Welcome = () => {
                       <p className="card-text">Descarga de facturas.</p>
                     </li>
                   </ul>
-                </div>
+                </div> */}
 
                 <div className="cardBodyHome">
                   <h5 className="card-title">Constancia de Alumno Regular</h5>
