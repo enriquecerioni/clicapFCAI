@@ -82,7 +82,7 @@ const DeliveryTask = () => {
     } else {
       await createNewJob(job);
     }
-    roleId === 4 ? navigate("/myjobs") : navigate("/jobs");
+    [3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
   };
 
   const checkFields = () => {
