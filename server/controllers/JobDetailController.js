@@ -2,9 +2,7 @@ const AreaModel = require("../models/AreaModel");
 const JobDetailModel = require("../models/JobDetailModel");
 const { PAGE_LIMIT } = process.env;
 const UserModel = require("../models/UserModel");
-const Sequelize = require("sequelize");
 const { transporter } = require("../utils/utils");
-const JobModalityModel = require("../models/JobModalityModel");
 const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
 const hbs = require("nodemailer-express-handlebars");
@@ -69,7 +67,16 @@ exports.create = async (req, res) => {
         where: { id: correctionId },
       });
 
-      const getCorrectionStatus = () => correctionId === 1 ? "Trabajo aceptado" : correctionId === 4 ? "Trabajo no Aceptado" : "Nueva corrección"
+      const admins = await UserModel.findAll({
+        where: { roleId: 1 },
+      });
+
+      const getCorrectionStatus = () =>
+        correctionId === 1
+          ? "Trabajo aceptado"
+          : correctionId === 4
+          ? "Trabajo no Aceptado"
+          : "Nueva corrección";
 
       // sendMail = 1 => send email to author's job
       if (Number(sendMail) === 1) {
@@ -92,6 +99,17 @@ exports.create = async (req, res) => {
             correctionName: correction.name,
           },
         };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+            return res
+              .status(500)
+              .json({ msg: "Error al enviar el email al evaluador/es" });
+          } else {
+            console.log("Email enviado!");
+            res.end();
+          }
+        });
 
         //approve in 0 because correction is approved
         await JobModel.update(
@@ -102,32 +120,40 @@ exports.create = async (req, res) => {
           { where: { id: jobId } }
         );
       } else {
-        mailOptions = {
-          from: process.env.EMAIL_APP,
-          to: doc.author.email,
-          subject: "Nueva evaluación",
-          template: "mailWithNewEvaluationJob",
-          attachments: [
-            {
-              filename: "appLogo.jpg",
-              path: "./public/logos/appLogo.jpg",
-              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+        admins.forEach((admin, i) => {
+          var mailOptions = {
+            from: process.env.EMAIL_APP,
+            to: admin.email,
+            subject: "Nueva evaluación",
+            template: "mailWithNewEvaluationJob",
+            attachments: [
+              {
+                filename: "appLogo.jpg",
+                path: "./public/logos/appLogo.jpg",
+                cid: "logo", //my mistake was putting "cid:logo@cid" here!
+              },
+            ],
+            context: {
+              titleTp: name,
             },
-          ],
-          context: {
-            titleTp: name,
-          },
-        };
-      }
+          };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res.status(500).json({ msg: error.message });
-        } else {
-          console.log("Email enviado!");
-          res.end();
-        }
-      });
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log(error);
+              return res
+                .status(500)
+                .json({ msg: "Error al enviar el email al evaluador/es" });
+            } else {
+              console.log("Email enviado!");
+              res.end();
+            }
+          });
+
+          //send email with your configuration
+          return res.status(200).json({ msg: "Evaluador asignado!" });
+        });
+      }
 
       res.status(200).json({ msg: "Correción creada!" });
     } else {
