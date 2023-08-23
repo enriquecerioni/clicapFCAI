@@ -151,7 +151,7 @@ exports.create = async (req, res) => {
           });
 
           //send email with your configuration
-          return res.status(200).json({ msg: "Evaluador asignado!" });
+          return res.status(200).json({ msg: "Correción creada!" });
         });
       }
 
@@ -193,25 +193,15 @@ exports.updateById = async (req, res) => {
 
 exports.getById = async (req, res) => {
   try {
-    const { jobId, correctionNumber } = req.params;
-    const { evaluatorId } = req.query;
-    console.log(req.params);
-    console.log(req.query);
+    const { jobId, correctionNumber, roleId } = req.params;
+
     let options = "";
-    let whereOpts;
     //evaluatorId: 1 -> el 1 indica que esa correccion la creo el admin
-    if (evaluatorId) {
-      whereOpts = {
-        jobId,
-        evaluatorId: Number(evaluatorId),
-        correctionNumber,
-      };
-    } else {
-      whereOpts = {
-        jobId,
-        correctionNumber,
-      };
-    }
+
+    let whereOpts = {
+      jobId,
+      correctionNumber,
+    };
 
     options = {
       where: whereOpts,
@@ -229,7 +219,17 @@ exports.getById = async (req, res) => {
       ],
     };
 
-    const detail = await JobDetailModel.findAll(options);
+    let detail = await JobDetailModel.findAll(options);
+
+    if (Number(roleId) !== 1) {
+      const searchAdmins = await UserModel.findAll({
+        where: { roleId: 1 },
+        attributes: ["id"],
+      });
+
+      const adminsIds = searchAdmins.map((admin) => admin.id);
+      detail = detail.filter((c) => adminsIds.includes(c.evaluatorId));
+    }
 
     if (detail) {
       res.status(200).json({ response: detail });
