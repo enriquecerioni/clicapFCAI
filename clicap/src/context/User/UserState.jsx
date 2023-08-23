@@ -74,7 +74,6 @@ export const UserState = ({ children }) => {
     );
 
     if (userFounded) {
-      console.log("ya esta aca");
       return dispatch({
         type: "SET_USERS_FILTERED",
         payload: {

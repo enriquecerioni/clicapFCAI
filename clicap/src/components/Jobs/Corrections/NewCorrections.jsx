@@ -6,14 +6,14 @@ import Select from "react-select";
 import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
+import { Loader } from "../../Loader/Loader";
 
 export const NewCorrections = () => {
-
   const navigate = useNavigate();
 
   const { jobState, createEvaluationByEvaluatorOrAdmin } =
     useContext(JobContext);
-  const { correctionInitial, jobData } = jobState;
+  const { correctionInitial, jobData, jobLoader } = jobState;
 
   const [correction, setCorrection] = useState(correctionInitial);
   const [putDisabled, setPutDisabled] = useState(false);
@@ -82,20 +82,26 @@ export const NewCorrections = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          <ClicapTooltip
-            tooltip={putDisabled ? putDisabled : disabled()}
-            text={"Por favor complete todos los campos"}
-          >
-            <div className="d-flex">
-              <Button
-                variant="success"
-                disabled={putDisabled ? putDisabled : disabled()}
-                onClick={handleSubmitCorrection}
-              >
-                Guardar Corrección
-              </Button>
+          {!jobLoader ? (
+            <ClicapTooltip
+              tooltip={putDisabled ? putDisabled : disabled()}
+              text={"Por favor complete todos los campos"}
+            >
+              <div className="d-flex">
+                <Button
+                  variant="success"
+                  disabled={putDisabled ? putDisabled : disabled()}
+                  onClick={handleSubmitCorrection}
+                >
+                  Guardar Corrección
+                </Button>
+              </div>
+            </ClicapTooltip>
+          ) : (
+            <div className="center-center">
+              <Loader />
             </div>
-          </ClicapTooltip>
+          )}
         </div>
       </div>
     </>
