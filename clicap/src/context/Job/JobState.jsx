@@ -39,6 +39,7 @@ export const JobState = ({ children }) => {
     },
     prefiltered: false,
     isFetching: true,
+    jobLoader: false,
     assignedEvaluator: false,
     totalJobsPages: 0,
     usersSelector: [],
@@ -47,12 +48,13 @@ export const JobState = ({ children }) => {
 
   const createNewJob = async (job) => {
     try {
+      setJobLoader(true);
       const bodyFormData = new FormData();
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      console.log(bodyFormData);
       await formDataAxios("POST", `/job/create`, "", bodyFormData);
+      setJobLoader(false);
     } catch (e) {
       console.log(e);
     }
@@ -94,6 +96,7 @@ export const JobState = ({ children }) => {
 
   const updateJobById = async (job, jobId) => {
     try {
+      setJobLoader(true);
       job.newVersion = true;
       await reqAxios("PUT", `/job/edit/${jobId}`, "", job);
       if (job.urlFile !== "") {
@@ -104,6 +107,7 @@ export const JobState = ({ children }) => {
 
         console.log(bodyFormData);
         await reqAxios("POST", `/job/upload`, "", bodyFormData);
+        setJobLoader(false);
       }
     } catch (e) {
       console.log(e);
@@ -159,10 +163,9 @@ export const JobState = ({ children }) => {
 
   const createEvaluationByEvaluatorOrAdmin = async (correction) => {
     try {
+      setJobLoader(true);
       await reqAxios("POST", "/jobdetails/create", "", correction);
-      /* await reqAxios("PUT", `/job/setcorrection/${jobId}`, "", {
-        status: correction.correctionId,
-      }); */
+      setJobLoader(false);
     } catch (e) {
       console.log(e);
     }
@@ -170,7 +173,9 @@ export const JobState = ({ children }) => {
 
   const sendCorrectionApproved = async (correction) => {
     try {
+      setJobLoader(true);
       await reqAxios("POST", "/jobdetails/create", "", correction);
+      setJobLoader(false);
     } catch (e) {
       console.log(e);
     }
@@ -178,10 +183,11 @@ export const JobState = ({ children }) => {
 
   //Buscar las correciones de un trabajo
   const getCorrectionsByJob = async (id, correctionNumber) => {
+    const roleId = getDataUserByKey("roleId");
     try {
       const corrections = await reqAxios(
         "GET",
-        `/jobdetails/get/${id}/${correctionNumber}`,
+        `/jobdetails/get/${roleId}/${id}/${correctionNumber}`,
         {},
         ""
       );
@@ -204,13 +210,13 @@ export const JobState = ({ children }) => {
 
   //Buscar la correcion para el trabajo como usuario
   const getCorrectionByJob = async (jobId, correctionNumber) => {
-    //evaluatorId: 1 -> 1 indica la correccion que creo el admin (correccion definitiva)
-    const params = { evaluatorId: 1 };
+    const roleId = getDataUserByKey("roleId");
+
     try {
       const corrections = await reqAxios(
         "GET",
-        `/jobdetails/get/${jobId}/${correctionNumber}`,
-        params,
+        `/jobdetails/get/${roleId}/${jobId}/${correctionNumber}`,
+        "",
         ""
       );
       return corrections.data.response[0];
@@ -240,6 +246,13 @@ export const JobState = ({ children }) => {
     dispatch({
       type: "SET_USERID_TO_JOB",
       payload: getDataUserByKey("id"),
+    });
+  };
+
+  const setJobLoader = (value) => {
+    dispatch({
+      type: "SET_JOB_LOADER",
+      payload: value,
     });
   };
 

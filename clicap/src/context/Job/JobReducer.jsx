@@ -5,6 +5,7 @@ import {
   SET_ASSIGNED_EVALUATOR,
   SET_USERID_TO_JOB,
   CLEAN_JOB_DATA,
+  SET_JOB_LOADER,
 } from "./types";
 
 export default (state, action) => {
@@ -17,6 +18,11 @@ export default (state, action) => {
         jobData: payload.jobData,
         correctionInitial: payload.correctionInitial,
         isFetching: false,
+      };
+    case SET_JOB_LOADER:
+      return {
+        ...state,
+        jobLoader: payload,
       };
     case CLEAN_JOB_DATA:
       return {

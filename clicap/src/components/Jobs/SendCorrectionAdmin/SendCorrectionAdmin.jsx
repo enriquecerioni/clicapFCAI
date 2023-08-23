@@ -8,13 +8,16 @@ import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
 import { Loader } from "../../Loader/Loader";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
+import { getDataUserByKey } from "../../../helpers/helpers";
 
 export const SendCorrectionAdmin = () => {
   const { id, correctionNumber } = useParams();
   const navigate = useNavigate();
+  const adminId = getDataUserByKey("id");
 
-  const { getCorrectionsByJob, sendCorrectionApproved } =
+  const { getCorrectionsByJob, sendCorrectionApproved, jobState } =
     useContext(JobContext);
+  const { jobLoader } = jobState;
 
   const [stateOfCorrection, setStateOfCorrection] = useState(0);
   const [loader, setLoader] = useState(true);
@@ -56,7 +59,7 @@ export const SendCorrectionAdmin = () => {
     const correctionData = {
       jobId: corrections[0].jobId,
       correctionId: stateOfCorrection,
-      evaluatorId: 1,
+      evaluatorId: adminId,
       correctionNumber: corrections[0].correctionNumber,
       details,
       sendMail,
@@ -276,22 +279,30 @@ export const SendCorrectionAdmin = () => {
             </FloatingLabel>
           </div>
           <div className="center-center">
-            <ClicapTooltip
-              tooltip={details === "" || stateOfCorrection === 0 ? true : false}
-              text={"Por favor completar todos los campos"}
-            >
-              <div className="d-flex">
-                <button
-                  className="mt-2 btn btn-primary"
-                  disabled={
-                    details === "" || stateOfCorrection === 0 ? true : false
-                  }
-                  onClick={sendCorrectionToStudent}
-                >
-                  Enviar Corrección
-                </button>
+            {!jobLoader ? (
+              <ClicapTooltip
+                tooltip={
+                  details === "" || stateOfCorrection === 0 ? true : false
+                }
+                text={"Por favor completar todos los campos"}
+              >
+                <div className="d-flex">
+                  <button
+                    className="mt-2 btn btn-primary"
+                    disabled={
+                      details === "" || stateOfCorrection === 0 ? true : false
+                    }
+                    onClick={sendCorrectionToStudent}
+                  >
+                    Enviar Corrección
+                  </button>
+                </div>
+              </ClicapTooltip>
+            ) : (
+              <div className="center-center">
+                <Loader />
               </div>
-            </ClicapTooltip>
+            )}
           </div>
         </div>
       </div>

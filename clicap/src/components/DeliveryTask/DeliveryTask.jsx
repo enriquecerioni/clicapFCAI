@@ -11,6 +11,7 @@ import { alertError } from "../../helpers/alerts";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
+import { Loader } from "../Loader/Loader";
 
 const DeliveryTask = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const DeliveryTask = () => {
 
   const { jobState, getJobId, createNewJob, updateJobById } =
     useContext(JobContext);
-  const { jobData } = jobState;
+  const { jobData, jobLoader } = jobState;
 
   const { areaState, getAllAreas } = useContext(AreaContext);
   const { areas, areasSelector } = areaState;
@@ -249,20 +250,28 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
-            <ClicapTooltip
-              tooltip={putDisabled ? putDisabled : disabled()}
-              text={"Por favor completar los campos obligatorios"}
-            >
-              <div className="mt-3 center-center">
-                <button
-                  disabled={putDisabled ? putDisabled : disabled()}
-                  type="submit"
-                  className="btn btn-primary"
-                >
-                  Subir trabajo
-                </button>
+
+            {!jobLoader ? (
+              <ClicapTooltip
+                tooltip={putDisabled ? putDisabled : disabled()}
+                text={"Por favor completar los campos obligatorios"}
+              >
+                <div className="mt-3 center-center">
+                  <button
+                    disabled={putDisabled ? putDisabled : disabled()}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Subir trabajo
+                  </button>
+                </div>
+              </ClicapTooltip>
+            ) : (
+              <div className="center-center">
+                <Loader />
               </div>
-            </ClicapTooltip>
+            )}
+
             <div className="mt-3 d-flex align-items-center">
               <p className="m-0">"</p>
               <p className="m-0 fw-bold fs-4">*</p>

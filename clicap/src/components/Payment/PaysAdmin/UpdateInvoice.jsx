@@ -22,8 +22,7 @@ const UpdateInvoce = () => {
   const author = users.find((user) => user.id === pay.authorId);
   const [refreshPays, setRefreshPays] = useState(false);
   const disabled = () => (invoce.invoice === "" ? true : false);
-  console.log(pay?.invoice);
-  console.log(pay?.invoice === "" ? true : false);
+
   // const author = users.find(user => user?.id === pay?.authorId)
 
   const handleSubmit = (e) => {
