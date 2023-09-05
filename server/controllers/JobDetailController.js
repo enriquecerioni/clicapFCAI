@@ -134,7 +134,7 @@ exports.create = async (req, res) => {
               },
             ],
             context: {
-              titleTp: name,
+              jobName: name,
             },
           };
 
