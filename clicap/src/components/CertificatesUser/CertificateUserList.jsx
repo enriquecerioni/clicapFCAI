@@ -8,7 +8,8 @@ export const CertificateUserList = ({ userCertificate }) => {
   const name = getDataUserByKey("name");
   const surname = getDataUserByKey("surname");
   const identifyNumber = getDataUserByKey("identifyNumber");
-  const fullNameAndNumber = `${name} ${surname}, ${identifyNumber}`;
+  const identifyType = getDataUserByKey("identifyType");
+  const fullNameAndNumber = `${name} ${surname}, ${identifyType}: ${identifyNumber}`;
   const fullName = `${name} ${surname}`;
 
   const { ceritificateState } = useContext(CertificateContext);
@@ -25,9 +26,9 @@ export const CertificateUserList = ({ userCertificate }) => {
 
     doc.addImage(certificateLogo, "JPEG", 5, 2, 290, 200);
     doc.setFontSize(16);
-    doc.text(certificate.name, width / 2, 70, {
+    /*  doc.text(certificate.name, width / 2, 70, {
       align: "center",
-    }); //centrar
+    }); */ //centrar
     doc.setFontSize(14);
     doc.text("Certificamos que:", 10, 80);
 

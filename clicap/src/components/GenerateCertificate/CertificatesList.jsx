@@ -18,7 +18,7 @@ export const CertificatesList = ({
   const name = "Rodrigo";
   const surname = "Perez";
   const identifyNumber = "40125336";
-  const fullNameAndNumber = `${name} ${surname}, ${identifyNumber}`;
+  const fullNameAndNumber = `${name} ${surname}, DNI: ${identifyNumber}`;
   const fullName = `${name} ${surname}`;
 
   const withMembers = (value) =>
@@ -52,9 +52,9 @@ export const CertificatesList = ({
 
     doc.addImage(certificateLogo, "JPEG", 5, 2, 290, 200);
     doc.setFontSize(16);
-    doc.text(certificate.name, width / 2, 70, {
+    /* doc.text(certificate.name, width / 2, 70, {
       align: "center",
-    }); //centrar
+    }); */ //centrar
     doc.setFontSize(14);
     doc.text("Certificamos que:", 10, 80);
 
