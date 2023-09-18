@@ -560,7 +560,9 @@ exports.downloadFilter = async (req, res) => {
   // Column for data in excel. key must match data key
   worksheet.columns = [
     { header: "Nombre", key: "name", width: EXCEL_CELL_WIDTH },
-    { header: "Dni", key: "identifyNumber", width: EXCEL_CELL_WIDTH },
+    { header: "Apellido", key: "surname", width: EXCEL_CELL_WIDTH },
+    { header: "DNI/Pasaporte", key: "identifyNumber", width: EXCEL_CELL_WIDTH },
+    { header: "Teléfono", key: "phone", width: EXCEL_CELL_WIDTH },
     { header: "Email", key: "email", width: EXCEL_CELL_WIDTH },
     { header: "Rol", key: "roleId", width: EXCEL_CELL_WIDTH },
   ];
