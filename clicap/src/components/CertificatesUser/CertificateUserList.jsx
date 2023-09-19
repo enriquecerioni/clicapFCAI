@@ -16,7 +16,7 @@ export const CertificateUserList = ({ userCertificate }) => {
   const { certificateLogo } = ceritificateState;
 
   const donwloadCertificate = async (type, certificate, job) => {
-    const members = job.members === "" ? name : `${fullName}, ${job.members}`;
+    const members = job.members === "" ? fullName : `${fullName}, ${job.members}`;
     const doc = new jsPDF("l", "mm", "a4", true);
     var lines;
     var lMargin = 15; //left margin in mm
