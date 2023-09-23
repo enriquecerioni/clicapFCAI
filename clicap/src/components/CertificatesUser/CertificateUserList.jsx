@@ -15,8 +15,35 @@ export const CertificateUserList = ({ userCertificate }) => {
   const { ceritificateState } = useContext(CertificateContext);
   const { certificateLogo } = ceritificateState;
 
+  const removeRepeatAuthor = (allMembers) => {
+    // Convierte el usuario a minúsculas para que la comparación sea insensible a mayúsculas
+    const lowerCaseName = name.toLowerCase();
+    const lowerCaseLastName = surname.toLowerCase();
+
+    // Divide la lista de miembros en un array
+    let arrayMembers = allMembers.split(", ");
+
+    // Filtra los miembros que no coinciden con el patrón
+    arrayMembers = arrayMembers.filter((member) => {
+      const completeName = member.toLowerCase();
+      return !(
+        (completeName.startsWith(lowerCaseName) &&
+          completeName.endsWith(lowerCaseLastName)) ||
+        (completeName.startsWith(lowerCaseLastName) &&
+          completeName.endsWith(lowerCaseName))
+      );
+    });
+
+    // Une los miembros filtrados de nuevo en una cadena
+    let result = arrayMembers.join(", ");
+    result = `${fullName}, ${result}`;
+
+    return result;
+  };
+
   const donwloadCertificate = async (type, certificate, job) => {
-    const members = job.members === "" ? fullName : `${fullName}, ${job.members}`;
+    const members =
+      job.members === "" ? fullName : removeRepeatAuthor(job.members);
     const doc = new jsPDF("l", "mm", "a4", true);
     var lines;
     var lMargin = 15; //left margin in mm
