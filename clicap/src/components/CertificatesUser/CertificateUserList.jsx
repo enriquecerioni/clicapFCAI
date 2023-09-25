@@ -43,7 +43,7 @@ export const CertificateUserList = ({ userCertificate }) => {
 
   const donwloadCertificate = async (type, certificate, job) => {
     const members =
-      job.members === "" ? fullName : removeRepeatAuthor(job.members);
+      job === "" ? fullName : removeRepeatAuthor(job.members);
     const doc = new jsPDF("l", "mm", "a4", true);
     var lines;
     var lMargin = 15; //left margin in mm
