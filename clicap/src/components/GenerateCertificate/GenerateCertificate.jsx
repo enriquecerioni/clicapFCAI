@@ -7,11 +7,20 @@ import Users from "../Users/Users";
 
 export const GenerateCertificate = () => {
   const navigate = useNavigate();
-  const { getAllCertificates } = useContext(CertificateContext);
+
+  const { getAllCertificates, ceritificateState, getCertificatesLogo } =
+    useContext(CertificateContext);
+
+  const { certificateLogo } = ceritificateState;
+
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getAllCertificates();
+
+    if (certificateLogo === "") {
+      getCertificatesLogo();
+    }
   }, []);
 
   return (

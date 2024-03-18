@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
-
+import { PDFViewer } from "@react-pdf/renderer";
 //components
 import { Button, Modal, Tabs, Tab } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { JobContext } from "../../context/Job/JobContext";
 import { reqAxios } from "../../helpers/helpers";
+import { Pdf } from "./Pdf";
 
 export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
   const { getAllCertificates, ceritificateState } =
@@ -16,6 +17,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
     nameToCertificate,
     userIdToCertificate,
     certificateTypesOpt,
+    certificateLogo,
   } = ceritificateState;
 
   const { getAllJobsByUser } = useContext(JobContext);
@@ -37,12 +39,6 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
     label: certificate.name,
     target: { value: certificate.id, name: "certificateId" },
   }));
-
-  /*   const allJobs = jobs.map((job) => ({
-    value: job.id,
-    label: job.name,
-    target: { value: job.id, name: "jobId" },
-  })); */
 
   const disabled = () => {
     return !!!certificateData.type || !!!certificateData.certificateId;
@@ -102,6 +98,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               <label htmlFor="forName" className="form-label">
                 Certificado
               </label>
+
               <Select
                 options={certificateTypesOpt}
                 placeholder={"Seleccione..."}
@@ -120,6 +117,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
                 onChange={(e) => handleChange(e, "type")}
               />
             </div>
+
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
                 Tipo de certificado
@@ -139,6 +137,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
                 onChange={(e) => handleChange(e, "certificateId")}
               />
             </div>
+
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
                 Trabajo
@@ -169,6 +168,12 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
             >
               Generar
             </button>
+          </div>
+
+          <div className="mt-2" style={{ height: "500px" }}>
+            <PDFViewer style={{ width: "100%", height: "100%" }}>
+              <Pdf logo={certificateLogo} />
+            </PDFViewer>
           </div>
         </Modal.Body>
       </Modal>
