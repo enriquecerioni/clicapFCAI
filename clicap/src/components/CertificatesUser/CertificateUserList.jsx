@@ -6,12 +6,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Pdf } from "../GenerateCertificate/Pdf";
 
 export const CertificateUserList = ({ userCertificate }) => {
-  const name = getDataUserByKey("name");
-  const surname = getDataUserByKey("surname");
-  const identifyNumber = getDataUserByKey("identifyNumber");
-  const identifyType = getDataUserByKey("identifyType");
-  const fullName = `${name} ${surname}`;
-  const identifyTypeAndNumber = `${identifyType}: ${identifyNumber}`;
+  const userLogged = JSON.parse(sessionStorage.getItem("user"));
 
   const { ceritificateState } = useContext(CertificateContext);
   const { certificateLogo } = ceritificateState;
@@ -23,7 +18,14 @@ export const CertificateUserList = ({ userCertificate }) => {
       <td className="">
         <ClicapTooltip tooltip={true} text={"Descargar certificado"}>
           <PDFDownloadLink
-            document={<Pdf logo={certificateLogo} />}
+            document={
+              <Pdf
+                logo={certificateLogo}
+                user={userLogged}
+                certificate={userCertificate?.certificate}
+                job={userCertificate?.job}
+              />
+            }
             fileName="certificado.pdf"
           >
             {({ loading, url, error, blob }) =>

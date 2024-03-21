@@ -113,7 +113,7 @@ body,
   background-color: #a4d0a4;
 }
 .color-success-smooth-bk {
-  background-color: #A0D8B3;
+  background-color: #a0d8b3;
 }
 .color-warning-strong-bk {
   background-color: #ffd95a;
@@ -129,7 +129,7 @@ body,
 }
 
 .color-success-strong {
-  color: #E5F9DB;
+  color: #e5f9db;
 }
 .color-success-smooth {
   color: #617a55;
@@ -188,4 +188,12 @@ body,
 .fa-disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+.selector-container {
+  width: 100%;
+}
+
+/* Opcionalmente, si deseas especificar el ancho máximo del selector */
+.selector-container .Select {
+  width: 100%;
 }

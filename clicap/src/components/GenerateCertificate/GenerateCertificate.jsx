@@ -4,6 +4,7 @@ import "./generateCertificate.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GenerateCertificateModal } from "./GenerateCertificateModal";
 import Users from "../Users/Users";
+import { GenerateCustomCertificatePersonal } from "./GenerateCustomCertificatePersonal";
 
 export const GenerateCertificate = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export const GenerateCertificate = () => {
   const { certificateLogo } = ceritificateState;
 
   const [showModal, setShowModal] = useState(false);
+  const [customCertificateShowModal, setCustomCertificateShowModal] =
+    useState(false);
 
   useEffect(() => {
     getAllCertificates();
@@ -33,6 +36,13 @@ export const GenerateCertificate = () => {
         />
       ) : null}
 
+      {customCertificateShowModal ? (
+        <GenerateCustomCertificatePersonal
+          showModal={customCertificateShowModal}
+          setShowModal={setCustomCertificateShowModal}
+        />
+      ) : null}
+
       <h1 className="center-center">Generar Certificado</h1>
       <div>
         <div className="text-end me-5">
@@ -44,7 +54,19 @@ export const GenerateCertificate = () => {
             Ver tipos de certificados
           </button>
         </div>
+        <div className="text-end mt-3 me-5">
+          <button
+            type="button"
+            onClick={() =>
+              setCustomCertificateShowModal(!customCertificateShowModal)
+            }
+            className="btn btn-secondary"
+          >
+            Crear certificado personal
+          </button>
+        </div>
       </div>
+
       <div>
         <Users showModalCertificate={setShowModal} />
       </div>

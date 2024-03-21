@@ -1,7 +1,7 @@
 import {
   GET_CERTIFICATE,
   SET_CERTIFICATES_SELECTOR,
-  SET_USER_ID_TO_CERTIFICATE,
+  SET_USER_TO_CERTIFICATE,
   GET_CERTIFICATES_BY_USER,
   GET_LOGO,
   GET_CERTIFICATE_BY_ID,
@@ -28,11 +28,10 @@ export default (state, action) => {
         ...state,
         certificateSelector: payload,
       };
-    case SET_USER_ID_TO_CERTIFICATE:
+    case SET_USER_TO_CERTIFICATE:
       return {
         ...state,
-        userIdToCertificate: payload.id,
-        nameToCertificate: payload.fullName,
+        userToCertificate: payload,
       };
     case GET_CERTIFICATES_BY_USER:
       return {

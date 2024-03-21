@@ -278,9 +278,6 @@ const DeliveryTask = () => {
               <p className="m-0">": Campos obligatorios</p>
             </div>
           </form>
-          {/*           <Button onClick={() => console.log(job)} variant="primary">
-            console
-          </Button> */}
         </div>
       </div>
     </div>

@@ -221,7 +221,7 @@ const EntitiesProvider = ({ children }) => {
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      console.log(bodyFormData);
+
       await formDataAxios("POST", `/job/create`, "", bodyFormData);
     } catch (e) {
       console.log(e);
@@ -269,9 +269,6 @@ const EntitiesProvider = ({ children }) => {
   const getJobId = async (id) => {
     try {
       const dataJobId = await reqAxios("GET", `/job/get/${id}`, "", "");
-      /*  const partners = dataJobId.data.response[0].members.split(";");
-      dataJobId.data.response[0].members = partners;
-      console.log(dataJobId.data.response); */
       setJobId(dataJobId.data.response[0]);
     } catch (error) {
       console.log(error);

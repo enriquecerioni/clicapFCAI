@@ -7,15 +7,11 @@ import {
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
+import { PersonalCertificatePdf } from "./CertificatePdfTypes/PersonalCertificatePdf";
+import { CertificateContext } from "../../context/Certificate/CertificateContext";
+import { JobCertificatePdf } from "./CertificatePdfTypes/JobCertificatePdf";
 
-export const Pdf = ({
-  type = "1",
-  logo = "",
-  userName = "",
-  author = "",
-  members = "",
-  jobName = "",
-}) => {
+export const Pdf = ({ logo = "", user = "", certificate = {}, job = {} }) => {
   // Create styles
   const styles = StyleSheet.create({
     page: {
@@ -32,9 +28,7 @@ export const Pdf = ({
     },
     textContainer: {
       position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
+      top: "35%",
     },
     text: {
       fontSize: 20,
@@ -43,48 +37,22 @@ export const Pdf = ({
     },
   });
 
-  const personalStateInitial = {
-    userName: "",
-    identityNumber: "",
-    position: "",
-  };
-
-  const jobStateInitial = {
-    author: "",
-    members: "",
-    jobName: "",
-  };
-
-  const [personalData, setPersonalData] = useState(personalStateInitial);
-  const [jobCertificateData, setJobCertificateData] = useState(jobStateInitial);
-
-  const loadData = () => {
-    if (type === 1) {
-      return setPersonalData({
-        userName: userName,
-        identityNumber: "",
-        position: "",
-      });
-    }
-    setJobCertificateData({
-      author: author,
-      members: members,
-      jobName: "",
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-  }, [type]);
+  const { page, section, image, textContainer } = styles;
 
   return (
     <Document>
       <Page size="A4" orientation="landscape">
-        <View style={styles.page}>
-          <View style={styles.section}>
-            <Image src={logo} style={styles.image} />
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>Texto centrado</Text>
+        <View style={page}>
+          <View style={section}>
+            <Image src={logo} style={image} />
+            <View style={textContainer}>
+              {certificate?.type === 1 ? (
+                <PersonalCertificatePdf user={user} certificate={certificate} />
+              ) : null}
+
+              {certificate?.type === 2 ? (
+                <JobCertificatePdf certificate={certificate} job={job} />
+              ) : null}
             </View>
           </View>
         </View>
