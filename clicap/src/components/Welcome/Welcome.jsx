@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import { getDataUserByKey } from "../../helpers/helpers";
 import "./welcome.css";
 import { AreaContext } from "../../context/Area/AreaContext";
 import { Loader } from "../Loader/Loader";

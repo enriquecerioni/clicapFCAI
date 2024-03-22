@@ -20,6 +20,8 @@ import { Footer } from "../Footer/Footer";
 
 const Start = () => {
   const { time, getDate, handleTime } = useContext(EntitiesContext);
+  const { appState, getEventDate } = useContext(AppContext);
+  const { eventDate } = appState;
   const { getAllSponsors } = useContext(SponsorContext);
   const userId = getDataUserByKey("roleId");
   const [logoApp, setLogoApp] = useState("");
@@ -34,6 +36,7 @@ const Start = () => {
 
   useEffect(() => {
     getDate();
+    getEventDate();
     loadAppLogo();
   }, [time]);
 

@@ -3,7 +3,6 @@ const DateModel = require("../models/DateModel");
 exports.getEventDate = async (req, res) => {
   try {
     const date = await DateModel.findOne();
-    console.log(date);
     if (date) {
       res.status(200).json({ response: date });
     }

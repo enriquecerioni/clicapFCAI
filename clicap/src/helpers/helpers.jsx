@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { alertError, alertSuccess, loadError, loadSuccess } from "./alerts";
 import { API_URL } from "./constants";
+import { format, addDays } from 'date-fns';
 export const isAuthenticated = () => sessionStorage.getItem("user");
 export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
@@ -82,15 +83,15 @@ export const waitAndRefresh = (path, time) => {
 export const downloadFile = async (nameFile, folder) => {
   try {
     await axios({
-      url: `${API_URL}/job/downloadfile?nameFile=${nameFile}&folder=${folder}`, //your url
+      url: `${API_URL}/job/downloadfile?nameFile=${nameFile}&folder=${folder}`,
       params: "",
       method: "GET",
-      responseType: "blob", // important
+      responseType: "blob",
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${nameFile}`); //or any other extension
+      link.setAttribute("download", `${nameFile}`);
       document.body.appendChild(link);
       link.click();
     });
@@ -103,34 +104,34 @@ export const downloadFile = async (nameFile, folder) => {
 export const deleteFile = async (nameFile, folder) => {
   try {
     await axios({
-      url: `${API_URL}/file/delete-file?nameFile=${nameFile}&folder=${folder}`, //your url
+      url: `${API_URL}/file/delete-file?nameFile=${nameFile}&folder=${folder}`,
       params: "",
       method: "GET",
-      responseType: "blob", // important
+      responseType: "blob",
     });
   } catch (error) {
     console.log(error);
   }
 };
+
 //Export in excel
 export const reqAxiosDownload = async (shortUrl, param, nameFile) => {
   const load = toast.loading("Espere unos segundos...");
   try {
     await axios({
-      url: API_URL + shortUrl, //your url
+      url: API_URL + shortUrl,
       params: param,
       method: "GET",
-      responseType: "blob", // important
+      responseType: "blob",
       headers: {
         Accept: "application/JSON",
         "Content-Type": "application/json",
-        /*  "auth-token": token, */
       },
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${nameFile}.xlsx`); //or any other extension
+      link.setAttribute("download", `${nameFile}.xlsx`);
       document.body.appendChild(link);
       link.click();
     });
@@ -139,3 +140,13 @@ export const reqAxiosDownload = async (shortUrl, param, nameFile) => {
     console.log(error);
   }
 };
+
+export const formatDate = (date) => {
+  const hasDate = date && true;
+  if(hasDate) {
+      const currentDate = new Date(date);
+      const validDate = addDays(currentDate, 1);
+      return format(validDate, 'dd/MM/yyyy');
+  }
+  return 'Esperando correción'
+}

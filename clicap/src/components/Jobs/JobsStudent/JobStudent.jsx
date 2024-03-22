@@ -8,24 +8,42 @@ import JobStudentList from "./JobStudentList";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { Loader } from "../../Loader/Loader";
 import { JobContext } from "../../../context/Job/JobContext";
+import { AppContext } from "../../../context/App/AppContext";
 
 const JobStudent = () => {
   const navigate = useNavigate();
-
-  const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
-  const { isFetching, jobs, totalJobsPages, jobData } = jobState;
-
   const idUser = getDataUserByKey("id");
+
   const initialFilters = {
-    authorId: idUser,
+    userId: idUser,
     name: "",
     areaId: "",
   };
+
+  const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
+  const { isFetching, jobs, totalJobsPages, jobData } = jobState;
+  const { appState, getEventDate } = useContext(AppContext);
+  const { eventDate } = appState;
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
 
+  const evaluateDate = (date) => {
+    const today = new Date();
+    const eventDate = new Date(date);
+
+    // Calcula la diferencia en milisegundos
+    const differenceInMs = eventDate - today;
+    
+    // Convierte la diferencia a días
+    const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+    
+    // Verifica si la diferencia es mayor o igual a 30 días
+    return differenceInDays >= 30;
+  }
+
   useEffect(() => {
     getJobsFiltered(page, filters);
+    getEventDate()
     if (jobData.name !== "") {
       cleanJobData();
     }
@@ -33,19 +51,23 @@ const JobStudent = () => {
   }, [page]);
 
   return (
-    <>
+    <div className="ms-3 me-3">
       <h2 className="text-center">Mis trabajos</h2>
-      <div className="box-add-instance ">
-        <div className="text-end me-5">
-          <button
-            type="button"
-            onClick={() => navigate("/newjob")}
-            className="btn btn-success"
-          >
-            <i className="fa-solid fa-plus"></i> Nuevo trabajo
-          </button>
-        </div>
-      </div>
+      {
+        evaluateDate(eventDate) && (
+          <div className="box-add-instance ">
+            <div className="text-end me-5">
+              <button
+                type="button"
+                onClick={() => navigate("/newjob")}
+                className="btn btn-success"
+              >
+                <i className="fa-solid fa-plus"></i> Nuevo trabajo
+              </button>
+            </div>
+          </div>
+        )
+      }
       <div className="mt-3 overflow-x">
         <table className="table table-hover">
           <thead>
@@ -54,9 +76,6 @@ const JobStudent = () => {
               <th>Area</th>
               <th>Modalidad</th>
               <th>Estado</th>
-              <th></th>
-              <th></th>
-              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -84,7 +103,7 @@ const JobStudent = () => {
       ) : (
         <p className="mt-4 text-center">No hay Trabajos</p>
       )}
-    </>
+    </div>
   );
 };
 export default JobStudent;
