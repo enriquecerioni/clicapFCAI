@@ -31,7 +31,7 @@ const JobsAdmin = () => {
     useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
-  const [JobToDelete, setJobToDelete] = useState(false);
+  const [JobToDelete, setJobToDelete] = useState({});
   const [page, setPage] = useState(1);
 
   //evaluator
@@ -131,9 +131,11 @@ const JobsAdmin = () => {
                     <th>Estado</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    {roleId === 1 ? (<>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </>) : null}
                   </tr>
                 </thead>
                 <tbody>
@@ -141,6 +143,7 @@ const JobsAdmin = () => {
                     <JobsAdminList
                       work={work}
                       showAlert={setShowDeleteModal}
+                      JobToDelete={JobToDelete}
                       setJobToDelete={setJobToDelete}
                       setShowAssignEvaluatorModal={setShowAssignEvaluatorModal}
                       setJobToAssignEvaluator={setJobToAssignEvaluator}

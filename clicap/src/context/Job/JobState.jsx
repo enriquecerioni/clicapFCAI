@@ -13,10 +13,10 @@ export const JobState = ({ children }) => {
       name: "",
       jobModalityId: "",
       areaId: "",
-      authorId: "",
+      userId: "",
+      author: "",
       status: 0,
       members: "",
-      urlFile: "",
       evaluatorId1: "",
       evaluatorId2: "",
     },
@@ -37,6 +37,8 @@ export const JobState = ({ children }) => {
       details: "",
       sendMail: 0,
     },
+    isOwnJob: false,
+    jobVersions: [],
     prefiltered: false,
     isFetching: true,
     jobLoader: false,
@@ -208,7 +210,7 @@ export const JobState = ({ children }) => {
     return check.data.value;
   };
 
-  //Buscar la correcion para el trabajo como usuario
+  //Obtener la correción para el trabajo como usuario
   const getCorrectionByJob = async (jobId, correctionNumber) => {
     const roleId = getDataUserByKey("roleId");
 
@@ -225,10 +227,56 @@ export const JobState = ({ children }) => {
     }
   };
 
-  const getJobByAuthorId = async (authorId) => {
+   //Obtener las versiones de un trabajo por id
+   const getJobVersionsById = async (jobId) => {
+
+    try {
+      const jobVersions = await reqAxios(
+        "GET",
+        `/jobversions/get/${jobId}`,
+        "",
+        ""
+      );
+      
+      dispatch({
+        type: "GET_ALL_JOB_VERSIONS",
+        payload: {
+          jobVersions: jobVersions.data.response,
+        },
+      })
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+   //Verificar si el trabajo es del usuario actual
+   const validateIsOwnJob = async (jobId, userId) => {
+
+    try {
+      const isOwnJob = await reqAxios(
+        "GET",
+        `/job/get/is-own-job/${jobId}/${userId}`,
+        "",
+        ""
+      );
+      
+      dispatch({
+        type: "GET_IS_OWN_JOB",
+        payload: {
+          isOwnJob: isOwnJob.data.response,
+        },
+      })
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getJobByAuthorId = async (userId) => {
     const getAuthorJob = await reqAxios(
       "GET",
-      `/job/get/author/${authorId}`,
+      `/job/get/author/${userId}`,
       "",
       ""
     );
@@ -260,21 +308,23 @@ export const JobState = ({ children }) => {
     <JobContext.Provider
       value={{
         jobState: state,
+        addEvaluatorsToJob,
+        checkCorrection,
+        cleanJobData,
+        createEvaluationByEvaluatorOrAdmin,
         createNewJob,
-        updateJobById,
+        getAllJobsByUser,
+        getCorrectionByJob,
+        getCorrectionsByJob,
+        getJobByAuthorId,
         getJobId,
         getJobsFiltered,
-        getCorrectionsByJob,
-        checkCorrection,
-        getCorrectionByJob,
-        setJobFilters,
-        getAllJobsByUser,
-        addEvaluatorsToJob,
-        createEvaluationByEvaluatorOrAdmin,
+        getJobVersionsById,
         sendCorrectionApproved,
+        setJobFilters,
         setRefreshUserIdToJob,
-        cleanJobData,
-        getJobByAuthorId,
+        updateJobById,
+        validateIsOwnJob,
       }}
     >
       {children}

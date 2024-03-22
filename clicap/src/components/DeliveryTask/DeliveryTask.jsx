@@ -81,6 +81,7 @@ const DeliveryTask = () => {
       }
       await updateJobById(job, id);
     } else {
+      job.userId = getDataUserByKey("id");
       await createNewJob(job);
     }
     [3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
@@ -219,13 +220,33 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
+            {/* Autor */}
+            <div className="" style={{ width: "100%" }}>
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label fw-bold"
+              >
+                * Autor
+              </label>
+              <div className="">
+                <input
+                  type="text"
+                  placeholder="Nombre"
+                  className="form-control"
+                  name="author"
+                  value={job.author}
+                  onChange={(e) => handleChangeUpJob(e, "author")}
+                />
+              </div>
+            </div>
+
             {/* Miembros */}
             <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold pe-3"
               >
-                Autor/es del trabajo
+                Coautores del trabajo
               </label>
               <MembersChips
                 membersToSend={members}

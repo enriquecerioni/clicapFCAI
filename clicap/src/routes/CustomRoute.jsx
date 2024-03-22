@@ -44,6 +44,7 @@ import { Institutional } from "../views/Institutional/Institutional";
 import { Contact } from "../views/Contact/Contact";
 import { Exposition } from "../views/Exposition/Exposition";
 import { Payment } from "../views/Payment/Payment";
+import JobVersion from "../components/Jobs/JobVersion/JobVersion";
 
 const CustomRoute = () => (
   <>
@@ -325,6 +326,15 @@ const CustomRoute = () => (
         element={
           <PrivateRoute>
             <JobStudent />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="job/versions/:id"
+        element={
+          <PrivateRoute>
+            <JobVersion />
           </PrivateRoute>
         }
       />

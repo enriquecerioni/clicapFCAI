@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { CorrectionModal } from "../Corrections/CorrectionModal";
@@ -10,7 +10,7 @@ const JobStudentList = ({ job, setjobToDelete }) => {
   const navigate = useNavigate();
   const [showCorrecModal, setCorrecModal] = useState(false);
 
-  const { getCorrectionByJob } = useContext(JobContext);
+  const { getCorrectionByJob, getJobVersionsById } = useContext(JobContext);
 
   const [correction, setCorrection] = useState({});
 
@@ -20,6 +20,11 @@ const JobStudentList = ({ job, setjobToDelete }) => {
     setCorrecModal(true);
   };
 
+  useEffect(() => {
+    getJobVersionsById(job.id);
+  },[])
+
+  const jobStatus = job.jobStatus ? job.jobStatus.name : 'Esperando correción';
   const getTextTooltip =
     job.status === null
       ? "Solo puede presentar un trabajo si tiene alguna corrección"
@@ -38,51 +43,21 @@ const JobStudentList = ({ job, setjobToDelete }) => {
         <td>{job.name}</td>
         <td>{job.area.name}</td>
         <td>{job.jobmodality.title}</td>
-        <td>{job.jobStatus?.name}</td>
+        <td>{jobStatus}</td>
         <ClicapTooltip
           tooltip={job.status === null ? true : false}
-          text={"No hay correcciones"}
+          text={"No hay correcciones aún"}
         >
           <td className="text-center">
             <button
               className="btn btn-success"
-              onClick={getCorrection}
-              disabled={job.status === null ? true : false}
+              onClick={() => navigate(`/job/versions/${job.id}`)}
             >
-              Ver Corrección
+              Ver entregas
             </button>
           </td>
         </ClicapTooltip>
-
-        <ClicapTooltip tooltip={true} text={getTextTooltip}>
-          <td className="text-center">
-            <Button
-              className="btn btn-primary"
-              disabled={
-                job.status === null || [1, 4].includes(job.status)
-                  ? true
-                  : false
-              }
-              onClick={() => navigate(`/myjob/${job.id}`)}
-            >
-              <i className="fa-solid fa-file-arrow-up"></i>
-            </Button>
-          </td>
-        </ClicapTooltip>
-        <td className="text-center">
-          <ClicapTooltip tooltip={true} text={"Descargar Trabajo"}>
-            <button
-              className="btn btn-secondary"
-              /* disabled={job.status === null ? true : false} */
-            >
-              <i
-                className="icon-size-table fa-solid fa-file-arrow-down"
-                type="button"
-                onClick={() => downloadFile(job.urlFile, "documents")}
-              ></i>
-            </button>
-          </ClicapTooltip>
-        </td>
+       
       </tr>
     </>
   );
