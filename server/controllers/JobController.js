@@ -15,6 +15,7 @@ const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 const hbs = require("nodemailer-express-handlebars");
 const uuid = require("uuid");
 const JobDetailModel = require("../models/JobDetailModel");
+const JobVersionModel = require("../models/JobVersionModel");
 
 var jobUUID;
 
@@ -51,7 +52,7 @@ exports.upload = async (req, res) => {
         err.message = "The file is so heavy for my service";
         return res.send(err);
       }
-      const { name, areaId, authorId, members, jobModalityId } = req.body;
+      const { name, areaId, userId, author, members, jobModalityId } = req.body;
       // status 1 = Corregido | 0 = No corregido
       const status = 0;
       let { evaluatorId1, evaluatorId2 } = req.body;
@@ -66,16 +67,25 @@ exports.upload = async (req, res) => {
 
       const doc = await JobModel.create({
         name: name,
-        jobModalityId,
-        areaId: areaId,
+        jobModalityId: Number(jobModalityId),
+        areaId: Number(areaId),
         members: members,
-        authorId: Number(authorId),
+        userId: Number(userId),
+        author: author,
         status: null,
-        urlFile: jobUUID,
         evaluatorId1,
         evaluatorId2,
         approve: 0,
       });
+
+      // Creamos la primera version del trabajo
+
+      await JobVersionModel.create({
+        jobId: doc?.id,
+        versionNumber: 1,
+        urlFile: jobUUID,
+      })
+
       if (doc) {
         return res.status(200).json({ msg: "Trabajo creado!" });
       } else {
@@ -112,7 +122,8 @@ exports.updateById = async (req, res) => {
     let {
       name,
       areaId,
-      authorId,
+      userId,
+      author,
       members,
       status,
       evaluatorId1,
@@ -141,7 +152,8 @@ exports.updateById = async (req, res) => {
         name: name,
         areaId: areaId,
         members: members,
-        authorId: authorId,
+        userId: userId,
+        author: author,
         status,
         evaluatorId1: evaluatorId1,
         evaluatorId2: evaluatorId2,
@@ -238,6 +250,7 @@ exports.updateById = async (req, res) => {
     console.log("El Trabajo no existe!" + error);
   }
 };
+
 exports.uploadFileJob = async (req, res) => {
   try {
     uploadJob(req, res, async (err) => {
@@ -248,24 +261,27 @@ exports.uploadFileJob = async (req, res) => {
 
       const { id } = req.body;
 
-      const { urlFile } = await JobModel.findOne({
-        where: { id: id },
-        attributes: ["urlFile"],
-      });
-
-      const fileToDelete = {
-        nameFile: urlFile,
-        folder: "documents",
-      };
-
-      deleteFileGeneric(fileToDelete);
-
       const doc = await JobModel.update(
+        req.body,
         {
-          urlFile: jobUUID,
-        },
-        { where: { id: id } }
+          where: { id: id },
+        }
       );
+
+      // Buscamos cual fue la ultima version del trabajo
+
+      let { versionNumber } = await JobVersionModel.findOne({
+        where: { jobId: id },
+        order: [['versionNumber', 'DESC']]
+      })
+
+      const newVersion = await JobVersionModel.create(
+        {
+          jobId: id,
+          versionNumber: versionNumber + 1,
+          urlFile: jobUUID,
+        }
+      )
 
       if (doc) {
         return res.status(200).json({ msg: "Archivo actualizado!" });
@@ -278,6 +294,25 @@ exports.uploadFileJob = async (req, res) => {
   }
 };
 
+exports.validateOwnJob = async (req, res) => {
+  try {
+    const { jobId, userId } = req.params;
+    const isOwnJob = await JobModel.findOne({
+      where: { 
+        id: jobId,
+        userId: userId, 
+      }
+    })
+
+    const isJobFound = isOwnJob !== null;
+
+    res.status(200).json({ response: isJobFound });
+    
+  } catch (error) {
+    console.log("Error al obtener el Trabajo." + error);
+  }
+};
+
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -286,7 +321,7 @@ exports.getById = async (req, res) => {
       include: [
         { model: AreaModel },
         { model: JobModalityModel },
-        { model: UserModel, as: "author" },
+        { model: UserModel, as: "user" },
         { model: UserModel, as: "evaluator1" },
         { model: UserModel, as: "evaluator2" },
       ],
@@ -306,7 +341,7 @@ exports.getAll = async (req, res) => {
   try {
     const doc = await JobModel.findAll({
       include: [
-        { model: UserModel, as: "author" },
+        { model: UserModel, as: "user" },
         { model: CorrectionModel, as: "jobStatus" },
         { model: AreaModel },
         { model: UserModel, as: "evaluator1" },
@@ -367,6 +402,10 @@ exports.deleteById = async (req, res) => {
       where: { jobId: id },
     });
 
+    const versions = await JobVersionModel.destroy({
+      where: { jobId: id },
+    });
+
     const doc = await JobModel.destroy({
       where: { id: id },
     });
@@ -384,7 +423,7 @@ exports.deleteById = async (req, res) => {
 exports.getAllPaginated = async (req, res) => {
   try {
     const {
-      authorId,
+      userId,
       name,
       surname,
       status,
@@ -404,7 +443,7 @@ exports.getAllPaginated = async (req, res) => {
         { model: JobModalityModel },
         {
           model: UserModel,
-          as: "author",
+          as: "user",
           attributes: ["name", "surname"],
         },
         { model: CorrectionModel, as: "jobStatus" },
@@ -425,8 +464,8 @@ exports.getAllPaginated = async (req, res) => {
         [Op.like]: `%${surname}%`,
       };
     }
-    if (authorId) {
-      options.where.authorId = authorId;
+    if (userId) {
+      options.where.userId = userId;
     }
     if (jobModalityId) {
       options.where.jobModalityId = jobModalityId;
@@ -461,26 +500,22 @@ exports.getAllPaginated = async (req, res) => {
 };
 exports.getAllJobsByUser = async (req, res) => {
   try {
-    const { authorId } = req.query;
+    const { userId } = req.query;
     console.log(req.query);
     let options = {
       where: {},
       include: [
         { model: AreaModel },
         { model: JobModalityModel },
-        {
-          model: UserModel,
-          as: "author",
-          attributes: ["name", "surname"],
-        },
+        { model: UserModel, as: "user", attributes: ["name", "surname"], },
         { model: CorrectionModel, as: "jobStatus" },
         { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
         { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
       ],
     };
 
-    if (authorId) {
-      options.where.authorId = authorId;
+    if (userId) {
+      options.where.userId = Number(userId);
     }
 
     const jobsByUser = await JobModel.findAll(options);
@@ -497,9 +532,9 @@ exports.getAllJobsByUser = async (req, res) => {
 
 exports.getByAuthorId = async (req, res) => {
   try {
-    const { authorId } = req.params;
+    const { userId } = req.params;
     const job = await JobModel.findOne({
-      where: { authorId },
+      where: { userId },
     });
 
     if (job) {
@@ -514,7 +549,7 @@ exports.getByAuthorId = async (req, res) => {
 
 exports.getAllJobsByUser = async (req, res) => {
   try {
-    const { authorId } = req.query;
+    const { userId } = req.query;
     console.log(req.query);
     let options = {
       where: {},
@@ -523,7 +558,7 @@ exports.getAllJobsByUser = async (req, res) => {
         { model: JobModalityModel },
         {
           model: UserModel,
-          as: "author",
+          as: "user",
           attributes: ["name", "surname"],
         },
         { model: CorrectionModel, as: "jobStatus" },
@@ -532,8 +567,8 @@ exports.getAllJobsByUser = async (req, res) => {
       ],
     };
 
-    if (authorId) {
-      options.where.authorId = authorId;
+    if (userId) {
+      options.where.userId = userId;
     }
 
     const jobsByUser = await JobModel.findAll(options);
@@ -573,7 +608,7 @@ const optionsToFilter = (req) => {
   try {
     const Op = Sequelize.Op;
     const {
-      authorId,
+      author,
       name,
       surname,
       status,
@@ -592,7 +627,7 @@ const optionsToFilter = (req) => {
         { model: JobModalityModel },
         {
           model: UserModel,
-          as: "author",
+          as: "user",
           attributes: ["name", "surname"],
         },
         { model: CorrectionModel, as: "jobStatus" },
@@ -611,8 +646,8 @@ const optionsToFilter = (req) => {
         [Op.like]: `%${surname}%`,
       };
     }
-    if (authorId) {
-      options.where.authorId = authorId;
+    if (author) {
+      options.where.author = author;
     }
     if (jobModalityId) {
       options.where.jobModalityId = jobModalityId;
@@ -659,7 +694,7 @@ exports.downloadFilter = async (req, res) => {
     ];
     // Looping through User data
     rows.forEach((job) => {
-      job.author = job.author.name + " " + job.author.surname;
+      job.author = job.author;
       job.evaluator1 =
         job.evaluatorId1 != null
           ? job.evaluator1.name + " " + job.evaluator1.surname

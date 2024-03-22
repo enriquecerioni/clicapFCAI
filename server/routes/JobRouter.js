@@ -8,11 +8,12 @@ router.post("/upload", JobController.uploadFileJob);
 router.put("/setcorrection/:id", JobController.setStatusJob);
 router.get("/get/:id", JobController.getById);
 router.get("/export/jobs", JobController.downloadFilter);
-router.get("/get/author/:authorId", JobController.getByAuthorId);
+router.get("/get/author/:userId", JobController.getByAuthorId);
 router.get("/get/jobs/:page", JobController.getAllPaginated);
 router.get("/getjobs/byuser", JobController.getAllJobsByUser);
 router.get("/getall", JobController.getAll);
 router.get("/getamountjobs", JobController.getAmountJobs);
+router.get("/get/is-own-job/:jobId/:userId", JobController.validateOwnJob);
 router.delete("/delete/:id", JobController.deleteById);
 router.get("/downloadfile", JobController.downloadFile);
 

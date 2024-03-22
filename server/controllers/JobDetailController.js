@@ -7,6 +7,7 @@ const CorrectionModel = require("../models/CorrectionModel");
 const JobModel = require("../models/JobModel");
 const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
+const JobVersionModel = require("../models/JobVersionModel");
 
 transporter.use(
   "compile",
@@ -56,13 +57,13 @@ exports.create = async (req, res) => {
         include: [
           {
             model: UserModel,
-            as: "author",
+            as: "user",
             attributes: ["name", "surname", "email"],
           },
         ],
       });
 
-      const { name, author } = doc;
+      const { name, user } = doc;
       const correction = await CorrectionModel.findOne({
         where: { id: correctionId },
       });
@@ -75,25 +76,45 @@ exports.create = async (req, res) => {
         correctionId === 1
           ? "Trabajo aceptado"
           : correctionId === 4
-          ? "Trabajo no Aceptado"
-          : "Nueva corrección";
+            ? "Trabajo no Aceptado"
+            : "Nueva corrección";
 
       // sendMail = 1 => send email to author's job
       if (Number(sendMail) === 1) {
+        const latestJobVersion = await JobVersionModel.findOne({
+          where: { jobId: jobId },
+          order: [['versionNumber', 'DESC']]
+        });
+
+        console.log({
+          latestJobVersion
+        })
+        
+        if (latestJobVersion) {
+          await JobVersionModel.update(
+            { 
+              status: correction.name,
+              feedback: details,
+              correctionDate: detail.date,
+            },
+            { where: { id: latestJobVersion.id } }
+          );
+        }
+
         mailOptions = {
           from: process.env.EMAIL_APP,
-          to: doc.author.email,
+          to: user.email,
           subject: getCorrectionStatus(),
           template: "mailNewCorrection",
           attachments: [
             {
               filename: "appLogo.jpg",
               path: "./public/logos/appLogo.jpg",
-              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+              cid: "logo",
             },
           ],
           context: {
-            evaluatorName: author.name + " " + author.surname,
+            evaluatorName: user.name + " " + user.surname,
             titleTp: name,
             correctionStatus: getCorrectionStatus(),
             correctionName: correction.name,
@@ -130,7 +151,7 @@ exports.create = async (req, res) => {
               {
                 filename: "appLogo.jpg",
                 path: "./public/logos/appLogo.jpg",
-                cid: "logo", //my mistake was putting "cid:logo@cid" here!
+                cid: "logo",
               },
             ],
             context: {
@@ -214,7 +235,7 @@ exports.getById = async (req, res) => {
         },
         {
           model: JobModel,
-          attributes: ["name", "urlFile"],
+          attributes: ["name"],
         },
       ],
     };
