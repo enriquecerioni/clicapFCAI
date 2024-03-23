@@ -306,55 +306,6 @@ export const SendCorrectionAdmin = () => {
           </div>
         </div>
       </div>
-      {/*       <div className="mt-3 center-center">
-        <Card className="mt-3 w-50">
-          <Card.Header>Corrección</Card.Header>
-          <Card.Body>
-            <div style={{ width: "100%" }} className="">
-              <p className="m-0">Estado</p>
-              <Select
-                options={statusCorrections}
-                placeholder={"Seleccione..."}
-                name="correctionId"
-                isClearable={true}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleNewCorrection(e)}
-              />
-            </div>
-            <hr />
-            <div>
-              <FloatingLabel controlId="floatingTextarea2" label="Comentarios">
-                <Form.Control
-                  className="mt-3"
-                  name="details"
-                  as="textarea"
-                  placeholder="Leave a comment here"
-                  style={{ height: "100px" }}
-                  onChange={(e) => setDetails(e.target.value)}
-                />
-              </FloatingLabel>
-            </div>
-            <div className="center-center">
-              <Button
-                variant="primary"
-                className="mt-2"
-                disabled={
-                  details === "" || stateOfCorrection === 0 ? true : false
-                }
-                onClick={sendCorrectionToStudent}
-              >
-                Enviar Corrección
-              </Button>{" "}
-            </div>
-          </Card.Body>
-        </Card>
-      </div> */}
     </>
   );
 };

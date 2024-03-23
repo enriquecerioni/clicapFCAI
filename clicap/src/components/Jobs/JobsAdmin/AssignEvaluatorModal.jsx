@@ -3,8 +3,6 @@ import { CustomModal } from "../../CustomModal/CustomModal";
 import { UserContext } from "../../../context/User/UserContext";
 import Select from "react-select";
 import { JobContext } from "../../../context/Job/JobContext";
-import { alertError } from "../../../helpers/alerts";
-import { reqAxios, waitAndRefresh } from "../../../helpers/helpers";
 
 export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
   const { userState } = useContext(UserContext);
