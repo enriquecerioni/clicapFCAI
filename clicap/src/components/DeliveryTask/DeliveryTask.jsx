@@ -84,7 +84,7 @@ const DeliveryTask = () => {
       job.userId = getDataUserByKey("id");
       await createNewJob(job);
     }
-    [3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
+    [2, 3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
   };
 
   const checkFields = () => {

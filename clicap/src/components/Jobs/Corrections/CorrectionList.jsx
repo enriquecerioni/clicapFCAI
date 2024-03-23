@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { CorrectionModal } from "./CorrectionModal";
 import { getDataUserByKey } from "../../../helpers/helpers";
 
-export const CorrectionList = ({ correction, setuserToDelete }) => {
-  const navigate = useNavigate();
+export const CorrectionList = ({ correction }) => {
   const [showCorrecModal, setCorrecModal] = useState(false);
   const roleId = getDataUserByKey("roleId");
-  /*  const startDate = user.startDate.split('-') */
+
   return (
     <>
       {/* MODAL FILTER */}

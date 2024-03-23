@@ -14,7 +14,7 @@ const JobStudentVersionList = ({ version }) => {
             <td>{jobStatus}</td>
             <td>{version.feedback ? version.feedback : 'Esperando corrección'}</td>
             <td>{formatedDate}</td>
-            <td className="text-center">
+            <td className="text-center" onClick={() => downloadFile(version.urlFile, "documents")}>
                 <ClicapTooltip tooltip={true} text={"Descargar versión"}>
                     <button
                         className="btn btn-secondary"
@@ -23,7 +23,6 @@ const JobStudentVersionList = ({ version }) => {
                         <i
                             className="icon-size-table fa-solid fa-file-arrow-down"
                             type="button"
-                            onClick={() => downloadFile(version.urlFile, "documents")}
                         ></i>
                     </button>
                 </ClicapTooltip>

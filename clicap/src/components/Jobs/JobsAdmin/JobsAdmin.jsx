@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { JobsAdminList } from "./JobsAdminList";
 import ModalDelete from "../../Modals/ModalDelete";
@@ -13,7 +12,6 @@ import { AreaContext } from "../../../context/Area/AreaContext";
 import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
 
 const JobsAdmin = () => {
-  const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const isEvaluator = roleId === 2 ? true : false;
 

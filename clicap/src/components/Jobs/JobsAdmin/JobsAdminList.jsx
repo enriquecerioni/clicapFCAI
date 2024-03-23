@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { useEffect } from "react";
-import { downloadFile, getDataUserByKey } from "../../../helpers/helpers";
+import { getDataUserByKey } from "../../../helpers/helpers";
 import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
@@ -177,14 +177,6 @@ export const JobsAdminList = ({
                 </div>
               </ClicapTooltip>
             </td>
-            {/* <td>
-              <Button
-                variant="primary"
-                onClick={() => downloadFile(work.urlFile, "documents")}
-              >
-                Descargar Ult. Version
-              </Button>
-            </td> */}
           </>
         ) : null}
       </tr>

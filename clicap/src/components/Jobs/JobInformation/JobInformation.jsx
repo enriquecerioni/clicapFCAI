@@ -3,7 +3,6 @@ import "./jobInformation.css";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { EntitiesContext } from "../../../context/EntitiesContext";
-import { reqAxios } from "../../../helpers/helpers";
 
 export const JobInformation = () => {
   const { jobId, getJobId } = useContext(EntitiesContext);
