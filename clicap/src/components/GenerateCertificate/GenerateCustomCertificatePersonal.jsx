@@ -65,10 +65,7 @@ export const GenerateCustomCertificatePersonal = ({
   };
 
   const disabled = () => {
-    return (
-      !!!certificateData.type ||
-      !!!certificateData.certificateId 
-    );
+    return !!!certificateData.type || !!!certificateData.certificateId;
   };
 
   useEffect(() => {
@@ -84,7 +81,7 @@ export const GenerateCustomCertificatePersonal = ({
     >
       <Modal.Header closeButton>
         <Modal.Title id="example-custom-modal-styling-title">
-          {`Generar Certificado Personal"`}
+          {`Generar Certificado Personal`}
         </Modal.Title>
       </Modal.Header>
 
@@ -138,6 +135,23 @@ export const GenerateCustomCertificatePersonal = ({
           </div>
 
           <div className="mt-2">
+            {certificateData.type === 1 ? (
+              <div className="me-3">
+                <label htmlFor="forName" className="form-label">
+                  Nombre y apellido - Identificacion
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="userName"
+                  placeholder="Juan Juri, Dni: 40.158.444"
+                  disabled={showPreview}
+                  value={certificateData.userName}
+                  onChange={(e) => handleChange(e, "userName")}
+                />
+              </div>
+            ) : null}
+
             {certificateData.type === 2 ? (
               <>
                 <div className="me-3">
