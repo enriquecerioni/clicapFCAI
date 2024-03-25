@@ -77,10 +77,10 @@ exports.getAll = async (req, res) => {
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 
@@ -91,7 +91,7 @@ exports.getAllByUser = async (req, res) => {
     let options = {
       where: { userId: userId },
       include: [
-        { model: JobModel, include: [{ model: UserModel, as: "author" }] },
+        { model: JobModel, include: [{ model: UserModel, as: "user" }] },
         { model: CertificateModel },
       ],
     };
@@ -99,10 +99,10 @@ exports.getAllByUser = async (req, res) => {
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 
