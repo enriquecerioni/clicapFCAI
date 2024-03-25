@@ -1,6 +1,7 @@
 const CertificateModel = require("../models/CertificateModel");
 const JobModel = require("../models/JobModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
+const UserModel = require("../models/UserModel");
 
 exports.create = async (req, res) => {
   try {
@@ -11,6 +12,7 @@ exports.create = async (req, res) => {
       jobId = null;
     }
 
+    console.log(certificateId, userId, jobId);
     const certificate = await StudentCertificateModel.create({
       certificateId,
       userId,
@@ -75,10 +77,10 @@ exports.getAll = async (req, res) => {
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 
@@ -88,16 +90,19 @@ exports.getAllByUser = async (req, res) => {
     console.log(userId);
     let options = {
       where: { userId: userId },
-      include: [{ model: JobModel }, { model: CertificateModel }],
+      include: [
+        { model: JobModel, include: [{ model: UserModel, as: "user" }] },
+        { model: CertificateModel },
+      ],
     };
     const certificate = await StudentCertificateModel.findAll(options);
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 

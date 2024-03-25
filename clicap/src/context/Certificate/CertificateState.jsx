@@ -20,8 +20,7 @@ export const CertificateState = ({ children }) => {
     isFetching: true,
     certificateLogo: "",
     userCertificates: [],
-    userIdToCertificate: "",
-    nameToCertificate: "",
+    userToCertificate: "",
     totalCertificatesPages: 0,
     certificateSelector: [],
   };
@@ -56,14 +55,10 @@ export const CertificateState = ({ children }) => {
       console.log(error);
     }
   };
-  const setUserIdToCertificate = async (id, name, surname) => {
-    const fullName = `${name} ${surname}`;
+  const setUserIdToCertificate = async (user) => {
     dispatch({
-      type: "SET_USER_ID_TO_CERTIFICATE",
-      payload: {
-        id,
-        fullName,
-      },
+      type: "SET_USER_TO_CERTIFICATE",
+      payload: user,
     });
   };
   const getAllCertificatesByUser = async (id) => {

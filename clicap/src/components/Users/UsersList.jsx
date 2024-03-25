@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 
@@ -41,7 +40,7 @@ export const UsersList = ({
                 type="button"
                 className="fa-solid fa-id-card icon-size-table btn-certificate-table"
                 onClick={() => {
-                  setUserIdToCertificate(user.id, user.name, user.surname);
+                  setUserIdToCertificate(user);
                   showModalCertificate(true);
                 }}
               ></i>

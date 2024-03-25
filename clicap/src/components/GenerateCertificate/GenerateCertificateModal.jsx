@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
-
+import { PDFViewer } from "@react-pdf/renderer";
 //components
-import { Button, Modal, Tabs, Tab } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { JobContext } from "../../context/Job/JobContext";
 import { reqAxios } from "../../helpers/helpers";
+import { Pdf } from "./Pdf";
 
 export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
   const { getAllCertificates, ceritificateState } =
@@ -13,9 +14,10 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
 
   const {
     certificates,
-    nameToCertificate,
+    userToCertificate,
     userIdToCertificate,
     certificateTypesOpt,
+    certificateLogo,
   } = ceritificateState;
 
   const { getAllJobsByUser } = useContext(JobContext);
@@ -32,17 +34,21 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
   const [jobsUser, setJobsUser] = useState([]);
   const [putDisabled, setPutDisabled] = useState(false);
 
-  const allCertificates = certificates.map((certificate) => ({
-    value: certificate.id,
-    label: certificate.name,
-    target: { value: certificate.id, name: "certificateId" },
-  }));
+  const allCertificates = certificates
+    .filter((certificate) => certificate.type === certificateData.type)
+    .map((certificate) => ({
+      value: certificate.id,
+      label: certificate.name,
+      target: { value: certificate.id, name: "certificateId" },
+    }));
 
-  /*   const allJobs = jobs.map((job) => ({
-    value: job.id,
-    label: job.name,
-    target: { value: job.id, name: "jobId" },
-  })); */
+  const certificateSelected = certificates.filter(
+    (certificate) => certificate.id === certificateData.certificateId
+  );
+
+  const fullNameAndIdentityNumber = Object.keys(userToCertificate)
+    ? `${userToCertificate?.name} ${userToCertificate?.surname}, ${userToCertificate?.identifyType}: ${userToCertificate?.identifyNumber}`
+    : "-";
 
   const disabled = () => {
     return !!!certificateData.type || !!!certificateData.certificateId;
@@ -62,21 +68,31 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
   };
 
   const handleSubmit = async () => {
-    await reqAxios("POST", `/student/create`, "", certificateData);
+    const data = {
+      certificateId: certificateData.certificateId,
+      jobId: certificateData.jobId,
+      userId: userToCertificate.id,
+    };
+    await reqAxios("POST", `/student/create`, "", data);
     closeModal();
   };
 
   const getAllJobsByUserAndSetJobs = async () => {
-    const allJobs = await getAllJobsByUser(userIdToCertificate);
-    const allJobsSelector = allJobs.map((item, i) => {
-      return {
-        label: item.name,
-        value: item.id,
-        target: { name: "jobId", value: item.id },
-      };
-    });
-    setJobsUser(allJobsSelector);
+    const allJobs = await getAllJobsByUser(userToCertificate?.id);
+    setJobsUser(allJobs);
   };
+
+  const allJobsSelector = jobsUser.map((item, i) => {
+    return {
+      label: item.name,
+      value: item.id,
+      target: { name: "jobId", value: item.id },
+    };
+  });
+
+  const JobSelected = jobsUser.filter(
+    (certificate) => certificate.id === certificateData.jobId
+  );
 
   useEffect(() => {
     getAllCertificates();
@@ -93,7 +109,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            {`Generar Certificado para: "${nameToCertificate}"`}
+            {`Generar Certificado para: "${userToCertificate.name} ${userToCertificate.surname}"`}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="">
@@ -102,6 +118,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               <label htmlFor="forName" className="form-label">
                 Certificado
               </label>
+
               <Select
                 options={certificateTypesOpt}
                 placeholder={"Seleccione..."}
@@ -120,6 +137,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
                 onChange={(e) => handleChange(e, "type")}
               />
             </div>
+
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
                 Tipo de certificado
@@ -139,12 +157,13 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
                 onChange={(e) => handleChange(e, "certificateId")}
               />
             </div>
+
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
                 Trabajo
               </label>
               <Select
-                options={jobsUser}
+                options={allJobsSelector}
                 placeholder={"Seleccione..."}
                 isDisabled={certificateData.type === 1 ? true : false}
                 name="jobId"
@@ -160,7 +179,7 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               />
             </div>
           </div>
-          <div className="center-center mt-3">
+          <div className="center-center mt-3 gap-3">
             <button
               type="button"
               onClick={handleSubmit}
@@ -170,6 +189,20 @@ export const GenerateCertificateModal = ({ showModal, setShowModal }) => {
               Generar
             </button>
           </div>
+
+          {certificateData.type !== "" &&
+          certificateData.certificateId !== "" ? (
+            <div className="mt-2" style={{ height: "500px" }}>
+              <PDFViewer style={{ width: "100%", height: "100%" }}>
+                <Pdf
+                  logo={certificateLogo}
+                  user={fullNameAndIdentityNumber}
+                  certificate={certificateSelected[0]}
+                  job={JobSelected[0]}
+                />
+              </PDFViewer>
+            </div>
+          ) : null}
         </Modal.Body>
       </Modal>
     </>
