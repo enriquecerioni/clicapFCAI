@@ -12,7 +12,6 @@ import JobsAdmin from "../components/Jobs/JobsAdmin/JobsAdmin";
 import Users from "../components/Users/Users";
 import JobStudent from "../components/Jobs/JobsStudent/JobStudent";
 import PrivateAdminRoute from "./PrivateAdminRoute";
-import { JobInformation } from "../components/Jobs/JobInformation/JobInformation";
 import { Corrections } from "../components/Jobs/Corrections/Corrections";
 import PayStudent from "../components/Payment/PaysStudent/PayStudent";
 import PayReceipt from "../components/UploadReceipt/PayReceipt/PayReceipt";
@@ -44,6 +43,8 @@ import { Institutional } from "../views/Institutional/Institutional";
 import { Contact } from "../views/Contact/Contact";
 import { Exposition } from "../views/Exposition/Exposition";
 import { Payment } from "../views/Payment/Payment";
+import JobVersion from "../components/Jobs/JobVersion/JobVersion";
+import { EventDate } from "../components/EventDate/EventDate";
 
 const CustomRoute = () => (
   <>
@@ -231,6 +232,15 @@ const CustomRoute = () => (
       />
 
       <Route
+        path="event-date"
+        element={
+          <PrivateAdminRoute>
+            <EventDate />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
         path="sponsor-config"
         element={
           <PrivateAdminRoute>
@@ -303,15 +313,6 @@ const CustomRoute = () => (
       />
 
       <Route
-        path="job/:id"
-        element={
-          <PrivateRoute>
-            <JobInformation />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
         path="job/corrections/:id"
         element={
           <PrivateRoute>
@@ -325,6 +326,15 @@ const CustomRoute = () => (
         element={
           <PrivateRoute>
             <JobStudent />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="job/versions/:id"
+        element={
+          <PrivateRoute>
+            <JobVersion />
           </PrivateRoute>
         }
       />

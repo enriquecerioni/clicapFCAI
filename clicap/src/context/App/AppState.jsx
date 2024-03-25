@@ -9,9 +9,24 @@ export const AppState = ({ children }) => {
     menuPhone: false,
     refreshRoleIdAndUserId: true,
     loggout: false,
+    eventDate: null,
+    deadlineDays: null,
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
+
+  const setDeadlineDays = async (days) => {
+    await reqAxios("PUT", `/date/edit/deadline/${days}`, "", "");
+    dispatch({
+      type: "SET_DEADLINE_DAY",
+      payload: days,
+    });
+  };
+
+  const handleTime = async (date) => {
+    await reqAxios("PUT", `/date/edit/${date}`, "", "");
+    window.location.reload();
+  };
 
   const setSearchPixels = async (value) => {
     dispatch({
@@ -45,22 +60,40 @@ export const AppState = ({ children }) => {
       "",
       ""
     );
-    
+
     return AppLogo.data.response;
   };
+
+  const getEventDate = async () => {
+
+    const eventDate = await reqAxios(
+      "GET",
+      `/date/get`,
+      "",
+      ""
+    );
+    dispatch({
+      type: "GET_EVENT_DATE",
+      payload: eventDate.data.response,
+    });
+  }
 
   return (
     <AppContext.Provider
       value={{
         appState: state,
-        setSearchPixels,
-        setMenuPhone,
-        setLoggout,
-        setRefreshRoleIdAndUserId,
         getAppLogo,
+        getEventDate,
+        handleTime,
+        setDeadlineDays,
+        setLoggout,
+        setMenuPhone,
+        setRefreshRoleIdAndUserId,
+        setSearchPixels,
       }}
     >
       {children}
     </AppContext.Provider>
   );
-};
+}
+

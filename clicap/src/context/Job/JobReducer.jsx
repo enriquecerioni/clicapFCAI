@@ -1,11 +1,13 @@
 import {
-  GET_JOB,
-  SET_JOBS_FILTERS,
-  GET_ALL_JOBS,
-  SET_ASSIGNED_EVALUATOR,
-  SET_USERID_TO_JOB,
   CLEAN_JOB_DATA,
+  GET_ALL_JOB_VERSIONS,
+  GET_ALL_JOBS,
+  GET_IS_OWN_JOB,
+  GET_JOB,
+  SET_ASSIGNED_EVALUATOR,
   SET_JOB_LOADER,
+  SET_JOBS_FILTERS,
+  SET_USERID_TO_JOB,
 } from "./types";
 
 export default (state, action) => {
@@ -45,6 +47,17 @@ export default (state, action) => {
         isFetching: false,
         jobs: payload.jobs,
         totalJobsPages: payload.totalJobsPages,
+      };
+    case GET_ALL_JOB_VERSIONS:
+      return {
+        ...state,
+        isFetching: false,
+        jobVersions: payload.jobVersions,
+      };
+    case GET_IS_OWN_JOB:
+      return {
+        ...state,
+        isOwnJob: payload.isOwnJob,
       };
     case SET_JOBS_FILTERS:
       return {

@@ -3,8 +3,6 @@ import { CustomModal } from "../../CustomModal/CustomModal";
 import { UserContext } from "../../../context/User/UserContext";
 import Select from "react-select";
 import { JobContext } from "../../../context/Job/JobContext";
-import { alertError } from "../../../helpers/alerts";
-import { reqAxios, waitAndRefresh } from "../../../helpers/helpers";
 
 export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
   const { userState } = useContext(UserContext);
@@ -66,7 +64,7 @@ export const AssignEvaluatorModal = ({ showModal, setShowModal, job }) => {
         <div className="d-flex">
           <div className="d-flex">
             <p className="m-0 fw-bold">Autor: &nbsp;</p>
-            <p className="m-0">{job.author.name + " " + job.author.surname}</p>
+            <p className="m-0">{job.author}</p>
           </div>
           <div className="ms-3 d-flex">
             <p className="m-0 fw-bold">Trabajo: &nbsp;</p>

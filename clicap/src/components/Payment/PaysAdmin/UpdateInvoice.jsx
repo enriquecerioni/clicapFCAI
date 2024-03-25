@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/User/UserContext";
 import { PayContext } from "../../../context/Pay/PayContext";
@@ -19,11 +18,8 @@ const UpdateInvoce = () => {
   const { users } = userState;
   const { id } = useParams();
   const pay = pays.find((p) => p.id == id);
-  const author = users.find((user) => user.id === pay.authorId);
   const [refreshPays, setRefreshPays] = useState(false);
   const disabled = () => (invoce.invoice === "" ? true : false);
-
-  // const author = users.find(user => user?.id === pay?.authorId)
 
   const handleSubmit = (e) => {
     e.preventDefault();

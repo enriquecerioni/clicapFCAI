@@ -15,6 +15,7 @@ const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
 const JobDetailsRouter = require("./routes/JobDetailRouter");
+const JobVersionRouter = require("./routes/JobVersionRouter")
 const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
 const FileRouter = require("./routes/FileRouter");
 const JobModalityModel = require("./models/JobModalityModel");
@@ -29,6 +30,7 @@ const SponsorRouter = require("./routes/SponsorRouter");
 const JobExpositionRouter = require("./routes/JobExpositionRouter");
 const JobExpositionModel = require("./models/JobExpositionModel");
 const PaymentRouter = require("./routes/PaymentRouter");
+const DateModel = require("./models/DateModel");
 
 // Models
 require("./models/AreaModel");
@@ -40,6 +42,7 @@ require("./models/JobModel");
 require("./models/JobExpositionModel");
 require("./models/JobModalityModel");
 require("./models/JobDetailModel");
+require("./models/JobVersionModel");
 require("./models/NewModel");
 require("./models/PayModel");
 require("./models/PaymentModel");
@@ -73,6 +76,7 @@ app.use("/api/clicap/file/", FileRouter);
 app.use("/api/clicap/importantdate/", ImportantDateRouter);
 app.use("/api/clicap/job/", JobRouter);
 app.use("/api/clicap/jobdetails/", JobDetailsRouter);
+app.use("/api/clicap/jobversions/", JobVersionRouter);
 app.use("/api/clicap/jobmodality/", JobModalityRouter);
 app.use("/api/clicap/jobexposition/", JobExpositionRouter);
 app.use("/api/clicap/new/", NewRouter);
@@ -87,6 +91,7 @@ app.use("/api/clicap/user/", UserRouter);
 const insertData = async () => {
   const areas = ["Alimentos", "Química"];
   const roles = ["Admin", "Evaluador", "Docente Investigador", "Estudiante"];
+  const eventDate = ["2024-03-21"]
   const modality = [
     {
       id: 1,
@@ -104,7 +109,7 @@ const insertData = async () => {
   const exposition = ["Presentación de pósters"];
   const corrections = [
     "Aceptado",
-    "Aceptado con modificaciones Menores",
+    "Aceptado con modificaciones menores",
     "Aceptado con modificaciones mayores",
     "No aceptado",
   ];
@@ -116,7 +121,7 @@ const insertData = async () => {
       identifyNumber: 0,
       name: "Admin",
       surname: "ADM",
-      email: "scytfcai@fcai.uncu.edu.ar",
+      email: "enriquecerioni39@gmail.com",
       password:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
       address: "Bernardo Yrigoyen 758",
@@ -131,7 +136,7 @@ const insertData = async () => {
       identifyNumber: 1111,
       name: "Fabian",
       surname: "Talio",
-      email: "scytfcai@fcai.uncu.edu.ar",
+      email: "enriquecerioni39@gmail.com",
       password:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
       address: "Bernardo Yrigoyen 758",
@@ -146,7 +151,7 @@ const insertData = async () => {
       identifyNumber: 2222,
       name: "Diego",
       surname: "Liseno",
-      email: "scytfcai@fcai.uncu.edu.ar",
+      email: "enriquecerioni39@gmail.com",
       password:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
       address: "Bernardo Yrigoyen 758",
@@ -161,7 +166,7 @@ const insertData = async () => {
       identifyNumber: 3333,
       name: "Ramiro",
       surname: "Perez",
-      email: "scytfcai@fcai.uncu.edu.ar",
+      email: "enriquecerioni39@gmail.com",
       password:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImNsaWNhcCIsImlhdCI6MTY3MTY4MTI2Nn0.ImXeeJI3cI4V11V3cwEvX7uhyZK1qZVihJ453HypYmw",
       address: "Bernardo Yrigoyen 758",
@@ -215,6 +220,11 @@ const insertData = async () => {
       attendance: item.attendance,
     });
   });
+
+  await DateModel.create({
+    date: '2024-03-21'
+  });
+  
   return console.log("Database connected...");
 };
 

@@ -1,34 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import ModalDelete from "../../Modals/ModalDelete";
-import { EntitiesContext } from "../../../context/EntitiesContext";
 import Select from "react-select";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { getDataUserByKey } from "../../../helpers/helpers";
 import { StudentCertificateList } from "./StudentCertificateList";
 import { StudentContext } from "../../../context/StudentCertificate/StudentContext";
+import { UserContext } from "../../../context/User/UserContext";
 
 const StudentCertificateAdmin = () => {
   const roleId = getDataUserByKey("roleId");
-  const { getAllUsers, usersSelector, setFiltersGlobal, filtersGlobal } =
-    useContext(EntitiesContext);
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [CertificateToDelete, setCertificateToDelete] = useState(false);
   const [page, setPage] = useState(1);
+  const { getAllUsers, userState } = useContext(UserContext);
+  const { authorSelector } = userState
   const { getAllRegularCertificates, studentState, totalStudentPages } =
-    useContext(StudentContext);
-  const { studentCertificates } = studentState;
+  useContext(StudentContext);
+  const { studentCertificates, certificateFilters } = studentState;
+  const [filters, setFilters] = useState(certificateFilters);
 
   const handleChangeFilter = (e, name) => {
     if (e) {
-      setFiltersGlobal({
-        ...filtersGlobal,
+      setFilters({
+        ...filters,
         [e.target.name]: e.target.value,
       });
     } else {
-      setFiltersGlobal({
-        ...filtersGlobal,
+      setFilters({
+        ...filters,
         [name]: "",
       });
     }
@@ -36,13 +36,13 @@ const StudentCertificateAdmin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getAllRegularCertificates(1, filtersGlobal);
+    getAllRegularCertificates(1, filters);
   };
 
   useEffect(() => {
     getAllUsers();
-    getAllRegularCertificates(page, filtersGlobal);
-  }, [page, filtersGlobal]);
+    getAllRegularCertificates(page, filters);
+  }, [page, filters]);
 
   return (
     <>
@@ -68,7 +68,7 @@ const StudentCertificateAdmin = () => {
                   Autor
                 </label>
                 <Select
-                  options={usersSelector}
+                  options={authorSelector}
                   placeholder={"Seleccione..."}
                   name="authorId"
                   isClearable={true}

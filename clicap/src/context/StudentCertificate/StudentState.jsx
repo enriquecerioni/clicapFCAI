@@ -15,6 +15,9 @@ export const StudentState = ({ children }) => {
       //only use in frontend
       isNew: true,
     },
+    certificateFilters: {
+      authorId: "",
+    },
     studentCertificates: [],
     isFetching: true,
     totalStudentPages: 0,

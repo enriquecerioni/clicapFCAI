@@ -3,27 +3,23 @@ import firstSpeaker from "../../assets/authorities/1.png";
 import secondSpeaker from "../../assets/authorities/2.png";
 import thirdSpeaker from "../../assets/authorities/3.png";
 import CountdownTimer from "../CounterdownTimer/CountdownTimer";
-
-import "./start.scss";
-import "./button.css";
-import { EntitiesContext } from "../../context/EntitiesContext";
 import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import Carousel from "../Carousel/Carousel";
 import { Sponsors } from "../../views/Sponsors/Sponsors";
-import {
-  Endorsements,
-  Institutional,
-} from "../../views/Institutional/Institutional";
+import { Institutional } from "../../views/Institutional/Institutional";
 import { SponsorContext } from "../../context/Sponsor/SponsorContex";
 import { AppContext } from "../../context/App/AppContext";
 import { Footer } from "../Footer/Footer";
+import "./button.css";
+import "./start.scss";
 
 const Start = () => {
-  const { time, getDate, handleTime } = useContext(EntitiesContext);
+  const { appState, getEventDate, handleTime } = useContext(AppContext);
+  const { eventDate } = appState;
   const { getAllSponsors } = useContext(SponsorContext);
   const userId = getDataUserByKey("roleId");
   const [logoApp, setLogoApp] = useState("");
-  const [date, setDate] = useState(time);
+  const [date, setDate] = useState(eventDate);
 
   const { getAppLogo } = useContext(AppContext);
 
@@ -33,9 +29,9 @@ const Start = () => {
   };
 
   useEffect(() => {
-    getDate();
+    getEventDate();
     loadAppLogo();
-  }, [time]);
+  }, [eventDate]);
 
   useEffect(() => {
     getAllSponsors("All");
@@ -63,7 +59,7 @@ const Start = () => {
                 type="date"
                 className="form-date-input"
                 onChange={(e) => setDate(e.target.value)}
-                value={time}
+                value={eventDate}
               />
               <button
                 className="btn btn-primary ms-3"
@@ -75,8 +71,7 @@ const Start = () => {
           )}
 
           <div id="count" className="divIntro">
-            {/* <h1>counter</h1> */}
-            <CountdownTimer countdownTimestampMs={time} />
+            <CountdownTimer countdownTimestampMs={eventDate} />
           </div>
 
           <div className="divIntro">

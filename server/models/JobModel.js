@@ -21,7 +21,7 @@ const JobModel = db.define("job", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  authorId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -33,15 +33,14 @@ const JobModel = db.define("job", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  author: {
+    type: DataTypes.STRING,
+  },
   members: {
     type: DataTypes.STRING,
   },
   jobModalityId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  urlFile: {
-    type: DataTypes.STRING,
     allowNull: false,
   },
   approve: {
@@ -82,10 +81,10 @@ CorrectionModel.hasMany(JobModel, {
   foreignKey: "status",
 });
 
-// JOB - AUTHOR
-JobModel.belongsTo(UserModel, { foreignKey: "authorId", as: "author" });
+// JOB - USER (persona que sube el trabajo, puede ser el autor o no)
+JobModel.belongsTo(UserModel, { foreignKey: "userId", as: "user" });
 UserModel.hasMany(JobModel, {
-  foreignKey: "authorId",
+  foreignKey: "userId",
 });
 
 // JOB - JOB MODALITY

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { JobsAdminList } from "./JobsAdminList";
 import ModalDelete from "../../Modals/ModalDelete";
@@ -13,7 +12,6 @@ import { AreaContext } from "../../../context/Area/AreaContext";
 import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
 
 const JobsAdmin = () => {
-  const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const isEvaluator = roleId === 2 ? true : false;
 
@@ -31,7 +29,7 @@ const JobsAdmin = () => {
     useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
-  const [JobToDelete, setJobToDelete] = useState(false);
+  const [JobToDelete, setJobToDelete] = useState({});
   const [page, setPage] = useState(1);
 
   //evaluator
@@ -131,9 +129,11 @@ const JobsAdmin = () => {
                     <th>Estado</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    {roleId === 1 ? (<>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </>) : null}
                   </tr>
                 </thead>
                 <tbody>
@@ -141,6 +141,7 @@ const JobsAdmin = () => {
                     <JobsAdminList
                       work={work}
                       showAlert={setShowDeleteModal}
+                      JobToDelete={JobToDelete}
                       setJobToDelete={setJobToDelete}
                       setShowAssignEvaluatorModal={setShowAssignEvaluatorModal}
                       setJobToAssignEvaluator={setJobToAssignEvaluator}
