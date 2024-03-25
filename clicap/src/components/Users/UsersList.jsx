@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { ClicapTooltip } from "../ClicapTooltip/ClicapTooltip";
 

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Page,
-  Text,
   Image,
   View,
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
 import { PersonalCertificatePdf } from "./CertificatePdfTypes/PersonalCertificatePdf";
-import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { JobCertificatePdf } from "./CertificatePdfTypes/JobCertificatePdf";
 
 export const Pdf = ({ logo = "", user = "", certificate = {}, job = {} }) => {

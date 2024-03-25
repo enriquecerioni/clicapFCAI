@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Pdf } from "./Pdf";
 import Select from "react-select";
 import { PDFViewer } from "@react-pdf/renderer";
-import { Form, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import "../../App.css";
 
@@ -42,12 +42,21 @@ export const GenerateCustomCertificatePersonal = ({
   );
 
   const handleChange = (e, name) => {
+    console.log(name);
     if (e) {
+      if (name === "type") {
+        return setCertificateData({
+          ...certificateData,
+          [e.target.name]: e.target.value,
+          certificateId: "",
+        });
+      }
       return setCertificateData({
         ...certificateData,
         [e.target.name]: e.target.value,
       });
     }
+
     setCertificateData({
       ...certificateData,
       [name]: "",
@@ -81,7 +90,7 @@ export const GenerateCustomCertificatePersonal = ({
     >
       <Modal.Header closeButton>
         <Modal.Title id="example-custom-modal-styling-title">
-          {`Generar Certificado Personal`}
+          {`Generar Certificado personalizado`}
         </Modal.Title>
       </Modal.Header>
 
@@ -122,6 +131,9 @@ export const GenerateCustomCertificatePersonal = ({
                 name="certificateId"
                 isClearable={true}
                 isDisabled={showPreview}
+                value={allCertificates.filter(
+                  (op) => certificateData.certificateId === op.value
+                )}
                 theme={(theme) => ({
                   ...theme,
                   colors: {
