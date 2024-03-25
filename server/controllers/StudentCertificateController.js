@@ -1,6 +1,7 @@
 const CertificateModel = require("../models/CertificateModel");
 const JobModel = require("../models/JobModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
+const UserModel = require("../models/UserModel");
 
 exports.create = async (req, res) => {
   try {
@@ -11,6 +12,7 @@ exports.create = async (req, res) => {
       jobId = null;
     }
 
+    console.log(certificateId, userId, jobId);
     const certificate = await StudentCertificateModel.create({
       certificateId,
       userId,
@@ -88,7 +90,10 @@ exports.getAllByUser = async (req, res) => {
     console.log(userId);
     let options = {
       where: { userId: userId },
-      include: [{ model: JobModel }, { model: CertificateModel }],
+      include: [
+        { model: JobModel, include: [{ model: UserModel, as: "author" }] },
+        { model: CertificateModel },
+      ],
     };
     const certificate = await StudentCertificateModel.findAll(options);
     if (certificate) {
