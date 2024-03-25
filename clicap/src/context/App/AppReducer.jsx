@@ -1,5 +1,6 @@
 import {
   GET_EVENT_DATE,
+  SET_DEADLINE_DAY,
   SET_LOGGOUT,
   SET_MENU_PHONE,
   SET_REFRESH_ROLEID_USERID,
@@ -13,8 +14,14 @@ export default (state, action) => {
     case GET_EVENT_DATE:
       return {
         ...state,
-        eventDate: payload,
+        eventDate: payload.date,
+        deadlineDays: payload.deadlineDays,
       }
+    case SET_DEADLINE_DAY:
+      return {
+        ...state,
+        deadlineDays: payload,
+      };
     case SET_SEARCH_PIXELS:
       return {
         ...state,

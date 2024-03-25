@@ -31,3 +31,24 @@ exports.updateDate = async (req, res) => {
     console.log("El fecha no existe!");
   }
 };
+
+exports.updateDeadlineDays = async (req, res) => {
+  try {
+    const { days } = req.params;
+    const currentDate = await DateModel.findOne();
+
+    const date = await DateModel.update(
+      {
+        deadlineDays: days,
+      },
+      { where: { id: currentDate.id } }
+    );
+    if (date) {
+      res.status(200).json("Número de días previos al evento editado correctamente!");
+    } else {
+      res.status(500).json({ msg: "EL número de dias previos al evento no existe!" });
+    }
+  } catch (error) {
+    console.log("EL número de dias previos al evento no existe!", error);
+  }
+};
