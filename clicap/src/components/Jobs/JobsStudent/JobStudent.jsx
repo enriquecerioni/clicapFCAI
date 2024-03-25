@@ -23,11 +23,11 @@ const JobStudent = () => {
   const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
   const { isFetching, jobs, totalJobsPages, jobData } = jobState;
   const { appState, getEventDate } = useContext(AppContext);
-  const { eventDate } = appState;
+  const { eventDate, deadlineDays } = appState;
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
 
-  const evaluateDate = (date) => {
+  const evaluateDate = (date, deadlineDays = 30) => {
     const today = new Date();
     const eventDate = new Date(date);
 
@@ -38,7 +38,7 @@ const JobStudent = () => {
     const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
     
     // Verifica si la diferencia es mayor o igual a 30 días
-    return differenceInDays >= 30;
+    return differenceInDays >= deadlineDays;
   }
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const JobStudent = () => {
     <div className="ms-3 me-3">
       <h2 className="text-center">Mis trabajos</h2>
       {
-        evaluateDate(eventDate) && (
+        evaluateDate(eventDate, deadlineDays) && (
           <div className="box-add-instance ">
             <div className="text-end me-5">
               <button

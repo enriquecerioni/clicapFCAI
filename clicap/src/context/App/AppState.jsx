@@ -10,9 +10,23 @@ export const AppState = ({ children }) => {
     refreshRoleIdAndUserId: true,
     loggout: false,
     eventDate: null,
+    deadlineDays: null,
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
+
+  const setDeadlineDays = async (days) => {
+    await reqAxios("PUT", `/date/edit/deadline/${days}`, "", "");
+    dispatch({
+      type: "SET_DEADLINE_DAY",
+      payload: days,
+    });
+  };
+
+  const handleTime = async (date) => {
+    await reqAxios("PUT", `/date/edit/${date}`, "", "");
+    window.location.reload();
+  };
 
   const setSearchPixels = async (value) => {
     dispatch({
@@ -58,12 +72,10 @@ export const AppState = ({ children }) => {
       "",
       ""
     );
-
     dispatch({
       type: "GET_EVENT_DATE",
-      payload: eventDate.data.response.date,
+      payload: eventDate.data.response,
     });
-    
   }
 
   return (
@@ -72,6 +84,8 @@ export const AppState = ({ children }) => {
         appState: state,
         getAppLogo,
         getEventDate,
+        handleTime,
+        setDeadlineDays,
         setLoggout,
         setMenuPhone,
         setRefreshRoleIdAndUserId,
