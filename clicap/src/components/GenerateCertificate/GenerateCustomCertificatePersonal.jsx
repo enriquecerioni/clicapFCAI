@@ -42,7 +42,7 @@ export const GenerateCustomCertificatePersonal = ({
   );
 
   const handleChange = (e, name) => {
-    console.log(name);
+
     if (e) {
       if (name === "type") {
         return setCertificateData({
