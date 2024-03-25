@@ -37,7 +37,7 @@ const PayStudent = () => {
       </div>
 
       {/* TABLA */}
-      {pays.length > 0 ? (
+      {pays?.length > 0 ? (
         <div className="pay-container">
           {pays.map((pay, i) => (
             <PayStudentList

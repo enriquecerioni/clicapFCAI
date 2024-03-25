@@ -23,6 +23,10 @@ export const PayState = ({ children }) => {
       authorId: userId,
       invoice: "",
     },
+    paysFilter: {
+      authorId: "",
+    },
+    totalPaysPages: 0,
     pays: [],
     refreshPays: false,
     isFetching: true,
@@ -55,7 +59,10 @@ export const PayState = ({ children }) => {
       );
       dispatch({
         type: "SET_PAYS",
-        payload: dataMyPays.data.response,
+        payload: {
+          pays: dataMyPays.data.response,
+          totalPaysPages: dataMyPays.data.pages,
+        },
       });
     } catch (e) {
       console.log(e);
@@ -71,7 +78,10 @@ export const PayState = ({ children }) => {
       );
       dispatch({
         type: "SET_PAYS",
-        payload: getPays.data.response,
+        payload: {
+          pays: getPays.data.response,
+          totalPages: getPays.data.pages,
+        },
       });
     } catch (e) {
       console.log(e);

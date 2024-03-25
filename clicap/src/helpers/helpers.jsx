@@ -150,3 +150,17 @@ export const formatDate = (date) => {
   }
   return 'Esperando correción'
 }
+
+export const evaluateDate = (date, deadlineDays = 30) => {
+  const today = new Date();
+  const eventDate = new Date(date);
+
+  // Calcula la diferencia en milisegundos
+  const differenceInMs = eventDate - today;
+
+  // Convierte la diferencia a días
+  const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+
+  // Verifica si la diferencia es mayor o igual a 30 días
+  return differenceInDays >= deadlineDays;
+}

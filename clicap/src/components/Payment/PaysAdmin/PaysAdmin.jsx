@@ -9,24 +9,25 @@ import { UserContext } from "../../../context/User/UserContext";
 import Select from "react-select";
 import { Loader } from "../../Loader/Loader";
 import { reqAxiosDownload } from "../../../helpers/helpers";
+import { PaginationCustom } from "../../Pagination/Pagination";
 
 const PaysAdmin = () => {
-  const initialFilters = {
-    authorId: "",
-  };
 
   const { getAllUsers, userState } = useContext(UserContext);
-  const { usersSelector, users } = userState;
+  const { authorSelector, users } = userState;
 
   const { getPaysFiltered, payState } = useContext(PayContext);
-  const { pays, isFetching } = payState;
+  const { pays, isFetching, paysFilter, totalPaysPages } = payState;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [PayToDelete, setPayToDelete] = useState(false);
-  const [filters, setFilters] = useState(initialFilters);
+
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState(paysFilter);
 
   const handleChangeFilter = (e, name) => {
     if (e) {
+      console.log({value: e.target.value})
       setFilters({
         ...filters,
         [name]: e.target.value,
@@ -57,8 +58,6 @@ const PaysAdmin = () => {
 
   return (
     <>
-      {/*     CAMBIAR */}
-      {/* style={{ margin: "0 5rem 0 5rem" }} */}
       <div className="p-2">
         <h2 className="text-center">Pagos</h2>
         <div className="d-flex justify-content-end"></div>
@@ -75,7 +74,7 @@ const PaysAdmin = () => {
               </label>
               <Select
                 components={{ ExtensiveList }}
-                options={usersSelector}
+                options={authorSelector}
                 placeholder={"Seleccione..."}
                 name="authorId"
                 isClearable={true}
@@ -136,11 +135,11 @@ const PaysAdmin = () => {
                 </tbody>
               </table>
             </div>
-            {/*  <PaginationCustom
+            <PaginationCustom
               currentPage={page}
-              totalPages={totalPages}
+              totalPages={totalPaysPages}
               paginate={setPage}
-            /> */}
+            />
           </>
         ) : (
           <p className="text-center">No hay Pagos</p>

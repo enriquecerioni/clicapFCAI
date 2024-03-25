@@ -1,8 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AreaContext } from "../../context/Area/AreaContext";
-import { Button, Form } from "react-bootstrap";
-import { waitAndRefresh } from "../../helpers/helpers";
-import ModalDelete from "../Modals/ModalDelete";
 import { AppContext } from "../../context/App/AppContext";
 
 export const EventDate = () => {

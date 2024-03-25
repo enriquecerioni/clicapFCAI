@@ -12,14 +12,17 @@ const StudentCertificateAdmin = () => {
   const roleId = getDataUserByKey("roleId");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [CertificateToDelete, setCertificateToDelete] = useState(false);
-  const [page, setPage] = useState(1);
+
   const { getAllUsers, userState } = useContext(UserContext);
   const { authorSelector } = userState
-  const { getAllRegularCertificates, studentState, totalStudentPages } =
+
+  const { getAllRegularCertificates, studentState } =
   useContext(StudentContext);
-  const { studentCertificates, certificateFilters } = studentState;
+  const { studentCertificates, certificateFilters, totalStudentPages } = studentState;
+
   const [filters, setFilters] = useState(certificateFilters);
 
+  const [page, setPage] = useState(1);
   const handleChangeFilter = (e, name) => {
     if (e) {
       setFilters({
