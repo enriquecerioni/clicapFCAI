@@ -3,7 +3,7 @@ import "../jobs.css";
 import { useNavigate } from "react-router";
 //components
 import { useContext } from "react";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { evaluateDate, getDataUserByKey } from "../../../helpers/helpers";
 import JobStudentList from "./JobStudentList";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { Loader } from "../../Loader/Loader";
@@ -27,19 +27,7 @@ const JobStudent = () => {
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
 
-  const evaluateDate = (date, deadlineDays = 30) => {
-    const today = new Date();
-    const eventDate = new Date(date);
-
-    // Calcula la diferencia en milisegundos
-    const differenceInMs = eventDate - today;
-    
-    // Convierte la diferencia a días
-    const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
-    
-    // Verifica si la diferencia es mayor o igual a 30 días
-    return differenceInDays >= deadlineDays;
-  }
+  const isOnTime = evaluateDate(eventDate, deadlineDays);
 
   useEffect(() => {
     getJobsFiltered(page, filters);
@@ -53,21 +41,18 @@ const JobStudent = () => {
   return (
     <div className="ms-3 me-3">
       <h2 className="text-center">Mis trabajos</h2>
-      {
-        evaluateDate(eventDate, deadlineDays) && (
-          <div className="box-add-instance ">
-            <div className="text-end me-5">
-              <button
-                type="button"
-                onClick={() => navigate("/newjob")}
-                className="btn btn-success"
-              >
-                <i className="fa-solid fa-plus"></i> Nuevo trabajo
-              </button>
-            </div>
-          </div>
-        )
-      }
+      <div className="box-add-instance ">
+        <div className="text-end me-5">
+          <button
+            type="button"
+            onClick={() => navigate("/newjob")}
+            className="btn btn-success"
+            disabled={isOnTime ? false : true}
+          >
+            <i className="fa-solid fa-plus"></i> Nuevo trabajo
+          </button>
+        </div>
+      </div>
       <div className="mt-3 overflow-x">
         <table className="table table-hover">
           <thead>

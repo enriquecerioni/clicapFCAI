@@ -30,6 +30,11 @@ const JobVersion = () => {
     getJobVersionsById(Number(id));
   }, [])
 
+  console.log({
+    latestJobVersion,
+
+  })
+
   return (
     <div className="ms-3 me-3">
       <h2 className="text-center">Versiones</h2>
@@ -42,7 +47,7 @@ const JobVersion = () => {
                 <button
                   className="btn btn-primary"
                   disabled={
-                    latestJobVersion?.status === null || [1, 4].includes(latestJobVersion?.status)
+                    latestJobVersion?.status === null || ["Aceptado"].includes(latestJobVersion?.status)
                       ? true
                       : false
                   }
