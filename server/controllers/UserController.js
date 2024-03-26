@@ -131,7 +131,7 @@ exports.register = async (req, res) => {
 
     return res.status(200).json({
       response:
-        "En breve se enviará un email a su correo para activar su cuenta.",
+        "En breve se enviará un email a su correo para activar su cuenta. Por favor, revise su bandeja de entrada de correos y/o spam.",
     });
   } catch (error) {
     return res.status(500).send({
