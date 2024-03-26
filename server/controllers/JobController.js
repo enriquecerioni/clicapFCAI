@@ -7,7 +7,7 @@ const UserModel = require("../models/UserModel");
 const Sequelize = require("sequelize");
 const JobModalityModel = require("../models/JobModalityModel");
 const fs = require("fs");
-const { transporter, deleteFileGeneric } = require("../utils/utils");
+const { transporter } = require("../utils/utils");
 const CorrectionModel = require("../models/CorrectionModel");
 const excelJS = require("exceljs");
 const EXCEL_CELL_WIDTH = 12;
@@ -102,7 +102,7 @@ exports.upload = async (req, res) => {
 
       if(doc) {
         admins.forEach((admin, i) => {
-          var mailOptions = {
+          let mailOptions = {
             from: process.env.EMAIL_APP,
             to: admin.email,
             subject: "Nuevo Trabajo Creado",
@@ -234,7 +234,7 @@ exports.updateById = async (req, res) => {
 
         if (addEvaluators) {
           user.forEach((evaluator) => {
-            var mailOptions = {
+            let mailOptions = {
               from: process.env.EMAIL_APP,
               to: evaluator.email,
               subject: "Nuevo trabajo asignado",
@@ -270,7 +270,7 @@ exports.updateById = async (req, res) => {
 
         if (newVersion) {
           admins.forEach((admin) => {
-            var mailOptions = {
+            let mailOptions = {
               from: process.env.EMAIL_APP,
               to: admin.email,
               subject: "Nueva versión del trabajo",
@@ -297,7 +297,7 @@ exports.updateById = async (req, res) => {
             });
           });
           user.forEach((evaluator) => {
-            var mailOptions = {
+            let mailOptions = {
               from: process.env.EMAIL_APP,
               to: evaluator.email,
               subject: "Nueva versión del trabajo",

@@ -2,14 +2,40 @@ const CertificateModel = require("../models/CertificateModel");
 const JobModel = require("../models/JobModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
 const UserModel = require("../models/UserModel");
+const { transporter } = require("../utils/utils");
+const path = require("path");
+const hbs = require("nodemailer-express-handlebars");
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
 
 exports.create = async (req, res) => {
   try {
     const { certificateId, userId } = req.body;
     let { jobId } = req.body;
 
+    let mailContext = {
+      userName: "",
+    }
+
     if (jobId === "") {
       jobId = null;
+      mailContext = {...mailContext, jobName: null}
+    } else {
+      const job = await JobModel.findOne({
+        where: { id: jobId }
+      })
+      mailContext = {...mailContext, jobName: job.name}
     }
 
     console.log(certificateId, userId, jobId);
@@ -18,6 +44,37 @@ exports.create = async (req, res) => {
       userId,
       jobId,
     });
+
+    const user = await UserModel.findOne({
+      where: {id: userId},
+      attributes: ["name", "surname", "email"],
+    })
+
+    mailContext = {...mailContext, userName: user.name}
+
+    let mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: user.email,
+      subject: "Certificado",
+      template: "mailCertificateAssigned",
+      attachments: [
+        {
+          filename: "appLogo.jpg",
+          path: "./public/logos/appLogo.jpg",
+          cid: "logo",
+        },
+      ],
+      context: mailContext
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+
     if (certificate) {
       res.status(200).json({ msg: "Certificado creado!" });
     } else {
