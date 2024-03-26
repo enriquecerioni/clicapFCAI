@@ -32,6 +32,18 @@ transporter.use(
   })
 );
 
+// Función para filtrar los archivos permitidos
+const fileFilter = (req, file, cb) => {
+  // Verifica si el archivo es de tipo doc o docx
+  if (file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    // Permite el archivo
+    cb(null, true);
+  } else {
+    // Rechaza el archivo con un mensaje de error
+    cb(new Error('Error: el archivo debe ser de tipo doc o docx'), false);
+  }
+};
+
 // Multer Config
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/documents"),
@@ -43,14 +55,14 @@ const storage = multer.diskStorage({
 const uploadJob = multer({
   storage,
   limits: { fileSize: 1000000 },
+  fileFilter: fileFilter,
 }).single("urlFile");
 
 exports.upload = async (req, res) => {
   try {
     uploadJob(req, res, async (err) => {
       if (err) {
-        err.message = "The file is so heavy for my service";
-        return res.send(err);
+        return res.status(400).json({ msg: err.message });
       }
       const { name, areaId, userId, author, members, jobModalityId } = req.body;
       // status 1 = Corregido | 0 = No corregido
@@ -93,7 +105,7 @@ exports.upload = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log("Error al crear el Trabajo." + error);
+    return res.status(400).json({ msg: error });
   }
 };
 

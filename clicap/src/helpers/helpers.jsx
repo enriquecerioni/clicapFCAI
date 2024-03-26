@@ -52,8 +52,7 @@ export const formDataAxios = async (method, shortUrl, param, data) => {
     }
     return res;
   } catch (error) {
-    console.log(error);
-    alertError("Error");
+    alertError(error.response.data.msg, false);
   }
 };
 export const deleteAxios = async (shortUrl) => {
