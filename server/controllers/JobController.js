@@ -90,6 +90,47 @@ exports.upload = async (req, res) => {
         approve: 0,
       });
 
+      const user = await UserModel.findOne({
+        where: {id: userId},
+        attributes: ["name", "surname"],
+      })
+
+      const admins = await UserModel.findAll({
+        where: {roleId: 1},
+        attributes: ["name", "surname", "email"],
+      })
+
+      if(doc) {
+        admins.forEach((admin, i) => {
+          var mailOptions = {
+            from: process.env.EMAIL_APP,
+            to: admin.email,
+            subject: "Nuevo Trabajo Creado",
+            template: "mailWithNewJobAdmin",
+            attachments: [
+              {
+                filename: "appLogo.jpg",
+                path: "./public/logos/appLogo.jpg",
+                cid: "logo",
+              },
+            ],
+            context: {
+              adminName: admin.name + " " + admin.surname,
+              jobName: doc.name,
+              userName: user.name + " " + user.surname,
+            },
+          };
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return res.status(500).json({ msg: error.message });
+            } else {
+              console.log("Email enviado!");
+              res.end();
+            }
+          });
+        });
+      }
+
       // Creamos la primera version del trabajo
 
       await JobVersionModel.create({
@@ -184,14 +225,18 @@ exports.updateById = async (req, res) => {
           [Op.or]: assignEvaluators,
         };
 
-        //search user email
+        // user = evaluadores asignados al trabajo
         const user = await UserModel.findAll(options);
+        const admins = await UserModel.findAll({
+          where: {roleId: 1},
+          attributes: ["name", "surname", "email"],
+        })
 
         if (addEvaluators) {
-          user.forEach((evaluator, i) => {
+          user.forEach((evaluator) => {
             var mailOptions = {
               from: process.env.EMAIL_APP,
-              to: user[i].email,
+              to: evaluator.email,
               subject: "Nuevo trabajo asignado",
               template: "mailAssignToJob",
               attachments: [
@@ -202,7 +247,7 @@ exports.updateById = async (req, res) => {
                 },
               ],
               context: {
-                evaluatorName: user[i].name + " " + user[i].surname,
+                evaluatorName: evaluator.name + " " + evaluator.surname,
                 jobName: name,
               },
             };
@@ -224,10 +269,37 @@ exports.updateById = async (req, res) => {
         }
 
         if (newVersion) {
-          user.forEach((evaluator, i) => {
+          admins.forEach((admin) => {
             var mailOptions = {
               from: process.env.EMAIL_APP,
-              to: user[i].email,
+              to: admin.email,
+              subject: "Nueva versión del trabajo",
+              template: "mailWithNewVersionJobAdmin",
+              attachments: [
+                {
+                  filename: "appLogo.jpg",
+                  path: "./public/logos/appLogo.jpg",
+                  cid: "logo", //my mistake was putting "cid:logo@cid" here!
+                },
+              ],
+              context: {
+                adminName: admin.name + " " + admin.surname,
+                jobName: doc.name,
+              },
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return res.status(500).json({ msg: error.message });
+              } else {
+                console.log("Email enviado!");
+                res.end();
+              }
+            });
+          });
+          user.forEach((evaluator) => {
+            var mailOptions = {
+              from: process.env.EMAIL_APP,
+              to: evaluator.email,
               subject: "Nueva versión del trabajo",
               template: "mailWithNewVersionJob",
               attachments: [
@@ -238,7 +310,7 @@ exports.updateById = async (req, res) => {
                 },
               ],
               context: {
-                evaluatorName: user[i].name + " " + user[i].surname,
+                evaluatorName: evaluator.name + " " + evaluator.surname,
                 jobName: doc.name,
               },
             };
