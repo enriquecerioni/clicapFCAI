@@ -12,22 +12,25 @@
         alt="Logo"
       /></div>
     <h1 style="font-weight:bold;text-align:center;">
-      ¡ Nueva evaluación del trabajo !</h1>
+      ¡ Nuevo Certificado Otorgado !</h1>
     <div>
-      <p>Estimado Administrador</p>
-      <p>Hay una nueva evaluación del trabajo
-        <strong>"{{jobName}}"</strong>
-        para poder corregir.
+      <p>Estimado usuario {{userName}}</p>
+      <p>
+        {{#if jobName}}
+         Tenemos el agrado de notificarle que se le ha asignado un nuevo certificado correspondiente al trabajo <strong>"{{jobName}}"</strong>
+        {{else}}
+          Tenemos el agrado de notificarle que se le ha asignado un nuevo certificado personal.
+        {{/if}}
       </p>
       <p>
-        Dirígase al sitio del evento e ingrese
+        Por favor, para poder descargar el certificado, diríjase al sitio del evento e ingrese
         sesión con su N° de DNI/Pasarporte y contraseña, luego en su perfil seleccione la opción
-        "Listado de trabajos" en el menú de la izquierda.
+        "Mis Certificados" en el menú de la izquierda.
       </p>
       <p>
-        Para corregir el trabajo haga click en el botón "Evaluaciones".
+        En la tabla podrá observar los certificados que tenga otorgados a su usuario y descargarlos.
       </p>
-      <p>Gracias por su tiempo.</p>
+      <p>Gracias por participar.</p>
       <p>Comisión Organizadora.</p>
       <p><a href="https://eventosfcai.com.ar/">Eventos FCAI</a></p>
     </div>
