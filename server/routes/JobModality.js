@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const JobModalityController = require('../controllers/JobModalityController');
-router.post('/create',JobModalityController.create);
-router.put('/edit/:id',JobModalityController.updateById);
-router.get('/get/:id',JobModalityController.getById);
-router.get('/getall',JobModalityController.getAll);
-router.delete('/delete/:id',JobModalityController.deleteById);
+const auth = require("../middlewares/authMiddleware");
+
+router.post('/create',auth.verifyToken,JobModalityController.create);
+router.put('/edit/:id',auth.verifyToken, JobModalityController.updateById);
+router.get('/get/:id',auth.verifyToken, JobModalityController.getById);
+router.get('/getall',auth.verifyToken, JobModalityController.getAll);
+router.delete('/delete/:id',auth.verifyToken, JobModalityController.deleteById);
 
 
 module.exports = router;
