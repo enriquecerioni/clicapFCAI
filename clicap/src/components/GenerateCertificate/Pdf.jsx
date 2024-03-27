@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Page,
-  Image,
-  View,
-  Document,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Page, Image, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { PersonalCertificatePdf } from "./CertificatePdfTypes/PersonalCertificatePdf";
 import { JobCertificatePdf } from "./CertificatePdfTypes/JobCertificatePdf";
 
@@ -27,6 +21,7 @@ export const Pdf = ({ logo = "", user = "", certificate = {}, job = {} }) => {
     textContainer: {
       position: "absolute",
       top: "35%",
+      width: "100%",
     },
     text: {
       fontSize: 20,

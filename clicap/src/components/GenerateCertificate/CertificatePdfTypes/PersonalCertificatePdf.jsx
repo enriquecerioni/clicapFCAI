@@ -39,6 +39,7 @@ export const PersonalCertificatePdf = ({ user = "", certificate = {} }) => {
     introTextContainer: {
       marginTop: "15px",
       marginBottom: "15px",
+      width: "100%",
     },
     fwBold: {
       fontFamily: "Roboto-Bold",

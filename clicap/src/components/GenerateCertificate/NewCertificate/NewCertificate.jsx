@@ -35,7 +35,7 @@ export const NewCertificate = () => {
 
   const handleSubmit = async () => {
     await reqAxios("POST", `/certificate/create`, "", certificate);
-    navigate("/generate-certificate");
+    navigate("/certificate-types");
   };
 
   const handleSubmitEdit = async () => {
@@ -45,7 +45,7 @@ export const NewCertificate = () => {
       "",
       certificate
     );
-    navigate("/generate-certificate");
+    navigate("/certificate-types");
   };
 
   useEffect(() => {

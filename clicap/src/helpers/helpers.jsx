@@ -1,13 +1,20 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { alertError, alertSuccess, loadError, loadSuccess } from "./alerts";
-import { API_URL } from "./constants";
-import { format, addDays } from 'date-fns';
+import { API_URL, URL_HOME } from "./constants";
+import { format, addDays } from "date-fns";
 export const isAuthenticated = () => sessionStorage.getItem("user");
+
 export const getDataUserByKey = (key) => {
   const dataUser = JSON.parse(sessionStorage.getItem("user"));
   return dataUser && dataUser[key] ? dataUser[key] : null;
 };
+
+export const getUserToken = () => {
+  const dataUser = sessionStorage.getItem("token");
+  return dataUser ? dataUser.replace(/^"(.*)"$/, "$1") : null;
+};
+
 export const reqAxios = async (method, shortUrl, param, data) => {
   try {
     const res = await axios({
@@ -15,9 +22,10 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       url: API_URL + shortUrl,
       params: param,
       data: data,
-      /*       headers: {
-        "Content-Type": "application/json",
-      }, */
+      headers: {
+        "auth-token": getUserToken(),
+        /* "Content-Type": "application/json", */
+      },
     });
 
     if (res.status && res.status === 200) {
@@ -27,6 +35,13 @@ export const reqAxios = async (method, shortUrl, param, data) => {
       return res;
     }
   } catch (error) {
+    if (error.response.status === 401) {
+      console.log(error);
+      sessionStorage.clear();
+      alertError("La sesión expiró");
+      return setTimeout(() => (window.location.href = URL_HOME), 3000);
+    }
+
     if (error.response.status === 404) {
       console.log(error);
       return alertError("Error al conectar con el servidor");
@@ -36,6 +51,7 @@ export const reqAxios = async (method, shortUrl, param, data) => {
     return error;
   }
 };
+
 export const formDataAxios = async (method, shortUrl, param, data) => {
   try {
     const res = await axios({
@@ -44,6 +60,7 @@ export const formDataAxios = async (method, shortUrl, param, data) => {
       params: param,
       data: data,
       headers: {
+        "auth-token": getUserToken(),
         "Content-Type": "multipart/form-data",
       },
     });
@@ -63,6 +80,7 @@ export const deleteAxios = async (shortUrl) => {
       url: API_URL + shortUrl,
       headers: {
         Accept: "application/JSON",
+        "auth-token": getUserToken(),
         "Content-Type": "application/json",
       },
     });
@@ -86,6 +104,9 @@ export const downloadFile = async (nameFile, folder) => {
       params: "",
       method: "GET",
       responseType: "blob",
+      headers: {
+        "auth-token": getUserToken(),
+      },
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -123,6 +144,7 @@ export const reqAxiosDownload = async (shortUrl, param, nameFile) => {
       method: "GET",
       responseType: "blob",
       headers: {
+        "auth-token": getUserToken(),
         Accept: "application/JSON",
         "Content-Type": "application/json",
       },
@@ -142,13 +164,13 @@ export const reqAxiosDownload = async (shortUrl, param, nameFile) => {
 
 export const formatDate = (date) => {
   const hasDate = date && true;
-  if(hasDate) {
-      const currentDate = new Date(date);
-      const validDate = addDays(currentDate, 1);
-      return format(validDate, 'dd/MM/yyyy');
+  if (hasDate) {
+    const currentDate = new Date(date);
+    const validDate = addDays(currentDate, 1);
+    return format(validDate, "dd/MM/yyyy");
   }
-  return 'Esperando correción'
-}
+  return "Esperando correción";
+};
 
 export const evaluateDate = (date, deadlineDays = 30) => {
   const today = new Date();
@@ -162,4 +184,4 @@ export const evaluateDate = (date, deadlineDays = 30) => {
 
   // Verifica si la diferencia es mayor o igual a 30 días
   return differenceInDays >= deadlineDays;
-}
+};
