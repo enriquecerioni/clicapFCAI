@@ -10,6 +10,7 @@ import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";
 import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
+import { ModalitiesContext } from "../../../context/Modalities/ModalitiesContext";
 
 const JobsAdmin = () => {
   const roleId = getDataUserByKey("roleId");
@@ -23,6 +24,9 @@ const JobsAdmin = () => {
 
   const { areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
+
+  const { getAllModalities, modalitiesState } = useContext(ModalitiesContext);
+  const { modalities } = modalitiesState;
 
   const [filters, setFilters] = useState(jobsFilter);
   const [showAssignEvaluatorModal, setShowAssignEvaluatorModal] =
@@ -46,6 +50,9 @@ const JobsAdmin = () => {
     }
     if (areas.length === 0) {
       getAllAreas();
+    }
+    if (modalities.length === 0) {
+      getAllModalities();
     }
     //search assign jobs when the user is evaluator
     if (isEvaluator) {
@@ -129,11 +136,13 @@ const JobsAdmin = () => {
                     <th>Estado</th>
                     <th></th>
                     <th></th>
-                    {roleId === 1 ? (<>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                    </>) : null}
+                    {roleId === 1 ? (
+                      <>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </>
+                    ) : null}
                   </tr>
                 </thead>
                 <tbody>

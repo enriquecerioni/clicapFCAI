@@ -602,7 +602,6 @@ exports.downloadFilter = async (req, res) => {
 
   await decryptPass(rows)
     .then((decryptedUsers) => {
-      console.log("Usuarios desencriptados:", decryptedUsers);
       decodedData = decryptedUsers;
     })
     .catch((err) => {
@@ -614,7 +613,7 @@ exports.downloadFilter = async (req, res) => {
     user.roleId = user.role.name;
     worksheet.addRow(user); // Add data in worksheet
   });
-  
+
   // put styles
   worksheet.getRow(1).eachCell((cell) => {
     (cell.font = { bold: true }),
