@@ -35,12 +35,16 @@ transporter.use(
 // Función para filtrar los archivos permitidos
 const fileFilter = (req, file, cb) => {
   // Verifica si el archivo es de tipo doc o docx
-  if (file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+  if (
+    file.mimetype === "application/msword" ||
+    file.mimetype ===
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ) {
     // Permite el archivo
     cb(null, true);
   } else {
     // Rechaza el archivo con un mensaje de error
-    cb(new Error('Error: el archivo debe ser de tipo doc o docx'), false);
+    cb(new Error("Error: el archivo debe ser de tipo doc o docx"), false);
   }
 };
 
@@ -91,16 +95,16 @@ exports.upload = async (req, res) => {
       });
 
       const user = await UserModel.findOne({
-        where: {id: userId},
+        where: { id: userId },
         attributes: ["name", "surname"],
-      })
+      });
 
       const admins = await UserModel.findAll({
-        where: {roleId: 1},
+        where: { roleId: 1 },
         attributes: ["name", "surname", "email"],
-      })
+      });
 
-      if(doc) {
+      if (doc) {
         admins.forEach((admin, i) => {
           let mailOptions = {
             from: process.env.EMAIL_APP,
@@ -137,7 +141,7 @@ exports.upload = async (req, res) => {
         jobId: doc?.id,
         versionNumber: 1,
         urlFile: jobUUID,
-      })
+      });
 
       if (doc) {
         return res.status(200).json({ msg: "Trabajo creado!" });
@@ -228,9 +232,9 @@ exports.updateById = async (req, res) => {
         // user = evaluadores asignados al trabajo
         const user = await UserModel.findAll(options);
         const admins = await UserModel.findAll({
-          where: {roleId: 1},
+          where: { roleId: 1 },
           attributes: ["name", "surname", "email"],
-        })
+        });
 
         if (addEvaluators) {
           user.forEach((evaluator) => {
@@ -345,27 +349,22 @@ exports.uploadFileJob = async (req, res) => {
 
       const { id } = req.body;
 
-      const doc = await JobModel.update(
-        req.body,
-        {
-          where: { id: id },
-        }
-      );
+      const doc = await JobModel.update(req.body, {
+        where: { id: id },
+      });
 
       // Buscamos cual fue la ultima version del trabajo
 
       let { versionNumber } = await JobVersionModel.findOne({
         where: { jobId: id },
-        order: [['versionNumber', 'DESC']]
-      })
+        order: [["versionNumber", "DESC"]],
+      });
 
-      const newVersion = await JobVersionModel.create(
-        {
-          jobId: id,
-          versionNumber: versionNumber + 1,
-          urlFile: jobUUID,
-        }
-      )
+      const newVersion = await JobVersionModel.create({
+        jobId: id,
+        versionNumber: versionNumber + 1,
+        urlFile: jobUUID,
+      });
 
       if (doc) {
         return res.status(200).json({ msg: "Archivo actualizado!" });
@@ -382,16 +381,15 @@ exports.validateOwnJob = async (req, res) => {
   try {
     const { jobId, userId } = req.params;
     const isOwnJob = await JobModel.findOne({
-      where: { 
+      where: {
         id: jobId,
-        userId: userId, 
-      }
-    })
+        userId: userId,
+      },
+    });
 
     const isJobFound = isOwnJob !== null;
 
     res.status(200).json({ response: isJobFound });
-    
   } catch (error) {
     console.log("Error al obtener el Trabajo." + error);
   }
@@ -507,7 +505,7 @@ exports.deleteById = async (req, res) => {
 exports.getAllPaginated = async (req, res) => {
   try {
     const {
-      userId,
+      author,
       name,
       surname,
       status,
@@ -548,9 +546,12 @@ exports.getAllPaginated = async (req, res) => {
         [Op.like]: `%${surname}%`,
       };
     }
-    if (userId) {
-      options.where.userId = userId;
+    if (author) {
+      options.where.author = {
+        [Op.like]: `%${author}%`,
+      };
     }
+
     if (jobModalityId) {
       options.where.jobModalityId = jobModalityId;
     }
@@ -591,7 +592,7 @@ exports.getAllJobsByUser = async (req, res) => {
       include: [
         { model: AreaModel },
         { model: JobModalityModel },
-        { model: UserModel, as: "user", attributes: ["name", "surname"], },
+        { model: UserModel, as: "user", attributes: ["name", "surname"] },
         { model: CorrectionModel, as: "jobStatus" },
         { model: UserModel, as: "evaluator1", attributes: ["name", "surname"] },
         { model: UserModel, as: "evaluator2", attributes: ["name", "surname"] },
@@ -731,7 +732,9 @@ const optionsToFilter = (req) => {
       };
     }
     if (author) {
-      options.where.author = author;
+      options.where.author = {
+        [Op.like]: `%${author}%`,
+      };
     }
     if (jobModalityId) {
       options.where.jobModalityId = jobModalityId;

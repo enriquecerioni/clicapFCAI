@@ -22,7 +22,7 @@ export const JobState = ({ children }) => {
     },
     jobs: [],
     jobsFilter: {
-      authorId: "",
+      author: "",
       name: "",
       areaId: "",
       jobModalityId: "",

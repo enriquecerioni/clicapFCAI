@@ -17,7 +17,7 @@ export const Sidebar = () => {
   const [url, setUrl] = useState(null);
 
   const loggout = () => {
-    sessionStorage.removeItem("user");
+    sessionStorage.clear();
     setRefreshRoleIdAndUserId(true);
     if (location.pathname === "/") {
       setLoggout();
