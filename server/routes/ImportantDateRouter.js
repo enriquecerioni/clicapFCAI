@@ -6,7 +6,7 @@ const auth = require("../middlewares/authMiddleware");
 router.post("/create",auth.verifyToken, ImportantDateController.create);
 router.put("/edit/:id", auth.verifyToken, ImportantDateController.updateById);
 router.get("/get/:id", auth.verifyToken, ImportantDateController.getById);
-router.get("/getall", auth.verifyToken, ImportantDateController.getAll);
+router.get("/getall", ImportantDateController.getAll);
 router.delete("/delete/:id", auth.verifyToken, ImportantDateController.deleteById);
 
 module.exports = router;
