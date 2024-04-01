@@ -5,6 +5,7 @@ import {
   GET_CERTIFICATES_BY_USER,
   GET_LOGO,
   GET_CERTIFICATE_BY_ID,
+  RESET_CERTIFICATE_DATA,
 } from "./types";
 
 export default (state, action) => {
@@ -37,6 +38,12 @@ export default (state, action) => {
       return {
         ...state,
         userCertificates: payload,
+        isFetching: false,
+      };
+    case RESET_CERTIFICATE_DATA:
+      return {
+        ...state,
+        certificateData: payload,
         isFetching: false,
       };
     case GET_LOGO:

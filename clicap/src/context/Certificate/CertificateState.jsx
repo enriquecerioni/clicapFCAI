@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
+import { reqAxios } from "../../helpers/helpers";
 import { CertificateContext } from "./CertificateContext";
 import CertificateReducer from "./CertificateReducer";
 
@@ -33,6 +33,22 @@ export const CertificateState = ({ children }) => {
       dispatch({
         type: "GET_CERTIFICATE",
         payload: certificates.data.response,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const resetCertificateData = async () => {
+    try {
+      dispatch({
+        type: "RESET_CERTIFICATE_DATA",
+        payload: {
+          type: 1,
+          name: "",
+          introtext: "",
+          jobtext: "",
+          text: "",
+        },
       });
     } catch (error) {
       console.log(error);
@@ -105,6 +121,7 @@ export const CertificateState = ({ children }) => {
         getAllCertificatesByUser,
         getCertificatesLogo,
         getCertificateById,
+        resetCertificateData,
       }}
     >
       {children}

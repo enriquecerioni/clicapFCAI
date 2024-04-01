@@ -12,7 +12,7 @@ import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 
 export const NewCertificate = () => {
   const { certificateId } = useParams();
-  const { getCertificateById, ceritificateState } =
+  const { getCertificateById, resetCertificateData, ceritificateState } =
     useContext(CertificateContext);
 
   const { certificateData, certificateTypesOpt } = ceritificateState;
@@ -49,8 +49,12 @@ export const NewCertificate = () => {
   };
 
   useEffect(() => {
+    console.log(pathname);
     if (pathname === `/edit-certificate-type/${certificateId}`) {
       getCertificateById(certificateId);
+    }
+    if (pathname === `/new-certificate-type`) {
+      resetCertificateData();
     }
   }, []);
 
@@ -73,7 +77,6 @@ export const NewCertificate = () => {
             value={certificateTypesOpt.filter(
               (op) => certificate.type === op.value
             )}
-            isClearable={true}
             theme={(theme) => ({
               ...theme,
               colors: {
@@ -140,7 +143,10 @@ export const NewCertificate = () => {
           />
         </FloatingLabel>
         <div className="center-center mt-3">
-          <ClicapTooltip tooltip={disabled()} text={'Debe completar todos los campos'}>
+          <ClicapTooltip
+            tooltip={disabled()}
+            text={"Debe completar todos los campos"}
+          >
             <div className="d-flex">
               {pathname !== `/edit-certificate-type/${certificateId}` ? (
                 <Button

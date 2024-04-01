@@ -29,6 +29,7 @@ export const CertificateUserList = ({ userCertificate }) => {
     textContainer: {
       position: "absolute",
       top: "35%",
+      width: "100%",
     },
     text: {
       fontSize: 20,
