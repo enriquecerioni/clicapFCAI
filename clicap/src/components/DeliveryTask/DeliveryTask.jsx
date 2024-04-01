@@ -220,6 +220,39 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
+
+            <div className="mt-3 mb-2">
+              <div
+                className="d-flex flex-wrap gap-3"
+                style={{
+                  width: "100%",
+                  padding: "20px",
+                  borderRadius: "1rem",
+                  boxShadow: "9px 9px 30px 1px rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <div className="d-flex align-items-center mb-3">
+                  <i className="fa-2x fa-solid fa-circle-info"></i>
+                </div>
+                <div>
+                  <h5>Cómo cargar los nombres</h5>
+                  <p>
+                    Los nombres del autor y coautores deben escribirse de la
+                    siguiente manera:
+                  </p>
+                  <p className="fw-bold">
+                    Apellido o apellidos acompañados de la primer letra del
+                    nombre.
+                  </p>
+                  <p>Ejemplos:</p>
+                  <ul>
+                    <li className="fw-bolder">Cerioni J. E.</li>
+                    <li className="fw-bolder">Perez Rodrigez N.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             {/* Autor */}
             <div className="" style={{ width: "100%" }}>
               <label
