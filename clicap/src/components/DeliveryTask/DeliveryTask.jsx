@@ -242,7 +242,7 @@ const DeliveryTask = () => {
                   separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
                   </p>
                   <ul>
-                    <li><strong>Juan Ramon Pérez</strong> se cargaría como <strong>Pérez J. R.</strong></li>
+                    <li><strong>Juan Pérez</strong> se cargaría como <strong>Pérez J.</strong></li>
                     <li><strong>Nicolás Pérez Rodríguez</strong>  se cargaría como <strong>Pérez Rodríguez N.</strong></li>
                   </ul>
                   <p>Para el caso de <strong>coautores</strong> se deben añadir al listado presionando la tecla "enter" o "coma" por cada uno que se cargue.</p>
