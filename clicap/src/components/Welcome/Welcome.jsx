@@ -259,7 +259,7 @@ const Welcome = () => {
               </div>
             </div>
 
-            <div className="row mt-3">
+            <div className="row mt-3 container">
               <h2 className="text-center">Información del Sistema</h2>
               <div className="col border dashboard-card flex flexCard">
                 <div className="cardBodyHome">
@@ -452,25 +452,6 @@ const Welcome = () => {
                   </ul>
                 </div>
 
-                {/* <div className="cardBodyHome">
-                  <h5 className="card-title">Mis Pagos</h5>
-                  <ul>
-                    <li>
-                      <p className="card-text">
-                        En esta sección podrás cargar tus comprobantes de pagos
-                        realizados, y también descargar la factura
-                        correspondiente a los mismos.
-                      </p>
-                    </li>
-                    <li>
-                      <p className="card-text">Carga de comprobantes en pdf.</p>
-                    </li>
-                    <li>
-                      <p className="card-text">Descarga de facturas.</p>
-                    </li>
-                  </ul>
-                </div> */}
-
                 <div className="cardBodyHome">
                   <h5 className="card-title">Constancia de Alumno Regular</h5>
                   <ul>
@@ -498,7 +479,6 @@ const Welcome = () => {
           </div>
         )}
       </div>
-      {/* <button onClick={() => donwloadCertificate()}>certificado</button> */}
     </>
   );
 };

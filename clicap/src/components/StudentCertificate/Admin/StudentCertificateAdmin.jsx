@@ -17,7 +17,7 @@ const StudentCertificateAdmin = () => {
   const { authorSelector } = userState
 
   const { getAllRegularCertificates, studentState } =
-  useContext(StudentContext);
+    useContext(StudentContext);
   const { studentCertificates, certificateFilters, totalStudentPages } = studentState;
 
   const [filters, setFilters] = useState(certificateFilters);
@@ -68,7 +68,7 @@ const StudentCertificateAdmin = () => {
             >
               <div className="me-3">
                 <label htmlFor="forAuthorId" className="form-label">
-                  Autor
+                  DNI - Nombre
                 </label>
                 <Select
                   options={authorSelector}

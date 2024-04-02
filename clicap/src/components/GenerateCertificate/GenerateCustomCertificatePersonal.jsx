@@ -150,13 +150,13 @@ export const GenerateCustomCertificatePersonal = ({
             {certificateData.type === 1 ? (
               <div className="me-3">
                 <label htmlFor="forName" className="form-label">
-                  Nombre y apellido - Identificacion
+                  Nombre y Apellido - Identificacion
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   name="userName"
-                  placeholder="Juan Juri, Dni: 40.158.444"
+                  placeholder="Juan Pérez, DNI: 40.158.444"
                   disabled={showPreview}
                   value={certificateData.userName}
                   onChange={(e) => handleChange(e, "userName")}
@@ -174,6 +174,7 @@ export const GenerateCustomCertificatePersonal = ({
                     type="text"
                     className="form-control"
                     name="author"
+                    placeholder="Pérez J."
                     disabled={showPreview}
                     value={certificateData.job?.author}
                     onChange={handleChangeJobData}
@@ -188,6 +189,7 @@ export const GenerateCustomCertificatePersonal = ({
                     type="text"
                     className="form-control"
                     name="members"
+                    placeholder="García López M., García D., Sánchez R."
                     maxlength="220"
                     disabled={showPreview}
                     value={certificateData.job?.members}
@@ -203,6 +205,7 @@ export const GenerateCustomCertificatePersonal = ({
                     type="text"
                     className="form-control"
                     name="name"
+                    placeholder="Modelización pragmática de la acción didáctica de los docentes en carreras científicas tecnológicas"
                     disabled={showPreview}
                     value={certificateData.job?.name}
                     onChange={handleChangeJobData}
