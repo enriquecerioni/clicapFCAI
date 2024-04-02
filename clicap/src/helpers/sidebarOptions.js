@@ -28,7 +28,7 @@ export const sidebarOptions = [
         roles: [1],
       },
       {
-        name: "Generar certificado",
+        name: "Generar certificados",
         icon: "fa-solid fa-user-graduate",
         redirection: "/generate-certificate",
         roles: [1],

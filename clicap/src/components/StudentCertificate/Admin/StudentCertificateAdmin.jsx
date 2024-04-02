@@ -99,7 +99,7 @@ const StudentCertificateAdmin = () => {
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th>Autor</th>
+                    <th>Usuario</th>
                     <th>Detalle</th>
                     <th></th>
                     <th></th>
