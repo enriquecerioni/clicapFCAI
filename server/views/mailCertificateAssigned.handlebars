@@ -1,0 +1,38 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventos FCAI</title>
+  </head>
+  <body>
+    <div style="text-align:center;"><img
+        style="width: 250px;"
+        src="cid:logo"
+        alt="Logo"
+      /></div>
+    <h1 style="font-weight:bold;text-align:center;">
+      ¡ Nuevo Certificado Otorgado !</h1>
+    <div>
+      <p>Estimado usuario {{userName}}</p>
+      <p>
+        {{#if jobName}}
+         Tenemos el agrado de notificarle que se le ha asignado un nuevo certificado correspondiente al trabajo <strong>"{{jobName}}"</strong>
+        {{else}}
+          Tenemos el agrado de notificarle que se le ha asignado un nuevo certificado personal.
+        {{/if}}
+      </p>
+      <p>
+        Por favor, para poder descargar el certificado, diríjase al sitio del evento e ingrese
+        sesión con su N° de DNI/Pasarporte y contraseña, luego en su perfil seleccione la opción
+        "Mis Certificados" en el menú de la izquierda.
+      </p>
+      <p>
+        En la tabla podrá observar los certificados que tenga otorgados a su usuario y descargarlos.
+      </p>
+      <p>Gracias por participar.</p>
+      <p>Comisión Organizadora.</p>
+      <p><a href="https://eventosfcai.com.ar/">Eventos FCAI</a></p>
+    </div>
+  </body>
+</html>

@@ -39,8 +39,9 @@ const Login = () => {
         setRefreshRoleIdAndUserId(true);
         //Guardo la informacion del usuario en el sessionStorage
         sessionStorage.setItem("user", JSON.stringify(data.data.user));
+        sessionStorage.setItem("token", JSON.stringify(data.data.token));
         navigate("/home");
-      } 
+      }
     }
     /* formOk ? await reqAxios('POST','/user/login','',formLogin): alertError('ID Incorrecto'); */
   };

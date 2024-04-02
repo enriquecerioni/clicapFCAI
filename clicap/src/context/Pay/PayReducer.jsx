@@ -6,7 +6,8 @@ export default (state, action) => {
     case SET_PAYS:
       return {
         ...state,
-        pays: payload,
+        pays: payload.pays,
+        totalPaysPages: payload.totalPages,
         isFetching: false,
       };
     case SET_REFRESH_PAYS:

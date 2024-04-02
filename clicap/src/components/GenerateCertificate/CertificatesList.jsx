@@ -143,46 +143,8 @@ export const CertificatesList = ({
       <tr>
         <td>{certificate.name}</td>
         <td>{certificate.text}</td>
-        <td>{certificate.type === 1 ? "Personal" : "Por Trabajo"}</td>
-        <td className="">
-          <ClicapTooltip
-            tooltip={true}
-            text={"Descargar ejemplo con un nombre"}
-          >
-            <button
-              disabled={disabledDownloadExample(certificate.type, "ONE")}
-              type="submit"
-              className="btn btn-primary"
-              onClick={() =>
-                donwloadCertificate(
-                  "",
-                  certificate,
-                  getExampleJob(certificate.type, false)
-                )
-              }
-            >
-              <i className="fa-solid fa-user"></i>
-            </button>
-          </ClicapTooltip>
-        </td>
-        <td className="">
-          <ClicapTooltip tooltip={true} text={"Descargar ejemplo con Miembros"}>
-            <button
-              disabled={disabledDownloadExample(certificate.type, "MORE")}
-              type="submit"
-              className="btn btn-secondary"
-              onClick={() =>
-                donwloadCertificate(
-                  "",
-                  certificate,
-                  getExampleJob(certificate.type, true)
-                )
-              }
-            >
-              <i className="fa-solid fa-users"></i>
-            </button>
-          </ClicapTooltip>
-        </td>
+        <td>{certificate.type === 1 ? "Personal" : "Trabajo"}</td>
+
         <td className="">
           <ClicapTooltip tooltip={true} text={"Editar certificado"}>
             <i

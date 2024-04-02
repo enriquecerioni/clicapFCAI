@@ -13,6 +13,10 @@ const DateModel = db.define("date", {
     type: DataTypes.STRING,
     defaultValue: '2022-11-12'
   },
+  deadlineDays: {
+    type: DataTypes.INTEGER,
+    defaultValue: 30
+  },
 });
 
 module.exports = DateModel;

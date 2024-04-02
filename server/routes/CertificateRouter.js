@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const CertificateController = require("../controllers/CertificateController");
-router.post("/create", CertificateController.create);
-router.put("/edit/:id", CertificateController.updateById);
-router.get("/get/:id", CertificateController.getById);
-router.get("/getall", CertificateController.getAll);
+const auth = require("../middlewares/authMiddleware");
+
+router.post("/create",auth.verifyToken, CertificateController.create);
+router.put("/edit/:id", auth.verifyToken, CertificateController.updateById);
+router.get("/get/:id", auth.verifyToken, CertificateController.getById);
+router.get("/getall", auth.verifyToken, CertificateController.getAll);
 router.get("/getcertificatelogo/:name", CertificateController.getCertificateLogo);
-router.post("/savelogo", CertificateController.saveLogosApp);
-router.delete("/delete/:id", CertificateController.deleteById);
+router.post("/savelogo", auth.verifyToken, CertificateController.saveLogosApp);
+router.delete("/delete/:id", auth.verifyToken, CertificateController.deleteById);
 
 module.exports = router;

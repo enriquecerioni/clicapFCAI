@@ -131,7 +131,7 @@ exports.register = async (req, res) => {
 
     return res.status(200).json({
       response:
-        "En breve se enviará un email a su correo para activar su cuenta.",
+        "En breve se enviará un email a su correo para activar su cuenta. Por favor, revise su bandeja de entrada de correos y/o spam.",
     });
   } catch (error) {
     return res.status(500).send({
@@ -253,6 +253,15 @@ exports.login = async (req, res) => {
     });
 
     if (user) {
+      const token = jwt.sign(
+        {
+          identifyNumber,
+          password,
+        },
+        process.env.JWT_ACOUNT_ACTIVE,
+        { expiresIn: "10h" }
+      );
+
       jwt.verify(
         user.password,
         process.env.JWT_ACOUNT_ACTIVE,
@@ -266,7 +275,9 @@ exports.login = async (req, res) => {
 
           if (user && password === passwordToken) {
             delete user.password;
-            return res.status(200).json({ msg: "Inicio de sesión exitoso", user: user });
+            return res
+              .status(200)
+              .json({ msg: "Inicio de sesión exitoso", user: user, token });
           } else {
             return res.status(401).json({ msg: "Id o contraseña incorrecta" });
           }
@@ -308,7 +319,10 @@ exports.updateById = async (req, res) => {
       where: { identifyNumber },
     });
 
-    if (registeredUser.length > 1 || (registeredUser.length === 1 && Number(id) !== registeredUser[0].id)) {
+    if (
+      registeredUser.length > 1 ||
+      (registeredUser.length === 1 && Number(id) !== registeredUser[0].id)
+    ) {
       return res
         .status(500)
         .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
@@ -365,9 +379,7 @@ exports.updateById = async (req, res) => {
           res.end();
         }
       });
-      return res
-        .status(200)
-        .json({ msg: "Usuario editado correctamente!" });
+      return res.status(200).json({ msg: "Usuario editado correctamente!" });
     } else {
       res.status(500).json({ msg: "El usuario no existe!" });
     }
@@ -552,25 +564,56 @@ const optionsToFilter = (req) => {
     return res.status(503).json({ msg: "Fallo en el servidor" });
   }
 };
+
+const decryptPass = async (users = []) => {
+  const decryptedUsers = [];
+
+  for (const user of users) {
+    try {
+      const decoded = jwt.verify(user.password, process.env.JWT_ACOUNT_ACTIVE);
+      user.password = decoded.password;
+      decryptedUsers.push(user);
+    } catch (err) {
+      // Manejar el error, tal vez ignorarlo y seguir adelante con otros usuarios
+      console.error("Error decoding token for user:", user.name);
+    }
+  }
+
+  return decryptedUsers;
+};
+
 exports.downloadFilter = async (req, res) => {
   const options = optionsToFilter(req);
   const rows = await UserModel.findAll(options);
   const workbook = new excelJS.Workbook(); // Create a new workbook
   const worksheet = workbook.addWorksheet("Mi reporte"); // New Worksheet
+  let decodedData;
+
   // Column for data in excel. key must match data key
   worksheet.columns = [
     { header: "Nombre", key: "name", width: EXCEL_CELL_WIDTH },
     { header: "Apellido", key: "surname", width: EXCEL_CELL_WIDTH },
     { header: "DNI/Pasaporte", key: "identifyNumber", width: EXCEL_CELL_WIDTH },
+    { header: "Contraseña", key: "password", width: EXCEL_CELL_WIDTH },
     { header: "Teléfono", key: "phone", width: EXCEL_CELL_WIDTH },
     { header: "Email", key: "email", width: EXCEL_CELL_WIDTH },
     { header: "Rol", key: "roleId", width: EXCEL_CELL_WIDTH },
   ];
+
+  await decryptPass(rows)
+    .then((decryptedUsers) => {
+      decodedData = decryptedUsers;
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+    });
+
   // Looping through User data
-  rows.forEach((user) => {
+  decodedData.forEach((user) => {
     user.roleId = user.role.name;
     worksheet.addRow(user); // Add data in worksheet
   });
+
   // put styles
   worksheet.getRow(1).eachCell((cell) => {
     (cell.font = { bold: true }),

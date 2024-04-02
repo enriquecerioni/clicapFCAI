@@ -26,6 +26,11 @@ export const Configuration = () => {
       name: "Fechas importantes",
       navigate: "/importantdate-config",
     },
+    {
+      icon: "fa-regular fa-calendar",
+      name: "Fecha del Evento",
+      navigate: "/event-date",
+    },
   ];
 
   return (

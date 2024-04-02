@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const StudentCertificateController = require("../controllers/StudentCertificateController");
-router.post("/create", StudentCertificateController.create);
-router.put("/edit/:id", StudentCertificateController.updateById);
-router.get("/get/:id", StudentCertificateController.getById);
-router.get("/getall", StudentCertificateController.getAll);
-router.get("/getall/:userId", StudentCertificateController.getAllByUser);
-router.delete("/delete/:id", StudentCertificateController.deleteById);
+const auth = require("../middlewares/authMiddleware");
+
+router.post("/create",auth.verifyToken, StudentCertificateController.create);
+router.put("/edit/:id", auth.verifyToken, StudentCertificateController.updateById);
+router.get("/get/:id", auth.verifyToken, StudentCertificateController.getById);
+router.get("/getall", auth.verifyToken, StudentCertificateController.getAll);
+router.get("/getall/:userId", auth.verifyToken, StudentCertificateController.getAllByUser);
+router.delete("/delete/:id", auth.verifyToken, StudentCertificateController.deleteById);
 
 module.exports = router;

@@ -3,29 +3,35 @@ import "../jobs.css";
 import { useNavigate } from "react-router";
 //components
 import { useContext } from "react";
-import { getDataUserByKey } from "../../../helpers/helpers";
+import { evaluateDate, getDataUserByKey } from "../../../helpers/helpers";
 import JobStudentList from "./JobStudentList";
 import { PaginationCustom } from "../../Pagination/Pagination";
 import { Loader } from "../../Loader/Loader";
 import { JobContext } from "../../../context/Job/JobContext";
+import { AppContext } from "../../../context/App/AppContext";
 
 const JobStudent = () => {
   const navigate = useNavigate();
-
-  const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
-  const { isFetching, jobs, totalJobsPages, jobData } = jobState;
-
   const idUser = getDataUserByKey("id");
+
   const initialFilters = {
-    authorId: idUser,
+    userId: idUser,
     name: "",
     areaId: "",
   };
+
+  const { getJobsFiltered, jobState, cleanJobData } = useContext(JobContext);
+  const { isFetching, jobs, totalJobsPages, jobData } = jobState;
+  const { appState, getEventDate } = useContext(AppContext);
+  const { eventDate, deadlineDays } = appState;
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
 
+  const isOnTime = evaluateDate(eventDate, deadlineDays);
+
   useEffect(() => {
     getJobsFiltered(page, filters);
+    getEventDate()
     if (jobData.name !== "") {
       cleanJobData();
     }
@@ -33,7 +39,7 @@ const JobStudent = () => {
   }, [page]);
 
   return (
-    <>
+    <div className="ms-3 me-3">
       <h2 className="text-center">Mis trabajos</h2>
       <div className="box-add-instance ">
         <div className="text-end me-5">
@@ -41,6 +47,7 @@ const JobStudent = () => {
             type="button"
             onClick={() => navigate("/newjob")}
             className="btn btn-success"
+            disabled={isOnTime ? false : true}
           >
             <i className="fa-solid fa-plus"></i> Nuevo trabajo
           </button>
@@ -54,9 +61,6 @@ const JobStudent = () => {
               <th>Area</th>
               <th>Modalidad</th>
               <th>Estado</th>
-              <th></th>
-              <th></th>
-              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -84,7 +88,7 @@ const JobStudent = () => {
       ) : (
         <p className="mt-4 text-center">No hay Trabajos</p>
       )}
-    </>
+    </div>
   );
 };
 export default JobStudent;

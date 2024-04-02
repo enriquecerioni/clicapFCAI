@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { JobsAdminList } from "./JobsAdminList";
 import ModalDelete from "../../Modals/ModalDelete";
@@ -11,9 +10,9 @@ import { JobContext } from "../../../context/Job/JobContext";
 import { UserContext } from "../../../context/User/UserContext";
 import { AreaContext } from "../../../context/Area/AreaContext";
 import { AssignEvaluatorModal } from "./AssignEvaluatorModal";
+import { ModalitiesContext } from "../../../context/Modalities/ModalitiesContext";
 
 const JobsAdmin = () => {
-  const navigate = useNavigate();
   const roleId = getDataUserByKey("roleId");
   const isEvaluator = roleId === 2 ? true : false;
 
@@ -26,12 +25,15 @@ const JobsAdmin = () => {
   const { areaState, getAllAreas } = useContext(AreaContext);
   const { areas } = areaState;
 
+  const { getAllModalities, modalitiesState } = useContext(ModalitiesContext);
+  const { modalities } = modalitiesState;
+
   const [filters, setFilters] = useState(jobsFilter);
   const [showAssignEvaluatorModal, setShowAssignEvaluatorModal] =
     useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState(false);
-  const [JobToDelete, setJobToDelete] = useState(false);
+  const [JobToDelete, setJobToDelete] = useState({});
   const [page, setPage] = useState(1);
 
   //evaluator
@@ -48,6 +50,9 @@ const JobsAdmin = () => {
     }
     if (areas.length === 0) {
       getAllAreas();
+    }
+    if (modalities.length === 0) {
+      getAllModalities();
     }
     //search assign jobs when the user is evaluator
     if (isEvaluator) {
@@ -131,9 +136,13 @@ const JobsAdmin = () => {
                     <th>Estado</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    {roleId === 1 ? (
+                      <>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </>
+                    ) : null}
                   </tr>
                 </thead>
                 <tbody>
@@ -141,6 +150,7 @@ const JobsAdmin = () => {
                     <JobsAdminList
                       work={work}
                       showAlert={setShowDeleteModal}
+                      JobToDelete={JobToDelete}
                       setJobToDelete={setJobToDelete}
                       setShowAssignEvaluatorModal={setShowAssignEvaluatorModal}
                       setJobToAssignEvaluator={setJobToAssignEvaluator}

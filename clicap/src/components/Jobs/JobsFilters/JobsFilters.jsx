@@ -72,25 +72,17 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               />
             </div>
             <div className="col">
-              <label htmlFor="forAuthorId" className="form-label label-filters">
+            <label htmlFor="forName" className="form-label label-filters">
                 Autor
               </label>
-              <Select
-                options={authorSelector}
-                placeholder={"Seleccione..."}
-                name="authorId"
-                isClearable={true}
-                value={authorSelector.filter(
-                  (author) => filters.authorId === author.value
-                )}
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#3D84A8",
-                  },
-                })}
-                onChange={(e) => handleChangeFilter(e, "authorId")}
+              <input
+                type="text"
+                name="author"
+                value={filters.author}
+                className="form-control"
+                id="exampleFormControlInput1"
+                placeholder="Autor"
+                onChange={(e) => handleChangeFilter(e, "author")}
               />
             </div>
             <div className="col">

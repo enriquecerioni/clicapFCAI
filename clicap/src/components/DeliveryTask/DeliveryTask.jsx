@@ -81,9 +81,10 @@ const DeliveryTask = () => {
       }
       await updateJobById(job, id);
     } else {
+      job.userId = getDataUserByKey("id");
       await createNewJob(job);
     }
-    [3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
+    [2, 3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
   };
 
   const checkFields = () => {
@@ -219,13 +220,63 @@ const DeliveryTask = () => {
                 />
               </div>
             </div>
+
+            <div className="mt-3 mb-2">
+              <div
+                className="d-flex flex-wrap gap-3"
+                style={{
+                  width: "100%",
+                  padding: "20px",
+                  borderRadius: "1rem",
+                  boxShadow: "9px 9px 30px 1px rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <div className="d-flex align-items-center mb-3">
+                  <i className="fa-2x fa-solid fa-circle-info"></i>
+                </div>
+                <div>
+                  <h5>Cómo cargar los nombres</h5>
+                  <p>
+                  Para cargar los nombres de autores y coautores siguiendo el formato indicado, 
+                  se debe utilizar el <strong>apellido o apellidos seguido de la primera letra del nombre, 
+                  separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
+                  </p>
+                  <ul>
+                    <li><strong>Juan Ramon Pérez</strong> se cargaría como <strong>Pérez J. R.</strong></li>
+                    <li><strong>Nicolás Pérez Rodríguez</strong>  se cargaría como <strong>Pérez Rodríguez N.</strong></li>
+                  </ul>
+                  <p>Para el caso de <strong>coautores</strong> se deben añadir al listado presionando la tecla "enter" o "coma" por cada uno que se cargue.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Autor */}
+            <div className="" style={{ width: "100%" }}>
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label fw-bold"
+              >
+                * Autor
+              </label>
+              <div className="">
+                <input
+                  type="text"
+                  placeholder="Nombre"
+                  className="form-control"
+                  name="author"
+                  value={job.author}
+                  onChange={(e) => handleChangeUpJob(e, "author")}
+                />
+              </div>
+            </div>
+
             {/* Miembros */}
             <div className="mt-2">
               <label
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold pe-3"
               >
-                Autor/es del trabajo
+                Coautores del trabajo (opcional)
               </label>
               <MembersChips
                 membersToSend={members}
@@ -278,9 +329,6 @@ const DeliveryTask = () => {
               <p className="m-0">": Campos obligatorios</p>
             </div>
           </form>
-          {/*           <Button onClick={() => console.log(job)} variant="primary">
-            console
-          </Button> */}
         </div>
       </div>
     </div>

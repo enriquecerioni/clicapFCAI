@@ -1,21 +1,80 @@
 const CertificateModel = require("../models/CertificateModel");
 const JobModel = require("../models/JobModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
+const UserModel = require("../models/UserModel");
+const { transporter } = require("../utils/utils");
+const path = require("path");
+const hbs = require("nodemailer-express-handlebars");
+
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  })
+);
 
 exports.create = async (req, res) => {
   try {
     const { certificateId, userId } = req.body;
     let { jobId } = req.body;
 
-    if (jobId === "") {
-      jobId = null;
+    let mailContext = {
+      userName: "",
     }
 
+    if (jobId === "") {
+      jobId = null;
+      mailContext = {...mailContext, jobName: null}
+    } else {
+      const job = await JobModel.findOne({
+        where: { id: jobId }
+      })
+      mailContext = {...mailContext, jobName: job.name}
+    }
+
+    console.log(certificateId, userId, jobId);
     const certificate = await StudentCertificateModel.create({
       certificateId,
       userId,
       jobId,
     });
+
+    const user = await UserModel.findOne({
+      where: {id: userId},
+      attributes: ["name", "surname", "email"],
+    })
+
+    mailContext = {...mailContext, userName: user.name}
+
+    let mailOptions = {
+      from: process.env.EMAIL_APP,
+      to: user.email,
+      subject: "Certificado",
+      template: "mailCertificateAssigned",
+      attachments: [
+        {
+          filename: "appLogo.jpg",
+          path: "./public/logos/appLogo.jpg",
+          cid: "logo",
+        },
+      ],
+      context: mailContext
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ msg: error.message });
+      } else {
+        console.log("Email enviado!");
+        res.end();
+      }
+    });
+
     if (certificate) {
       res.status(200).json({ msg: "Certificado creado!" });
     } else {
@@ -75,10 +134,10 @@ exports.getAll = async (req, res) => {
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 
@@ -88,16 +147,19 @@ exports.getAllByUser = async (req, res) => {
     console.log(userId);
     let options = {
       where: { userId: userId },
-      include: [{ model: JobModel }, { model: CertificateModel }],
+      include: [
+        { model: JobModel, include: [{ model: UserModel, as: "user" }] },
+        { model: CertificateModel },
+      ],
     };
     const certificate = await StudentCertificateModel.findAll(options);
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
-      res.status(500).json({ msg: "Error al obtener los pagos." });
+      res.status(500).json({ msg: "Error al obtener los certificados." });
     }
   } catch (error) {
-    console.log("Error al obtener los pagos." + error);
+    console.log("Error al obtener los certificados." + error);
   }
 };
 

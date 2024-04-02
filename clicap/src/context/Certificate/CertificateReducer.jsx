@@ -1,10 +1,11 @@
 import {
   GET_CERTIFICATE,
   SET_CERTIFICATES_SELECTOR,
-  SET_USER_ID_TO_CERTIFICATE,
+  SET_USER_TO_CERTIFICATE,
   GET_CERTIFICATES_BY_USER,
   GET_LOGO,
   GET_CERTIFICATE_BY_ID,
+  RESET_CERTIFICATE_DATA,
 } from "./types";
 
 export default (state, action) => {
@@ -28,16 +29,21 @@ export default (state, action) => {
         ...state,
         certificateSelector: payload,
       };
-    case SET_USER_ID_TO_CERTIFICATE:
+    case SET_USER_TO_CERTIFICATE:
       return {
         ...state,
-        userIdToCertificate: payload.id,
-        nameToCertificate: payload.fullName,
+        userToCertificate: payload,
       };
     case GET_CERTIFICATES_BY_USER:
       return {
         ...state,
         userCertificates: payload,
+        isFetching: false,
+      };
+    case RESET_CERTIFICATE_DATA:
+      return {
+        ...state,
+        certificateData: payload,
         isFetching: false,
       };
     case GET_LOGO:

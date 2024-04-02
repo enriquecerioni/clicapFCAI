@@ -10,7 +10,9 @@ const ModalDelete = ({ entity, showAlert }) => {
       deleteFile(entity.receipt, 'payments');
       deleteFile(entity.invoice, 'invoices');
     } else if(entity.entityType === 'job'){
-      deleteFile(entity.job, 'documents');
+      entity.jobVersions.forEach(version => {
+        deleteFile(version.urlFile, 'documents');
+      });
     } else if(entity.entityType === 'new'){
       deleteFile(entity.image, 'news');
     } else if(entity.entityType === 'regular-certificates'){

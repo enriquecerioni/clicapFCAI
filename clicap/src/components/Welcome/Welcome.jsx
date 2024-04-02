@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { CertificateContext } from "../../context/Certificate/CertificateContext";
-import { getDataUserByKey, reqAxios } from "../../helpers/helpers";
 import "./welcome.css";
-import { AreaContext } from "../../context/Area/AreaContext";
-import { Loader } from "../Loader/Loader";
-import { JobContext } from "../../context/Job/JobContext";
-import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
-import { PayContext } from "../../context/Pay/PayContext";
 import { AppContext } from "../../context/App/AppContext";
+import { AreaContext } from "../../context/Area/AreaContext";
+import { CertificateContext } from "../../context/Certificate/CertificateContext";
+import { evaluateDate } from "../../helpers/helpers";
+import { getDataUserByKey } from "../../helpers/helpers";
+import { JobContext } from "../../context/Job/JobContext";
+import { Loader } from "../Loader/Loader";
+import { ModalitiesCard } from "./ModalitiesCard/ModalitiesCard";
 import { ModalitiesContext } from "../../context/Modalities/ModalitiesContext";
+import { PayContext } from "../../context/Pay/PayContext";
+import { useContext } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -19,8 +20,9 @@ const Welcome = () => {
   const roleId = getDataUserByKey("roleId");
   const name = getDataUserByKey("name");
 
-  const { appState, setRefreshRoleIdAndUserId } = useContext(AppContext);
-  const { refreshRoleIdAndUserId } = appState;
+  const { appState, setRefreshRoleIdAndUserId, getEventDate } = useContext(AppContext);
+  const { refreshRoleIdAndUserId, eventDate, deadlineDays } = appState;
+  const isOnTime = evaluateDate(eventDate, deadlineDays);
 
   const { jobState, setJobFilters, setRefreshUserIdToJob, getJobByAuthorId } =
     useContext(JobContext);
@@ -131,6 +133,7 @@ const Welcome = () => {
     }
     getAndSetNumberOfJobs();
     getAuthorPayandJob();
+    getEventDate();
   }, []);
 
   useEffect(() => {
@@ -256,7 +259,7 @@ const Welcome = () => {
               </div>
             </div>
 
-            <div className="row mt-3">
+            <div className="row mt-3 container">
               <h2 className="text-center">Información del Sistema</h2>
               <div className="col border dashboard-card flex flexCard">
                 <div className="cardBodyHome">
@@ -374,20 +377,16 @@ const Welcome = () => {
                       role="alert"
                     >
                       <p>
-                        {roleId === 2
-                          ? "Tienes un trabajo asignado "
-                          : "Ya has subido un trabajo "}
+                        Ya has subido un trabajo
                         <i className="fas fa-info-circle"></i>
                       </p>
                       <button
                         className="btn btn-success"
                         onClick={() =>
-                          navigate(roleId === 2 ? "/jobs" : "/myjobs")
+                          navigate("/myjobs")
                         }
                       >
-                        {roleId === 2
-                          ? "Ver trabajos asignados"
-                          : "Mis trabajos"}
+                        Mis trabajos
                       </button>
                     </div>
                   ) : (
@@ -402,45 +401,12 @@ const Welcome = () => {
                       <button
                         className="btn btn-primary"
                         onClick={() => navigate("/newjob")}
+                        disabled={isOnTime ? false : true}
                       >
                         Subir Trabajo
                       </button>
                     </div>
                   )}
-
-                  {/* {authorPay.length ? (
-                    <div
-                      className="alert alert-success alertWidth flexAlert"
-                      role="alert"
-                    >
-                      <p>
-                        Ya has cargado tu comprobante de pago{" "}
-                        <i className="fas fa-info-circle"></i>
-                      </p>
-                      <button
-                        className="btn btn-success"
-                        onClick={() => navigate("/mypays")}
-                      >
-                        Mis pagos
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      className="alert alert-danger alertWidth flexAlert"
-                      role="alert"
-                    >
-                      <p>
-                        No has subido un comprobante de pago{" "}
-                        <i className="fas fa-info-circle"></i>
-                      </p>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => navigate("/newpay")}
-                      >
-                        Subir Comprobante
-                      </button>
-                    </div>
-                  )} */}
 
                   <div
                     className="alert alert-info alertWidth flexAlert"
@@ -486,25 +452,6 @@ const Welcome = () => {
                   </ul>
                 </div>
 
-                {/* <div className="cardBodyHome">
-                  <h5 className="card-title">Mis Pagos</h5>
-                  <ul>
-                    <li>
-                      <p className="card-text">
-                        En esta sección podrás cargar tus comprobantes de pagos
-                        realizados, y también descargar la factura
-                        correspondiente a los mismos.
-                      </p>
-                    </li>
-                    <li>
-                      <p className="card-text">Carga de comprobantes en pdf.</p>
-                    </li>
-                    <li>
-                      <p className="card-text">Descarga de facturas.</p>
-                    </li>
-                  </ul>
-                </div> */}
-
                 <div className="cardBodyHome">
                   <h5 className="card-title">Constancia de Alumno Regular</h5>
                   <ul>
@@ -532,7 +479,6 @@ const Welcome = () => {
           </div>
         )}
       </div>
-      {/* <button onClick={() => donwloadCertificate()}>certificado</button> */}
     </>
   );
 };
