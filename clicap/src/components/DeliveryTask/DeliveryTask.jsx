@@ -237,18 +237,15 @@ const DeliveryTask = () => {
                 <div>
                   <h5>Cómo cargar los nombres</h5>
                   <p>
-                    Los nombres del autor y coautores deben escribirse de la
-                    siguiente manera:
+                  Para cargar los nombres de autores y coautores siguiendo el formato indicado, 
+                  se debe utilizar el <strong>apellido o apellidos seguido de la primera letra del nombre, 
+                  separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
                   </p>
-                  <p className="fw-bold">
-                    Apellido o apellidos acompañados de la primer letra del
-                    nombre.
-                  </p>
-                  <p>Ejemplos:</p>
                   <ul>
-                    <li className="fw-bolder">Cerioni J. E.</li>
-                    <li className="fw-bolder">Perez Rodrigez N.</li>
+                    <li><strong>Juan Ramon Pérez</strong> se cargaría como <strong>Pérez J. R.</strong></li>
+                    <li><strong>Nicolás Pérez Rodríguez</strong>  se cargaría como <strong>Pérez Rodríguez N.</strong></li>
                   </ul>
+                  <p>Para el caso de <strong>coautores</strong> se deben añadir al listado presionando la tecla "enter" o "coma" por cada uno que se cargue.</p>
                 </div>
               </div>
             </div>
@@ -279,7 +276,7 @@ const DeliveryTask = () => {
                 htmlFor="exampleInputEmail1"
                 className="form-label fw-bold pe-3"
               >
-                Coautores del trabajo
+                Coautores del trabajo (opcional)
               </label>
               <MembersChips
                 membersToSend={members}

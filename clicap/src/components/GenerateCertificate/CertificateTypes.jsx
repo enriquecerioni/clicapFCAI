@@ -56,8 +56,6 @@ export default function CertificateTypes() {
                     <th>Tipo</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
