@@ -328,6 +328,8 @@ exports.updateById = async (req, res) => {
         .json({ msg: "El DNI / PASAPORTE ya está registrado!" });
     }
 
+    const previousRoleId = registeredUser.roleId;
+
     const user = await UserModel.update(
       {
         name: name,
@@ -347,11 +349,20 @@ exports.updateById = async (req, res) => {
     const role = await await RoleModel.findByPk(roleId);
 
     if (user) {
+      let templateName = "mailCredentials"; // Por defecto, utiliza este template
+
+      // Si solo se ha modificado el roleId, utiliza otro template
+      if (previousRoleId !== roleId && roleId === 2) {
+        templateName = "mailChangeRoleIdEvaluator";
+      } else if(previousRoleId !== roleId && roleId === 1) {
+        templateName = "mailChangeRoleIdAdmin"
+      }
+
       var mailOptions = {
         from: process.env.EMAIL_APP,
         to: email,
         subject: "Usuario editado - credenciales",
-        template: "mailCredentials",
+        template: templateName,
         attachments: [
           {
             filename: "appLogo.jpg",
@@ -363,7 +374,7 @@ exports.updateById = async (req, res) => {
           id: identifyNumber,
           password: password,
           name: name + " " + surname,
-          roleId: role.name,
+          roleName: role.name,
           email: email,
           phone: phone,
           address: address,

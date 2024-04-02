@@ -111,7 +111,7 @@ const PaysAdmin = () => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Autor</th>
+                    <th>Usuario</th>
                     <th>CUIL / CUIT</th>
                     <th>Condición Frente al IVA</th>
                     <th>Monto</th>
