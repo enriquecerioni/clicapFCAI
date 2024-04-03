@@ -94,7 +94,7 @@ export const MembersChips = ({ membersToSend, setMembersToSend }) => {
         /*                 className={"input " + (membersToSend.error && " has-error")} */
         className={`input ${membersToSend.error ? "has-error" : ""}`}
         value={membersToSend.value}
-        placeholder={"Ivan Castro, Enrique Cerioni"}
+        placeholder={"Ingrese los coautores en el formato indicado..."}
         onKeyDown={(e) => handleKeyDown(e)}
         onChange={(e) => handleChange(e)}
         onPaste={handlePaste}

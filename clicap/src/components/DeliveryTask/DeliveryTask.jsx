@@ -157,7 +157,7 @@ const DeliveryTask = () => {
                 <div className="">
                   <input
                     type="text"
-                    placeholder="Nombre"
+                    placeholder="Ingrese un nombre para el trabajo..."
                     className="form-control"
                     name="name"
                     value={job.name}
@@ -261,7 +261,7 @@ const DeliveryTask = () => {
               <div className="">
                 <input
                   type="text"
-                  placeholder="Nombre"
+                  placeholder="Ingrese el nombre del autor en el formato indicado..."
                   className="form-control"
                   name="author"
                   value={job.author}

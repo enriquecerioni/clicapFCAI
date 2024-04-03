@@ -66,7 +66,7 @@ export const JobCertificatePdf = ({ job = {}, certificate = {} }) => {
 
   const jobAuthor = Object.keys(job).length ? job.author : "";
   const members =
-    Object.keys(job).length && job.members ? `; ${job.members}` : "";
+    Object.keys(job).length && job.members ? `, ${job.members}` : "";
 
   const fullMembers = `${jobAuthor}${members}`;
 
