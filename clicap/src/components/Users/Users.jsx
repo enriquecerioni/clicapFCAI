@@ -146,6 +146,11 @@ const Users = ({ showModalCertificate }) => {
                     <th>Rol</th>
                     <th></th>
                     <th></th>
+                    {
+                      pathname === "/generate-certificate" ?
+                      <th></th>
+                      : null
+                    }
                   </tr>
                 </thead>
                 <tbody>
