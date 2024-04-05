@@ -1,6 +1,7 @@
 const UserModel = require("../models/UserModel");
 const JobModel = require("../models/JobModel");
 const JobDetailModel = require("../models/JobDetailModel");
+const JobVersionModel = require("../models/JobVersionModel");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
 const PayModel = require("../models/PayModel");
 const bcrypt = require("bcrypt");
@@ -8,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const Sequelize = require("sequelize");
 const excelJS = require("exceljs");
-const { transporter } = require("../utils/utils");
+const { transporter, deleteFileGeneric } = require("../utils/utils");
 const { PAGE_LIMIT } = process.env;
 const EXCEL_CELL_WIDTH = 12;
 const RoleController = require("../controllers/RoleController");
@@ -17,6 +18,8 @@ const hbs = require("nodemailer-express-handlebars");
 const { response } = require("express");
 const RoleModel = require("../models/RoleModel");
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
+const { deleteById } = require("./RegularCertificateController");
+const RegularCertificateModel = require("../models/RegularCertificateModel");
 
 transporter.use(
   "compile",
@@ -45,7 +48,7 @@ exports.register = async (req, res) => {
     password,
     passwordConfirm,
   } = req.body;
-  console.log(req.body);
+
   try {
     //inputs validate
     if (
@@ -193,7 +196,7 @@ exports.acountActivate = async (req, res) => {
           phone: phone,
         });
 
-        const role = await await RoleModel.findByPk(roleId);
+        const role = await RoleModel.findByPk(roleId);
 
         if (user) {
           var mailOptions = {
@@ -212,7 +215,7 @@ exports.acountActivate = async (req, res) => {
               id: identifyNumber,
               password: password,
               name: name + " " + surname,
-              roleId: role.name,
+              roleName: role.name,
               email: email,
               phone: phone,
               address: address,
@@ -345,8 +348,8 @@ exports.updateById = async (req, res) => {
       },
       { where: { id: id } }
     );
-
-    const role = await await RoleModel.findByPk(roleId);
+    
+    const role = await RoleModel.findByPk(roleId);
 
     if (user) {
       let templateName = "mailCredentials"; // Por defecto, utiliza este template
@@ -467,26 +470,42 @@ exports.deleteById = async (req, res) => {
 
     //search jobs by userId
     const jobs = await JobModel.findAll({
-      where: { authorId: id },
+      where: { userId: id },
     });
 
     if (jobs && jobs.length > 0) {
       //delete job details by jobId
       jobs.forEach(async (job) => {
+        await JobVersionModel.destroy({
+          where: {jobId: job.id}
+        })
         await JobDetailModel.destroy({
           where: { jobId: job.id },
         });
       });
       //delete jobs
       await JobModel.destroy({
-        where: { authorId: id },
+        where: { userId: id },
       });
     }
 
-    //delete studentCertificates
     await StudentCertificateModel.destroy({
-      where: { userId: id },
+      where: {userId: id}
+    })
+
+    const regularCertificates = await RegularCertificateModel.findAll({
+      where: { authorId: id },
     });
+
+    if(regularCertificates) {
+      regularCertificates.forEach(c => {
+        deleteFileGeneric({nameFile: c.urlFile, folder: "/regularcertificates"})
+      })
+
+      await RegularCertificateModel.destroy({
+        where: { authorId: id },
+      });
+    }
 
     //delete Pays
     await PayModel.destroy({
@@ -503,7 +522,8 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar el usuario." });
     }
   } catch (error) {
-    console.log("Error al eliminar el usuario." + error);
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar el usuario." });
   }
 };
 

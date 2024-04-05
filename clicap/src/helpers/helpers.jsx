@@ -36,14 +36,12 @@ export const reqAxios = async (method, shortUrl, param, data) => {
     }
   } catch (error) {
     if (error.response.status === 401) {
-      console.log(error);
       sessionStorage.clear();
       alertError("La sesión expiró");
       return setTimeout(() => (window.location.href = URL_HOME), 3000);
     }
 
     if (error.response.status === 404) {
-      console.log(error);
       return alertError("Error al conectar con el servidor");
     }
 
@@ -87,8 +85,7 @@ export const deleteAxios = async (shortUrl) => {
     toast.update(load, loadSuccess(res.data));
     return res;
   } catch (error) {
-    console.log(error.response.data);
-    return toast.update(load, loadError(error.response.data));
+    toast.update(load, loadError(error.response.data.msg));
   }
 };
 export const waitAndRefresh = (path, time) => {
