@@ -21,6 +21,11 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
 
   const toCorrectionOptions = [
     {
+      value: 2,
+      label: "Para asignar evaluadores",
+      target: { name: "approve", value: 2 },
+    },
+    {
       value: 1,
       label: "Para corregir",
       target: { name: "approve", value: 1 },
@@ -72,7 +77,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               />
             </div>
             <div className="col">
-            <label htmlFor="forName" className="form-label label-filters">
+              <label htmlFor="forName" className="form-label label-filters">
                 Autor
               </label>
               <input
@@ -173,7 +178,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                     primary: "#3D84A8",
                   },
                 })}
-                onChange={(e) => handleChangeFilter(e, "status")}
+                onChange={(e) => handleChangeFilter(e, "approve")}
               />
             </div>
           </div>
