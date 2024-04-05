@@ -271,65 +271,7 @@ exports.updateById = async (req, res) => {
             return res.status(200).json({ msg: "Evaluador asignado!" });
           });
         }
-
-        if (newVersion) {
-          admins.forEach((admin) => {
-            let mailOptions = {
-              from: process.env.EMAIL_APP,
-              to: admin.email,
-              subject: "Nueva versión del trabajo",
-              template: "mailWithNewVersionJobAdmin",
-              attachments: [
-                {
-                  filename: "appLogo.jpg",
-                  path: "./public/logos/appLogo.jpg",
-                  cid: "logo", //my mistake was putting "cid:logo@cid" here!
-                },
-              ],
-              context: {
-                adminName: admin.name + " " + admin.surname,
-                jobName: doc.name,
-              },
-            };
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                return res.status(500).json({ msg: error.message });
-              } else {
-                console.log("Email enviado!");
-                res.end();
-              }
-            });
-          });
-          user.forEach((evaluator) => {
-            let mailOptions = {
-              from: process.env.EMAIL_APP,
-              to: evaluator.email,
-              subject: "Nueva versión del trabajo",
-              template: "mailWithNewVersionJob",
-              attachments: [
-                {
-                  filename: "appLogo.jpg",
-                  path: "./public/logos/appLogo.jpg",
-                  cid: "logo", //my mistake was putting "cid:logo@cid" here!
-                },
-              ],
-              context: {
-                evaluatorName: evaluator.name + " " + evaluator.surname,
-                jobName: doc.name,
-              },
-            };
-            transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                return res.status(500).json({ msg: error.message });
-              } else {
-                console.log("Email enviado!");
-                res.end();
-              }
-            });
-          });
-        }
       }
-
       res.status(200).json({ msg: "Trabajo editado!" });
     } else {
       res.status(500).json({ msg: "Error al editar el trabajo" });
@@ -559,7 +501,12 @@ exports.getAllPaginated = async (req, res) => {
       options.where.status = status;
     }
     if (approve) {
-      options.where.approve = approve;
+      if (Number(approve) === 2) {
+        options.where.evaluatorId1 = null;
+        options.where.evaluatorId2 = null;
+      } else {
+        options.where.approve = approve;
+      }
     }
 
     if (evaluatorId) {
@@ -571,6 +518,7 @@ exports.getAllPaginated = async (req, res) => {
       options.where.areaId = areaId;
     }
 
+    console.log(options);
     const { count, rows } = await JobModel.findAndCountAll(options);
     const cantPages = calcTotalPages(count);
 
