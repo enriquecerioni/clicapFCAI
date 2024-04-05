@@ -7,7 +7,6 @@ const { PAGE_LIMIT } = process.env;
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 const uuid = require("uuid");
 const RegularCertificateModel = require("../models/RegularCertificateModel");
-const StudentCertificateModel = require("../models/StudentCertificateModel");
 
 var jobUUID;
 

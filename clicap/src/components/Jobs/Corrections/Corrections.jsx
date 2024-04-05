@@ -18,7 +18,7 @@ export const Corrections = () => {
   return (
     <>
       <h2 className="text-center">
-        Correcciones del {jobData ? jobData.name : null}
+        Correcciones de {jobData ? jobData.name : null}
       </h2>
       <NewCorrections />
     </>
