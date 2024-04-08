@@ -105,6 +105,23 @@ export const PayState = ({ children }) => {
     return getAuthorPay.data.response;
   };
 
+  const getPayById = async (payId) => {
+    try {
+      const pay = await reqAxios(
+        "GET",
+        `/pay/get/${payId}`,
+        "",
+        ""
+      );
+      dispatch({
+        type: "SET_PAY",
+        payload: pay.data.response,
+      })
+    } catch (error) {
+        console.log(error);
+    }
+  };
+
   const createPayInvoice = async (id, invoice) => {
     try {
       const bodyFormData = new FormData();
@@ -131,6 +148,7 @@ export const PayState = ({ children }) => {
         getAllPays,
         getAllPaysToAdmin,
         getPaysFiltered,
+        getPayById,
         createPayInvoice,
         getPayByAuthorId,
         setUserIdToPays,

@@ -13,12 +13,11 @@ import { waitAndRefresh } from "../../../helpers/helpers";
 const UpdateInvoce = () => {
   const navigate = useNavigate();
   const { getAllUsers, userState } = useContext(UserContext);
-  const { getAllPays, payState, createPayInvoice } = useContext(PayContext);
-  const { pays, payData } = payState;
+  const { payState, createPayInvoice, getPayById } = useContext(PayContext);
+  const { payData } = payState;
   const [invoce, setInvoce] = useState(payData);
   const { users } = userState;
   const { id } = useParams();
-  const pay = pays.find((p) => p.id === id);
   const [refreshPays, setRefreshPays] = useState(false);
   const disabled = () => (invoce.invoice === "" ? true : false);
 
@@ -39,11 +38,15 @@ const UpdateInvoce = () => {
   };
 
   useEffect(() => {
-    getAllPays();
+    getPayById(id);
     if (users.length === 0) {
       getAllUsers();
     }
   }, [refreshPays]);
+
+  console.log({
+    payData,
+  })
 
   return (
     <div className="pay-container">
@@ -51,23 +54,23 @@ const UpdateInvoce = () => {
         <h2 className="text-center mb-4">Datos del pago</h2>
         <div className="mb-3">
           <strong>CUIL/CUIT</strong>:{" "}
-          {pay.cuitCuil.slice(0, 2) +
+          {payData.cuitCuil.slice(0, 2) +
             "-" +
-            pay.cuitCuil.slice(2, 10) +
+            payData.cuitCuil.slice(2, 10) +
             "-" +
-            pay.cuitCuil.slice(10, 11)}
+            payData.cuitCuil.slice(10, 11)}
         </div>
         <div className="mb-3">
-          <strong>Monto</strong>: {pay.amount} - {pay.moneyType}{" "}
+          <strong>Monto</strong>: {payData.amount} - {payData.moneyType}{" "}
         </div>
         <div className="mb-3">
-          <strong>Forma de Pago</strong>: {pay.payType}{" "}
+          <strong>Forma de Pago</strong>: {payData.payType}{" "}
         </div>
         <div className="mb-3">
-          <strong>Condición Frente al IVA</strong>: {pay.iva}{" "}
+          <strong>Condición Frente al IVA</strong>: {payData.iva}{" "}
         </div>
         <div className="mb-3">
-          <strong>Detalle del Pago</strong>: {pay.detail}{" "}
+          <strong>Detalle del Pago</strong>: {payData.detail}{" "}
         </div>
 
         <form onSubmit={handleSubmit}>

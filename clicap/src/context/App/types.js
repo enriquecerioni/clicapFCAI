@@ -1,4 +1,5 @@
 export const GET_EVENT_DATE = "GET_EVENT_DATE";
+export const SET_EVENT_DATE = "SET_EVENT_DATE";
 export const SET_DEADLINE_DAY = "SET_DEADLINE_DAY";
 export const SET_LOGGOUT = "SET_LOGGOUT";
 export const SET_MENU_PHONE = "SET_MENU_PHONE";

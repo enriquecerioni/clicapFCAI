@@ -11,6 +11,10 @@ export const EventDate = () => {
         getEventDate();
     }, []);
 
+    useEffect(() => {
+        setDate(eventDate);
+    }, [eventDate]);
+
     return (
         <section id="speakers" className="wow fadeInUp">
             <div className="section-header">
@@ -20,13 +24,13 @@ export const EventDate = () => {
             <div className="container">
                 <div className="center-center">
                     <div className="widthConfig boxCard">
-                        <h2>Modificar Fecha del Evento</h2><br />
+                        <h3>Modificar Fecha del Evento</h3><br />
                         <div className="mb-3 center-center">
                             <input
                                 type="date"
                                 className="form-date-input"
                                 onChange={(e) => setDate(e.target.value)}
-                                value={eventDate}
+                                value={date}
                             />
                             <button
                                 className="btn btn-primary ms-3"
@@ -36,7 +40,7 @@ export const EventDate = () => {
                             </button>
                         </div>
 
-                        <h2 className="mt-5">Modificar Fecha Límite de Entregas</h2>
+                        <h3 className="mt-5">Modificar fecha límite de entregas de trabajos</h3>
                         <p class="alert alert-info">Número de dias previos al evento para realizar la entrega de trabajos/resúmenes.</p>
                         <div className="mb-3 d-flex justify-content-around align-items-center">
                             <div><p className="">Fecha límite actual <strong>{deadlineDays}</strong> días antes del evento.</p></div>

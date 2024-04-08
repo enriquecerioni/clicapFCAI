@@ -1,4 +1,4 @@
-import { SET_PAYS, SET_REFRESH_PAYS, SET_USERID } from "./types";
+import { SET_PAYS, SET_PAY, SET_REFRESH_PAYS, SET_USERID } from "./types";
 export default (state, action) => {
   const { payload, type } = action;
 
@@ -8,6 +8,12 @@ export default (state, action) => {
         ...state,
         pays: payload.pays,
         totalPaysPages: payload.totalPages,
+        isFetching: false,
+      };
+    case SET_PAY:
+      return {
+        ...state,
+        payData: payload,
         isFetching: false,
       };
     case SET_REFRESH_PAYS:
