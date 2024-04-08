@@ -130,7 +130,8 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar el certificado." });
     }
   } catch (error) {
-    console.log("Error al eliminar el certificado.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
 };
 

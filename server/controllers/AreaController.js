@@ -65,6 +65,7 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar el área." });
     }
   } catch (error) {
-    console.log("Error al eliminar el área.")
+    console.log(error);
+    res.status(500).json({ msg: "Error al eliminar el área." });
   }
 };

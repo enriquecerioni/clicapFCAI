@@ -15,7 +15,7 @@ const PayRouter = require("./routes/PayRouter");
 const UserRouter = require("./routes/UserRouter");
 const RoleRouter = require("./routes/RoleRouter");
 const JobDetailsRouter = require("./routes/JobDetailRouter");
-const JobVersionRouter = require("./routes/JobVersionRouter")
+const JobVersionRouter = require("./routes/JobVersionRouter");
 const StudentCertificateRouter = require("./routes/StudentCertificateRouter");
 const FileRouter = require("./routes/FileRouter");
 const JobModalityModel = require("./models/JobModalityModel");
@@ -88,23 +88,31 @@ app.use("/api/clicap/sponsor/", SponsorRouter);
 app.use("/api/clicap/student/", StudentCertificateRouter);
 app.use("/api/clicap/user/", UserRouter);
 
+app.use("*", (req, res) => {
+  return res.status(504).send({
+    msg: "Fallo en el servidor",
+  });
+});
+
 const insertData = async () => {
   const areas = ["Alimentos", "Química"];
   const roles = ["Admin", "Evaluador", "Docente Investigador", "Estudiante"];
-  const eventDate = ["2024-03-21"]
+  const eventDate = ["2024-03-21"];
   const modality = [
     {
       id: 1,
       title: "Prácticas áulicas o de laboratorios",
-      description: "Una experiencia áulica o pedagógica es una práctica que se realiza en el ámbito educativo e incluye saberes, objetivos, estrategias didácticas, recursos y evaluación. Tiene como finalidad promover aprendizajes significativos a través de propuestas de enseñanza innovadoras.",
-      urlFile: "practicas-lab.docx"
+      description:
+        "Una experiencia áulica o pedagógica es una práctica que se realiza en el ámbito educativo e incluye saberes, objetivos, estrategias didácticas, recursos y evaluación. Tiene como finalidad promover aprendizajes significativos a través de propuestas de enseñanza innovadoras.",
+      urlFile: "practicas-lab.docx",
     },
     {
       id: 2,
       title: "Trabajos de investigación",
-      description: "La investigación educativa es un proceso por el cual se construyen conocimientos de un modo sistemático y riguroso acerca de alguna problemática relacionada a la educación. Los procesos investigativos incluyen la selección de un tema-problema de investigación, supuestos, objetivos, marco teórico, metodología, resultados, conclusiones y referentes bibliográfcos.",
-      urlFile: "trabajos-inv.docx"
-    }
+      description:
+        "La investigación educativa es un proceso por el cual se construyen conocimientos de un modo sistemático y riguroso acerca de alguna problemática relacionada a la educación. Los procesos investigativos incluyen la selección de un tema-problema de investigación, supuestos, objetivos, marco teórico, metodología, resultados, conclusiones y referentes bibliográfcos.",
+      urlFile: "trabajos-inv.docx",
+    },
   ];
   const exposition = ["Presentación de pósters"];
   const corrections = [
@@ -190,7 +198,7 @@ const insertData = async () => {
       id: item.id,
       title: item.title,
       description: item.description,
-      urlFile: item.urlFile
+      urlFile: item.urlFile,
     });
   });
   exposition.forEach(async (item) => {
@@ -222,16 +230,16 @@ const insertData = async () => {
   });
 
   await DateModel.create({
-    date: '2024-03-21',
+    date: "2024-03-21",
   });
-  
+
   return console.log("Database connected...");
 };
 
 //SYNC -> sync with the database, if the model matches the table.
 db.sync()
   .then(() => {
-  // insertData();
+    // insertData();
     console.log("Database connected...");
   })
   .catch((error) => {
