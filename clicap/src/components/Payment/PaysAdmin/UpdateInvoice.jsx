@@ -8,6 +8,7 @@ import { UserContext } from "../../../context/User/UserContext";
 import { PayContext } from "../../../context/Pay/PayContext";
 import "../pays.css";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
+import { waitAndRefresh } from "../../../helpers/helpers";
 
 const UpdateInvoce = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const UpdateInvoce = () => {
   const [invoce, setInvoce] = useState(payData);
   const { users } = userState;
   const { id } = useParams();
-  const pay = pays.find((p) => p.id == id);
+  const pay = pays.find((p) => p.id === id);
   const [refreshPays, setRefreshPays] = useState(false);
   const disabled = () => (invoce.invoice === "" ? true : false);
 
@@ -26,6 +27,7 @@ const UpdateInvoce = () => {
     createPayInvoice(id, invoce);
     setRefreshPays(!refreshPays);
     navigate("/pays");
+    waitAndRefresh("/pays", 500)
   };
 
   const handleChangeInvoice = (e) => {

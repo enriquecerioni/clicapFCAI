@@ -28,12 +28,7 @@ const JobVersion = () => {
   useEffect(() => {
     validateIsOwnJob(jobId, userId)
     getJobVersionsById(Number(id));
-  }, [])
-
-  console.log({
-    latestJobVersion,
-
-  })
+  }, [jobId, userId])
 
   return (
     <div className="ms-3 me-3">

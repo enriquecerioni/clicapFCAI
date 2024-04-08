@@ -38,7 +38,7 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "application/msword" ||
     file.mimetype ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
     // Permite el archivo
     cb(null, true);
@@ -285,13 +285,13 @@ exports.uploadFileJob = async (req, res) => {
   try {
     uploadJob(req, res, async (err) => {
       if (err) {
-        err.message = "The file is so heavy for my service";
-        return res.send(err);
+        return res.status(400).json({ msg: err.message });
       }
 
       const { id } = req.body;
+      console.log({body: req.body})
 
-      const doc = await JobModel.update(req.body, {
+      const doc = await JobModel.findOne({
         where: { id: id },
       });
 
@@ -308,6 +308,88 @@ exports.uploadFileJob = async (req, res) => {
         urlFile: jobUUID,
       });
 
+      let assignEvaluators = [];
+
+      if (doc.evaluatorId1 === "") {
+        doc.evaluatorId1 = null;
+      } else {
+        assignEvaluators.push({ id: Number(doc.evaluatorId1) });
+      }
+  
+      if (doc.evaluatorId2 === "") {
+        doc.evaluatorId2 = null;
+      } else {
+        assignEvaluators.push({ id: Number(doc.evaluatorId2) });
+      }
+
+      let options = {
+        where: {
+          [Sequelize.Op.or]: assignEvaluators,
+        },
+        attributes: ["name", "surname", "email"],
+      };
+
+      const evaluators = await UserModel.findAll(options);
+      const admins = await UserModel.findAll({
+        where: { roleId: 1 },
+        attributes: ["name", "surname", "email"],
+      });
+
+      admins.forEach((admin) => {
+        let mailOptions = {
+          from: process.env.EMAIL_APP,
+          to: admin.email,
+          subject: "Nueva versión del trabajo",
+          template: "mailWithNewVersionJobAdmin",
+          attachments: [
+            {
+              filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
+              cid: "logo", //my mistake was putting "cid:logo@cid" here!
+            },
+          ],
+          context: {
+            adminName: admin.name + " " + admin.surname,
+            jobName: doc.name,
+          },
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.status(500).json({ msg: error.message });
+          } else {
+            console.log("Email enviado!");
+            res.end();
+          }
+        });
+      });
+      evaluators.forEach((evaluator) => {
+        let mailOptions = {
+          from: process.env.EMAIL_APP,
+          to: evaluator.email,
+          subject: "Nueva versión del trabajo",
+          template: "mailWithNewVersionJob",
+          attachments: [
+            {
+              filename: "appLogo.jpg",
+              path: "./public/logos/appLogo.jpg",
+              cid: "logo",
+            },
+          ],
+          context: {
+            evaluatorName: evaluator.name + " " + evaluator.surname,
+            jobName: doc.name,
+          },
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.status(500).json({ msg: error.message });
+          } else {
+            console.log("Email enviado!");
+            res.end();
+          }
+        });
+      });
+
       if (doc) {
         return res.status(200).json({ msg: "Archivo actualizado!" });
       } else {
@@ -315,7 +397,7 @@ exports.uploadFileJob = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log("Error al crear el Trabajo." + error);
+    return res.status(400).json({ msg: error });
   }
 };
 
@@ -447,6 +529,7 @@ exports.deleteById = async (req, res) => {
 exports.getAllPaginated = async (req, res) => {
   try {
     const {
+      userId,
       author,
       name,
       surname,
@@ -496,6 +579,9 @@ exports.getAllPaginated = async (req, res) => {
 
     if (jobModalityId) {
       options.where.jobModalityId = jobModalityId;
+    }
+    if (userId) {
+      options.where.userId = userId;
     }
     if (status) {
       options.where.status = status;

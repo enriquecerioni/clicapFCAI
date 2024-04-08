@@ -7,6 +7,7 @@ import { statusCorrections } from "../typesCorrections";
 import { JobContext } from "../../../context/Job/JobContext";
 import { ClicapTooltip } from "../../ClicapTooltip/ClicapTooltip";
 import { Loader } from "../../Loader/Loader";
+import { getDataUserByKey } from "../../../helpers/helpers";
 
 export const NewCorrections = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export const NewCorrections = () => {
   };
 
   const handleSubmitCorrection = async () => {
+    if(correction.evaluatorId === "") correction.evaluatorId = getDataUserByKey("id");
     await createEvaluationByEvaluatorOrAdmin(correction);
     navigate("/jobs");
   };
@@ -68,19 +70,18 @@ export const NewCorrections = () => {
                 primary: "#3D84A8",
               },
             })}
+            style={{zIndex: 999999999}}
             onChange={(e) => handleNewCorrection(e, "correctionId")}
           />
         </div>
-        <FloatingLabel controlId="floatingTextarea2" label="Comentarios">
-          <Form.Control
+        <Form.Control
             className="mt-3"
             name="details"
             as="textarea"
-            placeholder="Leave a comment here"
+            placeholder="Comentarios..."
             style={{ height: "100px" }}
             onChange={(e) => handleNewCorrection(e, "details")}
           />
-        </FloatingLabel>
         <div className="center-center mt-3">
           {!jobLoader ? (
             <ClicapTooltip
