@@ -20,7 +20,7 @@ export const Pdf = ({ logo = "", user = "", certificate = {}, job = {} }) => {
     },
     textContainer: {
       position: "absolute",
-      top: "35%",
+      top: "25%",
       width: "100%",
     },
     text: {

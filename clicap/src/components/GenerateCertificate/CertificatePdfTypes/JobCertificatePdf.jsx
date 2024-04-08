@@ -25,6 +25,7 @@ export const JobCertificatePdf = ({ job = {}, certificate = {} }) => {
     textContainerFirst: {
       display: "flex",
       flexDirection: "column",
+      marginTop: "20px"
     },
     userNameStyle: {
       display: "flex",

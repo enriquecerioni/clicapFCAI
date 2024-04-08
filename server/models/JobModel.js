@@ -37,7 +37,7 @@ const JobModel = db.define("job", {
     type: DataTypes.STRING,
   },
   members: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
   jobModalityId: {
     type: DataTypes.INTEGER,

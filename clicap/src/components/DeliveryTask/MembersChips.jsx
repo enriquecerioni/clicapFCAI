@@ -97,7 +97,7 @@ export const MembersChips = ({ membersToSend, setMembersToSend }) => {
         placeholder={"Ingrese los coautores en el formato indicado..."}
         onKeyDown={(e) => handleKeyDown(e)}
         onChange={(e) => handleChange(e)}
-        onPaste={handlePaste}
+        // onPaste={handlePaste}
       />
 
       {membersToSend.error && <p className="error">{membersToSend.error}</p>}

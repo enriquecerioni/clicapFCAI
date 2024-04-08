@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import {
   formDataAxios,
   reqAxios,
@@ -116,6 +116,10 @@ export const LogoConfig = () => {
             <hr />
           </div>
           <Form.Label className="fw-bold">Fondo del certificado</Form.Label>
+          <Alert key="info" variant="info">
+            <i class="fa fa-circle-info m-2" aria-hidden="true"></i>
+            Dimensiones de la imágen: <strong>3509 x 2481</strong>
+          </Alert>
           <div className="">
             <input
               type="file"

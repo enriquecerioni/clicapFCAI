@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import AppReducer from "./AppReducer";
 import { AppContext } from "./AppContext";
 import { reqAxios } from "../../helpers/helpers";
+import { alertError, alertSuccess } from "../../helpers/alerts";
 
 export const AppState = ({ children }) => {
   const initialState = {
@@ -16,16 +17,31 @@ export const AppState = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   const setDeadlineDays = async (days) => {
-    await reqAxios("PUT", `/date/edit/deadline/${days}`, "", "");
-    dispatch({
-      type: "SET_DEADLINE_DAY",
-      payload: days,
-    });
+    try {
+      await reqAxios("PUT", `/date/edit/deadline/${days}`, "", "");
+      dispatch({
+        type: "SET_DEADLINE_DAY",
+        payload: days,
+      });
+      alertSuccess("Fecha límite modificada correctamente.", 10000)
+    } catch (error) {
+      console.log(error)
+      alertError("Error al modificar los dias límites previos al evento.", false)
+    }
   };
 
   const handleTime = async (date) => {
-    await reqAxios("PUT", `/date/edit/${date}`, "", "");
-    window.location.reload();
+    try {
+      await reqAxios("PUT", `/date/edit/${date}`, "", "");
+      dispatch({
+        type: "SET_EVENT_DATE",
+        payload: date,
+      });
+      alertSuccess("Fecha del evento modificada correctamente", 10000)
+    } catch (error) {
+      console.log(error)
+      alertError("Error al modificar la fecha del evento.", false)
+    }
   };
 
   const setSearchPixels = async (value) => {
@@ -66,16 +82,21 @@ export const AppState = ({ children }) => {
 
   const getEventDate = async () => {
 
-    const eventDate = await reqAxios(
-      "GET",
-      `/date/get`,
-      "",
-      ""
-    );
-    dispatch({
-      type: "GET_EVENT_DATE",
-      payload: eventDate.data.response,
-    });
+    try {
+      const eventDate = await reqAxios(
+        "GET",
+        `/date/get`,
+        "",
+        ""
+      );
+      dispatch({
+        type: "GET_EVENT_DATE",
+        payload: eventDate.data.response,
+      });
+    } catch (error) {
+      console.log(error)
+      alertError("Error al obtener la fecha", false)
+    }
   }
 
   return (
