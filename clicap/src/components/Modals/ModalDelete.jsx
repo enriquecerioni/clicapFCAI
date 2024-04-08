@@ -6,16 +6,16 @@ const ModalDelete = ({ entity, showAlert }) => {
   //entity.entityType -> instance/partner/customer
 
   const deleteEntity = async () => {
-    if(entity.entityType === 'pay'){
+    if (entity.entityType === 'pay') {
       deleteFile(entity.receipt, 'payments');
       deleteFile(entity.invoice, 'invoices');
-    } else if(entity.entityType === 'job'){
+    } else if (entity.entityType === 'job') {
       entity.jobVersions.forEach(version => {
         deleteFile(version.urlFile, 'documents');
       });
-    } else if(entity.entityType === 'new'){
+    } else if (entity.entityType === 'new') {
       deleteFile(entity.image, 'news');
-    } else if(entity.entityType === 'regular-certificates'){
+    } else if (entity.entityType === 'regular-certificates') {
       deleteFile(entity.certificate, 'regularcertificates');
     }
     const entityDeleted = await deleteAxios(
@@ -23,7 +23,7 @@ const ModalDelete = ({ entity, showAlert }) => {
     );
 
     showAlert(false);
-    if (entityDeleted.status === 200) {
+    if (entityDeleted?.status === 200) {
       waitAndRefresh(entity.navigate, 1000);
     }
   };

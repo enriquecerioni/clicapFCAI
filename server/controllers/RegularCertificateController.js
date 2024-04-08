@@ -7,7 +7,6 @@ const { PAGE_LIMIT } = process.env;
 const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
 const uuid = require("uuid");
 const RegularCertificateModel = require("../models/RegularCertificateModel");
-const StudentCertificateModel = require("../models/StudentCertificateModel");
 
 var jobUUID;
 
@@ -94,7 +93,8 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar el certificado." });
     }
   } catch (error) {
-    console.log("Error al eliminar el certificado.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
 };
 

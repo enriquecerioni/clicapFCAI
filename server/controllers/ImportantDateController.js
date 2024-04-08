@@ -68,6 +68,7 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar la fecha importante." });
     }
   } catch (error) {
-    console.log("Error al eliminar la fecha importante.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar la fecha importante." });
   }
 };

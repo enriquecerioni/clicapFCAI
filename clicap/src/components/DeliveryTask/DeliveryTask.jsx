@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import "./deliveryTask.css";
-import { Button } from "react-bootstrap";
-import { formDataAxios, getDataUserByKey } from "../../helpers/helpers";
+import { Alert } from "react-bootstrap";
+import { getDataUserByKey } from "../../helpers/helpers";
 import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { MembersChips } from "./MembersChips";
@@ -87,17 +87,6 @@ const DeliveryTask = () => {
     [2, 3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
   };
 
-  const checkFields = () => {
-    if (
-      job.areaId !== "" ||
-      job.members !== "" ||
-      job.urlFile !== "" ||
-      job.name !== "" ||
-      job.jobModalityId !== ""
-    ) {
-      setPutDisabled(false);
-    }
-  };
   const disabled = () => {
     return (
       !!!job.areaId ||
@@ -144,6 +133,14 @@ const DeliveryTask = () => {
       <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
+          {
+            roleId === 1 ? 
+            <Alert key="warning" variant="warning">
+              <i class="fa fa-exclamation-triangle m-2" aria-hidden="true"></i>
+              Para <strong>editar</strong> un trabajo, es necesario cargar la última versión del mismo. 
+              En el <strong>Listado de Trabajos</strong>, puedes descargar la versión más reciente haciendo clic en 'Visualizar versiones'.
+            </Alert> : null
+          }
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
@@ -237,9 +234,9 @@ const DeliveryTask = () => {
                 <div>
                   <h5>Cómo cargar los nombres</h5>
                   <p>
-                  Para cargar los nombres de autores y coautores siguiendo el formato indicado, 
-                  se debe utilizar el <strong>apellido o apellidos seguido de la primera letra del nombre, 
-                  separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
+                    Para cargar los nombres de autores y coautores siguiendo el formato indicado,
+                    se debe utilizar el <strong>apellido o apellidos seguido de la primera letra del nombre,
+                      separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
                   </p>
                   <ul>
                     <li><strong>Juan Pérez</strong> se cargaría como <strong>Pérez J.</strong></li>
