@@ -75,9 +75,10 @@ exports.deleteById = async (req, res) => {
     if (modality) {
       res.status(200).send("Modalidad eliminada correctamente!");
     } else {
-      res.status(500).json({ msg: "Error al eliminar La modalidad." });
+      res.status(500).json({ msg: "Error al eliminar la modalidad." });
     }
   } catch (error) {
-    console.log("Error al eliminar La modalidad.")
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar la modalidad." });
   }
 };

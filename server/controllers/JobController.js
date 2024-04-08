@@ -519,10 +519,11 @@ exports.deleteById = async (req, res) => {
     if (doc) {
       res.status(200).send("Trabajo eliminado!");
     } else {
-      res.status(500).json({ msg: "Error al eliminar el Trabajo." });
+      res.status(500).json({ msg: "Error al eliminar el trabajo." });
     }
   } catch (error) {
-    console.log("Error al eliminar el Trabajo.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar el trabajo." });
   }
 };
 
@@ -587,7 +588,12 @@ exports.getAllPaginated = async (req, res) => {
       options.where.status = status;
     }
     if (approve) {
-      options.where.approve = approve;
+      if (Number(approve) === 2) {
+        options.where.evaluatorId1 = null;
+        options.where.evaluatorId2 = null;
+      } else {
+        options.where.approve = approve;
+      }
     }
 
     if (evaluatorId) {
@@ -599,6 +605,7 @@ exports.getAllPaginated = async (req, res) => {
       options.where.areaId = areaId;
     }
 
+    console.log(options);
     const { count, rows } = await JobModel.findAndCountAll(options);
     const cantPages = calcTotalPages(count);
 

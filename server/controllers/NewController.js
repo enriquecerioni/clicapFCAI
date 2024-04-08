@@ -91,7 +91,8 @@ exports.delete = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar la novedad." });
     }
   } catch (error) {
-    console.log("Error al eliminar la novedad.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar la novedad." });
   }
 };
 

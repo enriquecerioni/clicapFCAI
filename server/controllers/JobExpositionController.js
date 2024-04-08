@@ -75,9 +75,10 @@ exports.deleteById = async (req, res) => {
     if (exposition) {
       res.status(200).send("Exposición eliminada correctamente!");
     } else {
-      res.status(500).json({ msg: "Error al eliminar La exposición." });
+      res.status(500).json({ msg: "Error al eliminar la exposición." });
     }
   } catch (error) {
-    console.log("Error al eliminar La exposición.");
+    console.log(error)
+    res.status(500).json({ msg: "Error al eliminar la exposición." });
   }
 };
