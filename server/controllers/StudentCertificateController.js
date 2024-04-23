@@ -28,16 +28,16 @@ exports.create = async (req, res) => {
 
     let mailContext = {
       userName: "",
-    }
+    };
 
     if (jobId === "") {
       jobId = null;
-      mailContext = {...mailContext, jobName: null}
+      mailContext = { ...mailContext, jobName: null };
     } else {
       const job = await JobModel.findOne({
-        where: { id: jobId }
-      })
-      mailContext = {...mailContext, jobName: job.name}
+        where: { id: jobId },
+      });
+      mailContext = { ...mailContext, jobName: job.name };
     }
 
     console.log(certificateId, userId, jobId);
@@ -48,11 +48,11 @@ exports.create = async (req, res) => {
     });
 
     const user = await UserModel.findOne({
-      where: {id: userId},
+      where: { id: userId },
       attributes: ["name", "surname", "email"],
-    })
+    });
 
-    mailContext = {...mailContext, userName: user.name}
+    mailContext = { ...mailContext, userName: user.name };
 
     let mailOptions = {
       from: process.env.EMAIL_APP,
@@ -66,7 +66,7 @@ exports.create = async (req, res) => {
           cid: "logo",
         },
       ],
-      context: mailContext
+      context: mailContext,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -132,23 +132,33 @@ exports.getById = async (req, res) => {
 
 exports.getAllPaginated = async (req, res) => {
   try {
-    // const { name, identifyNumber, roleId } = req.query;
+    const { identifyNumber, type } = req.query;
+
     console.log(req.query);
     const { page } = req.params;
-    // const Op = Sequelize.Op;
     const offsetIns = calcNumOffset(page);
     let options = {
       where: {},
       include: [
-        { model: UserModel },
+        { model: UserModel, where: {} },
         { model: JobModel },
-        { model: CertificateModel },
+        { model: CertificateModel, where: {} },
       ],
       offset: offsetIns,
       limit: Number(PAGE_LIMIT),
     };
 
-    const { count, rows } = await StudentCertificateModel.findAndCountAll(options);
+    if (identifyNumber) {
+      options.include[0].where.identifyNumber = identifyNumber;
+    }
+
+    if (type) {
+      options.include[2].where.type = type;
+    }
+
+    const { count, rows } = await StudentCertificateModel.findAndCountAll(
+      options
+    );
     const cantPages = calcTotalPages(count);
 
     if (rows) {
@@ -215,7 +225,7 @@ exports.deleteById = async (req, res) => {
       res.status(500).json({ msg: "Error al eliminar el certificado." });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
 };
