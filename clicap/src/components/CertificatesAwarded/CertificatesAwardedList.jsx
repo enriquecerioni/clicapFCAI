@@ -13,7 +13,7 @@ export const CertificatesAwardedList = ({
   setCertificatesAwardedToDelete,
   showAlert,
 }) => {
-  const userLogged = JSON.parse(sessionStorage.getItem("user"));
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -58,7 +58,7 @@ export const CertificatesAwardedList = ({
   });
 
   const { page, section, image, textContainer } = styles;
-  const fullNameAndIdentityNumber = `${userLogged?.name} ${userLogged?.surname}, ${userLogged?.identifyType}: ${userLogged?.identifyNumber}`;
+  const fullNameAndIdentityNumber = `${certificate?.user.name} ${certificate?.user.surname}, ${certificate?.user?.identifyType}: ${certificate?.user?.identifyNumber}`;
 
   return (
     <>

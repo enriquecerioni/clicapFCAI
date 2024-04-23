@@ -8,22 +8,30 @@ import { CertificatesAwardedList } from "./CertificatesAwardedList";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 
 const CertificatesAwarded = () => {
-
-  const { getAllUsers, userState, getUsersFiltered } = useContext(UserContext);
+  const { getAllUsers, userState } = useContext(UserContext);
   const { usersSelector, users, usersFiltered, totalUsersPages } = userState;
 
-  const { getAllCertificatesPaginated, ceritificateState } = useContext(CertificateContext)
-  const { userCertificates, totalCertificatesPages } = ceritificateState
+  const {
+    getAllCertificatesPaginated,
+    getCertificatesLogo,
+    ceritificateState,
+  } = useContext(CertificateContext);
+  const {
+    userCertificates,
+    totalCertificatesPages,
+    certificateLogo,
+    certificateTypesOpt,
+  } = ceritificateState;
 
   const initialFilters = {
-    name: "",
-    roleId: "",
     identifyNumber: "",
+    type: "",
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
-  const [certificateAwardedToDelete, setCertificatesAwardedToDelete] = useState(false);
+  const [certificateAwardedToDelete, setCertificatesAwardedToDelete] =
+    useState(false);
   const [page, setPage] = useState(1);
 
   const handleChangeFilter = (e, name) => {
@@ -42,34 +50,35 @@ const CertificatesAwarded = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getUsersFiltered(1, filters);
+    getAllCertificatesPaginated(1, filters);
   };
 
   useEffect(() => {
     if (users.length === 0) {
       getAllUsers();
     }
-    if(userCertificates.length === 0) {
-      getAllCertificatesPaginated(page, {});
+
+    if (certificateLogo === "") {
+      getCertificatesLogo();
     }
-    // getUsersFiltered(page, filters);
+
+    getAllCertificatesPaginated(page, filters);
   }, [page]);
 
   return (
     <>
       {showDeleteModal ? (
-        <ModalDelete entity={certificateAwardedToDelete} showAlert={setShowDeleteModal} />
+        <ModalDelete
+          entity={certificateAwardedToDelete}
+          showAlert={setShowDeleteModal}
+        />
       ) : null}
 
       <div className="ms-3 me-3">
         <h2 className="text-center">Listado de Usuarios</h2>
 
         <div className="">
-          <form
-            method="get"
-            className="center-filter"
-            onSubmit={handleSubmit}
-          >
+          <form method="get" className="center-filter" onSubmit={handleSubmit}>
             <div className="me-3" style={{ width: "350px" }}>
               <label htmlFor="forName" className="form-label">
                 DNI - Nombre
@@ -92,12 +101,12 @@ const CertificatesAwarded = () => {
             </div>
             <div style={{ width: "200px" }} className="me-3">
               <label htmlFor="forAuthorId" className="form-label">
-                Rol
+                Tipo de certificado
               </label>
               <Select
-                // options={rolesSelector}
+                options={certificateTypesOpt}
                 placeholder={"Seleccione..."}
-                name="roleId"
+                name="type"
                 isClearable={true}
                 theme={(theme) => ({
                   ...theme,
@@ -106,7 +115,7 @@ const CertificatesAwarded = () => {
                     primary: "#3D84A8",
                   },
                 })}
-                onChange={(e) => handleChangeFilter(e, "roleId")}
+                onChange={(e) => handleChangeFilter(e, "type")}
               />
             </div>
 
@@ -134,7 +143,9 @@ const CertificatesAwarded = () => {
                     <CertificatesAwardedList
                       certificate={certificate}
                       showAlert={setShowDeleteModal}
-                      setCertificatesAwardedToDelete={setCertificatesAwardedToDelete}
+                      setCertificatesAwardedToDelete={
+                        setCertificatesAwardedToDelete
+                      }
                       /*     setCustomerToDelete={handleDelete} */
                       key={certificate.id}
                     />
