@@ -21,19 +21,24 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
 
   const toCorrectionOptions = [
     {
-      value: 2,
+      value: 3,
       label: "Para asignar evaluadores",
-      target: { name: "approve", value: 2 },
+      target: { name: "status", value: 3 },
     },
     {
-      value: 1,
+      value: 2,
       label: "Para corregir",
-      target: { name: "approve", value: 1 },
+      target: { name: "status", value: 2,},
     },
     {
       value: 0,
-      label: "Corregidos",
-      target: { name: "approve", value: 0 },
+      label: "Esperando correción / Esperando nueva versión",
+      target: { name: "status", value: 0 },
+    },
+    {
+      value: 1,
+      label: "Aceptados",
+      target: { name: "status", value: 1 },
     },
   ];
 
@@ -45,6 +50,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
 
   const handleChangeFilter = (e, name) => {
     if (e) {
+      console.log(e.target.name)
       setFilters({
         ...filters,
         [e.target.name]: e.target.value,
@@ -166,10 +172,10 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
               <Select
                 options={toCorrectionOptions}
                 placeholder={"Seleccione..."}
-                name="approve"
+                name="status"
                 isClearable={true}
                 value={toCorrectionOptions.filter(
-                  (status) => filters.approve === status.value
+                  (status) => filters.status === status.value
                 )}
                 theme={(theme) => ({
                   ...theme,
@@ -178,7 +184,7 @@ export const JobsFilters = ({ filters, setFilters, setShowModalFilters }) => {
                     primary: "#3D84A8",
                   },
                 })}
-                onChange={(e) => handleChangeFilter(e, "approve")}
+                onChange={(e) => handleChangeFilter(e, "status")}
               />
             </div>
           </div>
