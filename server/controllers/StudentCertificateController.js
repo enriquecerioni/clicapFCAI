@@ -1,10 +1,12 @@
+const { PAGE_LIMIT } = process.env;
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
+const { transporter } = require("../utils/utils");
 const CertificateModel = require("../models/CertificateModel");
+const hbs = require("nodemailer-express-handlebars");
 const JobModel = require("../models/JobModel");
+const path = require("path");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
 const UserModel = require("../models/UserModel");
-const { transporter } = require("../utils/utils");
-const path = require("path");
-const hbs = require("nodemailer-express-handlebars");
 
 transporter.use(
   "compile",
@@ -26,16 +28,16 @@ exports.create = async (req, res) => {
 
     let mailContext = {
       userName: "",
-    }
+    };
 
     if (jobId === "") {
       jobId = null;
-      mailContext = {...mailContext, jobName: null}
+      mailContext = { ...mailContext, jobName: null };
     } else {
       const job = await JobModel.findOne({
-        where: { id: jobId }
-      })
-      mailContext = {...mailContext, jobName: job.name}
+        where: { id: jobId },
+      });
+      mailContext = { ...mailContext, jobName: job.name };
     }
 
     console.log(certificateId, userId, jobId);
@@ -46,11 +48,11 @@ exports.create = async (req, res) => {
     });
 
     const user = await UserModel.findOne({
-      where: {id: userId},
+      where: { id: userId },
       attributes: ["name", "surname", "email"],
-    })
+    });
 
-    mailContext = {...mailContext, userName: user.name}
+    mailContext = { ...mailContext, userName: user.name };
 
     let mailOptions = {
       from: process.env.EMAIL_APP,
@@ -64,7 +66,7 @@ exports.create = async (req, res) => {
           cid: "logo",
         },
       ],
-      context: mailContext
+      context: mailContext,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -128,9 +130,56 @@ exports.getById = async (req, res) => {
   }
 };
 
+exports.getAllPaginated = async (req, res) => {
+  try {
+    const { identifyNumber, type } = req.query;
+
+    console.log(req.query);
+    const { page } = req.params;
+    const offsetIns = calcNumOffset(page);
+    let options = {
+      where: {},
+      include: [
+        { model: UserModel, where: {} },
+        { model: JobModel },
+        { model: CertificateModel, where: {} },
+      ],
+      offset: offsetIns,
+      limit: Number(PAGE_LIMIT),
+    };
+
+    if (identifyNumber) {
+      options.include[0].where.identifyNumber = identifyNumber;
+    }
+
+    if (type) {
+      options.include[2].where.type = type;
+    }
+
+    const { count, rows } = await StudentCertificateModel.findAndCountAll(
+      options
+    );
+    const cantPages = calcTotalPages(count);
+
+    if (rows) {
+      res.status(200).json({ pages: cantPages, response: rows });
+    } else {
+      res.status(500).json({ msg: "Los certificados no existen." });
+    }
+  } catch (error) {
+    console.log("Los certificados no existen." + error);
+  }
+};
+
 exports.getAll = async (req, res) => {
   try {
-    const certificate = await StudentCertificateModel.findAll();
+    const certificate = await StudentCertificateModel.findAll({
+      include: [
+        { model: UserModel },
+        { model: JobModel },
+        { model: CertificateModel },
+      ],
+    });
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
@@ -171,12 +220,12 @@ exports.deleteById = async (req, res) => {
     });
 
     if (cerificate) {
-      res.status(200).send("Certificado eliminado!");
+      res.status(200).json({ msg: "Certificado eliminado correctamente." });
     } else {
       res.status(500).json({ msg: "Error al eliminar el certificado." });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ msg: "Error al eliminar el certificado." });
   }
 };

@@ -55,8 +55,14 @@ export const JobState = ({ children }) => {
       for (const key in job) {
         bodyFormData.append(key, job[key]);
       }
-      await formDataAxios("POST", `/job/create`, "", bodyFormData);
+      const response = await formDataAxios(
+        "POST",
+        `/job/create`,
+        "",
+        bodyFormData
+      );
       setJobLoader(false);
+      return response;
     } catch (e) {
       console.log(e);
     }
@@ -227,9 +233,8 @@ export const JobState = ({ children }) => {
     }
   };
 
-   //Obtener las versiones de un trabajo por id
-   const getJobVersionsById = async (jobId) => {
-
+  //Obtener las versiones de un trabajo por id
+  const getJobVersionsById = async (jobId) => {
     try {
       const jobVersions = await reqAxios(
         "GET",
@@ -237,22 +242,20 @@ export const JobState = ({ children }) => {
         "",
         ""
       );
-      
+
       dispatch({
         type: "GET_ALL_JOB_VERSIONS",
         payload: {
           jobVersions: jobVersions.data.response,
         },
-      })
-      
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-   //Verificar si el trabajo es del usuario actual
-   const validateIsOwnJob = async (jobId, userId) => {
-
+  //Verificar si el trabajo es del usuario actual
+  const validateIsOwnJob = async (jobId, userId) => {
     try {
       const isOwnJob = await reqAxios(
         "GET",
@@ -260,14 +263,13 @@ export const JobState = ({ children }) => {
         "",
         ""
       );
-      
+
       dispatch({
         type: "GET_IS_OWN_JOB",
         payload: {
           isOwnJob: isOwnJob.data.response,
         },
-      })
-      
+      });
     } catch (error) {
       console.log(error);
     }
