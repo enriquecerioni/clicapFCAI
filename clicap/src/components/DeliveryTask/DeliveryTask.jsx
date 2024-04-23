@@ -46,6 +46,18 @@ const DeliveryTask = () => {
           : e.target.files[0]
         : e.target.value;
 
+    if (e.target.type === "file") {
+      // Verificar si se seleccionó un archivo
+      if (value) {
+        const fileExtension = value.name.split(".").pop().toLowerCase();
+        // Verificar si la extensión es .doc o .docx
+        if (fileExtension !== "doc" && fileExtension !== "docx") {
+          alertError("Solo se permiten archivos .doc y .docx", false);
+          return;
+        }
+      }
+    }
+
     if (e) {
       setJob({
         ...job,
