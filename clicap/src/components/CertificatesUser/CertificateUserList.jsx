@@ -1,42 +1,17 @@
 import React, { useContext } from "react";
 import { CertificateContext } from "../../context/Certificate/CertificateContext";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Page, Image, View, Document, StyleSheet } from "@react-pdf/renderer";
+import { Page, Image, View, Document } from "@react-pdf/renderer";
 import { PersonalCertificatePdf } from "../GenerateCertificate/CertificatePdfTypes/PersonalCertificatePdf";
 import { JobCertificatePdf } from "../GenerateCertificate/CertificatePdfTypes/JobCertificatePdf";
 import { Loader } from "../Loader/Loader";
+import { styles } from "../GenerateCertificate/CertificateStyles";
 
 export const CertificateUserList = ({ userCertificate }) => {
   const userLogged = JSON.parse(sessionStorage.getItem("user"));
 
   const { ceritificateState } = useContext(CertificateContext);
   const { certificateLogo } = ceritificateState;
-
-  // Create styles
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: "row",
-      backgroundColor: "#E4E4E4",
-    },
-    section: {
-      flexGrow: 1,
-      position: "relative",
-    },
-    image: {
-      width: "100%",
-      height: "100%",
-    },
-    textContainer: {
-      position: "absolute",
-      top: "35%",
-      width: "100%",
-    },
-    text: {
-      fontSize: 20,
-      textAlign: "center",
-      color: "black",
-    },
-  });
 
   const { page, section, image, textContainer } = styles;
 
