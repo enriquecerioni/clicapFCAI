@@ -289,7 +289,7 @@ exports.uploadFileJob = async (req, res) => {
       }
 
       const { id } = req.body;
-      console.log({body: req.body})
+      console.log({ body: req.body })
 
       const doc = await JobModel.findOne({
         where: { id: id },
@@ -315,7 +315,7 @@ exports.uploadFileJob = async (req, res) => {
       } else {
         assignEvaluators.push({ id: Number(doc.evaluatorId1) });
       }
-  
+
       if (doc.evaluatorId2 === "") {
         doc.evaluatorId2 = null;
       } else {
@@ -584,15 +584,18 @@ exports.getAllPaginated = async (req, res) => {
     if (userId) {
       options.where.userId = userId;
     }
+    
+    const optionsLookup = {
+      3: { evaluatorId1: null, evaluatorId2: null },
+      1: { approve: 0, status: 1 },
+      2: { approve: 1, status: null },
+      0: { status: { [Op.or]: [{ [Op.ne]: 1 }, { [Op.is]: null }] } },
+    };
+    
     if (status) {
-      options.where.status = status;
-    }
-    if (approve) {
-      if (Number(approve) === 2) {
-        options.where.evaluatorId1 = null;
-        options.where.evaluatorId2 = null;
-      } else {
-        options.where.approve = approve;
+      const option = optionsLookup[Number(status)];
+      if (option) {
+        Object.assign(options.where, option);
       }
     }
 

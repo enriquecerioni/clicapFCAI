@@ -266,18 +266,14 @@ export const SendCorrectionAdmin = () => {
             />
           </div>
           <hr />
-          <div>
-            <FloatingLabel controlId="floatingTextarea2" label="Comentarios">
-              <Form.Control
-                className="mt-3"
-                name="details"
-                as="textarea"
-                placeholder="Leave a comment here"
-                style={{ height: "100px" }}
-                onChange={(e) => setDetails(e.target.value)}
-              />
-            </FloatingLabel>
-          </div>
+          <Form.Control
+            className="mt-3"
+            name="details"
+            as="textarea"
+            placeholder="Comentarios..."
+            style={{ height: "100px" }}
+            onChange={(e) => setDetails(e.target.value)}
+          />
           <div className="center-center">
             {!jobLoader ? (
               <ClicapTooltip
