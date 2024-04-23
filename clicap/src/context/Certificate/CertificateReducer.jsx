@@ -1,5 +1,6 @@
 import {
   GET_CERTIFICATE,
+  GET_ALL_CERTIFICATES_AWARDED,
   SET_CERTIFICATES_SELECTOR,
   SET_USER_TO_CERTIFICATE,
   GET_CERTIFICATES_BY_USER,
@@ -33,6 +34,13 @@ export default (state, action) => {
       return {
         ...state,
         userToCertificate: payload,
+      };
+    case GET_ALL_CERTIFICATES_AWARDED:
+      return {
+        ...state,
+        userCertificates: payload.userCertificates,
+        totalCertificatesPages: payload.totalCertificatesPages,
+        isFetching: false,
       };
     case GET_CERTIFICATES_BY_USER:
       return {

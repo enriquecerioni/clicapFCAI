@@ -28,6 +28,12 @@ export const sidebarOptions = [
         roles: [1],
       },
       {
+        name: "Listado de Certificados Otorgados",
+        icon: "fa-solid fa-list-check",
+        redirection: "/certificates-awarded",
+        roles: [1],
+      },
+      {
         name: "Generar certificados",
         icon: "fa-solid fa-user-graduate",
         redirection: "/generate-certificate",

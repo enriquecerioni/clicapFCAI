@@ -46,6 +46,18 @@ const DeliveryTask = () => {
           : e.target.files[0]
         : e.target.value;
 
+    if (e.target.type === "file") {
+      // Verificar si se seleccionó un archivo
+      if (value) {
+        const fileExtension = value.name.split(".").pop().toLowerCase();
+        // Verificar si la extensión es .doc o .docx
+        if (fileExtension !== "doc" && fileExtension !== "docx") {
+          alertError("Solo se permiten archivos .doc y .docx", false);
+          return;
+        }
+      }
+    }
+
     if (e) {
       setJob({
         ...job,
@@ -61,6 +73,8 @@ const DeliveryTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let createOrUpdateResponse;
+
     if (job.name.length > 150) {
       return alertError("El nombre debe tener como máximo 150 caracteres.");
     }
@@ -74,12 +88,15 @@ const DeliveryTask = () => {
       if (typeof job.urlFile === "string") {
         job.urlFile = "";
       }
-      await updateJobById(job, id);
+      createOrUpdateResponse = await updateJobById(job, id);
     } else {
       job.userId = getDataUserByKey("id");
-      await createNewJob(job);
+      createOrUpdateResponse = await createNewJob(job);
     }
-    [2, 3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
+
+    if (createOrUpdateResponse.hasOwnProperty("data")) {
+      [2, 3, 4].includes(roleId) ? navigate("/myjobs") : navigate("/jobs");
+    }
   };
 
   const disabled = () => {
@@ -128,14 +145,15 @@ const DeliveryTask = () => {
       <div className="poderver p-2">
         <h2 className="center-center">Cargar trabajo</h2>
         <div className="mt-4 centerUpdateJob">
-          {
-            roleId === 1 ? 
+          {roleId === 1 ? (
             <Alert key="warning" variant="warning">
               <i class="fa fa-exclamation-triangle m-2" aria-hidden="true"></i>
-              Para <strong>editar</strong> un trabajo, es necesario cargar la última versión del mismo. 
-              En el <strong>Listado de Trabajos</strong>, puedes descargar la versión más reciente haciendo clic en 'Visualizar versiones'.
-            </Alert> : null
-          }
+              Para <strong>editar</strong> un trabajo, es necesario cargar la
+              última versión del mismo. En el{" "}
+              <strong>Listado de Trabajos</strong>, puedes descargar la versión
+              más reciente haciendo clic en 'Visualizar versiones'.
+            </Alert>
+          ) : null}
           <form onSubmit={handleSubmit}>
             <div className="d-flex form-regis-responsive">
               {/* NOMBRE */}
@@ -229,15 +247,29 @@ const DeliveryTask = () => {
                 <div>
                   <h5>Cómo cargar los nombres</h5>
                   <p>
-                    Para cargar los nombres de autores y coautores siguiendo el formato indicado,
-                    se debe utilizar el <strong>apellido o apellidos seguido de la primera letra del nombre,
-                      separados por un punto y un espacio</strong>. Aquí tienes un ejemplo de cómo cargarlo:
+                    Para cargar los nombres de autores y coautores siguiendo el
+                    formato indicado, se debe utilizar el{" "}
+                    <strong>
+                      apellido o apellidos seguido de la primera letra del
+                      nombre, separados por un punto y un espacio
+                    </strong>
+                    . Aquí tienes un ejemplo de cómo cargarlo:
                   </p>
                   <ul>
-                    <li><strong>Juan Pérez</strong> se cargaría como <strong>Pérez J.</strong></li>
-                    <li><strong>Nicolás Pérez Rodríguez</strong>  se cargaría como <strong>Pérez Rodríguez N.</strong></li>
+                    <li>
+                      <strong>Juan Pérez</strong> se cargaría como{" "}
+                      <strong>Pérez J.</strong>
+                    </li>
+                    <li>
+                      <strong>Nicolás Pérez Rodríguez</strong> se cargaría como{" "}
+                      <strong>Pérez Rodríguez N.</strong>
+                    </li>
                   </ul>
-                  <p>Para el caso de <strong>coautores</strong> se deben añadir al listado presionando la tecla "enter" o "coma" por cada uno que se cargue.</p>
+                  <p>
+                    Para el caso de <strong>coautores</strong> se deben añadir
+                    al listado presionando la tecla "enter" o "coma" por cada
+                    uno que se cargue.
+                  </p>
                 </div>
               </div>
             </div>
@@ -283,6 +315,10 @@ const DeliveryTask = () => {
               >
                 * Trabajo
               </label>
+              <Alert key="info" variant="info">
+                <i class="fa fa-circle-info m-2" aria-hidden="true"></i>
+                Solo se permiten archivos con formato <strong>.doc / .docx</strong>
+              </Alert>
               <div className="">
                 <input
                   type="file"
