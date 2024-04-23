@@ -38,6 +38,23 @@ export const CertificateState = ({ children }) => {
       console.log(error);
     }
   };
+
+  const getAllCertificatesPaginated = async (page, params) => {
+    try {
+      const certificates = await reqAxios("GET", `/student/get/paginated/${page}`, params, "");
+
+      dispatch({
+        type: "GET_ALL_CERTIFICATES_AWARDED",
+        payload: {
+          userCertificates: certificates.data.response,
+          totalCertificatesPages: certificates.data.pages,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const resetCertificateData = async () => {
     try {
       dispatch({
@@ -117,6 +134,7 @@ export const CertificateState = ({ children }) => {
       value={{
         ceritificateState: state,
         getAllCertificates,
+        getAllCertificatesPaginated,
         setUserIdToCertificate,
         getAllCertificatesByUser,
         getCertificatesLogo,

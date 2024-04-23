@@ -1,10 +1,12 @@
+const { PAGE_LIMIT } = process.env;
+const { calcNumOffset, calcTotalPages } = require("../helpers/helpers");
+const { transporter } = require("../utils/utils");
 const CertificateModel = require("../models/CertificateModel");
+const hbs = require("nodemailer-express-handlebars");
 const JobModel = require("../models/JobModel");
+const path = require("path");
 const StudentCertificateModel = require("../models/StudentCertificateModel");
 const UserModel = require("../models/UserModel");
-const { transporter } = require("../utils/utils");
-const path = require("path");
-const hbs = require("nodemailer-express-handlebars");
 
 transporter.use(
   "compile",
@@ -128,9 +130,46 @@ exports.getById = async (req, res) => {
   }
 };
 
+exports.getAllPaginated = async (req, res) => {
+  try {
+    // const { name, identifyNumber, roleId } = req.query;
+    console.log(req.query);
+    const { page } = req.params;
+    // const Op = Sequelize.Op;
+    const offsetIns = calcNumOffset(page);
+    let options = {
+      where: {},
+      include: [
+        { model: UserModel },
+        { model: JobModel },
+        { model: CertificateModel },
+      ],
+      offset: offsetIns,
+      limit: Number(PAGE_LIMIT),
+    };
+
+    const { count, rows } = await StudentCertificateModel.findAndCountAll(options);
+    const cantPages = calcTotalPages(count);
+
+    if (rows) {
+      res.status(200).json({ pages: cantPages, response: rows });
+    } else {
+      res.status(500).json({ msg: "Los certificados no existen." });
+    }
+  } catch (error) {
+    console.log("Los certificados no existen." + error);
+  }
+};
+
 exports.getAll = async (req, res) => {
   try {
-    const certificate = await StudentCertificateModel.findAll();
+    const certificate = await StudentCertificateModel.findAll({
+      include: [
+        { model: UserModel },
+        { model: JobModel },
+        { model: CertificateModel },
+      ],
+    });
     if (certificate) {
       res.status(200).json({ response: certificate });
     } else {
@@ -171,7 +210,7 @@ exports.deleteById = async (req, res) => {
     });
 
     if (cerificate) {
-      res.status(200).send("Certificado eliminado!");
+      res.status(200).json({ msg: "Certificado eliminado correctamente." });
     } else {
       res.status(500).json({ msg: "Error al eliminar el certificado." });
     }

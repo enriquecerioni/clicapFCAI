@@ -45,6 +45,7 @@ import { Exposition } from "../views/Exposition/Exposition";
 import { Payment } from "../views/Payment/Payment";
 import JobVersion from "../components/Jobs/JobVersion/JobVersion";
 import { EventDate } from "../components/EventDate/EventDate";
+import CertificatesAwarded from "../components/CertificatesAwarded/CertificatesAwarded";
 
 const CustomRoute = () => (
   <>
@@ -380,6 +381,15 @@ const CustomRoute = () => (
         element={
           <PrivateAdminRoute>
             <NewCertificate />
+          </PrivateAdminRoute>
+        }
+      />
+
+      <Route
+        path="certificates-awarded"
+        element={
+          <PrivateAdminRoute>
+            <CertificatesAwarded />
           </PrivateAdminRoute>
         }
       />
