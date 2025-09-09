@@ -1,0 +1,64 @@
+
+services:
+  database:
+    container_name: mysql-database
+    image: mysql
+    volumes:
+      - mysql-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "secret"
+    restart: always
+
+  phpMyAdmin:
+    depends_on:
+      - database
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_ARBITRARY: 1
+
+  backend:
+    depends_on: 
+      - database
+    build: 
+      context: .
+      # target: ${STAGE}
+      dockerfile: ./server/Dockerfile
+    image: clicap
+    ports:
+      - "3000:3000"
+    container_name: eventos-api
+    environment:
+      STAGE: ${STAGE}
+      APP_VERSION: ${APP_VERSION}
+      API_PORT: ${API_PORT}
+      DATABASE: ${DATABASE}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_PORT: ${DATABASE_PORT}
+      EMAIL_APP: ${EMAIL_APP}
+      PASSWORD_EMAIL_APP: ${PASSWORD_EMAIL_APP}
+      CLIENT_LOCALHOST: ${CLIENT_LOCALHOST}
+      JWT_ACOUNT_ACTIVE: ${JWT_ACOUNT_ACTIVE}
+      PAGE_LIMIT: ${PAGE_LIMIT}
+    
+  frontend:
+    depends_on: 
+      - backend
+    build: 
+      context: .
+      # target: ${STAGE}
+      dockerfile: ./clicap/Dockerfile
+    image: clicap-client
+    ports:
+      - "3001:3001"
+    container_name: eventos-client
+    environment:
+      REACT_APP_API: ${REACT_APP_API}
+      PORT: ${PORT}
+
+volumes:
+  mysql-db:
+    external: true # allows to use an existing volume named 'mysql-db'
